@@ -1,0 +1,57 @@
+
+sqlDataSource.SelectCommand = "SELECT ColegiadoId, Matricula, MatriculaConalab, Foto, Nombres, Paterno, Materno, TelefonoOficina, DireccionOficina, Correo, NumeroCI, UniversidadLicenciatura,  ISNULL(Paterno, '') + ' ' + ISNULL(Materno, '') + ', ' + ISNULL(Nombres, '')  AS FullName, ISNULL(EspecialidadPrimaria, '') AS EspecialidadPrimaria, ISNULL(EspecialidadSecundaria, '') AS EspecialidadSecudaria FROM Colegiados WHERE (Nombres LIKE '%' + @Nombres + '%' OR @Nombres = '') AND (Paterno LIKE '%' + @Paterno + '%' OR @Paterno = '') AND (Materno LIKE '%' + @Materno + '%' OR @Materno = '') AND (NumeroCI LIKE '%' + @NumeroCI + '%' OR @NumeroCI = '') AND (Matricula = @Matricula OR MatriculaConalab = @Matricula OR @Matricula = '') AND (EspecialidadPrimaria LIKE '%' + @Especialidad + '%' OR EspecialidadSecundaria LIKE '%' + @Especialidad + '%' OR @Especialidad = '') ORDER BY Paterno, Materno";
+Colegiados
+sqlDataSource.SelectCommand = "SELECT ColegiadoId, Matricula, MatriculaConalab, Foto, Nombres, Paterno, Materno, TelefonoOficina, DireccionOficina, Correo, NumeroCI, NumeroRuc, UniversidadLicenciatura, ISNULL(Nombres, '') + ' ' + ISNULL( Paterno, '') + ' ' + ISNULL(Materno, '') AS FullName FROM Colegiados WHERE CONTAINS( (Matricula, MatriculaConalab, Nombres,Paterno, Materno, TelefonoOficina, DireccionOficina, Correo, NumeroCI, UniversidadLicenciatura), @Buscar ) OR (Contains (Nombres , @Buscar2 ) AND Contains (Paterno    , @Buscar2 ) AND Contains (Materno    , @Buscar2 ) ) OR (Contains (Nombres , @Buscar2 ) AND Contains (Paterno    , @Buscar2 )  ) OR ( Contains (Paterno    , @Buscar2 ) AND Contains (Materno    , @Buscar2 ) AND Paterno <> Materno ) OR (Contains (Nombres , @Buscar2 ) AND  Contains (Materno    , @Buscar2 ) ) OR (@Buscar2 ='') ";
+Reporte mensuales
+sqlDataSource.SelectCommand = "Select Distinct (YEAR(Aportes.FechaDeCobro)) AS Ano, MONTH(Aportes.FechaDeCobro) AS Mes, \r\n COUNT(1) AS Cobros, SUM(Aportes.Monto) AS Total\r\nFROM Aportes \r\n\r\nGROUP BY (YEAR(Aportes.FechaDeCobro)) , MONTH(Aportes.FechaDeCobro) \r\n\r\nORDER BY 1 DESC,2 DESC,3";
+Reporte colegiados gestion 
+sqlDataSource.SelectCommand = "SELECT        Colegiados.ColegiadoId, Colegiados.Matricula, Colegiados.MatriculaConalab, Colegiados.Nombres, Colegiados.Paterno, Colegiados.Materno, Colegiados.TelefonoOficina, Colegiados.DireccionOficina, Colegiados.Correo, \r\n                         Colegiados.LugarNacimiento, Colegiados.FechaNacimiento, Colegiados.NumeroCI, Colegiados.EstadoCivil, Colegiados.FechaMatriculacionAlColegio, Colegiados.DireccionDomicilio, Colegiados.TelefonoDomicilio, \r\n                         Colegiados.Casilla, Colegiados.Observacion, Colegiados.CargoActual, Colegiados.EspecialidadPrimaria, Colegiados.Situacion, Colegiados.Celular, Colegiados.Nacionalidad, Colegiados.ZonaId, ISNULL(MAX( Aportes.MesFinal),MONTH(Colegiados.FechaMatriculacionAlColegio)), \r\n                        ISNULL(MAX( Aportes.AnoFinal),YEAR(Colegiados.FechaMatriculacionAlColegio)),  DATEDIFF(month, GETDATE(),CAST( CAST(ISNULL(MAX( Aportes.AnoFinal),YEAR(Colegiados.FechaMatriculacionAlColegio)) AS varchar) + '-' + CAST (ISNULL(MAX( Aportes.MesFinal),MONTH(Colegiados.FechaMatriculacionAlColegio)) AS varchar) + '-01' AS DATETIME)) AS MesesQueDebe\r\n, (SELECT TOP 1 Cobrador FROM Aportes aa WHERE aa.ColegiadoId = Colegiados.ColegiadoId ORDER BY AporteId DESC ) AS Cobrador\r\nFROM            Colegiados AS Colegiados LEFT JOIN\r\n                         Aportes ON Colegiados.ColegiadoId = Aportes.ColegiadoId\r\n\t\t\t\t\t\tWHERE        (YEAR(Colegiados.FechaMatriculacionAlColegio) = @Year)\r\nGROUP BY   Colegiados.ColegiadoId, Colegiados.Matricula, Colegiados.MatriculaConalab, Colegiados.Nombres, Colegiados.Paterno, Colegiados.Materno, Colegiados.TelefonoOficina, Colegiados.DireccionOficina, Colegiados.Correo, \r\n                         Colegiados.LugarNacimiento, Colegiados.FechaNacimiento, Colegiados.NumeroCI, Colegiados.EstadoCivil, Colegiados.FechaMatriculacionAlColegio, Colegiados.DireccionDomicilio, Colegiados.TelefonoDomicilio, \r\n                         Colegiados.Casilla, Colegiados.Observacion, Colegiados.CargoActual, Colegiados.EspecialidadPrimaria, Colegiados.Situacion, Colegiados.Celular, Colegiados.Nacionalidad, Colegiados.ZonaId\r\n\r\nORDER BY Colegiados.FechaMatriculacionAlColegio";
+Reporte listado colegiados
+  sqlDataSource.SelectCommand = "SELECT        Colegiados.ColegiadoId, Colegiados.Matricula, Colegiados.MatriculaConalab, Colegiados.Nombres, Colegiados.Paterno, Colegiados.Materno, Colegiados.TelefonoOficina, Colegiados.DireccionOficina, Colegiados.Correo, \r\n                         Colegiados.LugarNacimiento, Colegiados.FechaNacimiento, Colegiados.NumeroCI, Colegiados.EstadoCivil, Colegiados.FechaMatriculacionAlColegio, Colegiados.DireccionDomicilio, Colegiados.TelefonoDomicilio, \r\n                         Colegiados.Casilla, Colegiados.Observacion, Colegiados.CargoActual, Colegiados.EspecialidadPrimaria, Colegiados.Situacion, Colegiados.Celular, Colegiados.Nacionalidad, Colegiados.ZonaId, ISNULL(MAX( Aportes.MesFinal),MONTH(Colegiados.FechaMatriculacionAlColegio)), \r\n                        ISNULL(MAX( Aportes.AnoFinal),YEAR(Colegiados.FechaMatriculacionAlColegio)),  DATEDIFF(month, GETDATE(),CAST( CAST(ISNULL(MAX( Aportes.AnoFinal),YEAR(Colegiados.FechaMatriculacionAlColegio)) AS varchar) + '-' + CAST (ISNULL(MAX( Aportes.MesFinal),MONTH(Colegiados.FechaMatriculacionAlColegio)) AS varchar) + '-01' AS DATETIME)) AS MesesQueDebe\r\n, (SELECT TOP 1 Cobrador FROM Aportes aa WHERE aa.ColegiadoId = Colegiados.ColegiadoId ORDER BY AporteId DESC ) AS Cobrador, Colegiados.Estado\r\nFROM            Colegiados AS Colegiados LEFT JOIN\r\n                         Aportes ON Colegiados.ColegiadoId = Aportes.ColegiadoId\r\n\t\t\t\t\t\tWHERE (Paterno >= @Desde OR @Desde = '*') AND (Paterno <= @Hasta OR @Hasta = '*')\r\nGROUP BY   Colegiados.ColegiadoId, Colegiados.Matricula, Colegiados.MatriculaConalab, Colegiados.Nombres, Colegiados.Paterno, Colegiados.Materno, Colegiados.TelefonoOficina, Colegiados.DireccionOficina, Colegiados.Correo, \r\n                         Colegiados.LugarNacimiento, Colegiados.FechaNacimiento, Colegiados.NumeroCI, Colegiados.EstadoCivil, Colegiados.FechaMatriculacionAlColegio, Colegiados.DireccionDomicilio, Colegiados.TelefonoDomicilio, \r\n                         Colegiados.Casilla, Colegiados.Observacion, Colegiados.CargoActual, Colegiados.EspecialidadPrimaria, Colegiados.Situacion, Colegiados.Celular, Colegiados.Nacionalidad, Colegiados.ZonaId,  Colegiados.Estado\r\n\r\nORDER BY Colegiados.Paterno, Colegiados.Materno, Colegiados.Nombres\r\n";
+
+
+cobradores 
+ sqlDataSource.SelectCommand = "SELECT [CobradorId], [Usuario], [Nombre] FROM [Cobradores]";
+      sqlDataSource.DeleteCommand = "DELETE FROM [Cobradores] WHERE [CobradorId] = @CobradorId";
+      sqlDataSource.InsertCommand = "INSERT INTO [Cobradores] ([Usuario], [Nombre]) VALUES (@Usuario, @Nombre)";
+      sqlDataSource.UpdateCommand = "UPDATE [Cobradores] SET [Usuario] = @Usuario, [Nombre] = @Nombre WHERE [CobradorId] = @CobradorId";
+
+Usuarios 
+ sqlDataSource.DeleteCommand = "DELETE FROM [aspnet_Users] WHERE [UserId] = @UserId";
+      sqlDataSource.InsertCommand = "INSERT INTO [aspnet_Users] ([ApplicationId], [UserId], [UserName], [LoweredUserName], [MobileAlias], [IsAnonymous], [LastActivityDate]) VALUES (@ApplicationId, @UserId, @UserName, @LoweredUserName, @MobileAlias, @IsAnonymous, @LastActivityDate)";
+      sqlDataSource.SelectCommand = "SELECT aspnet_Users.UserName, aspnet_Users.LastActivityDate, aspnet_Membership.IsApproved, aspnet_Membership.IsLockedOut, aspnet_Membership.Email, aspnet_Users.UserId FROM aspnet_Users INNER JOIN aspnet_Membership ON aspnet_Users.UserId = aspnet_Membership.UserId AND aspnet_Users.UserId = aspnet_Membership.UserId";
+      sqlDataSource.UpdateCommand = "UPDATE [aspnet_Users] SET [ApplicationId] = @ApplicationId, [UserName] = @UserName, [LoweredUserName] = @LoweredUserName, [MobileAlias] = @MobileAlias, [IsAnonymous] = @IsAnonymous, [LastActivityDate] = @LastActivityDate WHERE [UserId] = @UserId";
+Select usuario 
+sqlDataSource.SelectCommand = "SELECT [UserID], [FirstName], [LastName], [STATUS], [managerID] FROM [DBC_User]";
+POOSTEADOS 
+ sqlDataSource.DeleteCommand = "DELETE FROM [Posts] WHERE [PostId] = @PostId";
+      sqlDataSource.InsertCommand = "INSERT INTO [Posts] ([PageId], [LanguageId], [MenuTitle], [Title], [Content], [Datetime], [User], [ContentBinary]) VALUES (@PageId, @LanguageId, @MenuTitle, @Title, @Content, @Datetime, @User, @ContentBinary)";
+      sqlDataSource.SelectCommand = "SELECT [PostId], [PageId], [LanguageId], [MenuTitle], [Title], [Content], [Datetime], [User], [ContentBinary] FROM [Posts] WHERE (([LanguageId] = @LanguageId) AND ([PageId] = @PageId))";
+      sqlDataSource.UpdateCommand = "UPDATE [Posts] SET [PageId] = @PageId, [LanguageId] = @LanguageId, [MenuTitle] = @MenuTitle, [Title] = @Title, [Content] = @Content, [Datetime] = @Datetime, [User] = @User, [ContentBinary] = @ContentBinary WHERE [PostId] = @PostId";
+
+Usuario 
+SELECT TOP (1000) [UserId]
+      ,[PasswordFormat]
+      ,[MobilePIN]
+      ,[Email]
+      ,[LoweredEmail]
+      ,[PasswordQuestion]
+      ,[PasswordAnswer]
+      ,[IsApproved]
+      ,[IsLockedOut]
+      ,[CreateDate]
+      ,[LastLoginDate]
+      ,[LastPasswordChangedDate]
+      ,[LastLockoutDate]
+      ,[FailedPasswordAttemptCount]
+      ,[FailedPasswordAttemptWindowStart]
+      ,[FailedPasswordAnswerAttemptCount]
+      ,[FailedPasswordAnswerAttemptWindowStart]
+      ,[Comment]
+      ,[ApplicationId]
+      ,[UserName]
+      ,[MobileAlias]
+      ,[IsAnonymous]
+      ,[LastActivityDate]
+  FROM [ph16596582676_icalpusuarios].[dbo].[vw_aspnet_MembershipUsers]
+

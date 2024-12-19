@@ -1,0 +1,27 @@
+{
+  "name": "sistemaicalp",
+  "version": "1.0.0",
+  "description": "sistema colegio de abogados",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.js",
+    "dev": "node --watch src/main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "morgan": "^1.10.0",
+    "mssql": "^11.0.1"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "standard": "^17.1.2"
+  }
+}
