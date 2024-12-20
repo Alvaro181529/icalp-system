@@ -1,1 +1,59 @@
 <h1>Este es Login</h1>
+<form id="loginForm">
+  <input type="text" id="login-email" placeholder="Email" />
+  <input type="password" id="login-pass" placeholder="Contraseña" />
+  <span></span>
+  <button type="submit">Iniciar sesión</button>
+</form>
+
+<script>
+  // Función para seleccionar elementos
+  const $ = (el) => document.querySelector(el);
+
+  // Selección del formulario y el elemento span
+  const loginForm = $("#loginForm");
+  const loginSpan = $("#loginForm span");
+
+  // Evento de submit
+  loginForm?.addEventListener("submit", async (e) => {
+    e.preventDefault(); // Corregido el nombre del método
+
+    const email = $("#login-email").value;
+    const password = $("#login-pass").value;
+
+    // Validación simple
+    if (!email || !password) {
+      loginSpan.textContent = "Por favor, ingresa todos los campos.";
+      loginSpan.style.color = "red";
+      return;
+    }
+
+    // Petición fetch
+    await fetch("/signin", {
+      // Asegúrate de que la URL sea correcta
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Corregido el tipo MIME
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((response) => {
+        console.log(response)
+        if (response.ok) {
+          loginSpan.textContent = "¡Bienvenido!";
+          loginSpan.style.color = "green";
+          setTimeout(()=>{
+              window.location.href='/'
+          },2000)
+        } else {
+          loginSpan.textContent = "Error de autenticación.";
+          loginSpan.style.color = "red";
+          throw new Error("Error en la autenticación");
+        }
+      })
+      .catch((error) => {
+        loginSpan.textContent = `Error: ${error.message}`;
+        loginSpan.style.color = "red";
+      });
+  });
+</script>

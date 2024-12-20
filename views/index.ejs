@@ -1,3 +1,88 @@
-<h1>
-este es la pagina de inicio
-</h1>
+<% if (user) { %>
+<h1>Este es la página con login: <%= user.correo %></h1>
+<button id="cerrar">Cerrar session</button>
+<% } else { %>
+<h1>Esta es la página de inicio</h1>
+<a href="/login">Iniciar sesion</a>
+<% } %>
+
+<input id="search" type="search" />
+<input id="search-button" type="button" value="buscar" />
+
+<ul id="result-list">
+  <!-- Los resultados se insertarán aquí dinámicamente -->
+</ul>
+<script>
+  const $ = (el) => document.querySelector(el);
+
+  // Selección del formulario y el elemento span
+  const search = $("#search");
+  const searchButton = $("#search-button");
+
+  // Evento al hacer clic en el botón
+  searchButton.addEventListener("click", async (e) => {
+    e.preventDefault(); // Evitar el envío de formulario o recarga de la página
+
+    const searchValue = search.value.trim(); // Obtener y recortar el valor de búsqueda
+
+    if (!searchValue) {
+      alert("Por favor, ingrese un término de búsqueda.");
+      return;
+    }
+
+    const url = `search?search=${encodeURIComponent(searchValue)}`;
+
+    try {
+      // Hacer la solicitud fetch
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Error en la búsqueda");
+      }
+
+      const data = await response.json(); // Asumimos que la respuesta es un JSON
+      console.log(data.result.users);
+      // Aquí puedes actualizar el DOM con los resultados
+      const resultContainer = document.querySelector("#result-list");
+      resultContainer.innerHTML = ""; // Limpiar resultados previos
+
+      data.result.users.forEach((colegiado) => {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `
+        <strong>ID:</strong> ${colegiado.Matricula} <br />
+        <strong>Nombre:</strong> ${colegiado.Nombres} <br />
+        <strong>Email:</strong> ${colegiado.Correo}
+      `;
+        resultContainer.appendChild(listItem);
+      });
+    } catch (error) {
+      console.error("Error en la búsqueda:", error);
+      alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+    }
+  });
+
+  // Solo añadir el evento si el botón existe
+  const cerrarButton = document.getElementById("cerrar");
+  if (cerrarButton) {
+    cerrarButton.addEventListener("click", function () {
+      // Llamar a la ruta para cerrar sesión (asegúrate de que el backend lo maneje correctamente)
+      fetch("/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            // Redirigir o manejar lo que ocurra después de cerrar sesión
+            window.location.href = "/"; // Redirige a la página principal o a la página de inicio de sesión
+          } else {
+            alert("Error al cerrar sesión");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("Ocurrió un error al intentar cerrar sesión");
+        });
+    });
+  }
+</script>

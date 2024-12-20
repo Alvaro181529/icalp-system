@@ -1,26 +1,34 @@
 import pool from "../../config/db.connect.js";
 import bcrypt from 'bcrypt';
-import crypto from 'crypto'; 
+import crypto from 'crypto';
 import jwt from "jsonwebtoken";
 export class AuthModel {
     signIn = async (body) => {
         const { email, password } = body;
+
         try {
             const result = await pool.query("SELECT * FROM aspnetusers WHERE Email = ?", [email]);
-            if (result.length === 0) {
+            if (result.length == 0) {
                 return { message: 'Usuario no encontrado.' };
             }
+
             const user = result[0];
+            
+            if (!user.PasswordHash) {
+                return { message: 'Error interno: El usuario no tiene una contraseña válida.' };
+            }
+            if (!password) {
+                return { message: 'Contraseña no proporcionada.' };
+            }
             const isValidPassword = await bcrypt.compare(password, user.PasswordHash);
             if (!isValidPassword) {
                 return { message: 'Contraseña incorrecta.' };
             }
-            const token= jwt.sign({userId: user.UserId, correo: user.Email}, process.env.SECRET_KEY, { expiresIn: '1d' });
-            
-            return { message: 'Inicio de sesión exitoso.', correo: user.Email , token   };
+            const token = jwt.sign({ userId: user.UserId, correo: user.Email }, process.env.SECRET_KEY, { expiresIn: '1d' });
+
+            return { message: 'Inicio de sesión exitoso.', correo: user.Email, token };
         } catch (error) {
             console.error(error);
-            
             return { message: 'Error al intentar iniciar sesión.' };
         }
     }
@@ -45,17 +53,17 @@ export class AuthModel {
                 INSERT INTO aspnetusers (UserId, PasswordHash, PasswordSalt, Email, LoweredEmail, IsApproved, IsLockedOut, CreateDate)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             `;
-            const userId = crypto.randomUUID(); 
+            const userId = crypto.randomUUID();
             const salt = bcrypt.genSaltSync(saltRounds);
 
             await pool.query(createQuery, [
-                userId, 
-                hashedPassword, 
-                salt, 
-                email, 
+                userId,
+                hashedPassword,
+                salt,
+                email,
                 email.toLowerCase(),
-                1,  
-                0,  
+                1,
+                0,
                 createDate
             ]);
 
