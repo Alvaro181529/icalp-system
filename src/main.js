@@ -13,6 +13,9 @@ const PORT = process.env.PORT || 3000
 import { router as homeRouter } from './routes/home.route.js'
 import { router as pageRouter } from './routes/pages.route.js'
 import { router as authRouter } from './routes/auth.route.js'
+import { router as aportesRouter } from './routes/aportes.route.js'
+import { router as colegiadosRouter } from './routes/colegiados.route.js'
+import { router as configRouter } from './routes/config.route.js'
 
 //template
 app.set('view engine', 'ejs')
@@ -34,10 +37,14 @@ app.use((req, res, next) => {
 })
 
 //routes
+app.use(configRouter)
+app.use(colegiadosRouter)
+app.use(aportesRouter)
 app.use(authRouter)
 app.use(homeRouter)
 app.use(pageRouter)
 
+//not found Page
 app.use((req, res) => {
     res.status(404).render('404', { message: 'Page Not Found' })  // Render a custom 404 page
 })

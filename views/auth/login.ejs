@@ -1,12 +1,14 @@
+<%- include('../partials/header') %>
+
 <h1>Este es Login</h1>
 <form id="loginForm">
   <input type="text" id="login-email" placeholder="Email" />
   <input type="password" id="login-pass" placeholder="Contraseña" />
-  <span></span>
   <button type="submit">Iniciar sesión</button>
+  <span></span>
 </form>
-
-<script>
+<a href="register"> Registrar</a>
+<script defer>
   // Función para seleccionar elementos
   const $ = (el) => document.querySelector(el);
 
@@ -38,13 +40,13 @@
       body: JSON.stringify({ email, password }),
     })
       .then((response) => {
-        console.log(response)
+        console.log(response);
         if (response.ok) {
           loginSpan.textContent = "¡Bienvenido!";
           loginSpan.style.color = "green";
-          setTimeout(()=>{
-              window.location.href='/'
-          },2000)
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 2000);
         } else {
           loginSpan.textContent = "Error de autenticación.";
           loginSpan.style.color = "red";
@@ -57,3 +59,4 @@
       });
   });
 </script>
+<%- include('../partials/footer') %>

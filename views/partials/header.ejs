@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+    <title><%= title%></title>
+  </head>
+  <body>
+    <nav>
+      <a href="/">Home</a>
+      <a href="#">ICALP</a>
+      <a href="#">Noticias</a>
+      <a href="#">Documentos</a>
+      <a href="#">Postgrado</a>
+      <a href="#">Mapa juridico</a>
+      <a href="#">Contactenos</a>
+      <% if (user) { %>
+      <a href="/config">Configuracion</a>
+      <button id="cerrar">Cerrar session</button>
+      <h2>Este es la página con login: <%= user.correo %></h2>
+      <% } else { %>
+      <a href="/login"> <button>Iniciar sesion</button></a>
+      <h2>Esta es la página de inicio</h2>
+      <% } %>
+    </nav>
+    <% if (user) { %>
+    <aside>
+      <h3>Reportes</h3>
+      <details>
+        <summary>Colegiados</summary>
+        <ul>
+          <li><a href="colegiado">Listado de Colegiados </a></li>
+          <li><a href="#">Colegiados al dia</a></li>
+          <li><a href="#">Historial de cambios</a></li>
+          <li><a href="#">Anulacion de recibos</a></li>
+        </ul>
+      </details>
+      <details>
+        <summary>Reportes</summary>
+        <ul>
+          <li><a href="#">Reporte de Aportes</a></li>
+          <li><a href="#">Reportes mensuales por cobrador</a></li>
+          <li><a href="#">Reportes mensuales</a></li>
+        </ul>
+      </details>
+      <details>
+        <summary>Colegiados por año</summary>
+        <ul>
+          <li>
+            <a href="#">Lista de Colegiado por fecha de inscripcion por año</a>
+          </li>
+          <li>
+            <a href="#"
+              >Lista de colegiados por titulo en provision nacional por año</a
+            >
+          </li>
+          <li><a href="#">Reporte de talonarios</a></li>
+        </ul>
+      </details>
+    </aside>
+    <% }%>
+    <hr />
+    <script defer>
+      const cerrarButton = document.getElementById("cerrar");
+      if (cerrarButton) {
+        cerrarButton.addEventListener("click", function () {
+          // Llamar a la ruta para cerrar sesión (asegúrate de que el backend lo maneje correctamente)
+          fetch("/logout", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                // Redirigir o manejar lo que ocurra después de cerrar sesión
+                window.location.href = "/"; // Redirige a la página principal o a la página de inicio de sesión
+              } else {
+                alert("Error al cerrar sesión");
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Ocurrió un error al intentar cerrar sesión");
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

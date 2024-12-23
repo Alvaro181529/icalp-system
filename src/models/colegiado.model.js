@@ -55,4 +55,16 @@ export class ColegiadoModel {
             throw new Error('Error al obtener los usuarios');
         }
     };
+    getUser(query){
+
+    }
+    updateUser(query){
+
+    }
+    postUser(query){
+
+    }
+    deleteUser(query){
+
+    }
 }

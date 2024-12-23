@@ -13,7 +13,7 @@ export class AuthModel {
             }
 
             const user = result[0];
-            
+
             if (!user.PasswordHash) {
                 return { message: 'Error interno: El usuario no tiene una contraseña válida.' };
             }
@@ -33,8 +33,8 @@ export class AuthModel {
         }
     }
     signUp = async (body) => {
-        const { email, password, confirmedPassword } = body;
-        const validationError = validate(email, password, confirmedPassword);
+        const { user, email, password, confirmedPassword } = body;
+        const validationError = validate(email, password, confirmedPassword, user);
         if (validationError) {
             return validationError; // Return error from validation
         }
@@ -50,8 +50,8 @@ export class AuthModel {
             const hashedPassword = await bcrypt.hash(password, saltRounds);
             const createDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
             const createQuery = `
-                INSERT INTO aspnetusers (UserId, PasswordHash, PasswordSalt, Email, LoweredEmail, IsApproved, IsLockedOut, CreateDate)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO aspnetusers (UserId, PasswordHash, PasswordSalt, Email, LoweredEmail, IsApproved, IsLockedOut, CreateDate, User)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
             const userId = crypto.randomUUID();
             const salt = bcrypt.genSaltSync(saltRounds);
@@ -64,19 +64,21 @@ export class AuthModel {
                 email.toLowerCase(),
                 1,
                 0,
-                createDate
+                createDate,
+                user
             ]);
 
-            return { message: 'Usuario registrado exitosamente.' };
+            return { message: 'Usuario registrado exitosamente.', correo: email };
         } catch (error) {
             console.error(error);
             return { message: 'Error al registrar el usuario.' };
         }
     }
 }
-function validate(email, password, confirmedPassword) {
+function validate(email, password, confirmedPassword, user) {
     if (!email) return { message: "El email no puede estar vacío." };
     if (!password) return { message: "La contraseña no puede estar vacía." };
     if (!confirmedPassword) return { message: "La confirmación de la contraseña no puede estar vacía." };
+    if (!user) return { message: "El usuario no puede estar vacio" };
     return null;
 }

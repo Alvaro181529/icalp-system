@@ -1,26 +1,18 @@
-<% if (user) { %>
-<h1>Este es la página con login: <%= user.correo %></h1>
-<button id="cerrar">Cerrar session</button>
-<% } else { %>
-<h1>Esta es la página de inicio</h1>
-<a href="/login">Iniciar sesion</a>
-<% } %>
-
-<input id="search" type="search" />
-<input id="search-button" type="button" value="buscar" />
+<%- include('partials/header',{title, user}) %>
+<form id="search-form">
+  <input id="search" type="search" placeholder="Buscar por Matricula, Carnet, Nombre o apellido" />
+  <button id="search-button" type="submitx">Buscar</button>
+</form>
 
 <ul id="result-list">
   <!-- Los resultados se insertarán aquí dinámicamente -->
 </ul>
-<script>
+<script defer>
   const $ = (el) => document.querySelector(el);
-
-  // Selección del formulario y el elemento span
   const search = $("#search");
-  const searchButton = $("#search-button");
+  const searchForm = $("#search-form");
 
-  // Evento al hacer clic en el botón
-  searchButton.addEventListener("click", async (e) => {
+  searchForm?.addEventListener("submit", async (e) => {
     e.preventDefault(); // Evitar el envío de formulario o recarga de la página
 
     const searchValue = search.value.trim(); // Obtener y recortar el valor de búsqueda
@@ -59,30 +51,5 @@
       alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
     }
   });
-
-  // Solo añadir el evento si el botón existe
-  const cerrarButton = document.getElementById("cerrar");
-  if (cerrarButton) {
-    cerrarButton.addEventListener("click", function () {
-      // Llamar a la ruta para cerrar sesión (asegúrate de que el backend lo maneje correctamente)
-      fetch("/logout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            // Redirigir o manejar lo que ocurra después de cerrar sesión
-            window.location.href = "/"; // Redirige a la página principal o a la página de inicio de sesión
-          } else {
-            alert("Error al cerrar sesión");
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("Ocurrió un error al intentar cerrar sesión");
-        });
-    });
-  }
 </script>
+<%- include('partials/footer'); %>
