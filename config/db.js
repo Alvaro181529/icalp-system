@@ -1,4 +1,4 @@
-import sql from "mssql";
+import sql from "mssql"
 
 const settingsData = {
     user: "sa",

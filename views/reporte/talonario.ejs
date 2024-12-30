@@ -1,0 +1,127 @@
+<%- include('../partials/header') %>
+
+<h1>
+    <%= title %>
+</h1>
+
+<h2>Reporte Talonario</h2>
+
+<!-- Selector de Año -->
+<!-- Tabla de Resultados -->
+<table id="result-table">
+    <thead>
+        <tr>
+            <th>Talonario</th>
+            <th>Recibos</th>
+            <th>Numeros</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Aquí se llenarán las filas con los resultados -->
+    </tbody>
+</table>
+
+<!-- Paginación -->
+<div id="pagination">
+    <button id="prev-page" disabled>Anterior</button>
+    <span id="current-page">Página 1</span>
+    <button id="next-page">Siguiente</button>
+</div>
+
+<script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectYear = document.getElementById("year");
+        const resultTableBody = document.querySelector("#result-table tbody");
+        const prevPageButton = document.getElementById("prev-page");
+        const nextPageButton = document.getElementById("next-page");
+        const currentPageSpan = document.getElementById("current-page");
+
+        let page = 1;  // Página actual
+        let totalPages = 23;  // Número total de páginas
+
+        // Función para actualizar la tabla con los resultados
+        const updateTable = (data) => {
+            resultTableBody.innerHTML = "";  // Limpiar la tabla
+
+            if (data.length > 0) {
+                data.forEach((item) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${item.Talonario}</td>
+                        <td>(${item.Conteo} Recibos)
+                            <p>${item.Desde} - ${item.Hasta}</p>
+                        </td>
+                        <td>${item.Numeros || "No disponible"}</td>
+                        <td>${item.Monto ? item.Monto.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 20 }) + " Bs" : "No disponible"}</td>
+                    `;
+                    resultTableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td colspan="4">No se encontraron resultados</td>`;
+                resultTableBody.appendChild(row);
+            }
+
+            // Actualizar el estado de los botones de paginación
+            prevPageButton.disabled = page === 1;
+            nextPageButton.disabled = page === totalPages;
+
+            currentPageSpan.textContent = `Página ${page}`;
+        };
+
+        // Función para realizar la búsqueda y actualizar la tabla
+        const fetchAndUpdateTable = async () => {
+            const url = `/checkbox?page=${page}&pageSize=10`;
+
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error("Error en la solicitud");
+                }
+
+                const data = await response.json(); // Suponemos que la respuesta es un JSON
+
+                if (data && data.data) {
+                    updateTable(data.data);
+                    totalPages = data.totalPages; // Asignar el número total de páginas
+                } else {
+                    console.error("La estructura de la respuesta no es válida");
+                    alert("Hubo un problema con los resultados. Intenta nuevamente.");
+                }
+            } catch (error) {
+                console.error("Error al realizar la solicitud:", error);
+                alert("Hubo un problema al obtener los datos. Intenta nuevamente.");
+            }
+        };
+
+        // Ejecutar la búsqueda cuando se carga la página por primera vez
+        fetchAndUpdateTable();
+
+        // Evento cuando cambia el año
+        selectYear.addEventListener("change", function () {
+            year = selectYear.value;  // Obtener el año seleccionado
+            page = 1;  // Resetear a la primera página
+            fetchAndUpdateTable();    // Actualizar la tabla con el nuevo año
+        });
+
+        // Evento para cambiar a la página anterior
+        prevPageButton.addEventListener("click", function () {
+            if (page > 1) {
+                page--;
+                fetchAndUpdateTable();
+            }
+        });
+
+        // Evento para cambiar a la página siguiente
+        nextPageButton.addEventListener("click", function () {
+            if (page < totalPages) {
+                page++;
+                fetchAndUpdateTable();
+            }
+        });
+    });
+</script>
+
+<%- include('../partials/footer') %>

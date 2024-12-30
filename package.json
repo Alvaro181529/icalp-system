@@ -21,11 +21,7 @@
     "mssql": "^11.0.1",
     "mysql": "^2.18.1"
   },
-  "eslintConfig": {
-    "extends": "standard"
-  },
   "devDependencies": {
-    "@types/express": "^5.0.0",
-    "standard": "^17.1.2"
+    "@types/express": "^5.0.0"
   }
 }

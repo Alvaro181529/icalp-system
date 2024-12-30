@@ -1,0 +1,237 @@
+<%- include('../partials/header') %>
+
+<h1>
+    <%= title %>
+</h1>
+
+<h2>Registro de usuarios</h2>
+<dialog id="dialog">
+    <h3>Agregar nuevo usuario</h3>
+    <form id="form-create" method="dialog">
+        <label for="text">Usuario:</label>
+        <input id="user" type="text" name="username" required />
+      
+        <label for="email">Email:</label>
+        <input id="email" type="email" name="email" required />
+      
+        <label for="password">Contraseña:</label>
+        <input id="password" type="password" name="password" required />
+      
+        <label for="confirm-password">Confirmación de contraseña:</label>
+        <input id="confirm-password" type="password" name="confirm-password" required />
+      
+        <button type="submit">Registrar</button>
+        <span id="error-message"></span>
+    </form>
+</dialog>
+<button id="button">Agregar usuario</button>
+
+<form id="search-form">
+    <input id="search" type="search" placeholder="Buscar por Matrícula, Carnet, Nombre o apellido" />
+    <button id="search-button" type="submit">Buscar</button>
+</form>
+  
+<table id="result-table">
+    <thead>
+        <tr>
+            <th>Correo</th>
+            <th>Usuario</th>
+            <th>¿Está bloqueado?</th>
+            <th>Roles</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Aquí se llenarán las filas con los resultados -->
+    </tbody>
+</table>
+  
+<script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+        const $ = (el) => document.querySelector(el);
+        const search = $("#search");
+        const searchForm = $("#search-form");
+        const resultTableBody = $("#result-table tbody");
+        const activarButton = '.activate-button';
+        const eliminarButton = '.delete-button';
+        
+        // Función para actualizar la tabla con los resultados de la búsqueda
+        const updateTable = (users) => {
+            // Limpiar la tabla antes de mostrar nuevos resultados
+            resultTableBody.innerHTML = "";
+            if (users.length > 0) {
+                // Recorrer los usuarios y agregar una fila a la tabla por cada uno
+                users.forEach((colegiado) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${colegiado.Email}</td>
+                        <td>${colegiado.User}</td>
+                        <td>${(colegiado.IsLockedOut === 1) ? `<button class='${activarButton.slice(1)}' data-id='${colegiado.UserId}'>Activar</button>` : 'Activado'}</td>
+                        <td>Roles</td>
+                        <td><button class='${eliminarButton.slice(1)}' data-id='${colegiado.UserId}'>Eliminar</button></td>
+                    `;
+                    resultTableBody.appendChild(row);
+                });
+            } else {
+                // Si no hay resultados, mostrar un mensaje en la tabla
+                const row = document.createElement("tr");
+                row.innerHTML = `<td colspan="5">No se encontraron resultados</td>`;
+                resultTableBody.appendChild(row);
+            }
+        };
+
+        // Función para realizar la búsqueda y actualizar la tabla
+        const fetchAndUpdateTable = async (searchValue) => {
+            const url = `/users?search=${encodeURIComponent(searchValue)}`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error("Error en la búsqueda");
+                }
+                const data = await response.json(); // Asumimos que la respuesta es un JSON
+                if (data && data.result && Array.isArray(data.result.users)) {
+                    updateTable(data.result.users); // Actualizar la tabla con los usuarios encontrados
+                } else {
+                    console.error("La estructura de la respuesta no es válida");
+                    alert("Hubo un problema con los resultados. Intenta nuevamente.");
+                }
+            } catch (error) {
+                console.error("Error en la búsqueda:", error);
+                alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+            }
+        };
+
+        // Ejecutar la búsqueda inmediatamente al cargar la página (con un valor vacío o por defecto)
+        fetchAndUpdateTable("");
+
+        // Evento de búsqueda cuando el formulario se envíe
+        searchForm?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const searchValue = search.value.trim();
+            if (!searchValue) {
+                alert("Por favor, ingrese un término de búsqueda.");
+                return;
+            }
+            fetchAndUpdateTable(searchValue);
+        });
+
+        // Modal de agregar usuario
+        const dialog = document.getElementById('dialog');
+        const button = document.getElementById('button');
+        button.addEventListener('click', () => dialog.showModal());
+        
+        function closeDialog() {
+            dialog.close();  
+        }
+
+        // Registro de usuario
+        const formCreate = $("#form-create");
+        const errorMessage = $("#error-message");
+
+        formCreate?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const username = $("#user").value;
+            const email = $("#email").value;
+            const password = $("#password").value;
+            const confirmPassword = $("#confirm-password").value;
+
+            const userData = {
+                user: username,
+                email: email,
+                password: password,
+                confirmedPassword: confirmPassword,
+            };
+
+            try {
+                const response = await fetch("/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(userData),
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    errorMessage.textContent = "Registrado correctamente";
+                    errorMessage.style.color = "green";
+                    setTimeout(() => {
+                        closeDialog();
+                    }, 2000);
+                    formCreate.reset();
+                } else {
+                    errorMessage.style.color = "red";
+                    errorMessage.textContent = data.message || "Hubo un error en el registro.";
+                }
+            } catch (error) {
+                errorMessage.style.color = "red";
+                errorMessage.textContent = "Error en la solicitud. Por favor, inténtalo nuevamente.";
+            }
+        });
+
+        // Manejo de activación y eliminación de usuarios
+        resultTableBody.addEventListener('click', async (e) => {
+    const button = e.target;
+    
+    // Activar usuario
+    if (button.classList.contains('activate-button')) {
+        const userId = button.getAttribute('data-id');
+        try {
+            // Lógica para activar al usuario
+            console.log("Activar usuario con ID:", userId);
+            
+            const response = await fetch(`/users/activate/${userId}`, {
+                method: 'PATCH', // Suponiendo que la activación sea una actualización
+            });
+            
+            if (response.ok) {
+                // Aquí puedes actualizar la interfaz (por ejemplo, cambiar el texto del botón)
+                button.textContent = 'Activado';
+                button.classList.remove('activate-button');
+            } else {
+                alert("Error al activar el usuario");
+            }
+        } catch (error) {
+            console.error("Error al activar el usuario:", error);
+            alert("Hubo un problema al activar el usuario. Intenta nuevamente.");
+        }
+    }
+
+    // Eliminar usuario
+    else if (button.classList.contains('delete-button')) {
+        const userId = button.getAttribute('data-id');
+        
+        // Confirmación antes de eliminar
+        const confirmation = confirm("¿Estás seguro de que deseas eliminar este usuario?");
+        
+        if (confirmation) {
+            const url = `/users/${userId}`;
+            try {
+                const response = await fetch(url, {
+                    method: 'DELETE',
+                    credentials: 'include',  
+                });
+
+                if (response.ok) {
+                    // Eliminar la fila de la tabla correspondiente
+                    const row = button.closest('tr');
+                    row.remove();
+                    console.log("Usuario con ID", userId, "eliminado.");
+                } else {
+                    alert("Error al eliminar el usuario.");
+                }
+            } catch (error) {
+                console.error("Error al eliminar el usuario:", error);
+                alert("Hubo un problema al eliminar el usuario. Intenta nuevamente.");
+            }
+        } else {
+            console.log("Eliminación cancelada");
+        }
+    }
+});
+
+
+    });
+</script>
+
+<%- include('../partials/footer') %>

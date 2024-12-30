@@ -1,108 +1,289 @@
 <%- include('partials/header', { title, user }) %>
 
-<form id="search-form">
-  <input
-    id="search"
-    type="search"
-    placeholder="Buscar por Matricula, Carnet, Nombre o apellido"
-  />
-  <button id="search-button" type="submit">Buscar</button>
-</form>
-
-<table id="result-table">
+<h1>Detalles del Colegiado</h1>
+<button id="button">Pagos</button>
+<table>
   <thead>
     <tr>
-      <th>Matricula</th>
-      <th>Nombre</th>
-      <th>Carnet</th>
-      <th>Ruc</th>
-      <th></th>
+      <th>Campo</th>
+      <th>Valor</th>
     </tr>
   </thead>
   <tbody>
-    <!-- Aquí se llenarán las filas con los resultados -->
+    <tr>
+      <td>Matricula</td>
+      <td><%= result.Matricula %></td>
+    </tr>
+    <tr>
+      <td>Matricula Conalab</td>
+      <td><%= result.MatriculaConalab || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Foto</td>
+      <td><img src="" alt="<%= result.Foto %>" width="100"></td>
+    </tr>
+    <tr>
+      <td>Firma</td>
+      <td><img src="#" alt="<%= result.Firma %>" width="100"></td>
+    </tr>
+    <tr>
+      <td>PDF</td>
+      <td><a href="#"" target="_blank">Ver PDF <%= result.Pdf %>"</a></td>
+    </tr>
+    <tr>
+      <td>Nombre Completo</td>
+      <td><%= result.Nombres %> <%= result.Paterno %> <%= result.Materno %></td>
+    </tr>
+    <tr>
+      <td>Teléfono Oficina</td>
+      <td><%= result.TelefonoOficina %></td>
+    </tr>
+    <tr>
+      <td>Dirección Oficina</td>
+      <td><%= result.DireccionOficina %></td>
+    </tr>
+    <tr>
+      <td>Correo</td>
+      <td><%= result.Correo || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Lugar de Nacimiento</td>
+      <td><%= result.LugarNacimiento %></td>
+    </tr>
+    <tr>
+      <td>Fecha de Nacimiento</td>
+      <td><%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toLocaleDateString() : "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Numero CI</td>
+      <td><%= result.NumeroCI %></td>
+    </tr>
+    <tr>
+      <td>Numero RUC</td>
+      <td><%= result.NumeroRuc %></td>
+    </tr>
+    <tr>
+      <td>Estado Civil</td>
+      <td><%= result.EstadoCivil %></td>
+    </tr>
+    <tr>
+      <td>Universidad</td>
+      <td><%= result.Universidad %></td>
+    </tr>
+    <tr>
+      <td>Fecha Tesis</td>
+      <td><%= result.FechaTesis ? new Date(result.FechaTesis).toLocaleDateString() : "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Universidad Licenciatura</td>
+      <td><%= result.UniversidadLicenciatura %></td>
+    </tr>
+    <tr>
+      <td>Fecha Licenciatura</td>
+      <td><%= result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toLocaleDateString() : "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Fecha Provision Nacional</td>
+      <td><%= result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toLocaleDateString() : "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Entidad Provision Nacional</td>
+      <td><%= result.EntidadProvisionNacional %></td>
+    </tr>
+    <tr>
+      <td>Fecha Matriculación al Colegio</td>
+      <td><%= result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toLocaleDateString() : "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Cargos Administración Pública</td>
+      <td><%= result.CargosAdministracionPublica %></td>
+    </tr>
+    <tr>
+      <td>Cargos Empresa Privada</td>
+      <td><%= result.CargosEmpresaPrivada %></td>
+    </tr>
+    <tr>
+      <td>Cargos Bufete</td>
+      <td><%= result.CargosBufete || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Cargo Actual</td>
+      <td><%= result.CargoActual %></td>
+    </tr>
+    <tr>
+      <td>Especialidad Primaria</td>
+      <td><%= result.EspecialidadPrimaria || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Especialidad Secundaria</td>
+      <td><%= result.EspecialidadSecundaria %></td>
+    </tr>
+    <tr>
+      <td>Producciones</td>
+      <td><%= result.Producciones || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Cátedra</td>
+      <td><%= result.Catedra %></td>
+    </tr>
+    <tr>
+      <td>Estudios Especialización</td>
+      <td><%= result.EstudiosEspecializacion %></td>
+    </tr>
+    <tr>
+      <td>Reconocimientos</td>
+      <td><%= result.Reconocimientos || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Asistencia a Eventos Internacionales</td>
+      <td><%= result.AsistenciaEventosInternacionales %></td>
+    </tr>
+    <tr>
+      <td>Institución Asegurado</td>
+      <td><%= result.InstitucionAsegurado %></td>
+    </tr>
+    <tr>
+      <td>Beneficiarios</td>
+      <td><%= result.Beneficiarios || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Dirección Domicilio</td>
+      <td><%= result.DireccionDomicilio %></td>
+    </tr>
+    <tr>
+      <td>Teléfono Domicilio</td>
+      <td><%= result.TelefonoDomicilio %></td>
+    </tr>
+    <tr>
+      <td>Casilla</td>
+      <td><%= result.Casilla || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Situación</td>
+      <td><%= result.Situacion || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Observación</td>
+      <td><%= result.Observacion || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Zona Id</td>
+      <td><%= result.ZonaId || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Nacionalidad</td>
+      <td><%= result.Nacionalidad || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Celular</td>
+      <td><%= result.Celular || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Grado Académico</td>
+      <td><%= result.GradoAcademico || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Licenciatura</td>
+      <td><%= result.Licenciatura || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Zona Trabajo Id</td>
+      <td><%= result.ZonaTrabajoId || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Forma de Pago</td>
+      <td><%= result.FormaDePago || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Boleta Depósito Número</td>
+      <td><%= result.BoletaDepositoNumero || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Monto Depósito</td>
+      <td><%= result.MontoDeposito || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Formulario de Admisión</td>
+      <td><%= result.FormularioDeAdmision || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Fotocopia Título Profesional</td>
+      <td><%= result.FotocopiaTituloProfesional || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Certificado Nacimiento Original</td>
+      <td><%= result.CertificadoNacimientoOriginal || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Fotocopia CI</td>
+      <td><%= result.FotocopiaCI || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Currículum Vitae</td>
+      <td><%= result.CurriculumVitae || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Usuario Registro</td>
+      <td><%= result.UsuarioRegistro || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Fecha Registro</td>
+      <td><%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Usuario Modificación</td>
+      <td><%= result.UsuarioModificacion || "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Fecha Modificación</td>
+      <td><%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No disponible" %></td>
+    </tr>
+    <tr>
+      <td>Estado</td>
+      <td><%= result.Estado %></td>
+    </tr>
   </tbody>
 </table>
+<dialog id="dialog">
+    <h3>Pagos</h3>
+    <form id="form-create" method="dialog">
+<label for="">Meses</label>
+<input type="text" name="" id="" value="1" disabled>
+<label for="">Desde</label>
+<select name="" id="">
+    <option value="">Hola</option>
+    <option value="">Hola</option>
+    <option value=""></option>
+</select>
+<label for="">Hasta</label>
+<select name="" id="">
+    <option value="">Hola</option>
+    <option value="">Hola</option>
+    <option value=""></option>
+</select>
+<label for="">Numero de talonario</label>
+<input type="number" name="" id="">
+<label for="">fecha de cobro</label>}
+<input type="date" name="" id="">
+<label for="">monto</label>
+<input type="number">
+<label for="">observacion</label>
+<input type="text">
+        <button type="submit">Registrar</button>
+        <span id="error-message"></span>
+    </form>
+</dialog>
+<button>Pago</button>
+<script>
 
-<script defer>
-  document.addEventListener("DOMContentLoaded", function () {
-    const $ = (el) => document.querySelector(el);
-    const search = $("#search");
-    const searchForm = $("#search-form");
-    const resultTableBody = $("#result-table tbody");
-
-    // Función para actualizar la tabla con los resultados de la búsqueda
-    const updateTable = (users) => {
-      // Limpiar la tabla antes de mostrar nuevos resultados
-      resultTableBody.innerHTML = "";
-
-      if (users.length > 0) {
-        // Recorrer los usuarios y agregar una fila a la tabla por cada uno
-        users.forEach((colegiado) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${colegiado.Matricula.toString().padStart(5, "0")}</td>
-            <td>${colegiado.Nombres} ${colegiado.Paterno} ${
-            colegiado.Materno
-          }</td>
-            <td>${colegiado.NumeroCI || "No disponible"}</td>
-            <td>${colegiado.NumeroRuc || "No disponible"}</td>
-            <td><a href="/colegiado/${colegiado.ColegiadoId}">Ver más</a></td>
-          `;
-          resultTableBody.appendChild(row);
-        });
-      } else {
-        // Si no hay resultados, mostrar un mensaje en la tabla
-        const row = document.createElement("tr");
-        row.innerHTML = `<td colspan="3">No se encontraron resultados</td>`;
-        resultTableBody.appendChild(row);
-      }
-    };
-
-    // Función para realizar la búsqueda y actualizar la tabla
-    const fetchAndUpdateTable = async (searchValue) => {
-      const url = `colegiados?search=${encodeURIComponent(searchValue)}`;
-
-      try {
-        // Hacer la solicitud fetch
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Error en la búsqueda");
+        // Modal de agregar usuario
+        const dialog = document.getElementById('dialog');
+        const button = document.getElementById('button');
+        button.addEventListener('click', () => dialog.showModal());
+        
+        function closeDialog() {
+            dialog.close();  
         }
 
-        const data = await response.json(); // Asumimos que la respuesta es un JSON
-
-        // Verificamos si la estructura de la respuesta es válida
-        if (data && data.result && Array.isArray(data.result.users)) {
-          updateTable(data.result.users); // Actualizar la tabla con los usuarios encontrados
-        } else {
-          console.error("La estructura de la respuesta no es válida");
-          alert("Hubo un problema con los resultados. Intenta nuevamente.");
-        }
-      } catch (error) {
-        console.error("Error en la búsqueda:", error);
-        alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
-      }
-    };
-
-    // Ejecutar la búsqueda inmediatamente al cargar la página (con un valor vacío o por defecto)
-    fetchAndUpdateTable("");
-
-    // Evento de búsqueda cuando el formulario se envíe
-    searchForm?.addEventListener("submit", async (e) => {
-      e.preventDefault(); // Evitar el envío de formulario o recarga de la página
-
-      const searchValue = search.value.trim(); // Obtener y recortar el valor de búsqueda
-
-      if (!searchValue) {
-        alert("Por favor, ingrese un término de búsqueda.");
-        return;
-      }
-
-      // Ejecutar la búsqueda con el valor introducido por el usuario
-      fetchAndUpdateTable(searchValue);
-    });
-  });
 </script>
-
-<%- include('partials/footer'); %>
+<%- include('partials/footer') %>

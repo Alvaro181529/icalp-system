@@ -105,8 +105,8 @@ Puedes utilizar **Sequelize** (para bases de datos SQL) o **Mongoose** (si traba
 
 ```javascript
 // src/models/aportesModel.js
-const { DataTypes } = require('sequelize');
-const db = require('../config/db'); // Aquí configuras tu conexión a la base de datos
+const { DataTypes } = require('sequelize')
+const db = require('../config/db') // Aquí configuras tu conexión a la base de datos
 
 const Aportes = db.define('Aportes', {
   AporteId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -114,9 +114,9 @@ const Aportes = db.define('Aportes', {
   // Otros campos de la tabla Aportes
 }, {
   timestamps: false, // Si no usas campos de fecha como createdAt y updatedAt
-});
+})
 
-module.exports = Aportes;
+module.exports = Aportes
 ```
 
 #### 3. **Controlador para las Rutas CRUD (Create, Read, Update, Delete)**
@@ -127,55 +127,55 @@ Los controladores contienen la lógica para manejar las solicitudes HTTP.
 
 ```javascript
 // src/controllers/aportesController.js
-const Aportes = require('../models/aportesModel');
+const Aportes = require('../models/aportesModel')
 
 // Crear un nuevo Aporte
 exports.createAporte = async (req, res) => {
   try {
-    const newAporte = await Aportes.create(req.body); // Utiliza req.body para obtener los datos del nuevo aporte
-    res.status(201).json(newAporte);
+    const newAporte = await Aportes.create(req.body) // Utiliza req.body para obtener los datos del nuevo aporte
+    res.status(201).json(newAporte)
   } catch (error) {
-    res.status(500).json({ message: "Error al crear el aporte", error });
+    res.status(500).json({ message: "Error al crear el aporte", error })
   }
-};
+}
 
 // Obtener todos los Aportes
 exports.getAportes = async (req, res) => {
   try {
-    const aportes = await Aportes.findAll();
-    res.status(200).json(aportes);
+    const aportes = await Aportes.findAll()
+    res.status(200).json(aportes)
   } catch (error) {
-    res.status(500).json({ message: "Error al obtener los aportes", error });
+    res.status(500).json({ message: "Error al obtener los aportes", error })
   }
-};
+}
 
 // Obtener un Aporte por su ID
 exports.getAporteById = async (req, res) => {
   try {
-    const aporte = await Aportes.findByPk(req.params.id);
+    const aporte = await Aportes.findByPk(req.params.id)
     if (!aporte) {
-      return res.status(404).json({ message: "Aporte no encontrado" });
+      return res.status(404).json({ message: "Aporte no encontrado" })
     }
-    res.status(200).json(aporte);
+    res.status(200).json(aporte)
   } catch (error) {
-    res.status(500).json({ message: "Error al obtener el aporte", error });
+    res.status(500).json({ message: "Error al obtener el aporte", error })
   }
-};
+}
 
 // Eliminar un Aporte
 exports.deleteAporte = async (req, res) => {
   try {
     const result = await Aportes.destroy({
       where: { AporteId: req.params.id }
-    });
+    })
     if (!result) {
-      return res.status(404).json({ message: "Aporte no encontrado" });
+      return res.status(404).json({ message: "Aporte no encontrado" })
     }
-    res.status(200).json({ message: "Aporte eliminado correctamente" });
+    res.status(200).json({ message: "Aporte eliminado correctamente" })
   } catch (error) {
-    res.status(500).json({ message: "Error al eliminar el aporte", error });
+    res.status(500).json({ message: "Error al eliminar el aporte", error })
   }
-};
+}
 ```
 
 #### 4. **Rutas para los Controladores**
@@ -186,23 +186,23 @@ Las rutas corresponden a los endpoints de la API REST y deben ser mapeadas a los
 
 ```javascript
 // src/routes/aportesRoutes.js
-const express = require('express');
-const router = express.Router();
-const aportesController = require('../controllers/aportesController');
+const express = require('express')
+const router = express.Router()
+const aportesController = require('../controllers/aportesController')
 
 // Crear un nuevo Aporte
-router.post('/', aportesController.createAporte);
+router.post('/', aportesController.createAporte)
 
 // Obtener todos los Aportes
-router.get('/', aportesController.getAportes);
+router.get('/', aportesController.getAportes)
 
 // Obtener un Aporte por ID
-router.get('/:id', aportesController.getAporteById);
+router.get('/:id', aportesController.getAporteById)
 
 // Eliminar un Aporte
-router.delete('/:id', aportesController.deleteAporte);
+router.delete('/:id', aportesController.deleteAporte)
 
-module.exports = router;
+module.exports = router
 ```
 
 #### 5. **Conexión a la Base de Datos**
@@ -211,14 +211,14 @@ En el archivo de configuración de la base de datos (`db.js`), debes configurar 
 
 ```javascript
 // src/config/db.js
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize')
 
 const sequelize = new Sequelize('database', 'username', 'password', {
   host: 'localhost',
   dialect: 'mssql', // Usa 'mysql' o 'postgres' si fuera el caso
-});
+})
 
-module.exports = sequelize;
+module.exports = sequelize
 ```
 
 #### 6. **Archivo Principal (`app.js`)**
@@ -227,24 +227,24 @@ Finalmente, en tu archivo principal (`app.js`), deberás incluir las rutas y est
 
 ```javascript
 // src/app.js
-const express = require('express');
-const app = express();
-const sequelize = require('./config/db');
-const aportesRoutes = require('./routes/aportesRoutes');
+const express = require('express')
+const app = express()
+const sequelize = require('./config/db')
+const aportesRoutes = require('./routes/aportesRoutes')
 
-app.use(express.json()); // Middleware para parsear el cuerpo de la solicitud
+app.use(express.json()) // Middleware para parsear el cuerpo de la solicitud
 
 // Rutas
-app.use('/api/aportes', aportesRoutes);
+app.use('/api/aportes', aportesRoutes)
 
 // Iniciar el servidor
 sequelize.sync().then(() => {
   app.listen(3000, ()
 
  => {
-    console.log('Servidor corriendo en el puerto 3000');
-  });
-});
+    console.log('Servidor corriendo en el puerto 3000')
+  })
+})
 ```
 
 ### Resumen
@@ -295,7 +295,7 @@ CREATE TABLE [dbo].[Pages] (
   [Content] TEXT,  -- Contenido de la página
   [CreatedAt] DATETIME DEFAULT GETDATE(),
   [UpdatedAt] DATETIME DEFAULT GETDATE()
-);
+)
 ```
 
 #### Relaciones:
@@ -315,9 +315,9 @@ Primero, debes crear un modelo para la tabla `Pages` en Sequelize. Este modelo r
 
 ```javascript
 // src/models/pagesModel.js
-const { DataTypes } = require('sequelize');
-const db = require('../config/db');
-const Menus = require('./menusModel');  // Suponiendo que tienes un modelo para Menus
+const { DataTypes } = require('sequelize')
+const db = require('../config/db')
+const Menus = require('./menusModel')  // Suponiendo que tienes un modelo para Menus
 
 const Pages = db.define('Pages', {
   PageId: { 
@@ -352,9 +352,9 @@ const Pages = db.define('Pages', {
 }, {
   timestamps: false,  // Si no usas 'createdAt' y 'updatedAt' por defecto
   tableName: 'Pages'  // Nombre de la tabla en la base de datos
-});
+})
 
-module.exports = Pages;
+module.exports = Pages
 ```
 
 En este modelo:
@@ -372,15 +372,15 @@ Ahora, debes crear un controlador que maneje la lógica para **crear una nueva p
 
 ```javascript
 // src/controllers/pagesController.js
-const Pages = require('../models/pagesModel');
+const Pages = require('../models/pagesModel')
 
 // Crear una nueva página
 exports.createPage = async (req, res) => {
   try {
-    const { MenuId, Title, Content } = req.body; // Se esperan estos campos en el cuerpo de la solicitud
+    const { MenuId, Title, Content } = req.body // Se esperan estos campos en el cuerpo de la solicitud
 
     if (!MenuId || !Title) {
-      return res.status(400).json({ message: "MenuId y Title son obligatorios" });
+      return res.status(400).json({ message: "MenuId y Title son obligatorios" })
     }
 
     // Crear la página
@@ -388,14 +388,14 @@ exports.createPage = async (req, res) => {
       MenuId,
       Title,
       Content
-    });
+    })
 
-    res.status(201).json(newPage);  // Retorna la nueva página creada
+    res.status(201).json(newPage)  // Retorna la nueva página creada
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error al crear la página", error });
+    console.error(error)
+    res.status(500).json({ message: "Error al crear la página", error })
   }
-};
+}
 ```
 
 Este controlador recibe el `MenuId`, `Title` y `Content` desde el cuerpo de la solicitud HTTP (`req.body`), y crea una nueva entrada en la tabla `Pages`.
@@ -408,14 +408,14 @@ Las rutas mapean las solicitudes HTTP a los controladores correspondientes. En e
 
 ```javascript
 // src/routes/pagesRoutes.js
-const express = require('express');
-const router = express.Router();
-const pagesController = require('../controllers/pagesController');
+const express = require('express')
+const router = express.Router()
+const pagesController = require('../controllers/pagesController')
 
 // Crear una nueva página
-router.post('/', pagesController.createPage);
+router.post('/', pagesController.createPage)
 
-module.exports = router;
+module.exports = router
 ```
 
 #### 4. **Conexión a la Base de Datos**
@@ -426,15 +426,15 @@ En tu archivo de configuración de la base de datos (`db.js`), asegúrate de que
 
 ```javascript
 // src/config/db.js
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require('sequelize')
 
 // Configuración de la conexión a la base de datos SQL (MSSQL, MySQL, PostgreSQL, etc.)
 const sequelize = new Sequelize('database', 'username', 'password', {
   host: 'localhost',
   dialect: 'mssql', // Usa el dialecto correcto según tu base de datos
-});
+})
 
-module.exports = sequelize;
+module.exports = sequelize
 ```
 
 #### 5. **Actualizar `app.js` para Usar las Rutas**
@@ -445,22 +445,22 @@ En el archivo `app.js`, asegúrate de que las rutas de las páginas estén inclu
 
 ```javascript
 // src/app.js
-const express = require('express');
-const app = express();
-const sequelize = require('./config/db');
-const pagesRoutes = require('./routes/pagesRoutes');
+const express = require('express')
+const app = express()
+const sequelize = require('./config/db')
+const pagesRoutes = require('./routes/pagesRoutes')
 
-app.use(express.json());  // Middleware para analizar el cuerpo de la solicitud
+app.use(express.json())  // Middleware para analizar el cuerpo de la solicitud
 
 // Usar rutas de páginas
-app.use('/api/pages', pagesRoutes);
+app.use('/api/pages', pagesRoutes)
 
 // Iniciar el servidor
 sequelize.sync().then(() => {
   app.listen(3000, () => {
-    console.log('Servidor corriendo en el puerto 3000');
-  });
-});
+    console.log('Servidor corriendo en el puerto 3000')
+  })
+})
 ```
 
 ### 6. **Prueba del Endpoint de Creación de Páginas**
