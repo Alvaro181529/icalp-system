@@ -5,6 +5,7 @@ import morgan from "morgan";
 import path from "node:path";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
+import { fileURLToPath } from 'url';
 import { router as homeRouter } from "./routes/home.route.js";
 import { router as pageRouter } from "./routes/pages.route.js";
 import { router as authRouter } from "./routes/auth.route.js";
@@ -13,9 +14,11 @@ import { router as colegiadosRouter } from "./routes/colegiados.route.js";
 import { router as configRouter } from "./routes/config.route.js";
 import { router as userRouter } from "./routes/usuarios.route.js";
 import { router as talonarioRouter } from "./routes/talonario.route.js";
+import { router as historialRouter } from "./routes/historial.route.js";
 
 const app = express();
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3000;
 
 // template
@@ -46,14 +49,17 @@ app.use(userRouter);
 app.use(authRouter);
 app.use(homeRouter);
 app.use(pageRouter);
+app.use(historialRouter);
 
-//not found Page
-app.use((req, res) => {
-  res.status(404).render("404", { message: "Page Not Found" }); // Render a custom 404 page
-});
 //statics
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+//not found Page
+app.use((req, res) => {
+  const {user} = req.session
+  res.status(404).render("404", { message: "Pagina no encontrada", title:"Pagina no encontrada", user}); // Render a custom 404 page
+});
 //puerto
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto http://localhost:${PORT}`);

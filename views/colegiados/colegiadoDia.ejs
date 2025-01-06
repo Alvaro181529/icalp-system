@@ -1,0 +1,134 @@
+<%- include('../partials/header', { title, user }) %>
+  <h1>Colegiado al dia</h1>
+
+  <form id="search-form">
+    <input id="search" type="search" placeholder="Buscar por Matricula o Nombre " />
+    <button id="search-button" type="submit">Buscar</button>
+  </form>
+
+  <table id="result-table">
+    <thead>
+      <tr>
+        <th>Matricula</th>
+        <th>Nombre</th>
+        <th>Matricula Conalab</th>
+        <th>Direccion Oficina</th>
+        <th>Telefono Oficina</th>
+        <th>Correo</th>
+        <th>Utlima fecha de pago</th>
+        <th>Deuda</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se llenarán las filas con los resultados -->
+    </tbody>
+  </table>
+  <div id="pagination">
+    <button id="prev-page" disabled>Anterior</button>
+    <span id="current-page">Página 1</span>
+    <button id="next-page">Siguiente</button>
+    <p id="item-page"></p>
+  </div>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+      const $ = (el) => document.querySelector(el);
+      const prevPageButton = $("#prev-page");
+      const nextPageButton = $("#next-page");
+      const currentPageSpan = $("#current-page");
+      const itemPage = $("#item-page");
+      const search = $("#search");
+      const searchForm = $("#search-form");
+      const resultTableBody = $("#result-table tbody");
+      let page = 1;  
+      const updateTable = (users, totalPages) => {
+        resultTableBody.innerHTML = "";
+        if (users.length > 0) {
+          users.forEach((colegiado) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                  <td>${colegiado.Matricula.toString().padStart(5, "0")}</td>
+                  <td>${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno} </td>
+                  <td>${colegiado.MatriculaConalab || "No disponible"}</td>
+                  <td>${colegiado.DireccionOficina || "No disponible"}</td>
+                  <td>${colegiado.TelefonoOficina || "No disponible"}</td>
+                  <td>${colegiado.Correo || "No disponible"}</td>
+                  <td>
+                    ${colegiado.UtlimaFechaPago || "No disponible"}
+                  </td>
+                  <td>
+                    <p>${colegiado.MesesDeuda ? `${colegiado.MesesDeuda} Meses con deuda` : "Sin deuda"} </p>
+                    <a href="/colegiado/${colegiado.ColegiadoId}">Ver más</a>
+                  </td>
+                `;
+            resultTableBody.appendChild(row);
+          });
+        } else {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="3">No se encontraron resultados</td>`;
+          resultTableBody.appendChild(row);
+        }
+        // Actualizar el estado de los botones de paginación
+        prevPageButton.disabled = page === 1;
+        nextPageButton.disabled = page === totalPages;
+        currentPageSpan.textContent = `Página ${page}`;
+        itemPage.textContent = 'total de paginas: ' + totalPages;
+      };
+
+      // Función para realizar la búsqueda y actualizar la tabla
+      const fetchAndUpdateTable = async (searchValue) => {
+        const url = `/collegiate/day?search=${encodeURIComponent(searchValue || "")}&page=${page}&pageSize=10`;
+
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Error en la búsqueda");
+          }
+
+          const data = await response.json(); // Asumimos que la respuesta es un JSON
+          // Verificamos si la estructura de la respuesta es válida
+          if (data && data.users && Array.isArray(data.users)) {
+            totalPages = data.pages; // Actualizar el total de páginas
+            updateTable(data.users, totalPages); // Actualizar la tabla con los usuarios encontrados
+          } else {
+            console.error("La estructura de la respuesta no es válida");
+            alert("Hubo un problema con los resultados. Intenta nuevamente.");
+          }
+        } catch (error) {
+          console.error("Error en la búsqueda:", error);
+          alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+        }
+      };
+
+      // Ejecutar la búsqueda inmediatamente al cargar la página (con un valor vacío o por defecto)
+      fetchAndUpdateTable("");
+
+      // Evento de búsqueda cuando el formulario se envíe
+      searchForm?.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Evitar el envío de formulario o recarga de la página
+
+        const searchValue = search.value.trim(); // Obtener y recortar el valor de búsqueda
+
+
+        // Ejecutar la búsqueda con el valor introducido por el usuario
+        fetchAndUpdateTable(searchValue);
+      });
+
+      // Evento para cambiar a la página anterior
+      prevPageButton.addEventListener("click", function () {
+        if (page > 1) {
+          page--;
+          fetchAndUpdateTable();
+        }
+      });
+
+      // Evento para cambiar a la página siguiente
+      nextPageButton.addEventListener("click", function () {
+        if (page < totalPages) {
+          page++;
+          fetchAndUpdateTable();
+        }
+      });
+    });
+  </script>
+
+  <%- include('../partials/footer') %>

@@ -1,0 +1,315 @@
+<%- include('../partials/header', { title, user }) %>
+  <h1>Listado de colegiados</h1>
+  <form id="search-form">
+    <input id="search" type="search" placeholder="Buscar por Matricula o Nombre " />
+    <button id="search-button" type="submit">Buscar</button>
+  </form>
+  <button id="openDialogButton">Registrar</button>
+
+  <table id="result-table">
+    <thead>
+      <tr>
+        <th>Matricula</th>
+        <th>Nombre</th>
+        <th>Carnet</th>
+        <th>Ruc</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se llenarán las filas con los resultados -->
+    </tbody>
+  </table>
+  <div id="pagination">
+    <button id="prev-page" disabled>Anterior</button>
+    <span id="current-page">Página 1</span>
+    <button id="next-page">Siguiente</button>
+    <p id="item-page"></p>
+  </div>
+
+  <!-- Botón para abrir el diálogo -->
+
+  <!-- El diálogo que contiene el formulario -->
+  <dialog id="personalDataDialog">
+    <h2>Formulario de Registros</h2>
+    <form id="personalDataForm">
+      <h3>Datos personales</h3>
+      <label for="matricula">Matrícula:</label>
+      <input type="text" id="matricula" name="matricula" required>
+
+      <label for="matriculaConalab">Matrícula Conalab:</label>
+      <input type="text" id="matriculaConalab" name="matriculaConalab" required>
+
+      <label for="nombres">Nombres:</label>
+      <input type="text" id="nombres" name="nombres" required>
+
+      <label for="paterno">Apellido Paterno:</label>
+      <input type="text" id="paterno" name="paterno" required>
+
+      <label for="materno">Apellido Materno:</label>
+      <input type="text" id="materno" name="materno" required>
+
+      <label for="telefonoOficina">Teléfono Oficina:</label>
+      <input type="tel" id="telefonoOficina" name="telefonoOficina">
+
+      <label for="direccionOficina">Dirección Oficina:</label>
+      <input type="text" id="direccionOficina" name="direccionOficina">
+
+      <label for="correo">Correo:</label>
+      <input type="email" id="correo" name="correo">
+
+      <label for="lugarNacimiento">Lugar de Nacimiento:</label>
+      <input type="text" id="lugarNacimiento" name="lugarNacimiento">
+
+      <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+      <input type="date" id="fechaNacimiento" name="fechaNacimiento">
+
+      <label for="numeroCI">Número CI:</label>
+      <input type="text" id="numeroCI" name="numeroCI">
+
+      <label for="numeroRuc">Número RUC:</label>
+      <input type="text" id="numeroRuc" name="numeroRuc">
+
+      <label for="estadoCivil">Estado Civil:</label>
+      <select id="estadoCivil" name="estadoCivil">
+        <option value="soltero">Soltero</option>
+        <option value="casado">Casado</option>
+        <option value="divorciado">Divorciado</option>
+        <option value="viudo">Viudo</option>
+      </select>
+      <h3>Estudios</h3>
+      <label for="universidad">Universidad:</label>
+      <input type="text" id="universidad" name="universidad">
+
+      <label for="fechaTesis">Fecha Tesis:</label>
+      <input type="date" id="fechaTesis" name="fechaTesis">
+
+      <label for="universidadLicenciatura">Universidad Licenciatura:</label>
+      <input type="text" id="universidadLicenciatura" name="universidadLicenciatura">
+
+      <label for="fechaLicenciatura">Fecha Licenciatura:</label>
+      <input type="date" id="fechaLicenciatura" name="fechaLicenciatura">
+
+      <label for="fechaProvisionNacional">Fecha Provisión Nacional:</label>
+      <input type="date" id="fechaProvisionNacional" name="fechaProvisionNacional">
+
+      <label for="entidadProvisionNacional">Entidad Provisión Nacional:</label>
+      <input type="text" id="entidadProvisionNacional" name="entidadProvisionNacional">
+
+      <label for="fechaMatriculacionAlColegio">Fecha Matriculación al Colegio:</label>
+      <input type="date" id="fechaMatriculacionAlColegio" name="fechaMatriculacionAlColegio">
+      <h3>Cargos Desempeñados</h3>
+      <label for="cargosAdministracionPublica">Cargos Administración Pública:</label>
+      <input id="cargosAdministracionPublica" name="cargosAdministracionPublica"></input>
+
+      <label for="cargosEmpresaPrivada">Cargos Empresa Privada:</label>
+      <input id="cargosEmpresaPrivada" name="cargosEmpresaPrivada"></input>
+
+      <label for="cargosBufete">Cargos Bufete:</label>
+      <input id="cargosBufete" name="cargosBufete"></input>
+
+      <label for="cargoActual">Cargo Actual:</label>
+      <input type="text" id="cargoActual" name="cargoActual">
+
+      <label for="especialidadPrimaria">Especialidad Primaria:</label>
+      <input type="text" id="especialidadPrimaria" name="especialidadPrimaria">
+
+      <label for="especialidadSecundaria">Especialidad Secundaria:</label>
+      <input type="text" id="especialidadSecundaria" name="especialidadSecundaria">
+
+      <label for="producciones">Producciones:</label>
+      <input id="producciones" name="producciones"></input>
+
+      <label for="catedra">Cátedra:</label>
+      <input id="catedra" name="catedra"></input>
+
+      <label for="estudiosEspecializacion">Estudios de Especialización:</label>
+      <input id="estudiosEspecializacion" name="estudiosEspecializacion"></input>
+
+      <label for="reconocimientos">Reconocimientos:</label>
+      <input id="reconocimientos" name="reconocimientos"></input>
+
+      <label for="asistenciaEventosInternacionales">Asistencia a Eventos Internacionales:</label>
+      <input id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales"></input>
+      <h3>Otros</h3>
+      <label for="institucionAsegurado">Institución Asegurado:</label>
+      <input type="text" id="institucionAsegurado" name="institucionAsegurado">
+
+      <label for="beneficiarios">Beneficiarios:</label>
+      <input id="beneficiarios" name="beneficiarios"></input>
+
+      <label for="direccionDomicilio">Dirección Domicilio:</label>
+      <input type="text" id="direccionDomicilio" name="direccionDomicilio">
+
+      <label for="telefonoDomicilio">Teléfono Domicilio:</label>
+      <input type="tel" id="telefonoDomicilio" name="telefonoDomicilio">
+
+      <label for="casilla">Casilla:</label>
+      <input type="text" id="casilla" name="casilla">
+
+      <label for="situacion">Situación:</label>
+      <input type="text" id="situacion" name="situacion">
+
+      <label for="observacion">Observación:</label>
+      <input id="observacion" name="observacion"></input>
+
+      <label for="zona">Zona:</label>
+      <input type="text" id="zona" name="zona">
+
+      <label for="nacionalidad">Nacionalidad:</label>
+      <input type="text" id="nacionalidad" name="nacionalidad">
+
+      <label for="celular">Celular:</label>
+      <input type="tel" id="celular" name="celular">
+
+      <label for="gradoAcademico">Grado Académico:</label>
+      <input type="text" id="gradoAcademico" name="gradoAcademico">
+
+      <label for="licenciatura">Licenciatura:</label>
+      <input type="text" id="licenciatura" name="licenciatura">
+
+      <label for="zonaTrabajo">Zona de Trabajo:</label>
+      <input type="text" id="zonaTrabajo" name="zonaTrabajo">
+
+      <label for="formaDePago">Forma de Pago:</label>
+      <select id="formaDePago" name="formaDePago">
+        <option value="efectivo">Efectivo</option>
+        <option value="cheque">Cheque</option>
+        <option value="transferencia">Transferencia</option>
+      </select>
+
+      <label for="boletaDepositoNumero">Boleta Depósito Número:</label>
+      <input type="text" id="boletaDepositoNumero" name="boletaDepositoNumero">
+
+      <label for="montoDeposito">Monto Depósito:</label>
+      <input type="number" id="montoDeposito" name="montoDeposito" step="0.01">
+
+      <label for="formularioAdmision">Formulario de Admisión:</label>
+      <input type="text" id="formularioAdmision" name="formularioAdmision">
+
+      <label for="fotocopiaTituloProfesional">Fotocopia Título Profesional:</label>
+      <input type="text" id="fotocopiaTituloProfesional" name="fotocopiaTituloProfesional">
+
+      <label for="certificadoNacimientoOriginal">Certificado Nacimiento Original:</label>
+      <input type="text" id="certificadoNacimientoOriginal" name="certificadoNacimientoOriginal">
+
+      <label for="fotocopiaCI">Fotocopia C.I.:</label>
+      <input type="text" id="fotocopiaCI" name="fotocopiaCI">
+
+      <label for="curriculumVitae">Curriculum Vitae:</label>
+      <input type="text" id="curriculumVitae" name="curriculumVitae">
+      <label for="estado">Estado:</label>
+      <select name="estado" id="">
+        <option value="">Activos</option>
+        <option value="">Inactivos</option>
+      </select>
+      <button type="submit">Enviar</button>
+      <button type="button" id="closeDialogButton">Cerrar</button>
+    </form>
+  </dialog>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", function () {
+      const $ = (el) => document.querySelector(el);
+      const prevPageButton = $("#prev-page");
+      const nextPageButton = $("#next-page");
+      const currentPageSpan = $("#current-page");
+      const itemPage = $("#item-page");
+      const search = $("#search");
+      const searchForm = $("#search-form");
+      const resultTableBody = $("#result-table tbody");
+      let page = 1; // Página actual
+      let searchValue = "";  // Guardar el valor de búsqueda actual
+
+      const updateTable = (users, totalPages) => {
+        resultTableBody.innerHTML = "";
+
+        if (users.length > 0) {
+          users.forEach((colegiado) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+            <td>${colegiado.Matricula.toString().padStart(5, "0")}</td>
+            <td>${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno
+              }</td>
+            <td>${colegiado.NumeroCI || "No disponible"}</td>
+            <td>${colegiado.NumeroRuc || "No disponible"}</td>
+            <td><a href="/colegiado/${colegiado.ColegiadoId}">Ver más</a></td>
+          `;
+            resultTableBody.appendChild(row);
+          });
+        } else {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="3">No se encontraron resultados</td>`;
+          resultTableBody.appendChild(row);
+        }
+        // Actualizar el estado de los botones de paginación
+        prevPageButton.disabled = page === 1;
+        nextPageButton.disabled = page === totalPages;
+        currentPageSpan.textContent = `Página ${page}`;
+        itemPage.textContent = 'total de paginas: ' + totalPages;
+      };
+      const fetchAndUpdateTable = async (searchValue) => {
+        const url = `/collegiate?search=${encodeURIComponent(searchValue || "")}&page=${page}&pageSize=10`;
+
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Error en la búsqueda");
+          }
+
+          const data = await response.json();
+
+          if (data && data && Array.isArray(data.users)) {
+            totalPages = data.pages;
+            updateTable(data.users, totalPages);
+          } else {
+            console.error("La estructura de la respuesta no es válida");
+            alert("Hubo un problema con los resultados. Intenta nuevamente.");
+          }
+        } catch (error) {
+          const $ = (el) => document.querySelector(el);
+
+          console.error("Error en la búsqueda:", error);
+          alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+        }
+      };
+
+      // Ejecutar la búsqueda inmediatamente al cargar la página (con un valor vacío o por defecto)
+      fetchAndUpdateTable("");
+
+      // Evento de búsqueda cuando el formulario se envíe
+      searchForm?.addEventListener("submit", async (e) => {
+        e.preventDefault(); // Evitar el envío de formulario o recarga de la página
+
+        const searchValue = search.value.trim(); // Obtener y recortar el valor de búsqueda
+        page = 1;
+        // Ejecutar la búsqueda con el valor introducido por el usuario
+        fetchAndUpdateTable(searchValue);
+      });
+      document.getElementById("openDialogButton").addEventListener("click", function () {
+        document.getElementById("personalDataDialog").showModal();
+      });
+
+      document.getElementById("closeDialogButton").addEventListener("click", function () {
+        document.getElementById("personalDataDialog").close();
+      });
+
+      // Evento para cambiar a la página anterior
+      prevPageButton.addEventListener("click", function () {
+        if (page > 1) {
+          page--;
+          fetchAndUpdateTable();
+        }
+      });
+
+      // Evento para cambiar a la página siguiente
+      nextPageButton.addEventListener("click", function () {
+        if (page < totalPages) {
+          page++;
+          fetchAndUpdateTable();
+        }
+      });
+    });
+  </script>
+
+  <%- include('../partials/footer'); %>

@@ -8,7 +8,7 @@ export class UsersController {
   };
   getUser = async (req, res) => {
     const {id}= req.params
-    const result = user.getUser();
+    const result = user.getUser(id);
     console.log(result);
     res.json({ result });
   };

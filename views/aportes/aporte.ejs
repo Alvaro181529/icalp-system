@@ -1,0 +1,142 @@
+<%- include('../partials/header') %>
+
+  <h1>
+    <%= title %>
+  </h1>
+
+  <h2>Reporte aporte</h2>
+  <label for="year">Busqueda</label>
+  <form id="form-search">
+    <input type="text" placeholder="Nombre o Matricula" id="search" name="search">
+    <button type="submit">Buscar</button>
+  </form>
+
+  <table id="result-table">
+    <thead>
+      <tr>
+        <th>Fecha aporte cobrador</th>
+        <th>Matricula</th>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Talonario</th>
+        <th>Fecha Inicio</th>
+        <th>Fecha final</th>
+        <th>Monto</th>
+        <th>Observacion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se llenarán las filas con los resultados -->
+    </tbody>
+  </table>
+  <div id="pagination">
+    <button id="prev-page" disabled>Anterior</button>
+    <span id="current-page">Página 1</span>
+    <button id="next-page">Siguiente</button>
+    <p id="item-page"></p>
+  </div>
+
+  <script defer>
+    // Script modificado
+    document.addEventListener("DOMContentLoaded", function () {
+      const $ = (el) => document.querySelector(el);
+      const prevPageButton = $("#prev-page");
+      const nextPageButton = $("#next-page");
+      const currentPageSpan = $("#current-page");
+      const itemPage = $("#item-page");
+      const resultTableBody = $("#result-table tbody");
+      const searchForm = $('#form-search');
+      const searchInput = $('#search');
+      let page = 1;  // Página actual
+      let searchValue = "";  // Guardar el valor de búsqueda actual
+
+      // Actualiza la tabla con los datos
+      const updateTable = (data, totalPages) => {
+        resultTableBody.innerHTML = ""; // Limpiar tabla antes de llenarla
+
+        if (data.length > 0) {
+          data.forEach((item) => {
+            const row = document.createElement("tr");
+            // Construir la fila
+            row.innerHTML = `
+          <td>${item.FechaAporte || "No disponible"}</td>
+          <td>${item.Matricula.toString().padStart(5, "0") || "No disponible"}</td>
+          <td>${item.Nombres || "No disponible"}</td>
+          <td>${item.Apellidos || "No disponible"}</td>
+          <td>${item.Talonario || 'No disponible'}</td>
+          <td>${item.FechaInicial || "No disponible"}</td>
+          <td>${item.FechaFinal || "No disponible"}</td>
+          <td>${item.Monto ? item.Monto.toLocaleString('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Bs" : "No disponible"}</td>
+          <td> 
+            <p><strong>${item.MesesPagados}</strong> Cuotas pagadas</p>
+            <p>Faltante: <b style='color:crimson'> ${item.Faltante}</b></p>
+            ${item.Observacion || "No disponible"}
+          </td>
+        `;
+            resultTableBody.appendChild(row);
+          });
+        } else {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="9">No se encontraron resultados</td>`;
+          resultTableBody.appendChild(row);
+        }
+
+        // Actualizar el estado de los botones de paginación
+        prevPageButton.disabled = page === 1;
+        nextPageButton.disabled = page === totalPages;
+        currentPageSpan.textContent = `Página ${page}`;
+        itemPage.textContent = 'total de paginas: ' + totalPages;
+      };
+
+      // Función para obtener los datos desde el servidor y actualizar la tabla
+      const fetchAndUpdateTable = async () => {
+        const url = `/contribution?search=${searchValue || ""}&page=${page}&pageSize=10`;
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Error en la solicitud");
+          }
+
+          const data = await response.json();
+          if (Array.isArray(data.users)) {
+            totalPages = data.pages; // Actualizar el total de páginas
+            updateTable(data.users, totalPages);
+          } else {
+            console.error("La estructura de la respuesta no es válida");
+          }
+        } catch (error) {
+          console.error("Error al realizar la solicitud:", error);
+        }
+      };
+
+      // Llamada inicial para cargar los datos
+      fetchAndUpdateTable();
+
+      // Evento de búsqueda
+      searchForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        searchValue = searchInput.value.trim();
+        page = 1; // Volver a la primera página al realizar una nueva búsqueda
+        fetchAndUpdateTable();
+      });
+
+      // Evento para cambiar a la página anterior
+      prevPageButton.addEventListener("click", function () {
+        if (page > 1) {
+          page--;
+          fetchAndUpdateTable();
+        }
+      });
+
+      // Evento para cambiar a la página siguiente
+      nextPageButton.addEventListener("click", function () {
+        if (page < totalPages) {
+          page++;
+          fetchAndUpdateTable();
+        }
+      });
+    });
+  </script>
+
+
+  <%- include('../partials/footer') %>

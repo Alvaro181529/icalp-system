@@ -1,4 +1,5 @@
-<body style="color: aliceblue; background-color: black">
+<%- include('partials/header',{title, user}) %>
   <h1>404</h1>
-  <a href="/"><-</a>
-</body>
+  <p><%=message%></p>
+  <a href="/">Ir al inicio</a>
+<%- include('partials/footer'); %>

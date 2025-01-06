@@ -1,55 +1,53 @@
 <%- include('partials/header',{title, user}) %>
-<form id="search-form">
-  <input id="search" type="search" placeholder="Buscar por Matricula, Carnet, Nombre o apellido" />
-  <button id="search-button" type="submitx">Buscar</button>
-</form>
+  <form id="search-form">
+    <input id="search" type="search" placeholder="Buscar por Matricula, Carnet, Nombre o apellido" />
+    <button id="search-button" type="submitx">Buscar</button>
+  </form>
 
-<ul id="result-list">
-  <!-- Los resultados se insertarán aquí dinámicamente -->
-</ul>
-<script defer>
-  const $ = (el) => document.querySelector(el);
-  const search = $("#search");
-  const searchForm = $("#search-form");
+  <ul id="result-list">
+    <!-- Los resultados se insertarán aquí dinámicamente -->
+  </ul>
+  <script defer>
+    const $ = (el) => document.querySelector(el);
+    const search = $("#search");
+    const searchForm = $("#search-form");
 
-  searchForm?.addEventListener("submit", async (e) => {
-    e.preventDefault(); // Evitar el envío de formulario o recarga de la página
+    searchForm?.addEventListener("submit", async (e) => {
+      e.preventDefault(); // Evitar el envío de formulario o recarga de la página
 
-    const searchValue = search.value.trim(); // Obtener y recortar el valor de búsqueda
+      const searchValue = search.value.trim(); // Obtener y recortar el valor de búsqueda
 
-    if (!searchValue) {
-      alert("Por favor, ingrese un término de búsqueda.");
-      return;
-    }
-
-    const url = `search?search=${encodeURIComponent(searchValue)}`;
-
-    try {
-      // Hacer la solicitud fetch
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Error en la búsqueda");
+      if (!searchValue) {
+        alert("Por favor, ingrese un término de búsqueda.");
+        return;
       }
 
-      const data = await response.json(); // Asumimos que la respuesta es un JSON
-      console.log(data.result.users);
-      // Aquí puedes actualizar el DOM con los resultados
-      const resultContainer = document.querySelector("#result-list");
-      resultContainer.innerHTML = ""; // Limpiar resultados previos
+      const url = `search?search=${encodeURIComponent(searchValue)}`;
 
-      data.result.users.forEach((colegiado) => {
-        const listItem = document.createElement("li");
-        listItem.innerHTML = `
+      try {
+        // Hacer la solicitud fetch
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Error en la búsqueda");
+        }
+
+        const data = await response.json(); // Asumimos que la respuesta es un JSON
+        const resultContainer = document.querySelector("#result-list");
+        resultContainer.innerHTML = ""; // Limpiar resultados previos
+
+        data.result.users.forEach((colegiado) => {
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `
         <strong>ID:</strong> ${colegiado.Matricula} <br />
         <strong>Nombre:</strong> ${colegiado.Nombres} <br />
         <strong>Email:</strong> ${colegiado.Correo}
       `;
-        resultContainer.appendChild(listItem);
-      });
-    } catch (error) {
-      console.error("Error en la búsqueda:", error);
-      alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
-    }
-  });
-</script>
-<%- include('partials/footer'); %>
+          resultContainer.appendChild(listItem);
+        });
+      } catch (error) {
+        console.error("Error en la búsqueda:", error);
+        alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+      }
+    });
+  </script>
+  <%- include('partials/footer'); %>
