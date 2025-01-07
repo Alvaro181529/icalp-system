@@ -101,14 +101,7 @@
       <tr>
         <td>Fecha Tesis</td>
         <td>
-          <%= result.FechaTesis ? (()=> {
-            // Convertir la fecha del formato 'DD/MM/YYYY' a 'YYYY-MM-DD'
-            const [day, month, year] = result.FechaTesis.split('/');
-            const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-            return new Date(formattedDate).toLocaleDateString();
-            })()
-            : "No disponible"
-            %>
+          <%= result.FechaTesis || "No disponible" %>
         </td>
       </tr>
       <tr>
@@ -367,7 +360,20 @@
       </tr>
     </tbody>
   </table>
-
+  <h1>Aportes</h1>
+  <table id="result-table">
+    <thead>
+      <tr>
+        <th>Matricula</th>
+        <th>Fechas</th>
+        <th>Monto</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se llenarán las filas con los resultados -->
+    </tbody>
+  </table>
   <dialog id="personalDataDialog">
     <h2>Formulario de Registros</h2>
     <form id="personalDataForm">
@@ -421,7 +427,7 @@
       <input type="text" id="universidad" name="universidad" value="<%=result.Universidad%>">
 
       <label for="fechaTesis">Fecha Tesis:</label>
-      <input type="date" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis ? new Date(result.FechaTesis).toLocaleDateString() : '' %>">
+      <input type="text" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis %>">
 
 
       <label for="universidadLicenciatura">Universidad Licenciatura:</label>
@@ -429,8 +435,7 @@
         value="<%=result.UniversidadLicenciatura%>">
 
       <label for="fechaLicenciatura">Fecha Licenciatura:</label>
-      <input type="date" id="fechaLicenciatura" name="fechaLicenciatura"
-        value="<%=result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toISOString().split('T')[0] : ''%>">
+      <input type="text" id="fechaLicenciatura" name="fechaLicenciatura" value="<%=result.FechaLicenciatura%>">
 
       <label for="fechaProvisionNacional">Fecha Provisión Nacional:</label>
       <input type="date" id="fechaProvisionNacional" name="fechaProvisionNacional"
@@ -559,27 +564,14 @@
     </form>
   </dialog>
 
-
-  <h1>Aportes</h1>
-  <table id="result-table">
-    <thead>
-      <tr>
-        <th>Matricula</th>
-        <th>Fechas</th>
-        <th>Monto</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí se llenarán las filas con los resultados -->
-    </tbody>
-  </table>
-  <dialog id="dialog-update">
+  <dialog id="dialog-aporte">
     <h2>Hola</h2>
     <label for="" id="label"></label>
-    <form id="form-update" action="">
+    <form id="form-aporte" action="">
+      <label for="motivo">Motivo</label>
+      <input type="text" id="motivo" name="motivo" placeholder="Motivo">
       <button type="reset">Cancelar</button>
-      <button id="button-update">submit</button>
+      <button id="button-aporte">submit</button>
     </form>
   </dialog>
   <dialog id="dialog">
@@ -614,105 +606,122 @@
     </form>
   </dialog>
   <script defer>
-    const $ = (el) => document.querySelector(el);
-    const dialog = $('#dialog');
-    const button = $('#button');
-    const update = $('#dialog-update');
-    const formUpdate = $('#form-update');
-    const buttonUpdate = $('#button-update');
-    const cancelBtn = formUpdate.querySelector('button[type="reset"]');
-    const resultTableBody = $("#result-table tbody");
-    const pathname = window.location.pathname;  // Ejemplo: "/item/554"
-    const parts = pathname.split("/");
-    const lastNumber = parts[parts.length - 1];
-    const fetchData = async () => {
-      const url = `/contributions/${lastNumber}`;
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Error al obtener los datos");
-        }
-        const res = await response.json();
-        if (res.length > 0) {
-          res.forEach((item) => {
-            const fechaDeCobro = new Date(item.FechaDeCobro);
+    document.addEventListener("DOMContentLoaded", function () {
+      const $ = (el) => document.querySelector(el);
+      const dialogAportes = $('#dialog-aporte');
+      const resultTableBody = $("#result-table tbody");
+      const formAporte = $("#form-aporte");
+      const motivoText = $("#motivo");
 
-            const fechaFormateada = fechaDeCobro.toLocaleDateString("es-ES", {
-              weekday: 'long', // Día de la semana
-              year: 'numeric',
-              month: 'long', // Mes en formato largo
-              day: 'numeric' // Día del mes
-            });
-            const horaFormateada = fechaDeCobro.toLocaleTimeString("es-ES", {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true // AM/PM
-            });
-            const row = document.createElement("tr");
-            row.innerHTML = `
-            <td>
-              <p>T.- ${item.Talonario || 0} - ${item.Recibo || 0}</p>
-              ${item.Matricula.toString().padStart(5, "0")}
-              <p>${item.Cobrador}</p>
-             <p><strong>Fecha: </strong>${fechaFormateada}</p>
-             <p><strong>Hora:</strong> ${horaFormateada}</p>
-             <p>${item.Observacion ?? "S/O"}</p>
-            </td>
-            <td>
-            <p>${item.FechaInicial} - ${item.FechaFinal} </p>
-            <p> <strong>${item.MesesPagados}</strong> Meses</p>
-            </td>
-            <td>
-              <p>${item.Monto}</p>
-              <p style='color:crimson'>${item.Faltante}</p>
-            </td>
-             <td><a href="#" class="editBtn" data-id="${item.AporteId}">Editar</a></td>
+      const pathname = window.location.pathname;  // Ejemplo: "/item/554"
+      const parts = pathname.split("/");
+      const lastNumber = parts[parts.length - 1];
 
-          `;
-            const editBtns = document.querySelectorAll(".editBtn");
-            editBtns.forEach((btn) => {
-              const label = $('#label')
-
-              btn.addEventListener("click", (e) => {
-
-                e.preventDefault();  // Prevenir la acción predeterminada del enlace
-                label.innerHTML = item.Recibo
-                update.showModal();
-                cancelBtn.addEventListener("click", closeModal);
-                formUpdate?.addEventListener("submit", (e) => {
-                  e.preventDefault();
-                  closeModal();
-                  alert("¡Registro exitoso!");
-                });
+      // Función para obtener los datos de los aportes
+      const fetchData = async () => {
+        const url = `/contributions/${lastNumber}`;
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Error al obtener los datos");
+          }
+          const res = await response.json();
+          resultTableBody.innerHTML = '';
+          if (Array.isArray(res) && res.length > 0) {
+            res.forEach(item => {
+              const fechaDeCobro = new Date(item.FechaDeCobro);
+              const fechaFormateada = fechaDeCobro.toLocaleDateString("es-ES", {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
               });
+              const horaFormateada = fechaDeCobro.toLocaleTimeString("es-ES", {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+              });
+
+              const row = document.createElement("tr");
+              row.innerHTML = `
+              <td>
+                <p>T.- ${item.Talonario || 0} - ${item.Recibo || 0}</p>
+                ${item.Matricula.toString().padStart(5, "0")}
+                <p>${item.Cobrador}</p>
+                <p><strong>Fecha: </strong>${fechaFormateada}</p>
+                <p><strong>Hora:</strong> ${horaFormateada}</p>
+                <p>${item.Observacion ?? "S/O"}</p>
+              </td>
+              <td>
+                <p>${item.FechaInicial} - ${item.FechaFinal}</p>
+                <p><strong>${item.MesesPagados}</strong> Meses</p>
+              </td>
+              <td>
+                <p>${item.Monto}</p>
+                <p style='color:crimson'>${item.Faltante}</p>
+              </td>
+              <td>
+                <button class="actualizar-button" data-id="${item.AporteId}">Editar</button>
+              </td>
+            `;
+              resultTableBody.appendChild(row);
             });
+          } else {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td colspan="4">No se encontraron resultados</td>`;
             resultTableBody.appendChild(row);
-          });
-        } else {
-          const row = document.createElement("tr");
-          row.innerHTML = `<td colspan="3">No se encontraron resultados</td>`;
-          resultTableBody.appendChild(row);
+          }
+        } catch (error) {
+          console.error("Hubo un problema con la solicitud fetch:", error);
+          alert("Hubo un error al obtener los datos. Intenta de nuevo.");
         }
-      } catch (error) {
-        console.error("Hubo un problema con la solicitud fetch:", error);
-      }
-    };
-    document.getElementById("openDialogButton").addEventListener("click", function () {
-      document.getElementById("personalDataDialog").showModal();
+      };
+
+      // Manejar el evento de clic en el botón "Editar"
+      resultTableBody.addEventListener('click', async (e) => {
+        const button = e.target;
+        const AporteId = button.getAttribute('data-id');
+
+        if (button.classList.contains('actualizar-button')) {
+          await handleUserAporteUpdate(AporteId);
+        }
+      });
+
+      // Actualizar los aportes de un usuario
+      const handleUserAporteUpdate = async (AporteId) => {
+        dialogAportes.showModal();
+        formAporte.onsubmit = async (e) => {
+          e.preventDefault();
+          try {
+            const response = await fetch(`/contributions/${AporteId}/delete`, {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                motivo: motivoText.value
+              })
+            });
+
+            const data = await response.json();
+
+            if (response.ok & data.affectedRows > 0) {
+              fetchData();
+              dialogAportes.close();
+            } else {
+              alert("Nose al actualizar el aporte: " + (data.message || 'Intenta de nuevo.'));
+              dialogAportes.close();
+            }
+          } catch (error) {
+            console.error("Error al actualizar el aporte:", error);
+            alert("Hubo un error al actualizar el aporte. Intenta de nuevo.");
+          }
+        };
+      };
+
+      // Inicializar la carga de los datos
+      fetchData();
     });
-
-    document.getElementById("closeDialogButton").addEventListener("click", function () {
-      document.getElementById("personalDataDialog").close();
-    });
-
-    button.addEventListener('click', () => dialog.showModal());
-    function closeModal() {
-      update.close(); // Cierra el modal
-    }
-    function closeDialog() {
-      dialog.close();
-    }
-
-    fetchData();
   </script>
+
   <%- include('../partials/footer') %>

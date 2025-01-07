@@ -6,8 +6,12 @@ export class UsersModel {
     const limit = parseInt(size);
     const offset = (page - 1) * size;
     let baseQuery = `
-            SELECT * FROM aspnetusers
-            WHERE 1 = 1
+          SELECT u.UserId, u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles
+          FROM aspnetusers u
+          LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId
+          LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId
+          WHERE 1 = 1
+          GROUP BY u.Email, u.User, u.IsApproved
         `;
     let queryParams = [];
 
@@ -49,19 +53,44 @@ export class UsersModel {
       throw new Error("Error al obtener los usuarios");
     }
   };
-  getUser = async (query) => {
-    const result = pool.query(`SELECT * FROM  WHERE `)
+  getUserCobradores = async (query) => {
+    const result = pool.query(
+      `SELECT u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles FROM aspnetusers u LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId WHERE r.RoleId = 'c1103424-be2e-11ef-828b-f80dacf23b8a' GROUP BY u.Email, u.User, u.IsApproved`
+    );
+    return result;
+  };
+  getRols = async (query) => {
+    const result = await pool.query(`SELECT * FROM aspnetroles`);
+    return result;
   };
   postUsers = async (query) => {};
+  patchRols = async (id, rols) => {
+    const result = await pool.query(
+      `DELETE FROM aspnetuserroles WHERE UserId = ?`,
+      [id]
+    );
+    for (let i = 0; i < rols.length; i++) {
+      await pool.query(
+        `INSERT INTO aspnetuserroles SET UserId = ?, RoleId = ?`,
+        [id, rols[i]]
+      );
+    }
+    return { result, message: "Roles actualizados" };
+  };
   patchUsers = async (query) => {};
   removeUsers = async (query) => {
-    const result = await pool.query(`DELETE FROM aspnetusers WHERE UserId = ?`, [query]);
-    return{result, message:"Usuario eliminado"}
+    const result = await pool.query(
+      `DELETE FROM aspnetusers WHERE UserId = ?`,
+      [query]
+    );
+    return { result, message: "Usuario eliminado" };
   };
   deleteUsers = async (query) => {
-    const result = await pool.query(`UPDATE aspnetusers SET IsLockedOut = 1 WHERE Id = ?`, [query]);
+    const result = await pool.query(
+      `UPDATE aspnetusers SET IsLockedOut = 1 WHERE Id = ?`,
+      [query]
+    );
     return result;
-
   };
   getConsulta = async () => {
     const query = await pool.query();

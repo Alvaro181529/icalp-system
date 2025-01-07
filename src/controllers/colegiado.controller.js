@@ -32,18 +32,27 @@ export class ColegiadoController {
   getColegiado = async (req, res) => {
     const { user } = req.session;
     const { id } = req.params;
+  
     if (!user) return res.redirect("/");
-    const result = await colegiado.getOneUser(id);
-    console.log(result);
-
-    res.render("colegiados/colegiadoOne", { title: "Colegiado", user, result });
+  
+    try {
+      // Obtener los datos del colegiado
+      const result = await colegiado.getOneUser(id);
+      if (!result) return res.status(404).render("404", { message: "Pagina no encontrada", title:"Pagina no encontrada", user}); // Render a custom 404 page
+  
+      res.render("colegiados/colegiadoOne", { title: "Colegiado", user, result });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).send('Hubo un error al procesar la solicitud');
+    }
   };
+  
   getCollegiates = async (req, res) => {
     const result = await colegiado.getUsers(req.query);
     const { user } = req.session;
     if (!user) return res.redirect("/");
     try {
-      res.json(result);
+      res.json( result );
     } catch (error) {
       res.status(500).json({ message: "Error al obtener los usuarios", error });
     }

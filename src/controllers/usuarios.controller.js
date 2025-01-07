@@ -2,17 +2,32 @@ import { UsersModel } from "../models/usuarios.model.js";
 
 const user = new UsersModel();
 export class UsersController {
+  getRols = async (req, res) => {
+    const result = await user.getRols(req.query);
+    res.json(result);
+  };
   getUsers = async (req, res) => {
     const result = await user.getUsers(req.query);
-    res.json({ result });
+    res.json(result);
+  };
+  getUsersCobrador = async (req, res) => {
+    const result = await user.getUserCobradores();
+    res.json(result);
   };
   getUser = async (req, res) => {
-    const {id}= req.params
+    const { id } = req.params;
     const result = user.getUser(id);
     console.log(result);
-    res.json({ result });
+    res.json(result);
   };
   postUsers = async (req, res) => {};
+  patchRols = async (req, res) => {
+    const { id } = req.params;
+    const { rols } = req.body;
+    console.log(id, rols);
+    const result = await user.patchRols(id, rols);
+    res.json(result);
+  };
   patchUsers = async (req, res) => {};
   deleteUser = async (req, res) => {
     const { id } = req.params;
@@ -21,7 +36,9 @@ export class UsersController {
   removeUser = async (req, res) => {
     const { id } = req.params;
     if (id == req.session.user.userId) {
-      return res.status(401).json({ message: 'No se puede realizar la eliminacion del usuario' });
+      return res
+        .status(401)
+        .json({ message: "No se puede realizar la eliminacion del usuario" });
     }
     const result = await user.removeUsers(id);
     console.log(result);

@@ -1,237 +1,306 @@
 <%- include('../partials/header') %>
 
-<h1>
-    <%= title %>
-</h1>
+    <h1>
+        <%= title %>
+    </h1>
 
-<h2>Registro de usuarios</h2>
-<dialog id="dialog">
-    <h3>Agregar nuevo usuario</h3>
-    <form id="form-create" method="dialog">
-        <label for="text">Usuario:</label>
-        <input id="user" type="text" name="username" required />
-      
-        <label for="email">Email:</label>
-        <input id="email" type="email" name="email" required />
-      
-        <label for="password">Contraseña:</label>
-        <input id="password" type="password" name="password" required />
-      
-        <label for="confirm-password">Confirmación de contraseña:</label>
-        <input id="confirm-password" type="password" name="confirm-password" required />
-      
-        <button type="submit">Registrar</button>
-        <span id="error-message"></span>
+    <h2>Registro de usuarios</h2>
+    <dialog id="dialog">
+        <h3>Agregar nuevo usuario</h3>
+        <form id="form-create" method="dialog">
+            <label for="user">Usuario:</label>
+            <input id="user" type="text" name="username" required />
+
+            <label for="email">Email:</label>
+            <input id="email" type="email" name="email" required />
+
+            <label for="password">Contraseña:</label>
+            <input id="password" type="password" name="password" required />
+
+            <label for="confirm-password">Confirmación de contraseña:</label>
+            <input id="confirm-password" type="password" name="confirm-password" required />
+
+            <button type="submit">Registrar</button>
+            <button type="button" id="close-registrar">Cancelar</button>
+            <span id="error-message"></span>
+        </form>
+    </dialog>
+    <button id="agregar-usuario">Agregar usuario</button>
+
+    <form id="search-form">
+        <input id="search" type="search" placeholder="Buscar por Matrícula, Carnet, Nombre o apellido" />
+        <button id="search-button" type="submit">Buscar</button>
     </form>
-</dialog>
-<button id="button">Agregar usuario</button>
 
-<form id="search-form">
-    <input id="search" type="search" placeholder="Buscar por Matrícula, Carnet, Nombre o apellido" />
-    <button id="search-button" type="submit">Buscar</button>
-</form>
-  
-<table id="result-table">
-    <thead>
-        <tr>
-            <th>Correo</th>
-            <th>Usuario</th>
-            <th>¿Está bloqueado?</th>
-            <th>Roles</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Aquí se llenarán las filas con los resultados -->
-    </tbody>
-</table>
-  
-<script defer>
-    document.addEventListener("DOMContentLoaded", function () {
-        const $ = (el) => document.querySelector(el);
-        const search = $("#search");
-        const searchForm = $("#search-form");
-        const resultTableBody = $("#result-table tbody");
-        const activarButton = '.activate-button';
-        const eliminarButton = '.delete-button';
-        
-        // Función para actualizar la tabla con los resultados de la búsqueda
-        const updateTable = (users) => {
-            // Limpiar la tabla antes de mostrar nuevos resultados
-            resultTableBody.innerHTML = "";
-            if (users.length > 0) {
-                // Recorrer los usuarios y agregar una fila a la tabla por cada uno
-                users.forEach((colegiado) => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${colegiado.Email}</td>
-                        <td>${colegiado.User}</td>
-                        <td>${(colegiado.IsLockedOut === 1) ? `<button class='${activarButton.slice(1)}' data-id='${colegiado.UserId}'>Activar</button>` : 'Activado'}</td>
-                        <td>Roles</td>
-                        <td><button class='${eliminarButton.slice(1)}' data-id='${colegiado.UserId}'>Eliminar</button></td>
+    <table id="result-table">
+        <thead>
+            <tr>
+                <th>Correo</th>
+                <th>Usuario</th>
+                <th>¿Está bloqueado?</th>
+                <th>Roles</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+    </table>
+
+    <dialog id="dialog-roles">
+        <h3>Roles de usuario</h3>
+        <form id="form-roles" method="dialog">
+            <label for="roles">Roles:</label>
+            <div id="roles">
+                <!-- Aquí se llenarán los checkbox con los roles -->
+            </div>
+            <button type="submit">Guardar</button>
+            <button type="button" id="close-roles">Cancelar</button>
+        </form>
+    </dialog>
+
+    <script defer>
+        document.addEventListener("DOMContentLoaded", () => {
+            const $ = (el) => document.querySelector(el);
+            const search = $("#search");
+            const searchForm = $("#search-form");
+            const resultTableBody = $("#result-table tbody");
+            const activarButton = '.activate-button';
+            const actualizarButton = '.actualizar-button';
+            const eliminarButton = '.delete-button';
+            const rolesContainer = $("#roles");
+            //dalog
+            const dialogRoles = $('#dialog-roles');
+            const closeRoles = $('#close-roles');
+            const closeResgistrar = $('#close-registrar');
+            // Modal de agregar usuario
+            const dialog = $("#dialog");
+            const agregarUsuario = $("#agregar-usuario");
+
+            // Actualiza la tabla con los usuarios obtenidos
+            const updateTable = (users) => {
+                resultTableBody.innerHTML = ""; // Limpiar tabla
+                if (users.length > 0) {
+                    users.forEach((item) => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                        <td>${item.Email}</td>
+                        <td>${item.User}</td>
+                        <td>${item.IsLockedOut === 1 ?
+                                `<button class="${activarButton.slice(1)}" data-id="${item.UserId}">Activar</button>`
+                                : 'Activado'}</td>
+                        <td>${item.Roles || 'Sin asignación'}</td>
+                        <td>
+                            <button class="${actualizarButton.slice(1)}" data-id="${item.UserId}" data-roles="${item.Roles}">Roles</button>
+                            <button class="${eliminarButton.slice(1)}" data-id="${item.UserId}">Eliminar</button>
+                        </td>
                     `;
-                    resultTableBody.appendChild(row);
-                });
-            } else {
-                // Si no hay resultados, mostrar un mensaje en la tabla
-                const row = document.createElement("tr");
-                row.innerHTML = `<td colspan="5">No se encontraron resultados</td>`;
-                resultTableBody.appendChild(row);
-            }
-        };
-
-        // Función para realizar la búsqueda y actualizar la tabla
-        const fetchAndUpdateTable = async (searchValue) => {
-            const url = `/users?search=${encodeURIComponent(searchValue)}`;
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error("Error en la búsqueda");
-                }
-                const data = await response.json(); // Asumimos que la respuesta es un JSON
-                if (data && data.result && Array.isArray(data.result.users)) {
-                    updateTable(data.result.users); // Actualizar la tabla con los usuarios encontrados
+                        resultTableBody.appendChild(row);
+                    });
                 } else {
-                    console.error("La estructura de la respuesta no es válida");
-                    alert("Hubo un problema con los resultados. Intenta nuevamente.");
+                    resultTableBody.innerHTML = `<tr><td colspan="5">No se encontraron resultados</td></tr>`;
                 }
-            } catch (error) {
-                console.error("Error en la búsqueda:", error);
-                alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
-            }
-        };
-
-        // Ejecutar la búsqueda inmediatamente al cargar la página (con un valor vacío o por defecto)
-        fetchAndUpdateTable("");
-
-        // Evento de búsqueda cuando el formulario se envíe
-        searchForm?.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const searchValue = search.value.trim();
-            if (!searchValue) {
-                alert("Por favor, ingrese un término de búsqueda.");
-                return;
-            }
-            fetchAndUpdateTable(searchValue);
-        });
-
-        // Modal de agregar usuario
-        const dialog = document.getElementById('dialog');
-        const button = document.getElementById('button');
-        button.addEventListener('click', () => dialog.showModal());
-        
-        function closeDialog() {
-            dialog.close();  
-        }
-
-        // Registro de usuario
-        const formCreate = $("#form-create");
-        const errorMessage = $("#error-message");
-
-        formCreate?.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const username = $("#user").value;
-            const email = $("#email").value;
-            const password = $("#password").value;
-            const confirmPassword = $("#confirm-password").value;
-
-            const userData = {
-                user: username,
-                email: email,
-                password: password,
-                confirmedPassword: confirmPassword,
             };
 
-            try {
-                const response = await fetch("/signup", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(userData),
-                });
-
-                const data = await response.json();
-                if (response.ok) {
-                    errorMessage.textContent = "Registrado correctamente";
-                    errorMessage.style.color = "green";
-                    setTimeout(() => {
-                        closeDialog();
-                    }, 2000);
-                    formCreate.reset();
-                } else {
-                    errorMessage.style.color = "red";
-                    errorMessage.textContent = data.message || "Hubo un error en el registro.";
+            // Realiza la búsqueda de usuarios
+            const fetchAndUpdateTable = async (searchValue) => {
+                const url = `/users?search=${encodeURIComponent(searchValue)}`;
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    if (data?.users && Array.isArray(data.users)) {
+                        updateTable(data.users);
+                    } else {
+                        alert("Hubo un problema con los resultados. Intenta nuevamente.");
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert("Error al realizar la búsqueda.");
                 }
-            } catch (error) {
-                errorMessage.style.color = "red";
-                errorMessage.textContent = "Error en la solicitud. Por favor, inténtalo nuevamente.";
-            }
-        });
+            };
 
-        // Manejo de activación y eliminación de usuarios
-        resultTableBody.addEventListener('click', async (e) => {
-    const button = e.target;
-    
-    // Activar usuario
-    if (button.classList.contains('activate-button')) {
-        const userId = button.getAttribute('data-id');
-        try {
-            // Lógica para activar al usuario
-            console.log("Activar usuario con ID:", userId);
-            
-            const response = await fetch(`/users/activate/${userId}`, {
-                method: 'PATCH', // Suponiendo que la activación sea una actualización
+            // Obtener roles
+            const fetchRoles = async () => {
+                const url = `/rols`;
+                try {
+                    const response = await fetch(url);
+                    const roles = await response.json();
+                    if (roles.length > 0) {
+                        return roles;
+                    } else {
+                        console.error("No se encontraron roles.");
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert("Error al cargar los roles.");
+                }
+            };
+            // Función para actualizar el diálogo de roles con los roles disponibles
+            const populateRolesDialog = (roles, userRoles) => {
+                rolesContainer.innerHTML = ''; // Limpiar contenedor de roles
+                roles.forEach((role) => {
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.name = "roles";
+                    checkbox.value = role.RoleId;
+                    checkbox.id = role.RoleId;
+
+                    if (userRoles.map(role => role.trim()).includes(role.Name)) {
+                        checkbox.checked = true;
+                    }
+                    const label = document.createElement("label");
+                    label.htmlFor = role.RoleId;
+                    label.textContent = role.Name;
+
+                    rolesContainer.append(checkbox, label, document.createElement("br"));
+                });
+            };
+
+            // Inicializar
+            fetchRoles();
+            fetchAndUpdateTable("");
+
+            // Manejo del formulario de búsqueda
+            searchForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const searchValue = search.value.trim();
+                if (!searchValue) return alert("Por favor, ingrese un término de búsqueda.");
+                fetchAndUpdateTable(searchValue);
             });
-            
-            if (response.ok) {
-                // Aquí puedes actualizar la interfaz (por ejemplo, cambiar el texto del botón)
-                button.textContent = 'Activado';
-                button.classList.remove('activate-button');
-            } else {
-                alert("Error al activar el usuario");
-            }
-        } catch (error) {
-            console.error("Error al activar el usuario:", error);
-            alert("Hubo un problema al activar el usuario. Intenta nuevamente.");
-        }
-    }
+            // Registro de usuario
+            const formCreate = $("#form-create");
+            const errorMessage = $("#error-message");
 
-    // Eliminar usuario
-    else if (button.classList.contains('delete-button')) {
-        const userId = button.getAttribute('data-id');
-        
-        // Confirmación antes de eliminar
-        const confirmation = confirm("¿Estás seguro de que deseas eliminar este usuario?");
-        
-        if (confirmation) {
-            const url = `/users/${userId}`;
-            try {
-                const response = await fetch(url, {
-                    method: 'DELETE',
-                    credentials: 'include',  
-                });
-
-                if (response.ok) {
-                    // Eliminar la fila de la tabla correspondiente
-                    const row = button.closest('tr');
-                    row.remove();
-                    console.log("Usuario con ID", userId, "eliminado.");
-                } else {
-                    alert("Error al eliminar el usuario.");
+            formCreate.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const userData = {
+                    user: $("#user").value,
+                    email: $("#email").value,
+                    password: $("#password").value,
+                    confirmedPassword: $("#confirm-password").value,
+                };
+                try {
+                    const response = await fetch("/signup", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(userData),
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        errorMessage.textContent = "Registrado correctamente";
+                        errorMessage.style.color = "green";
+                        setTimeout(closeDialog, 2000);
+                        formCreate.reset();
+                    } else {
+                        errorMessage.style.color = "red";
+                        errorMessage.textContent = data.message || "Hubo un error en el registro.";
+                    }
+                } catch (error) {
+                    errorMessage.style.color = "red";
+                    errorMessage.textContent = "Error en la solicitud. Por favor, inténtalo nuevamente.";
                 }
-            } catch (error) {
-                console.error("Error al eliminar el usuario:", error);
-                alert("Hubo un problema al eliminar el usuario. Intenta nuevamente.");
-            }
-        } else {
-            console.log("Eliminación cancelada");
-        }
-    }
-});
+            });
 
+            // Manejo de eventos para activar, eliminar y actualizar roles de usuario
+            resultTableBody.addEventListener('click', async (e) => {
+                const button = e.target;
+                const userId = button.getAttribute('data-id');
 
-    });
-</script>
+                if (button.classList.contains('activate-button')) {
+                    await handleUserActivation(userId, button);
+                } else if (button.classList.contains('delete-button')) {
+                    await handleUserDeletion(userId, button);
+                } else if (button.classList.contains('actualizar-button')) {
+                    await handleUserRolesUpdate(userId, button);
+                }
+            });
 
-<%- include('../partials/footer') %>
+            // Activar usuario
+            const handleUserActivation = async (userId, button) => {
+                try {
+                    const response = await fetch(`/users/activate/${userId}`, { method: 'PATCH' });
+                    if (response.ok) {
+                        button.textContent = 'Activado';
+                        button.classList.remove('activate-button');
+                    } else {
+                        alert("Error al activar el usuario");
+                    }
+                } catch (error) {
+                    console.error(error);
+                    alert("Error al activar el usuario.");
+                }
+            };
+
+            // Eliminar usuario
+            const handleUserDeletion = async (userId, button) => {
+                if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+                    try {
+                        const response = await fetch(`/users/${userId}`, { method: 'DELETE' });
+                        if (response.ok) {
+                            button.closest('tr').remove();
+                        } else {
+                            alert("Error al eliminar el usuario.");
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        alert("Error al eliminar el usuario.");
+                    }
+                }
+            };
+
+            // Actualizar roles de usuario
+            const handleUserRolesUpdate = async (userId, button) => {
+                const userRoles = button.getAttribute('data-roles').split(',');
+
+                const roles = await fetchRoles();
+
+                populateRolesDialog(roles, userRoles);
+                dialogRoles.showModal();
+
+                // 4. Asignar el evento para guardar los cambios
+                const formRoles = $("#form-roles");
+                formRoles.onsubmit = async (e) => {
+                    e.preventDefault();
+                    const selectedRoles = Array.from(rolesContainer.querySelectorAll("input:checked")).map(checkbox => checkbox.value);
+                    console.log(selectedRoles);
+                    // 5. Enviar los roles seleccionados al backend para actualizarlos
+                    try {
+                        const response = await fetch(`/users/${userId}/rols`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ rols: selectedRoles }) // Enviamos los roles seleccionados
+                        });
+             
+                        const data = await response.json();
+                        console.log(data);
+                        if (response.ok) {
+                            alert("Roles actualizados exitosamente");
+                            dialogRoles.close();
+                            fetchAndUpdateTable(""); // Refrescar la tabla con los datos actualizados
+                        } else {
+                            alert("Error al actualizar los roles: " + (data.message || 'Intenta de nuevo.'));
+                        }
+                    } catch (error) {
+                        console.error("Error al actualizar roles:", error);
+                        alert("Hubo un error al actualizar los roles. Intenta de nuevo.");
+                    }
+                };
+            };
+
+            agregarUsuario.addEventListener('click', () => {
+                dialog.showModal();
+            });
+            // Cerrar el modal
+            closeRoles.addEventListener('click', () => {
+                dialogRoles.close()
+            })
+            closeResgistrar.addEventListener('click', () => {
+                dialog.close()
+            })
+
+        });
+    </script>
+
+    <%- include('../partials/footer') %>

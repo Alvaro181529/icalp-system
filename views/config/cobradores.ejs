@@ -1,0 +1,87 @@
+<%- include('../partials/header') %>
+
+    <h1>
+        <%= title %>
+    </h1>
+
+    <h2>Reporte mensual</h2>
+
+    <table id="result-table">
+        <thead>
+            <tr>
+                <th>Correo</th>
+                <th>Usuario</th>
+                <th>¿Está bloqueado?</th>
+                <th>Roles</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+    </table>
+
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function () {
+            const resultTableBody = document.querySelector("#result-table tbody");
+
+            // Función para actualizar la tabla con los resultados
+            const updateTable = (data) => {
+                resultTableBody.innerHTML = "";  // Limpiar la tabla
+
+                if (data.length > 0) {
+                    data.forEach((item) => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                        <td>${item.Email}</td>
+                        <td>${item.User}</td>
+                        <td>${item.IsLockedOut === 1 ?
+                                `<button class="${activarButton.slice(1)}" data-id="${item.UserId}">Activar</button>`
+                                : 'Activado'}</td>
+                        <td>${item.Roles || 'Sin asignación'}</td>
+                        <td>
+                            asdasju
+                        </td>           
+                        `;
+                        resultTableBody.appendChild(row);
+                    });
+                } else {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td colspan="4">No se encontraron resultados</td>`;
+                    resultTableBody.appendChild(row);
+                }
+            };
+
+            // Función para realizar la búsqueda y actualizar la tabla
+            const fetchAndUpdateTable = async () => {
+                const url = `/users/cobrador`;
+
+                try {
+                    const response = await fetch(url);
+
+                    if (!response.ok) {
+                        throw new Error("Error en la solicitud");
+                    }
+
+                    const data = await response.json(); // Suponemos que la respuesta es un JSON
+
+                    // Verificar si la estructura de la respuesta es válida
+                    if (data && data && Array.isArray(data)) {
+                        updateTable(data);
+                    } else {
+                        console.error("La estructura de la respuesta no es válida");
+                        alert("Hubo un problema con los resultados. Intenta nuevamente.");
+                    }
+                } catch (error) {
+                    console.error("Error al realizar la solicitud:", error);
+                    alert("Hubo un problema al obtener los datos. Intenta nuevamente.");
+                }
+            };
+
+            // Ejecutar la búsqueda inmediatamente con el valor del año seleccionado
+            fetchAndUpdateTable();
+
+        });
+    </script>
+
+    <%- include('../partials/footer') %>

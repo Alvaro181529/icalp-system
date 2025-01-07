@@ -258,7 +258,6 @@
           }
 
           const data = await response.json();
-
           if (data && data && Array.isArray(data.users)) {
             totalPages = data.pages;
             updateTable(data.users, totalPages);

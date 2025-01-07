@@ -7,6 +7,11 @@ export class AporteController {
     if (!user) return res.redirect("/");
     res.render("aportes/aporte", { title: "Aportes", user });
   };
+  getAportesNull = async (req, res) => {
+    const { user } = req.session;
+    if (!user) return res.redirect("/");
+    res.render("aportes/anulado", { title: "Aportes anolado", user });
+  };
   getAportesMensual = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
@@ -42,7 +47,10 @@ export class AporteController {
       });
     }
   };
-
+  getContributionNull = async (req, res) => {
+    const result = await aporte.getAportesNull(req.query);
+    res.json(result);
+  };
   getContributionsMensual = async (req, res) => {
     try {
       // Obtener el resultado de la base de datos
@@ -130,7 +138,21 @@ export class AporteController {
       res.status(500).json({ message: "Hubo un error al obtener los datos" });
     }
   };
-
+  patchNullContributions = async (req, res) => {
+    const { id } = req.params;
+    const { motivo } = req.body;
+    const { user } = req.session;
+    console.log(id, motivo, user ?? "No hay usuario");
+    const result = await aporte.patchAporteNull(id, user.correo, motivo);
+    res.json(result);
+  };
+  postContributions = async (req, res) => {
+    res.json({ message: "Aporte creado" });
+  };
+  patchContributions = async (req, res) => {
+    res.json({ message: "Aporte actualizado" });
+  };
+  deleteContributions = async (req, res) => {};
   // Función para transformar el JSON
   transformarJson = (data) => {
     const months = [
@@ -221,10 +243,6 @@ export class AporteController {
       Faltante: montoFaltante >= 0 ? montoFaltante : 0, // Si el faltante es negativo, lo setea en 0
     };
   };
-
-  postContributions = async (req, res) => {};
-  patchContributions = async (req, res) => {};
-  deleteContributions = async (req, res) => {};
 }
 function calcularMeses(mes, año) {
   const fechaUltimoPago = new Date(año, mes - 1); // mes - 1 porque los meses en JavaScript empiezan en 0
