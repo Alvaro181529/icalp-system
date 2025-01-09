@@ -273,6 +273,148 @@ export class ColegiadoModel {
     }
   };
   updateUser = async (query) => {};
-  postUser = async (query) => {};
+  postUser = async (query, user) => {
+    const {
+      matricula,
+      matriculaConalab,
+      nombres,
+      paterno,
+      materno,
+      telefonoOficina,
+      direccionOficina,
+      correo,
+      lugarNacimiento,
+      fechaNacimiento,
+      numeroCI,
+      numeroRuc,
+      estadoCivil,
+      universidad,
+      fechaTesis,
+      universidadLicenciatura,
+      fechaLicenciatura,
+      fechaProvisionNacional,
+      entidadProvisionNacional,
+      cargosAdministracionPublica,
+      cargosEmpresaPrivada,
+      cargosBufete,
+      cargoActual,
+      especialidadPrimaria,
+      especialidadSecundaria,
+      producciones,
+      catedra,
+      estudiosEspecializacion,
+      reconocimientos,
+      asistenciaEventosInternacionales,
+      institucionAsegurado,
+      beneficiarios,
+      direccionDomicilio,
+      telefonoDomicilio,
+      casilla,
+      situacion,
+      observacion,
+      nacionalidad,
+      celular,
+      gradoAcademico,
+      licenciatura,
+      formaDePago,
+      boletaDepositoNumero,
+      montoDeposito,
+      formularioAdmision,
+      fotocopiaTituloProfesional,
+      certificadoNacimientoOriginal,
+      fotocopiaCI,
+      curriculumVitae,
+      estado,
+    } = query;
+
+    // Construir el objeto de datos
+    const insertData = {
+      Matricula: matricula,
+      MatriculaConalab: matriculaConalab,
+      Nombres: nombres,
+      Paterno: paterno,
+      Materno: materno,
+      TelefonoOficina: telefonoOficina,
+      DireccionOficina: direccionOficina,
+      Correo: correo,
+      LugarNacimiento: lugarNacimiento,
+      FechaNacimiento: fechaNacimiento,
+      NumeroCI: numeroCI,
+      NumeroRuc: numeroRuc,
+      EstadoCivil: estadoCivil,
+      Universidad: universidad,
+      FechaTesis: fechaTesis,
+      UniversidadLicenciatura: universidadLicenciatura,
+      FechaLicenciatura: fechaLicenciatura,
+      FechaProvisionNacional: fechaProvisionNacional,
+      EntidadProvisionNacional: entidadProvisionNacional,
+      CargosAdministracionPublica: cargosAdministracionPublica,
+      CargosEmpresaPrivada: cargosEmpresaPrivada,
+      CargosBufete: cargosBufete,
+      CargoActual: cargoActual,
+      EspecialidadPrimaria: especialidadPrimaria,
+      EspecialidadSecundaria: especialidadSecundaria,
+      Producciones: producciones,
+      Catedra: catedra,
+      EstudiosEspecializacion: estudiosEspecializacion,
+      Reconocimientos: reconocimientos,
+      AsistenciaEventosInternacionales: asistenciaEventosInternacionales,
+      InstitucionAsegurado: institucionAsegurado,
+      Beneficiarios: beneficiarios,
+      DireccionDomicilio: direccionDomicilio,
+      TelefonoDomicilio: telefonoDomicilio,
+      Casilla: casilla,
+      Situacion: situacion,
+      Observacion: observacion,
+      Nacionalidad: nacionalidad,
+      Celular: celular,
+      GradoAcademico: gradoAcademico,
+      Licenciatura: licenciatura,
+      FormaDePago: formaDePago,
+      BoletaDepositoNumero: boletaDepositoNumero,
+      MontoDeposito: montoDeposito,
+      FormularioDeAdmision: formularioAdmision,
+      FotocopiaTituloProfesional: fotocopiaTituloProfesional,
+      CertificadoNacimientoOriginal: certificadoNacimientoOriginal,
+      FotocopiaCI: fotocopiaCI,
+      CurriculumVitae: curriculumVitae,
+      UsuarioRegistro: user,
+      UsuarioModificacion: user,
+      Estado: estado,
+    };
+
+    try {
+      const result = await pool.query(
+        `
+      INSERT INTO colegiados (
+    Matricula, MatriculaConalab, Nombres, Paterno, Materno, TelefonoOficina, DireccionOficina, Correo, LugarNacimiento, 
+    FechaNacimiento, NumeroCI, NumeroRuc, EstadoCivil, Universidad, FechaTesis, UniversidadLicenciatura, FechaLicenciatura, 
+    FechaProvisionNacional, EntidadProvisionNacional, FechaMatriculacionAlColegio, CargosAdministracionPublica, 
+    CargosEmpresaPrivada, CargosBufete, CargoActual, EspecialidadPrimaria, EspecialidadSecundaria, Producciones, 
+    Catedra, EstudiosEspecializacion, Reconocimientos, AsistenciaEventosInternacionales, InstitucionAsegurado, 
+    Beneficiarios, DireccionDomicilio, TelefonoDomicilio, Casilla, Situacion, Observacion, ZonaId, Nacionalidad, Celular, 
+    GradoAcademico, Licenciatura, ZonaTrabajoId, FormaDePago, BoletaDepositoNumero, MontoDeposito, FormularioDeAdmision, 
+    FotocopiaTituloProfesional, CertificadoNacimientoOriginal, FotocopiaCI, CurriculumVitae, UsuarioRegistro, FechaRegistro, 
+    UsuarioModificacion, FechaModificacion, Estado
+) VALUES (
+    ?, ?, ?, ?, ?, ?, ?,?, ?, 
+    ?,?,?,?,?,?, ?, ?,
+    ?, ?, NOW(), ?,
+    ?, ?,?, ?, ?, ?,
+    ?, ?, ?, ?, ?, 
+    ?, ?, ?, ?,?, ?, NULL, ?,?,
+    ?, ?,NULL,?,?, ?,?, 
+    ?, ?, ?, ?, ?, NOW(), 
+    ?, NOW(), ?
+);`,
+        Object.values(insertData)
+      );
+      return result;
+    } catch (error) {
+      console.error("Error al insertar:", error);
+      throw error;
+    }
+  };
+
   deleteUser = async (query) => {};
 }

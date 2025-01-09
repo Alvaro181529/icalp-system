@@ -1,7 +1,9 @@
 import { ColegiadoModel } from "../models/colegiado.model.js";
+import { PdfGenerator } from "../models/pdfGenerator.model.js";
 import { AporteController } from "./aporte.controller.js";
 const colegiado = new ColegiadoModel();
 const transormerData = new AporteController();
+const pdf = new PdfGenerator();
 export class ColegiadoController {
   getColegiados = async (req, res) => {
     const { user } = req.session;
@@ -32,27 +34,41 @@ export class ColegiadoController {
   getColegiado = async (req, res) => {
     const { user } = req.session;
     const { id } = req.params;
-  
+
     if (!user) return res.redirect("/");
-  
+
     try {
       // Obtener los datos del colegiado
       const result = await colegiado.getOneUser(id);
-      if (!result) return res.status(404).render("404", { message: "Pagina no encontrada", title:"Pagina no encontrada", user}); // Render a custom 404 page
-  
-      res.render("colegiados/colegiadoOne", { title: "Colegiado", user, result });
+      if (!result)
+        return res.status(404).render("404", {
+          message: "Pagina no encontrada",
+          title: "Pagina no encontrada",
+          user,
+        }); // Render a custom 404 page
+
+      res.render("colegiados/colegiadoOne", {
+        title: "Colegiado",
+        user,
+        result,
+      });
     } catch (error) {
-      console.error('Error:', error);
-      res.status(500).send('Hubo un error al procesar la solicitud');
+      console.error("Error:", error);
+      res.status(500).send("Hubo un error al procesar la solicitud");
     }
   };
-  
+  getCollegiatesPdf = async (req, res) => {
+    const { id } = req.params;
+    const { user } = req.session;
+    const result = await pdf.generatePdf(id, res, user.correo);
+  };
+
   getCollegiates = async (req, res) => {
     const result = await colegiado.getUsers(req.query);
     const { user } = req.session;
     if (!user) return res.redirect("/");
     try {
-      res.json( result );
+      res.json(result);
     } catch (error) {
       res.status(500).json({ message: "Error al obtener los usuarios", error });
     }
@@ -74,7 +90,6 @@ export class ColegiadoController {
     const users = Array.isArray(result.users)
       ? result.users.map((item) => transormerData.transformarJson(item)) // Si es un array
       : [transormerData.transformarJson(result.users)];
-    console.log(users);
     res.json({
       users,
       total: result.total,
@@ -100,7 +115,9 @@ export class ColegiadoController {
     res.json(result);
   };
   postCollegiate = async (req, res) => {
-    res.send("Agregar el nuevo colegiado");
+    const { user } = req.session;
+    const result = await colegiado.postUser(req.body, user.correo);
+    res.json(result);
   };
   patchCollegiate = async (req, res) => {
     res.send("Actualizacion del colegiado");

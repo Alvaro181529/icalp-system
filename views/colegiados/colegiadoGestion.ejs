@@ -72,13 +72,28 @@
     // Función para crear una fila de la tabla
     const createRow = (item) => {
       const row = document.createElement("tr");
+      const fecha = new Date(item.FechaMatriculacionAlColegio);
+      const [año, mes, día] = [new Date(item.FechaNacimiento).getFullYear(), new Date(item.FechaNacimiento).getMonth() + 1, new Date(item.FechaNacimiento).getDate()];
+      const fechaNacimiento = `${día.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${año}`;
+
+      const fechaFormateada = fecha.toLocaleDateString("es-ES", {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      const horaFormateada = fecha.toLocaleTimeString("es-ES", {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
       row.innerHTML = `
-      <td>${item.FechaMatriculacionAlColegio || 'No disponible'}</td>
+      <td><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
       <td>${item.Matricula.toString().padStart(5, "0") || 'No disponible'}</td>
       <td>${item.Nombre || 'No disponible'}</td>
       <td>${item.DireccionOficina || 'No disponible'}</td>
       <td>${item.Correo || 'No disponible'}</td>
-      <td>${item.FechaNacimiento || 'No disponible'}</td>
+      <td>${fechaNacimiento || 'No disponible'}</td>
       <td>${item.NumeroCI || 'No disponible'}</td>
       <td>${item.DireccionDomicilio || 'No disponible'}</td>
       <td>${item.Observacion || 'No disponible'}</td>

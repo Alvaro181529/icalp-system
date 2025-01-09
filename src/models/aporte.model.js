@@ -216,12 +216,75 @@ ORDER BY
       "SELECT * FROM aportes WHERE ColegiadoId = ?",
       [id]
     );
-    console.log(result);
     return result;
   };
-  postAporte = () => {};
+  postAporte = async (body, user) => {
+    console.log(body); // Para verificar el contenido del body
+    const {
+      colegiadoId,
+      mesInicial, // Asegúrate de corregir "mesInical" por "mesInicial"
+      mesFinal,
+      anoInicial, // Asegúrate de corregir "anoInical" por "anoInicial"
+      anoFinal,
+      recibo,
+      talonario,
+      monto,
+      observacion,
+    } = body;
+    const Observacion = observacion || "Sin observación"; // Asegúrate de que 'observacion' no sea undefined
+    const Recibo = talonario || 0; // Asegúrate de que 'observacion' no sea undefined
+    const Talonario = recibo || 0; // Asegúrate de que 'observacion' no sea undefined
+    // Crear la consulta SQL
+    const query = `
+      INSERT INTO aportes (
+        ColegiadoId, Cobrador, Matricula, FechaAporte, Monto,
+        MesInicial, AnoInicial, MesFinal, AnoFinal, Observacion,
+        FechaDeCobro, Talonario, Recibo
+      )
+      SELECT 
+        ?,  
+        ?,  
+        Matricula, 
+        NOW(),
+        ?,  
+        ?,  
+        ?,  
+        ?,  
+        ?,  
+        ?,  
+        NOW(),
+        ?,  
+        ?  
+      FROM colegiados 
+      WHERE ColegiadoId = ?;
+    `;
+
+    try {
+      // Ejecutar la consulta pasando los parámetros correctos
+      const result = await pool.query(query, [
+        colegiadoId,
+        user,
+        monto,
+        mesInicial,
+        anoInicial,
+        mesFinal,
+        anoFinal,
+        Observacion,
+        Talonario,
+        Recibo,
+        colegiadoId,
+      ]);
+
+      return result;
+    } catch (error) {
+      console.error("Error al insertar el aporte:", error);
+      throw error; // Lanza el error para que el controlador lo pueda manejar
+    }
+  };
+
   // Anular aporte
-  patchAporteNull = async (query, user, motivo) => {
+  patchAporteNull = async (query, user, Motivo) => {
+    const motivo = Motivo || "Sin motivo";
     // Primero, obtenemos los datos necesarios para la inserción en 'reciboanulados'
     const aporteResult = await pool.query(
       `SELECT Talonario, Recibo, Monto, Observacion 
@@ -234,9 +297,9 @@ ORDER BY
       [query]
     );
     if (aporteResult.length === 0) {
-      throw new Error(
-        "No se encontró el aporte con los criterios especificados."
-      );
+      return {
+        message: "El aporte ya fue anulado.",
+      };
     }
 
     const { Talonario, Recibo } = aporteResult[0];

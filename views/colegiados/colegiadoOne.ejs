@@ -3,7 +3,11 @@
   <h1>Detalles del Colegiado</h1>
   <button id="button">Pagos</button>
   <button id="openDialogButton">Actualizar</button>
-
+  <button id="entrega-agenda">Entrega de Agenda</button>
+  <button id="diplomado-gratuito">Diplomado Gratuito</button>
+  <a href="/collegiate/<%= result.ColegiadoId %>/pdf" target="_blank">
+    <button>Generar Reporte PDF</button>
+  </a>
   <table>
     <thead>
       <tr>
@@ -374,27 +378,40 @@
       <!-- Aquí se llenarán las filas con los resultados -->
     </tbody>
   </table>
+  <h1>Notas</h1>
+  <table id="notas-table">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Nota</th>
+        <th>Usuario</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se llenarán las filas con los resultados -->
+    </tbody>
+  </table>
   <dialog id="personalDataDialog">
     <h2>Formulario de Registros</h2>
     <form id="personalDataForm">
       <h3>Datos personales</h3>
       <label for="matricula">Matrícula:</label>
-      <input type="text" id="matricula" name="matricula" value="<%=result.Matricula%>" required>
+      <input type="text" id="matricula" name="matricula" value="<%=result.Matricula%>">
 
       <label for="matriculaConalab">Matrícula Conalab:</label>
-      <input type="text" id="matriculaConalab" name="matriculaConalab" value="<%=result.matriculaConalab%>" required>
+      <input type="text" id="matriculaConalab" name="matriculaConalab" value="<%=result.matriculaConalab%>">
 
       <label for="nombres">Nombres:</label>
-      <input type="text" id="nombres" name="nombres" value="<%=result.Nombres%>" required>
+      <input type="text" id="nombres" name="nombres" value="<%=result.Nombres%>">
 
       <label for="paterno">Apellido Paterno:</label>
-      <input type="text" id="paterno" name="paterno" value="<%=result.Paterno%>" required>
+      <input type="text" id="paterno" name="paterno" value="<%=result.Paterno%>">
 
       <label for="materno">Apellido Materno:</label>
-      <input type="text" id="materno" name="materno" value="<%=result.Materno%>" required>
+      <input type="text" id="materno" name="materno" value="<%=result.Materno%>">
 
       <label for="telefonoOficina">Teléfono Oficina:</label>
-      <input type="tel" id="telefonoOficina" name="telefonoOficina" value="<%=result.TelefonoOficina%>" required>
+      <input type="tel" id="telefonoOficina" name="telefonoOficina" value="<%=result.TelefonoOficina%>">
 
       <label for="direccionOficina">Dirección Oficina:</label>
       <input type="text" id="direccionOficina" name="direccionOficina" value="<%=result.DireccionOficina%>">
@@ -402,7 +419,7 @@
       <label for="correo">Correo:</label>
       <input type="email" id="correo" name="correo" value="<%=result.Correo%>">
 
-      <label for="lugarNacimiento">Lugar de Nacimiento:</label>
+      <label for="lugarNacimiento">Lugar de Nacimiento: </label>
       <input type="text" id="lugarNacimiento" name="lugarNacimiento" value="<%=result.LugarNacimiento%>">
 
       <label for="fechaNacimiento">Fecha de Nacimiento:</label>
@@ -426,12 +443,12 @@
       <label for="universidad">Universidad:</label>
       <input type="text" id="universidad" name="universidad" value="<%=result.Universidad%>">
 
-      <label for="fechaTesis">Fecha Tesis:</label>
-      <input type="text" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis %>">
+      <label for="fechaTesis">Fecha Tesis: MM/DD/AAAA</label>
+      <input type="text" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis %>" placeholder="MM/DD/AAAA">
 
 
-      <label for="universidadLicenciatura">Universidad Licenciatura:</label>
-      <input type="text" id="universidadLicenciatura" name="universidadLicenciatura"
+      <label for="universidadLicenciatura">Universidad Licenciatura: MM/DD/AAAA</label>
+      <input type="text" id="universidadLicenciatura" name="universidadLicenciatura" placeholder="MM/DD/AAAA"
         value="<%=result.UniversidadLicenciatura%>">
 
       <label for="fechaLicenciatura">Fecha Licenciatura:</label>
@@ -554,7 +571,7 @@
 
       <label for="curriculumVitae">Curriculum Vitae:</label>
       <input type="text" id="curriculumVitae" name="curriculumVitae" value="<%=result.CurriculumVitae%>">
-      <label for="estado">Curriculum Vitae:</label>
+      <label for="estado">Estado:</label>
       <select name="estado" id="" value="<%=result.Estado%>">
         <option value="">Activos</option>
         <option value="">Inactivos</option>
@@ -570,56 +587,164 @@
     <form id="form-aporte" action="">
       <label for="motivo">Motivo</label>
       <input type="text" id="motivo" name="motivo" placeholder="Motivo">
-      <button type="reset">Cancelar</button>
-      <button id="button-aporte">submit</button>
+      <button type="reset" id="cancelar-aporte">Cancelar</button>
+      <button id="button-aporte">Confirmar</button>
     </form>
   </dialog>
   <dialog id="dialog">
     <h3>Pagos</h3>
-    <form id="form-create" method="dialog">
-      <label for="">Meses</label>
-      <input type="text" name="" id="" value="1" disabled>
-      <label for="">Desde</label>
-      <select name="" id="">
-        <option value="">12</option>
-        <option value="">13</option>
-        <option value=""></option>
-      </select>
-      <label for="">Hasta</label>
-      <select name="" id="">
-        <option value="">01</option>
-        <option value="">02</option>
-        <option value=""></option>
-      </select>
-      <label for="">Numero de recibo</label>
-      <input type="number" name="" id="">
-      <label for="">Numero de talonario</label>
-      <input type="number" name="" id="">
-      <label for="">fecha de cobro</label>
-      <input type="date" name="" id="">
-      <label for="">monto</label>
-      <input type="number">
-      <label for="">observacion</label>
-      <input type="text">
-      <button type="submit">Registrar</button>
-      <span id="error-message"></span>
+    <form id="form-create" method="POST">
+      <label for="meses">Meses</label>
+      <input type="text" id="meses" name="meses" value="1" disabled>
+
+      <% const anoActual=2050; const inicioAno=1990; %>
+
+        <label for="fechaInicial">Desde:</label>
+        <select id="mesInicial" name="mesInicial">
+          <option value="1">Enero</option>
+          <option value="2">Febrero</option>
+          <option value="3">Marzo</option>
+          <option value="4">Abril</option>
+          <option value="5">Mayo</option>
+          <option value="6">Junio</option>
+          <option value="7">Julio</option>
+          <option value="8">Agosto</option>
+          <option value="9">Septiembre</option>
+          <option value="10">Octubre</option>
+          <option value="11">Noviembre</option>
+          <option value="12">Diciembre</option>
+        </select>
+
+        <select id="anoInicial" name="anoInicial">
+          <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
+            <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
+            </option>
+            <% } %>
+        </select>
+
+        <label for="fechaFinal">Hasta:</label>
+        <select id="mesFinal" name="mesFinal">
+          <option value="1">Enero</option>
+          <option value="2">Febrero</option>
+          <option value="3">Marzo</option>
+          <option value="4">Abril</option>
+          <option value="5">Mayo</option>
+          <option value="6">Junio</option>
+          <option value="7">Julio</option>
+          <option value="8">Agosto</option>
+          <option value="9">Septiembre</option>
+          <option value="10">Octubre</option>
+          <option value="11">Noviembre</option>
+          <option value="12">Diciembre</option>
+        </select>
+
+        <select id="anoFinal" name="anoFinal">
+          <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
+            <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
+            </option>
+            <% } %>
+        </select>
+
+        <label for="recibo">Numero de recibo</label>
+        <input id="recibo" type="number" name="recibo">
+
+        <label for="talonario">Numero de talonario</label>
+        <input id="talonario" type="number" name="talonario">
+
+        <label for="fechaDeCobro">Fecha de cobro</label>
+        <input type="date" id="fechaDeCobro" name="fechaDeCobro" value="<%= new Date().toISOString().split('T')[0] %>">
+
+        <label for="monto">Monto</label>
+        <input id="monto" type="number" name="monto" value="20">
+
+        <label for="observacion">Observacion</label>
+        <input id="observacion" type="text" name="observacion">
+
+        <button type="submit">Registrar</button>
+        <span id="error-message"></span>
     </form>
+
   </dialog>
   <script defer>
     document.addEventListener("DOMContentLoaded", function () {
       const $ = (el) => document.querySelector(el);
+      const mesInicial = $('#mesInicial');
+      const anoInicial = $('#anoInicial');
+      const mesFinal = $('#mesFinal');
+      const anoFinal = $('#anoFinal');
+      const inputMeses = $('#meses');
+      const pagoAporte = $('#form-create');
+      const actualizacionUsuario = $('#personalDataForm');
+      const agendaEntrega = $('#entrega-agenda')
+      const diplomadoGratuito = $('#diplomado-gratuito')
       const dialogAportes = $('#dialog-aporte');
       const resultTableBody = $("#result-table tbody");
+      const resultTableBodyNotas = $("#notas-table tbody");
       const formAporte = $("#form-aporte");
       const motivoText = $("#motivo");
-
+      const cancelarAporte = $("#cancelar-aporte");
       const pathname = window.location.pathname;  // Ejemplo: "/item/554"
       const parts = pathname.split("/");
-      const lastNumber = parts[parts.length - 1];
-
+      const userId = parts[parts.length - 1];
+      const fetchNotas = async () => {
+        const url = `/notas/${userId}`;
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error("Error al obtener los datos");
+          }
+          const res = await response.json();
+          resultTableBodyNotas.innerHTML = '';
+          if (Array.isArray(res.data) && res.data.length > 0) {
+            res.data.forEach(item => {
+              const fecha = new Date(item.Fecha);
+              const anoItem = fecha.getFullYear(); // Obtener el año de `item.Fecha`
+              const anoActual = new Date().getFullYear(); // Obtener el año actual
+              if ((item.Identificador == "Agenda" || item.Identificador == "Nota") && anoItem === anoActual) {
+                agendaEntrega.disabled = true; // Desactivar el botón si las condiciones se cumplen
+              }
+              if (item.Identificador == "Diplomado" || item.Identificador == "DiplomadoGratuito") {
+                diplomadoGratuito.disabled = true; // Desactivar el botón si las condiciones se cumplen
+              }
+              const fechaFormateada = fecha.toLocaleDateString("es-ES", {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+              const horaFormateada = fecha.toLocaleTimeString("es-ES", {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+              });
+              const row = document.createElement("tr");
+              row.innerHTML = `
+              <td>
+                <p>${fechaFormateada} - ${horaFormateada}</p>
+              </td>
+              <td>
+                <p>${item.Nota}</p>
+              </td>
+              <td>
+                <p>Registrado por: ${item.Usuario}</p>
+              </td>
+            `;
+              resultTableBodyNotas.appendChild(row);
+            });
+          } else {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td colspan="4">No se encontraron resultados</td>`;
+            resultTableBodyNotas.appendChild(row);
+          }
+        } catch (error) {
+          console.error("Hubo un problema con la solicitud fetch:", error);
+          alert("Hubo un error al obtener los datos. Intenta de nuevo.");
+        }
+      }
       // Función para obtener los datos de los aportes
       const fetchData = async () => {
-        const url = `/contributions/${lastNumber}`;
+        const url = `/contributions/${userId}`;
+
         try {
           const response = await fetch(url);
           if (!response.ok) {
@@ -630,6 +755,7 @@
           if (Array.isArray(res) && res.length > 0) {
             res.forEach(item => {
               const fechaDeCobro = new Date(item.FechaDeCobro);
+
               const fechaFormateada = fechaDeCobro.toLocaleDateString("es-ES", {
                 weekday: 'long',
                 year: 'numeric',
@@ -661,7 +787,7 @@
                 <p style='color:crimson'>${item.Faltante}</p>
               </td>
               <td>
-                <button class="actualizar-button" data-id="${item.AporteId}">Editar</button>
+                <button class="actualizar-button" data-id="${item.AporteId}">Anular</button>
               </td>
             `;
               resultTableBody.appendChild(row);
@@ -686,7 +812,82 @@
           await handleUserAporteUpdate(AporteId);
         }
       });
+      pagoAporte.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevent the form from submitting the default way
 
+        // Create a FormData object from the form
+        const formData = new FormData(pagoAporte);
+        // Build an object from the FormData
+        const data = {
+          colegiadoId: userId, // You should define `userId` elsewhere in your script
+          mesInicial: formData.get('mesInicial'),
+          mesFinal: formData.get('mesFinal'),
+          anoInicial: formData.get('anoInicial'),
+          anoFinal: formData.get('anoFinal'),
+          recibo: formData.get('recibo'),
+          talonario: formData.get('talonario'),
+          monto: formData.get('monto'),
+          observacion: formData.get('observacion')
+        };
+
+        // Log the data to the console (or send it via AJAX, etc.)
+        console.log(data);
+        const result = await fetch('/contributions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        dialog.close()
+        fetchData();
+        // Optional: Show error message if any field is invalid
+        if (!data.recibo || !data.monto) {
+          document.getElementById('error-message').innerText = 'Please fill out all required fields!';
+        }
+      })
+      actualizacionUsuario.addEventListener('sumbit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(actualizacionUsuario);
+        const data = {
+          matricula: formData.get('matricula'),
+          matriculaConalab: formData.get('matriculaConalab'),
+          nombres: formData.get('nombres'),
+          paterno: formData.get('paterno'),
+          materno: formData.get('materno'),
+          telefonoOficina: formData.get('telefonoOficina'),
+          direccionOficina: formData.get('direccionOficina'),
+          correo: formData.get('correo'),
+          lugarNacimiento: formData.get('lugarNacimiento'),
+          fechaNacimiento: formData.get('fechaNacimiento'),
+          numeroCI: formData.get('numeroCI'),
+          numeroRuc: formData.get('numeroRuc'),
+          estadoCivil: formData.get('estadoCivil'),
+          universidad: formData.get('universidad'),
+          fechaTesis: formData.get('fechaTesis'),
+          universidadLicenciatura: formData.get('universidadLicenciatura'),
+          fechaLicenciatura: formData.get('fechaLicenciatura'),
+          fechaProvisionNacional: formData.get('fechaProvisionNacional'),
+          entidadProvisionNacional: formData.get('entidadProvisionNacional'),
+          fechaMatriculacionAlColegio: formData.get('fechaMatriculacionAlColegio'),
+          cargosAdministracionPublica: formData.get('cargosAdministracionPublica'),
+          cargosEmpresaPrivada: formData.get('cargosEmpresaPrivada'),
+          cargosBufete: formData.get('cargosBufete'),
+          cargoActual: formData.get('cargoActual'),
+          especialidadPrimaria: formData.get('especialidadPrimaria'),
+          especialidadSecundaria: formData.get('especialidadSecundaria'),
+          producciones: formData.get('producciones'),
+          catedra: formData.get('catedra'),
+          estudiosEspecializacion: formData.get('estudiosEspecializacion'),
+          reconocimientos: formData.get('reconocimientos'),
+          asistenciaEventosInternacionales: formData.get('asistenciaEventosInternacionales'),
+          institucionAsegurado: formData.get('institucionAsegurado'),
+          beneficiarios: formData.get('beneficiarios'),
+          direccionDomicilio: formData.get('direccionDomicilio'),
+          telefonoDomicilio: formData.get('telefonoDomicilio'),
+          casilla: formData.get('casilla'),
+        }
+      })
       // Actualizar los aportes de un usuario
       const handleUserAporteUpdate = async (AporteId) => {
         dialogAportes.showModal();
@@ -718,9 +919,111 @@
           }
         };
       };
+      // Función para enviar la solicitud POST
+      async function enviarAgenda(url, userId) {
+        try {
+          const res = await fetch(`/notas/${url}/${userId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          });
 
+          if (!res.ok) {
+            throw new Error('Hubo un problema con la entrega.');
+          }
+          fetchNotas();
+          alert(`¡La ${url} ha sido entregada correctamente!`);
+        } catch (error) {
+          console.error('Error al enviar la solicitud:', error);
+          alert('Ocurrió un error. Intenta nuevamente.');
+        }
+      }
+
+      // Agregar event listener para la agenda de entrega
+      agendaEntrega.addEventListener('click', async (e) => {
+        e.preventDefault();
+        console.log(userId);
+
+        const register = confirm('¿Estás seguro de entregar la agenda?');
+        if (!register) return;
+        await enviarAgenda('agenda', userId);
+      });
+
+      // Agregar event listener para el diplomado gratuito
+      diplomadoGratuito.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const register = confirm('¿Estás seguro de entregar el diplomado gratuito?');
+        if (!register) return;
+        await enviarAgenda('diplomado', userId);
+      });
+
+      $("#openDialogButton").addEventListener("click", function () {
+        $("#personalDataDialog").showModal();
+      });
+
+      $("#closeDialogButton").addEventListener("click", function () {
+        $("#personalDataDialog").close();
+      });
+      cancelarAporte.addEventListener('click', () => dialogAportes.close());
+      button.addEventListener('click', () => dialog.showModal());
+      function closeModal() {
+        update.close(); // Cierra el modal
+      }
+      function closeDialog() {
+        dialog.close();
+      }
+
+      function calcularMeses() {
+        const mesIni = parseInt(mesInicial.value);
+        const anoIni = parseInt(anoInicial.value);
+        const mesFin = parseInt(mesFinal.value);
+        const anoFin = parseInt(anoFinal.value);
+
+        // Validación de fecha inicial no mayor a la fecha final
+        const fechaIni = new Date(anoIni, mesIni - 1, 1); // El mes es 0-based en JavaScript
+        const fechaFin = new Date(anoFin, mesFin - 1, 1);
+
+        if (fechaIni > fechaFin) {
+          alert("La fecha inicial no puede ser mayor a la fecha final.");
+          return;
+        }
+
+        // Calcular la diferencia en meses
+        const diffMeses = (anoFin - anoIni) * 12 + (mesFin - mesIni) + 1;
+
+        // Asegurarse de que no sea un valor negativo
+        inputMeses.value = diffMeses >= 0 ? diffMeses : 0;
+        $("#monto").value = diffMeses * 20;
+      }
+      // Asignar eventos de cambio a los selects
+      mesInicial.addEventListener('change', sincronizarFechas, calcularMeses);
+      anoInicial.addEventListener('change', sincronizarFechas, calcularMeses);
+      mesFinal.addEventListener('change', calcularMeses);
+      anoFinal.addEventListener('change', calcularMeses);
+
+      // Llamar a la función al cargar para calcular de inmediato con las opciones por defecto
+      function sincronizarFechas() {
+        const mesIni = parseInt(mesInicial.value);
+        const anoIni = parseInt(anoInicial.value);
+        const mesFin = parseInt(mesFinal.value);
+        const anoFin = parseInt(anoFinal.value);
+
+        // Sincronizar el año y mes final con los valores seleccionados en inicial
+        if (anoIni > anoFin || (anoIni === anoFin && mesIni > mesFin)) {
+          anoFinal.value = anoIni;
+          mesFinal.value = mesIni;
+        }
+        if (anoIni > anoFin || (anoIni === anoFin && mesIni > mesFin)) {
+          anoIni.value = anoFin;
+          mesIni.value = mesFin;
+        }
+        // Llamar a la función para recalcular los meses
+        calcularMeses();
+      }
       // Inicializar la carga de los datos
       fetchData();
+      fetchNotas();
     });
   </script>
 

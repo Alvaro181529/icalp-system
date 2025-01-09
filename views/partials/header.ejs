@@ -1,89 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
-    />
-    <title><%= title %></title>
-  </head>
-  <body>
-    <nav>
-      <a href="/">Home</a>
-      <a href="#">ICALP</a>
-      <a href="#">Noticias</a>
-      <a href="#">Documentos</a>
-      <a href="#">Postgrado</a>
-      <a href="#">Mapa juridico</a>
-      <a href="#">Contactenos</a>
-      <% if (user) { %>
-        <a href="/configuracion">Configuracion</a>
-        <button id="cerrar">Cerrar sesión</button>
-        <h2>Bienvenido, <%= user.correo %></h2>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+  <title>
+    <%= title %>
+  </title>
+</head>
+
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="#">ICALP</a>
+    <a href="#">Noticias</a>
+    <a href="#">Documentos</a>
+    <a href="#">Postgrado</a>
+    <a href="#">Mapa juridico</a>
+    <a href="#">Contactenos</a>
+    <% if (user) { %>
+      <button id="cerrar">Cerrar sesión</button>
+      <h2>Bienvenido, <%= user.correo %>
+      </h2>
       <% } else { %>
         <a href="/login"> <button>Iniciar sesión</button></a>
         <h2>Esta es la página de inicio</h2>
-      <% } %>
-    </nav>
-    
-    <% if (user) { %>
-      <aside>
-        <h3>Reportes</h3>
-        <details>
-          <summary>Colegiados</summary>
-          <ul>
-            <li><a href="/colegiados">Listado de Colegiados</a></li>
-            <li><a href="/colegiado/dia">Colegiados al día</a></li>
-            <li><a href="/aportes-anulados">Anulación de aportes</a></li>
-          </ul>
-        </details>
-        <details>
-          <summary>Reportes</summary>
-          <ul>
-            <li><a href="/aportes">Reporte de Aportes</a></li>
-            <li><a href="/aporte-cobrador">Reportes mensuales por cobrador</a></li>
-            <li><a href="/aporte-mensual">Reportes mensuales</a></li>
-          </ul>
-        </details>
-        <details>
-          <summary>Colegiados por año</summary>
-          <ul>
-            <li><a href="/colegiado/gestion">Lista de Colegiados por fecha de inscripción por año</a></li>
-            <li><a href="/colegiado/provicion">Lista de colegiados por título en provisión nacional por año</a></li>
-            <li><a href="/talonario">Reporte de talonarios</a></li>
-          </ul>
-        </details>
-      </aside>
+        <% } %>
+  </nav>
+
+  <% if (user) { %>
+    <aside>
+      <h3>Reportes</h3>
+      <details>
+        <summary>Colegiados</summary>
+        <ul>
+          <li><a href="/colegiados">Listado de Colegiados</a></li>
+          <li><a href="/colegiado/dia">Colegiados al día</a></li>
+          <li><a href="/aportes-anulados">Anulación de aportes</a></li>
+        </ul>
+      </details>
+      <details>
+        <summary>Reportes</summary>
+        <ul>
+          <li><a href="/aportes">Reporte de Aportes</a></li>
+          <li><a href="/aporte-cobrador">Reportes mensuales por cobrador</a></li>
+          <li><a href="/aporte-mensual">Reportes mensuales</a></li>
+        </ul>
+      </details>
+      <details>
+        <summary>Colegiados por año</summary>
+        <ul>
+          <li><a href="/colegiado/gestion">Lista de Colegiados por fecha de inscripción por año</a></li>
+          <li><a href="/colegiado/provicion">Lista de colegiados por título en provisión nacional por año</a></li>
+          <li><a href="/talonario">Reporte de talonarios</a></li>
+        </ul>
+      </details>
+      <details>
+        <summary>Configuracion</summary>
+        <ul>
+          <li> <a href="/usuarios">Registro de usuarios</a></li>
+          <li> <a href="/cobradores">Registro de cobradores</a></li>
+          <li> <a href="/paginas">Creacion de paginas</a></li>
+          <li> <a href="/historial">Historial de cambios</a></li>
+        </ul>
+      </details>
+    </aside>
     <% } %>
 
-    <hr />
+      <hr />
 
-    <script defer>
-      const cerrarButton = document.getElementById("cerrar");
-      if (cerrarButton) {
-        cerrarButton.addEventListener("click", () => {
-          fetch("/logout", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          })
-            .then((response) => {
-              if (response.ok) {
-                window.location.href = "/"; // Redirige a la página principal o a la página de inicio de sesión
-              } else {
-                alert("Error al cerrar sesión");
-              }
+      <script defer>
+        const cerrarButton = document.getElementById("cerrar");
+        if (cerrarButton) {
+          cerrarButton.addEventListener("click", () => {
+            fetch("/logout", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
             })
-            .catch((error) => {
-              console.error("Error:", error);
-              alert("Ocurrió un error al intentar cerrar sesión");
-            });
-        });
-      }
-    </script>
-  </body>
+              .then((response) => {
+                if (response.ok) {
+                  window.location.href = "/"; // Redirige a la página principal o a la página de inicio de sesión
+                } else {
+                  alert("Error al cerrar sesión");
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                alert("Ocurrió un error al intentar cerrar sesión");
+              });
+          });
+        }
+      </script>
+</body>
+
 </html>

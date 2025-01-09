@@ -57,9 +57,21 @@
         if (data.length > 0) {
           data.forEach((item) => {
             const row = document.createElement("tr");
+            const fecha = new Date(item.FechaAporte);
+            const fechaFormateada = fecha.toLocaleDateString("es-ES", {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+            const horaFormateada = fecha.toLocaleTimeString("es-ES", {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true
+            });
             // Construir la fila
             row.innerHTML = `
-          <td>${item.FechaAporte || "No disponible"}</td>
+          <td><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
           <td>${item.Matricula.toString().padStart(5, "0") || "No disponible"}</td>
           <td>${item.Nombres || "No disponible"}</td>
           <td>${item.Apellidos || "No disponible"}</td>

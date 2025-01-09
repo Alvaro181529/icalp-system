@@ -35,19 +35,19 @@
     <form id="personalDataForm">
       <h3>Datos personales</h3>
       <label for="matricula">Matrícula:</label>
-      <input type="text" id="matricula" name="matricula" required>
+      <input type="text" id="matricula" name="matricula">
 
       <label for="matriculaConalab">Matrícula Conalab:</label>
-      <input type="text" id="matriculaConalab" name="matriculaConalab" required>
+      <input type="text" id="matriculaConalab" name="matriculaConalab">
 
       <label for="nombres">Nombres:</label>
-      <input type="text" id="nombres" name="nombres" required>
+      <input type="text" id="nombres" name="nombres">
 
       <label for="paterno">Apellido Paterno:</label>
-      <input type="text" id="paterno" name="paterno" required>
+      <input type="text" id="paterno" name="paterno">
 
       <label for="materno">Apellido Materno:</label>
-      <input type="text" id="materno" name="materno" required>
+      <input type="text" id="materno" name="materno">
 
       <label for="telefonoOficina">Teléfono Oficina:</label>
       <input type="tel" id="telefonoOficina" name="telefonoOficina">
@@ -199,9 +199,9 @@
       <label for="curriculumVitae">Curriculum Vitae:</label>
       <input type="text" id="curriculumVitae" name="curriculumVitae">
       <label for="estado">Estado:</label>
-      <select name="estado" id="">
-        <option value="">Activos</option>
-        <option value="">Inactivos</option>
+      <select name="estado" id="estado">
+        <option value="Activo">Activos</option>
+        <option value="Inactivo">Inactivos</option>
       </select>
       <button type="submit">Enviar</button>
       <button type="button" id="closeDialogButton">Cerrar</button>
@@ -214,6 +214,7 @@
       const prevPageButton = $("#prev-page");
       const nextPageButton = $("#next-page");
       const currentPageSpan = $("#current-page");
+      const formRegistro = $("#personalDataForm");
       const itemPage = $("#item-page");
       const search = $("#search");
       const searchForm = $("#search-form");
@@ -272,6 +273,55 @@
           alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
         }
       };
+      formRegistro.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(formRegistro);
+        const dataObject = {};
+        formData.forEach((value, key) => {
+          dataObject[key] = value;
+        });
+
+        const url = '/collegiate';
+
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataObject)
+          });
+
+          if (!response.ok) {
+            throw new Error("Error en la solicitud");
+          }
+
+          // Aquí imprimimos la respuesta en crudo para inspeccionarla
+          const textResponse = await response.text(); // Usamos .text() para obtener el contenido tal cual es
+          console.log("Respuesta del servidor:", textResponse); // Inspeccionamos lo que se devuelve
+
+          // Intentamos analizar la respuesta solo si parece un JSON válido
+          let data;
+          try {
+            data = JSON.parse(textResponse); // Intentamos hacer el parseo
+          } catch (error) {
+            throw new Error("La respuesta del servidor no es un JSON válido.");
+          }
+
+          if (data.success) {
+            alert("Registro exitoso");
+            formRegistro.reset();
+            document.getElementById("personalDataDialog").close();
+            fetchAndUpdateTable();
+          } else {
+            alert("Hubo un problema al registrar. Intenta nuevamente.");
+          }
+        } catch (error) {
+          console.error("Error al realizar la solicitud:", error);
+          alert("Hubo un problema al registrar. Intenta nuevamente.");
+        }
+      });
 
       // Ejecutar la búsqueda inmediatamente al cargar la página (con un valor vacío o por defecto)
       fetchAndUpdateTable("");

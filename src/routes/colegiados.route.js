@@ -10,6 +10,7 @@ router.get("/colegiado/provicion", colegiado.getColegiadosProvicion);
 router.get("/colegiado/:id", colegiado.getColegiado);
 // rutas para la api de colegiado
 router.get("/collegiate", colegiado.getCollegiates);
+router.get("/collegiate/:id/pdf", colegiado.getCollegiatesPdf);
 router.get("/collegiate/day", colegiado.getCollegiateByDay);
 router.get("/collegiate/years", colegiado.getCollegiateByYears);
 router.get("/collegiate/provition", colegiado.getCollegiateByProvition);

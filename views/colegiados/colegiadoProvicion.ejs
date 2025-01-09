@@ -1,84 +1,99 @@
 <%- include('../partials/header', { title, user }) %>
 
-<h1>Colegiados por fecha de inscripción</h1>
+  <h1>Colegiados por fecha de inscripción</h1>
 
-<label for="year">Seleccione un año:</label>
-<select id="year" name="year">
-  <!-- Las opciones de años se generarán dinámicamente con JavaScript -->
-</select>
+  <label for="year">Seleccione un año:</label>
+  <select id="year" name="year">
+    <!-- Las opciones de años se generarán dinámicamente con JavaScript -->
+  </select>
 
-<h1>Gestión</h1>
-<table id="result-table">
-  <thead>
-    <tr>
-      <th>Fecha Provicion</th>
-      <th>Matricula</th>
-      <th>Nombre</th>
-      <th>Oficina</th>
-      <th>Correo</th>
-      <th>Nacimiento</th>
-      <th>Numero CI</th>
-      <th>Domicilio</th>
-      <th>Observacion</th>
-      <th>Cargo Actual</th>
-      <th>Especialidad Primaria</th>
-      <th>Situacion</th>
-      <th>Celular</th>
-      <th>Nacionalidad</th>
-      <th>Meses que debe</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Aquí se llenarán las filas con los resultados -->
-  </tbody>
-</table>
+  <h1>Gestión</h1>
+  <table id="result-table">
+    <thead>
+      <tr>
+        <th>Fecha Provicion</th>
+        <th>Matricula</th>
+        <th>Nombre</th>
+        <th>Oficina</th>
+        <th>Correo</th>
+        <th>Nacimiento</th>
+        <th>Numero CI</th>
+        <th>Domicilio</th>
+        <th>Observacion</th>
+        <th>Cargo Actual</th>
+        <th>Especialidad Primaria</th>
+        <th>Situacion</th>
+        <th>Celular</th>
+        <th>Nacionalidad</th>
+        <th>Meses que debe</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se llenarán las filas con los resultados -->
+    </tbody>
+  </table>
 
-<div id="pagination">
-  <button id="prev-page" disabled>Anterior</button>
-  <span id="current-page">Página 1</span>
-  <button id="next-page">Siguiente</button>
-  <p id="item-page"></p>
-</div>
+  <div id="pagination">
+    <button id="prev-page" disabled>Anterior</button>
+    <span id="current-page">Página 1</span>
+    <button id="next-page">Siguiente</button>
+    <p id="item-page"></p>
+  </div>
 
-<script defer>
-  const $ = (el) => document.querySelector(el);
-  const prevPageButton = $("#prev-page");
-  const nextPageButton = $("#next-page");
-  const currentPageSpan = $("#current-page");
-  const itemPage = $("#item-page");
-  const selectYear = $("#year");
-  const resultTableBody = $("#result-table tbody");
+  <script defer>
+    const $ = (el) => document.querySelector(el);
+    const prevPageButton = $("#prev-page");
+    const nextPageButton = $("#next-page");
+    const currentPageSpan = $("#current-page");
+    const itemPage = $("#item-page");
+    const selectYear = $("#year");
+    const resultTableBody = $("#result-table tbody");
 
-  let page = 1;
-  let totalPages = 1; // Se inicializa correctamente
-  let year = new Date().getFullYear(); // Año actual
-  
-  // Obtener el año actual
-  const currentYear = new Date().getFullYear();
-  const startYear = 2000;  // Año de inicio
-  const endYear = currentYear;  // Año final (el año actual)
+    let page = 1;
+    let totalPages = 1; // Se inicializa correctamente
+    let year = new Date().getFullYear(); // Año actual
 
-  // Crear las opciones de años dinámicamente
-  for (let year = startYear; year <= endYear; year++) {
-    const option = document.createElement("option");
-    option.value = year;
-    option.textContent = year;
-    selectYear.appendChild(option);
-  }
+    // Obtener el año actual
+    const currentYear = new Date().getFullYear();
+    const startYear = 2000;  // Año de inicio
+    const endYear = currentYear;  // Año final (el año actual)
 
-  // Establecer el valor seleccionado por defecto al año actual
-  selectYear.value = currentYear;
+    // Crear las opciones de años dinámicamente
+    for (let year = startYear; year <= endYear; year++) {
+      const option = document.createElement("option");
+      option.value = year;
+      option.textContent = year;
+      selectYear.appendChild(option);
+    }
 
-  // Función para crear una fila de la tabla
-  const createRow = (item) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${item.FechaProvisionNacional || 'No disponible'}</td>
+    // Establecer el valor seleccionado por defecto al año actual
+    selectYear.value = currentYear;
+
+    // Función para crear una fila de la tabla
+    const createRow = (item) => {
+      const row = document.createElement("tr");
+      const fecha = new Date(item.FechaProvisionNacional);
+      const [año, mes, día] = [new Date(item.FechaNacimiento).getFullYear(), new Date(item.FechaNacimiento).getMonth() + 1, new Date(item.FechaNacimiento).getDate()];
+      const fechaNacimiento = `${día.toString().padStart(2, '0')}/${mes.toString().padStart(2, '0')}/${año}`;
+
+      const fechaFormateada = fecha.toLocaleDateString("es-ES", {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      const horaFormateada = fecha.toLocaleTimeString("es-ES", {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+      row.innerHTML = `
+      <td><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
       <td>${item.Matricula.toString().padStart(5, "0") || 'No disponible'}</td>
       <td>${item.Nombre || 'No disponible'}</td>
       <td>${item.DireccionOficina || 'No disponible'}</td>
       <td>${item.Correo || 'No disponible'}</td>
-      <td>${item.FechaNacimiento || 'No disponible'}</td>
+      <td>${fechaNacimiento || 'No disponible'}</td>
       <td>${item.NumeroCI || 'No disponible'}</td>
       <td>${item.DireccionDomicilio || 'No disponible'}</td>
       <td>${item.Observacion || 'No disponible'}</td>
@@ -89,75 +104,75 @@
       <td>${item.Nacionalidad || 'No disponible'}</td>
       <td style="color: ${item.MesesDeuda > 0 ? 'crimson' : 'inherit'}">${item.MesesDeuda}</td>
     `;
-    return row;
-  };
+      return row;
+    };
 
-  // Función para actualizar la tabla con los datos
-  const updateTable = (data) => {
-    resultTableBody.innerHTML = ''; // Limpiar la tabla
+    // Función para actualizar la tabla con los datos
+    const updateTable = (data) => {
+      resultTableBody.innerHTML = ''; // Limpiar la tabla
 
-    if (data.length > 0) {
-      data.forEach(item => {
-        resultTableBody.appendChild(createRow(item)); // Usar la función createRow
-      });
-    } else {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td colspan="14">No se encontraron resultados</td>`;
-      resultTableBody.appendChild(row);
-    }
-
-    // Actualizar el estado de los botones de paginación
-    prevPageButton.disabled = page === 1;
-    nextPageButton.disabled = page === totalPages;
-    currentPageSpan.textContent = `Página ${page}`;
-    itemPage.textContent = 'total de paginas: ' + totalPages;
-  };
-
-  // Función para obtener los datos y actualizar la tabla
-  const fetchData = async () => {
-    const url = `/collegiate/provition?year=${year}&page=${page}`; // Incluir página en la URL
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Error al obtener los datos");
-      }
-      const res = await response.json();
-      if (Array.isArray(res.users)) {
-        totalPages = res.pages; // Actualizar el total de páginas
-        updateTable(res.users); // Actualizar la tabla con los usuarios
+      if (data.length > 0) {
+        data.forEach(item => {
+          resultTableBody.appendChild(createRow(item)); // Usar la función createRow
+        });
       } else {
-        console.error("La estructura de la respuesta no es válida");
+        const row = document.createElement("tr");
+        row.innerHTML = `<td colspan="14">No se encontraron resultados</td>`;
+        resultTableBody.appendChild(row);
       }
-    } catch (error) {
-      console.error("Hubo un problema con la solicitud fetch:", error);
-    }
-  };
 
-  // Ejecutar la función al cargar la página con el año por defecto
-  fetchData();
+      // Actualizar el estado de los botones de paginación
+      prevPageButton.disabled = page === 1;
+      nextPageButton.disabled = page === totalPages;
+      currentPageSpan.textContent = `Página ${page}`;
+      itemPage.textContent = 'total de paginas: ' + totalPages;
+    };
 
-  // Agregar un evento al select para actualizar la tabla cuando cambie el año
-  selectYear.addEventListener("change", function () {
-    year = selectYear.value;  // Obtener el año seleccionado
-    page = 1; // Volver a la primera página cuando se cambie el año
-    fetchData();  // Actualizar la tabla con el nuevo año
-  });
+    // Función para obtener los datos y actualizar la tabla
+    const fetchData = async () => {
+      const url = `/collegiate/provition?year=${year}&page=${page}`; // Incluir página en la URL
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+        const res = await response.json();
+        if (Array.isArray(res.users)) {
+          totalPages = res.pages; // Actualizar el total de páginas
+          updateTable(res.users); // Actualizar la tabla con los usuarios
+        } else {
+          console.error("La estructura de la respuesta no es válida");
+        }
+      } catch (error) {
+        console.error("Hubo un problema con la solicitud fetch:", error);
+      }
+    };
 
-  // Evento para cambiar a la página anterior
-  prevPageButton.addEventListener("click", function () {
-    if (page > 1) {
-      page--;
-      fetchData();
-    }
-  });
+    // Ejecutar la función al cargar la página con el año por defecto
+    fetchData();
 
-  // Evento para cambiar a la página siguiente
-  nextPageButton.addEventListener("click", function () {
-    if (page < totalPages) {
-      page++;
-      fetchData();
-    }
-  });
-</script>
+    // Agregar un evento al select para actualizar la tabla cuando cambie el año
+    selectYear.addEventListener("change", function () {
+      year = selectYear.value;  // Obtener el año seleccionado
+      page = 1; // Volver a la primera página cuando se cambie el año
+      fetchData();  // Actualizar la tabla con el nuevo año
+    });
 
-<%- include('../partials/footer') %>
+    // Evento para cambiar a la página anterior
+    prevPageButton.addEventListener("click", function () {
+      if (page > 1) {
+        page--;
+        fetchData();
+      }
+    });
+
+    // Evento para cambiar a la página siguiente
+    nextPageButton.addEventListener("click", function () {
+      if (page < totalPages) {
+        page++;
+        fetchData();
+      }
+    });
+  </script>
+
+  <%- include('../partials/footer') %>

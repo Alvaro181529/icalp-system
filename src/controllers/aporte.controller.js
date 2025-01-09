@@ -10,7 +10,7 @@ export class AporteController {
   getAportesNull = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
-    res.render("aportes/anulado", { title: "Aportes anolado", user });
+    res.render("aportes/anulado", { title: "Aportes anulado", user });
   };
   getAportesMensual = async (req, res) => {
     const { user } = req.session;
@@ -142,12 +142,13 @@ export class AporteController {
     const { id } = req.params;
     const { motivo } = req.body;
     const { user } = req.session;
-    console.log(id, motivo, user ?? "No hay usuario");
     const result = await aporte.patchAporteNull(id, user.correo, motivo);
     res.json(result);
   };
   postContributions = async (req, res) => {
-    res.json({ message: "Aporte creado" });
+    const {user} = req.session; 
+    const result = await aporte.postAporte(req.body,user.correo);
+    res.json(result);
   };
   patchContributions = async (req, res) => {
     res.json({ message: "Aporte actualizado" });

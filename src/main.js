@@ -5,7 +5,7 @@ import morgan from "morgan";
 import path from "node:path";
 import cookieParser from "cookie-parser";
 import jwt from "jsonwebtoken";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 import { router as homeRouter } from "./routes/home.route.js";
 import { router as pageRouter } from "./routes/pages.route.js";
 import { router as authRouter } from "./routes/auth.route.js";
@@ -15,6 +15,7 @@ import { router as configRouter } from "./routes/config.route.js";
 import { router as userRouter } from "./routes/usuarios.route.js";
 import { router as talonarioRouter } from "./routes/talonario.route.js";
 import { router as historialRouter } from "./routes/historial.route.js";
+import { router as notaRouter } from "./routes/nota.route.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -50,6 +51,7 @@ app.use(authRouter);
 app.use(homeRouter);
 app.use(pageRouter);
 app.use(historialRouter);
+app.use(notaRouter);
 
 //statics
 app.use("/public", express.static(path.join(__dirname, "public")));
@@ -57,8 +59,12 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //not found Page
 app.use((req, res) => {
-  const {user} = req.session
-  res.status(404).render("404", { message: "Pagina no encontrada", title:"Pagina no encontrada", user}); // Render a custom 404 page
+  const { user } = req.session;
+  res.status(404).render("404", {
+    message: "Pagina no encontrada",
+    title: "Pagina no encontrada",
+    user,
+  }); // Render a custom 404 page
 });
 //puerto
 app.listen(PORT, () => {

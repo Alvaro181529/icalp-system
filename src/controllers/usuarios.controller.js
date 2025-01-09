@@ -17,14 +17,12 @@ export class UsersController {
   getUser = async (req, res) => {
     const { id } = req.params;
     const result = user.getUser(id);
-    console.log(result);
     res.json(result);
   };
   postUsers = async (req, res) => {};
   patchRols = async (req, res) => {
     const { id } = req.params;
     const { rols } = req.body;
-    console.log(id, rols);
     const result = await user.patchRols(id, rols);
     res.json(result);
   };
@@ -41,7 +39,6 @@ export class UsersController {
         .json({ message: "No se puede realizar la eliminacion del usuario" });
     }
     const result = await user.removeUsers(id);
-    console.log(result);
     return res.json(result);
   };
 }

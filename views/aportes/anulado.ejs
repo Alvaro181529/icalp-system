@@ -1,6 +1,8 @@
 <%- include('../partials/header') %>
 
-  <h1><%= title %></h1>
+  <h1>
+    <%= title %>
+  </h1>
   <h2>Reporte aporte</h2>
 
   <table id="result-table">
@@ -36,7 +38,7 @@
       const currentPageSpan = $("#current-page");
       const itemPage = $("#item-page");
       const resultTableBody = $("#result-table tbody");
-      
+
       let page = 1; // Página actual
       let totalPages = 0; // Total de páginas
 
@@ -50,6 +52,18 @@
 
       // Función para generar la fila de la tabla
       const createTableRow = (item) => {
+        const fecha = new Date(item.Fecha);
+        const fechaFormateada = fecha.toLocaleDateString("es-ES", {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        const horaFormateada = fecha.toLocaleTimeString("es-ES", {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: true
+        });
         const row = document.createElement("tr");
         row.innerHTML = `
           <td>${item.Usuario || "No disponible"}</td>
@@ -59,7 +73,7 @@
           <td><a href='/colegiado/${item.ColegiadoId}'>${item.Nombre || 'No disponible'}</a></td>
           <td>${item.Observacion || "No disponible"}</td>
           <td>${item.Motivo || "No disponible"}</td>
-          <td>${item.Fecha || "No disponible"}</td>
+          <td><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
         `;
         return row;
       };
@@ -121,4 +135,4 @@
     });
   </script>
 
-<%- include('../partials/footer') %>
+  <%- include('../partials/footer') %>

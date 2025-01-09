@@ -189,8 +189,9 @@
                     if (response.ok) {
                         errorMessage.textContent = "Registrado correctamente";
                         errorMessage.style.color = "green";
-                        setTimeout(closeDialog, 2000);
-                        formCreate.reset();
+                        dialog.close()
+                        fetchRoles();
+                        fetchAndUpdateTable("");
                     } else {
                         errorMessage.style.color = "red";
                         errorMessage.textContent = data.message || "Hubo un error en el registro.";
@@ -272,7 +273,7 @@
                             },
                             body: JSON.stringify({ rols: selectedRoles }) // Enviamos los roles seleccionados
                         });
-             
+
                         const data = await response.json();
                         console.log(data);
                         if (response.ok) {
