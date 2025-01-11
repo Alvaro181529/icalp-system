@@ -21,7 +21,6 @@ export class HomeController {
       const result = files.filter((file) =>
         fs.statSync(path.join(slidesDir, file)).isFile()
       );
-      console.log(result);
       res.render("index", { title: "ICALP", user, result });
     });
   };

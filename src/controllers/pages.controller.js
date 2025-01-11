@@ -1,20 +1,78 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "url";
+import { PagesModel } from "../models/page.model.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const pages = new PagesModel();
 export class PagesController {
-  page = (req, res) => {
+  getBlogs = async (req, res) => {
+    const { user } = req.session;
+    if (!user) return res.redirect("/");
+    res.render("config/blog", { title: "Blog", user });
+  };
+  vistas = async (req, res) => {
+    const result = await pages.vistas();
+    console.log(result);
+    res.json(result);
+  };
+  view = async (req, res) => {
+    console.log(req.params);
     res.send("¡Hola, Mundo!");
   };
-  pages = (req, res) => {
+  //menu
+  menu = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  menuAdd = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  menuOne = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  menuUpdate = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  menuDelete = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  //page
+  pages = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  pagesOne = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  pagesAdd = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  pagesUpdate = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  pagesDelete = async (req, res) => {
     res.send("¡Hola, Mundo!");
   };
 
-  file = (req, res) => {
-    console.log(req.body); // Información del cuerpo de la solicitud
+  //consten
+  content = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  contentOne = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  contentAdd = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  contentUpdate = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+  contentDelete = async (req, res) => {
+    res.send("¡Hola, Mundo!");
+  };
+
+  file = async (req, res) => {
     //api
     if (req.file) {
       res.json({
@@ -25,7 +83,7 @@ export class PagesController {
       res.status(400).json({ message: "No se subió ningún archivo" });
     }
   };
-  getSlide = (req, res) => {
+  getSlide = async (req, res) => {
     const slidesDir = path.join(__dirname, "../uploads/slides");
     fs.readdir(slidesDir, (err, files) => {
       if (err) {
@@ -43,12 +101,10 @@ export class PagesController {
       });
     });
   };
-  deleteSlide = (req, res) => {
+  deleteSlide = async (req, res) => {
     const { filename } = req.params;
     const slidesDir = path.join(__dirname, "../uploads/slides");
     const filePath = path.join(slidesDir, filename);
-    console.log("Intentando eliminar el archivo:", filePath); 
-    // Verificar si el archivo existe usando fs.access (con callback)
     fs.access(filePath, fs.constants.F_OK, (err) => {
       if (err) {
         return res.status(404).json({

@@ -1,6 +1,6 @@
 <%- include('../partials/header', { title, user }) %>
   <div class="px-8 py-2">
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+       <div class="overflow-x-auto shadow-md sm:rounded-lg">
       <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
         <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
           <tr>
@@ -119,7 +119,7 @@
       <td class="px-6 py-3 text-wrap">${item.Situacion || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.Celular || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.Nacionalidad || 'No disponible'}</td>
-      <td class="px-6 py-3 text-wrap" style="color: ${item.MesesDeuda > 0 ? 'crimson' : 'inherit'}">${item.MesesDeuda}</td>
+      <td class="px-6 py-3 text-wrap" style="color: ${item.MesesDeuda > 0 ? 'crimson' : 'inherit'}">${item.MesesDeuda ?? "Registrado"}</td>
     `;
       return row;
     };

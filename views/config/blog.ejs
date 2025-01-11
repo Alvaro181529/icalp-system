@@ -1,132 +1,99 @@
 <%- include('../partials/header') %>
+    <div class="px-8 py-2">
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-    <h1>
-        <%= title %>
-    </h1>
+        <dialog id="editorDialog" class="p-8 max-w-4xl w-full max-h-screen mx-auto bg-white rounded-lg shadow-lg overflow-y-auto">
+            <form id="editorForm" class="space-y-4">
+                <div>
+                    <label for="menu" class="block text-gray-700 font-medium">Título Menu</label>
+                    <input type="text" name="menu" id="menu" placeholder="Ingrese título del menú" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
 
-    <!-- Diálogo para seleccionar archivo -->
-    <dialog id="file-upload-dialog">
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="blog" value="true">
-            <div>
-                <label for="file">Selecciona un archivo</label>
-                <input type="file" name="file" id="file" required>
-            </div>
-            <div>
-                <button type="button" id="close-dialog">Cerrar</button>
-                <button type="submit">Subir archivo</button>
-            </div>
-        </form>
-    </dialog>
+                <div>
+                    <label for="title" class="block text-gray-700 font-medium">Título</label>
+                    <input type="text" name="title" id="title" placeholder="Ingrese título del blog" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div id="editor-container" style="height: 200px;"></div>
+                <div class="flex justify-between gap-4">
+                    <button type="button" id="btn-close"
+                        class="px-6 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+                        Cerrar
+                    </button>
 
-    <!-- Botón para abrir el diálogo -->
-    <button id="open-dialog">Subir archivo</button>
-
-    <!-- Tabla donde se muestran los resultados -->
-    <div id="result-table-container">
-        <table id="result-table">
-            <thead>
-                <tr>
-                    <th>Imagen</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="result-table-body">
-                <!-- Los archivos se añadirán aquí dinámicamente -->
-            </tbody>
-        </table>
+                    <button type="submit"
+                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        Guardar contenido
+                    </button>
+                </div>
+            </form>
+        </dialog>
+        <button id="btn-modal"
+            class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+            Crear Blog
+        </button>
     </div>
-
-
-    <script defer>
-        const dialog = document.querySelector("#file-upload-dialog");
-        const openDialogButton = document.querySelector("#open-dialog");
-        const closeDialogButton = document.querySelector("#close-dialog");
-        const form = dialog.querySelector("form");
-        const resultTableBody = document.querySelector("#result-table-body");
-
-        // Función para actualizar la tabla de resultados
-        const updateTable = (files) => {
-            resultTableBody.innerHTML = "";  // Limpiar tabla
-            if (files.length > 0) {
-                files.forEach((file) => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                    <td><img src="/uploads/slides/${file}" alt="${file}" width="100" height="100"></td>
-                    <td><button data-file="${file}" class="delete-btn">Eliminar</button></td>
-                `;
-                    resultTableBody.appendChild(row);
-                });
-            } else {
-                resultTableBody.innerHTML = `<tr><td colspan="2">No se encontraron archivos</td></tr>`;
-            }
-        };
-
-        // Función para obtener los archivos y actualizar la tabla
-        const fetchAndUpdateTable = async () => {
-            const url = "/upload/slide";
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data?.files && Array.isArray(data.files)) {
-                    updateTable(data.files);
-                } else {
-                    alert("Hubo un problema con los resultados. Intenta nuevamente.");
-                }
-            } catch (error) {
-                console.error(error);
-                alert("Error al obtener los archivos.");
-            }
-        };
-
-        // Manejo de la subida de archivo
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();  // Evitar el envío tradicional del formulario
-            const formData = new FormData(form);  // Crear el FormData con los datos del formulario
-
-            try {
-                // Enviar la petición POST con el FormData
-                const response = await fetch(form.action, {
-                    method: form.method,
-                    body: formData,
-                });
-
-                if (!response.ok) {
-                    throw new Error("Error al subir archivo");
-                }
-
-                alert("Archivo subido correctamente");
-                dialog.close();  // Cerrar el diálogo después de la subida
-                fetchAndUpdateTable();  // Actualizar la tabla con los nuevos archivos
-            } catch (error) {
-                console.error("Error al subir archivo:", error);
-                alert("Hubo un problema al subir el archivo. Intenta nuevamente.");
-            }
-        });
-
-        // Mostrar el diálogo cuando se hace clic en "Subir archivo"
-        openDialogButton.addEventListener("click", () => {
+    <script>
+        const $ = (el) => document.querySelector(el);
+        const formCreate = $("#editorForm");
+        const btnCrear = $("#btn-modal");
+        const btnClose = $("#btn-close");
+        const dialog = $("#editorDialog");
+        btnCrear.addEventListener("click", () => {
             dialog.showModal();
         });
-
-        // Cerrar el diálogo
-        closeDialogButton.addEventListener("click", () => {
+        btnClose.addEventListener("click", () => {
             dialog.close();
         });
-
-        // Eliminar archivo (si es necesario)
-        resultTableBody.addEventListener("click", async (e) => {
-            if (e.target && e.target.matches("button.delete-btn")) {
-                const fileName = e.target.dataset.file;
-                const response = await fetch(`/upload/${fileName}`, {
-                    method: "DELETE",
-                });
-                fetchAndUpdateTable()
-                alert(`Archivo ${fileName} eliminado.`); // Cambia esto por tu lógica de eliminación
+        // Inicializar Quill en el contenedor
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',  // Tema de Quill
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    [{ 'align': [] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['link', 'image', 'video'],
+                    ['blockquote', 'code-block'],
+                    [{ 'script': 'sub' }, { 'script': 'super' }],
+                ]
             }
         });
 
-        // Cargar los archivos y actualizar la tabla al cargar la página
-        document.addEventListener("DOMContentLoaded", fetchAndUpdateTable);
+        formCreate?.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(formCreate);
+            const menu = formData.get('menu');
+            const title = formData.get('title');
+            var content = quill.root.innerHTML;
+            const data = {
+                menu,
+                title,
+                content
+            }
+            console.log(data)
+            fetch('/guardar-contenido', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)  // Enviar el contenido como JSON
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Contenido guardado con éxito');
+                })
+                .catch(error => {
+                    console.error('Error al guardar contenido:', error);
+                });
+        });
     </script>
-     <%- include('../partials/footer',{user}) %>
+
+    </html>
+
+
+    <%- include('../partials/footer',{user}) %>
