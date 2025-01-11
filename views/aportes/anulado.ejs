@@ -1,33 +1,47 @@
 <%- include('../partials/header') %>
 
-  <h1>
-    <%= title %>
-  </h1>
-  <h2>Reporte aporte</h2>
+  <div class="px-8 py-2">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+        <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+          <tr>
+            <th class="px-4 py-3">Usuario</th>
+            <th class="px-4 py-3">Matricula</th>
+            <th class="px-4 py-3">Talonario</th>
+            <th class="px-4 py-3">Recibo</th>
+            <th class="px-4 py-3">Colegiado</th>
+            <th class="px-4 py-3">Observacion</th>
+            <th class="px-4 py-3">Motivo</th>
+            <th class="px-4 py-3">Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+      </table>
+    </div>
+    <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+      <div>
+        <span class="text-sm text-gray-700">
+          Mostrando
+          <span id="start-item" class="font-semibold text-gray-900">
+            <span id="current-page">Página 1</span> de
+          </span>
+          <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"> </span>
 
-  <table id="result-table">
-    <thead>
-      <tr>
-        <th>Usuario</th>
-        <th>Matricula</th>
-        <th>Talonario</th>
-        <th>Recibo</th>
-        <th>Colegiado</th>
-        <th>Observacion</th>
-        <th>Motivo</th>
-        <th>Fecha</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí se llenarán las filas con los resultados -->
-    </tbody>
-  </table>
-
-  <div id="pagination">
-    <button id="prev-page" disabled>Anterior</button>
-    <span id="current-page">Página 1</span>
-    <button id="next-page">Siguiente</button>
-    <p id="item-page"></p>
+        </span>
+      </div>
+      <div class="inline-flex mt-2 xs:mt-0">
+        <button id="prev-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800  rounded-s hover:bg-blue-900  disabled:opacity-50 disabled:cursor-not-allowed">
+          Anterior
+        </button>
+        <button id="next-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900">
+          Siguiente
+        </button>
+      </div>
+    </div>
   </div>
 
   <script defer>
@@ -66,14 +80,14 @@
         });
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${item.Usuario || "No disponible"}</td>
-          <td>${(item.Matricula || "No disponible").toString().padStart(5, "0")}</td>
-          <td>${item.Talonario || "No disponible"}</td>
-          <td>${item.Recibo || "No disponible"}</td>
-          <td><a href='/colegiado/${item.ColegiadoId}'>${item.Nombre || 'No disponible'}</a></td>
-          <td>${item.Observacion || "No disponible"}</td>
-          <td>${item.Motivo || "No disponible"}</td>
-          <td><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
+          <td class="px-6 py-3 text-wrap">${item.Usuario || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap">${(item.Matricula || "No disponible").toString().padStart(5, "0")}</td>
+          <td class="px-6 py-3 text-wrap">${item.Talonario || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap">${item.Recibo || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap"><a href='/colegiado/${item.ColegiadoId}'>${item.Nombre || 'No disponible'}</a></td>
+          <td class="px-6 py-3 text-wrap">${item.Observacion || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap">${item.Motivo || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap"><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
         `;
         return row;
       };
@@ -135,4 +149,4 @@
     });
   </script>
 
-  <%- include('../partials/footer') %>
+  <%- include('../partials/footer',{user}) %>

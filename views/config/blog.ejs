@@ -1,0 +1,132 @@
+<%- include('../partials/header') %>
+
+    <h1>
+        <%= title %>
+    </h1>
+
+    <!-- Diálogo para seleccionar archivo -->
+    <dialog id="file-upload-dialog">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="blog" value="true">
+            <div>
+                <label for="file">Selecciona un archivo</label>
+                <input type="file" name="file" id="file" required>
+            </div>
+            <div>
+                <button type="button" id="close-dialog">Cerrar</button>
+                <button type="submit">Subir archivo</button>
+            </div>
+        </form>
+    </dialog>
+
+    <!-- Botón para abrir el diálogo -->
+    <button id="open-dialog">Subir archivo</button>
+
+    <!-- Tabla donde se muestran los resultados -->
+    <div id="result-table-container">
+        <table id="result-table">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="result-table-body">
+                <!-- Los archivos se añadirán aquí dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+
+    <script defer>
+        const dialog = document.querySelector("#file-upload-dialog");
+        const openDialogButton = document.querySelector("#open-dialog");
+        const closeDialogButton = document.querySelector("#close-dialog");
+        const form = dialog.querySelector("form");
+        const resultTableBody = document.querySelector("#result-table-body");
+
+        // Función para actualizar la tabla de resultados
+        const updateTable = (files) => {
+            resultTableBody.innerHTML = "";  // Limpiar tabla
+            if (files.length > 0) {
+                files.forEach((file) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                    <td><img src="/uploads/slides/${file}" alt="${file}" width="100" height="100"></td>
+                    <td><button data-file="${file}" class="delete-btn">Eliminar</button></td>
+                `;
+                    resultTableBody.appendChild(row);
+                });
+            } else {
+                resultTableBody.innerHTML = `<tr><td colspan="2">No se encontraron archivos</td></tr>`;
+            }
+        };
+
+        // Función para obtener los archivos y actualizar la tabla
+        const fetchAndUpdateTable = async () => {
+            const url = "/upload/slide";
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data?.files && Array.isArray(data.files)) {
+                    updateTable(data.files);
+                } else {
+                    alert("Hubo un problema con los resultados. Intenta nuevamente.");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error al obtener los archivos.");
+            }
+        };
+
+        // Manejo de la subida de archivo
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();  // Evitar el envío tradicional del formulario
+            const formData = new FormData(form);  // Crear el FormData con los datos del formulario
+
+            try {
+                // Enviar la petición POST con el FormData
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error("Error al subir archivo");
+                }
+
+                alert("Archivo subido correctamente");
+                dialog.close();  // Cerrar el diálogo después de la subida
+                fetchAndUpdateTable();  // Actualizar la tabla con los nuevos archivos
+            } catch (error) {
+                console.error("Error al subir archivo:", error);
+                alert("Hubo un problema al subir el archivo. Intenta nuevamente.");
+            }
+        });
+
+        // Mostrar el diálogo cuando se hace clic en "Subir archivo"
+        openDialogButton.addEventListener("click", () => {
+            dialog.showModal();
+        });
+
+        // Cerrar el diálogo
+        closeDialogButton.addEventListener("click", () => {
+            dialog.close();
+        });
+
+        // Eliminar archivo (si es necesario)
+        resultTableBody.addEventListener("click", async (e) => {
+            if (e.target && e.target.matches("button.delete-btn")) {
+                const fileName = e.target.dataset.file;
+                const response = await fetch(`/upload/${fileName}`, {
+                    method: "DELETE",
+                });
+                fetchAndUpdateTable()
+                alert(`Archivo ${fileName} eliminado.`); // Cambia esto por tu lógica de eliminación
+            }
+        });
+
+        // Cargar los archivos y actualizar la tabla al cargar la página
+        document.addEventListener("DOMContentLoaded", fetchAndUpdateTable);
+    </script>
+     <%- include('../partials/footer',{user}) %>

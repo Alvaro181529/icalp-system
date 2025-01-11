@@ -22,6 +22,7 @@ backups
 src/uploads/documentos/*
 src/uploads/imagenes/*
 src/uploads/slides/*
+src/uploads/blog/*
 # Coverage directory used by tools like istanbul
 coverage
 *.lcov

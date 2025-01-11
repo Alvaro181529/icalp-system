@@ -20,7 +20,10 @@ const storage = multer.diskStorage({
       if (req.body.slide) {
         // Si tiene la propiedad `slide`, lo guardamos en la carpeta "slides"
         cb(null, path.join(__dirname, "../uploads/slides"));
-      } else {
+      } else if (req.body.blog) {
+        // Si tiene la propiedad `slide`, lo guardamos en la carpeta "slides"
+        cb(null, path.join(__dirname, "../uploads/blog"));
+      }  else {
         // Si no tiene la propiedad `slide`, lo guardamos en la carpeta "imagenes"
         cb(null, path.join(__dirname, "../uploads/imagenes"));
       }

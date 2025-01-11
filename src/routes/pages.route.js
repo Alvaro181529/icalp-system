@@ -5,4 +5,6 @@ export const router = Router();
 const pages = new PagesController();
 router.get("/pages", pages.page);
 router.get("/pages/:id", pages.pages);
+router.get("/upload/slide", pages.getSlide);
 router.post("/upload", upload.single("file"), pages.file);
+router.delete("/upload/:filename",pages.deleteSlide);

@@ -1,40 +1,52 @@
 <%- include('../partials/header') %>
 
-    <h1>
-        <%= title %>
-    </h1>
+    <div class="px-8 py-2">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+                <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+                    <tr>
+                        <th class="px-4 py-3">Talonario</th>
+                        <th class="px-4 py-3">Recibos</th>
+                        <th class="px-4 py-3">Numeros</th>
+                        <th class="px-4 py-3">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se llenarán las filas con los resultados -->
+                </tbody>
+            </table>
+        </div>
+        <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+            <div>
+                <span class="text-sm text-gray-700">
+                    Mostrando
+                    <span id="start-item" class="font-semibold text-gray-900">
+                        <span id="current-page">Página 1</span> de
+                    </span>
+                    <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"> </span>
 
-    <h2>Reporte Talonario</h2>
-
-    <!-- Selector de Año -->
-    <!-- Tabla de Resultados -->
-    <table id="result-table">
-        <thead>
-            <tr>
-                <th>Talonario</th>
-                <th>Recibos</th>
-                <th>Numeros</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Aquí se llenarán las filas con los resultados -->
-        </tbody>
-    </table>
-
-    <!-- Paginación -->
-    <div id="pagination">
-        <button id="prev-page" disabled>Anterior</button>
-        <span id="current-page">Página 1</span>
-        <button id="next-page">Siguiente</button>
+                </span>
+            </div>
+            <div class="inline-flex mt-2 xs:mt-0">
+                <button id="prev-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800  rounded-s hover:bg-blue-900  disabled:opacity-50 disabled:cursor-not-allowed">
+                    Anterior
+                </button>
+                <button id="next-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900">
+                    Siguiente
+                </button>
+            </div>
+        </div>
     </div>
-
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
-            const resultTableBody = document.querySelector("#result-table tbody");
-            const prevPageButton = document.getElementById("prev-page");
-            const nextPageButton = document.getElementById("next-page");
-            const currentPageSpan = document.getElementById("current-page");
+            const $ = (el) => document.querySelector(el);
+            const resultTableBody = $("#result-table tbody");
+            const prevPageButton =$("#prev-page");
+            const nextPageButton =$("#next-page");
+            const currentPageSpan =$("#current-page");
+            const itemPage = $("#item-page");
 
             let page = 1;  // Página actual
             let totalPages = 23;  // Número total de páginas
@@ -47,12 +59,12 @@
                     data.forEach((item) => {
                         const row = document.createElement("tr");
                         row.innerHTML = `
-                        <td>${item.Talonario}</td>
-                        <td>(${item.Conteo} Recibos)
+                        <td class="px-6 py-3 text-wrap">${item.Talonario}</td>
+                        <td class="px-6 py-3 text-wrap">(${item.Conteo} Recibos)
                             <p>${item.Desde} - ${item.Hasta}</p>
                         </td>
-                        <td>${item.Numeros || "No disponible"}</td>
-                        <td>${item.Monto ? item.Monto.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 20 }) + " Bs" : "No disponible"}</td>
+                        <td class="px-6 py-3 text-wrap">${item.Numeros || "No disponible"}</td>
+                        <td class="px-6 py-3 text-wrap">${item.Monto ? item.Monto.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 20 }) + " Bs" : "No disponible"}</td>
                     `;
                         resultTableBody.appendChild(row);
                     });
@@ -65,6 +77,7 @@
                 // Actualizar el estado de los botones de paginación
                 prevPageButton.disabled = page === 1;
                 nextPageButton.disabled = page === totalPages;
+                itemPage.textContent = totalPages;
 
                 currentPageSpan.textContent = `Página ${page}`;
             };
@@ -81,7 +94,6 @@
                     }
 
                     const data = await response.json(); // Suponemos que la respuesta es un JSON
-
                     if (data && data.data) {
                         updateTable(data.data);
                         totalPages = data.totalPages; // Asignar el número total de páginas
@@ -116,4 +128,4 @@
         });
     </script>
 
-    <%- include('../partials/footer') %>
+    <%- include('../partials/footer',{user}) %>

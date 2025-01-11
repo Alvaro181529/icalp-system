@@ -1,20 +1,44 @@
 <%- include('../partials/header') %>
-
-<h1>Este es Login</h1>
-<form id="loginForm">
-  <input type="text" id="login-email" placeholder="Email" />
-  <input type="password" id="login-pass" placeholder="Contraseña" />
-  <button type="submit">Iniciar sesión</button>
-  <span></span>
-</form>
-<a href="register"> Registrar</a>
+<div class="min-h-screen flex items-center justify-center bg-gray-100 ">
+  <div class="max-w-4xl max-2xl:max-w-2xl w-full bg-white rounded-lg shadow-xl overflow-hidden">
+    <div class="flex flex-col md:flex-row">
+      <!-- Columna de la imagen -->
+      <div class="w-full md:w-1/2 bg-[#2C3E8C]/90">
+        <img src="/public/img/image.png" alt="Login Image" class="object-cover w-full h-full">
+      </div>
+      
+      <!-- Columna del formulario -->
+      <div class="w-full md:w-1/2 py-16 px-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">Iniciar sesión</h2>
+        <p class="text-gray-600 mb-8">Ingresa tus credenciales para acceder</p>
+        
+        <form id="loginForm" class="space-y-6">
+          <div>
+            <label for="login-email" class="text-sm font-medium text-gray-700 block mb-2">Email</label>
+            <input id="login-email" type="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="tu@email.com" required>
+          </div>
+          <div>
+            <label for="login-pass" class="text-sm font-medium text-gray-700 block mb-2">Contraseña</label>
+            <input id="login-pass" type="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="********" required>
+          </div>
+          <div>
+            <button type="submit" class="w-full bg-[#2C3E8C] text-white py-2 px-4 rounded-md hover:bg-[#1d2b69] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200">
+              Iniciar sesión
+            </button>
+          </div>
+        </form>
+        <span id="message"></span>
+      </div>
+    </div>
+  </div>
+</div>
 <script defer>
   // Función para seleccionar elementos
   const $ = (el) => document.querySelector(el);
 
   // Selección del formulario y el elemento span
   const loginForm = $("#loginForm");
-  const loginSpan = $("#loginForm span");
+  const loginSpan = $("#message");
 
   // Evento de submit
   loginForm?.addEventListener("submit", async (e) => {

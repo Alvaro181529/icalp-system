@@ -1,33 +1,56 @@
 <%- include('../partials/header', { title, user }) %>
-  <h1>Colegiado al dia</h1>
+  <div class="px-8">
+    <div class="flex items-center w-full py-2 ">
+      <form id="search-form" method="get" class="w-full flex items-center">
+        <input id="search" type="text" name="search" placeholder="Buscar por Matricula o Nombre"
+          class="w-full px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button id="search-button" type="submit"
+          class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Buscar
+        </button>
+      </form>
+    </div>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+        <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+          <tr>
+            <th class="px-4 py-3">Matricula</th>
+            <th class="px-4 py-3">Nombre</th>
+            <th class="px-4 py-3">Matricula Conalab</th>
+            <th class="px-4 py-3">Direccion Oficina</th>
+            <th class="px-4 py-3">Telefono Oficina</th>
+            <th class="px-4 py-3">Correo</th>
+            <th class="px-4 py-3">Utlima fecha de pago</th>
+            <th class="px-4 py-3">Deuda</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+      </table>
+    </div>
+    <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+      <div>
+        <span class="text-sm text-gray-700">
+          Mostrando
+          <span id="start-item" class="font-semibold text-gray-900">
+            <span id="current-page">Página 1</span> de
+          </span>
+          <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"> </span>
 
-  <form id="search-form">
-    <input id="search" type="search" placeholder="Buscar por Matricula o Nombre " />
-    <button id="search-button" type="submit">Buscar</button>
-  </form>
-
-  <table id="result-table">
-    <thead>
-      <tr>
-        <th>Matricula</th>
-        <th>Nombre</th>
-        <th>Matricula Conalab</th>
-        <th>Direccion Oficina</th>
-        <th>Telefono Oficina</th>
-        <th>Correo</th>
-        <th>Utlima fecha de pago</th>
-        <th>Deuda</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí se llenarán las filas con los resultados -->
-    </tbody>
-  </table>
-  <div id="pagination">
-    <button id="prev-page" disabled>Anterior</button>
-    <span id="current-page">Página 1</span>
-    <button id="next-page">Siguiente</button>
-    <p id="item-page"></p>
+        </span>
+      </div>
+      <div class="inline-flex mt-2 xs:mt-0">
+        <button id="prev-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800  rounded-s hover:bg-blue-900  disabled:opacity-50 disabled:cursor-not-allowed">
+          Anterior
+        </button>
+        <button id="next-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900">
+          Siguiente
+        </button>
+      </div>
+    </div>
   </div>
   <script defer>
     document.addEventListener("DOMContentLoaded", function () {
@@ -39,26 +62,28 @@
       const search = $("#search");
       const searchForm = $("#search-form");
       const resultTableBody = $("#result-table tbody");
-      let page = 1;  
+      let page = 1;
       const updateTable = (users, totalPages) => {
         resultTableBody.innerHTML = "";
         if (users.length > 0) {
           users.forEach((colegiado) => {
             const row = document.createElement("tr");
             row.innerHTML = `
-                  <td>${colegiado.Matricula.toString().padStart(5, "0")}</td>
-                  <td>${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno} </td>
-                  <td>${colegiado.MatriculaConalab || "No disponible"}</td>
-                  <td>${colegiado.DireccionOficina || "No disponible"}</td>
-                  <td>${colegiado.TelefonoOficina || "No disponible"}</td>
-                  <td>${colegiado.Correo || "No disponible"}</td>
-                  <td>
-                    ${colegiado.UtlimaFechaPago || "No disponible"}
-                  </td>
-                  <td>
-                    <p>${colegiado.MesesDeuda ? `${colegiado.MesesDeuda} Meses con deuda` : "Sin deuda"} </p>
-                    <a href="/colegiado/${colegiado.ColegiadoId}">Ver más</a>
-                  </td>
+       <td class="px-6 py-3 text-wrap">${colegiado.Matricula.toString().padStart(5, "0")}</td>
+<td class="px-6 py-3 text-wrap">${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno}</td>
+<td class="px-6 py-3 text-wrap">${colegiado.MatriculaConalab || "No disponible"}</td>
+<td class="px-6 py-3 text-wrap">${colegiado.DireccionOficina || "No disponible"}</td>
+<td class="px-6 py-3 text-wrap">${colegiado.TelefonoOficina || "No disponible"}</td>
+<td class="px-6 py-3 text-wrap">
+  ${colegiado.Correo ? `${colegiado.Correo.slice(0, 30)}${colegiado.Correo.length > 30 ? '...' : ''}` : "No disponible"}
+</td>
+<td class="py-3 text-wrap">
+  ${colegiado.UltimaFechaPago || "No disponible"}
+</td>
+<td class="px-6 py-3 text-wrap">
+  <p>${colegiado.MesesDeuda ? `${colegiado.MesesDeuda} Meses con deuda` : "Sin deuda"}</p>
+  <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" href="/colegiado/${colegiado.ColegiadoId}">Ver más</a>
+</td>
                 `;
             resultTableBody.appendChild(row);
           });
@@ -70,8 +95,8 @@
         // Actualizar el estado de los botones de paginación
         prevPageButton.disabled = page === 1;
         nextPageButton.disabled = page === totalPages;
-        currentPageSpan.textContent = `Página ${page}`;
-        itemPage.textContent = 'total de paginas: ' + totalPages;
+        currentPageSpan.textContent = `página ${page}`;
+        itemPage.textContent =  totalPages;
       };
 
       // Función para realizar la búsqueda y actualizar la tabla
@@ -131,4 +156,4 @@
     });
   </script>
 
-  <%- include('../partials/footer') %>
+  <%- include('../partials/footer',{user}) %>

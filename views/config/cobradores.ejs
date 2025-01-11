@@ -1,26 +1,23 @@
 <%- include('../partials/header') %>
+    <div class="px-8 py-2">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+                <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+                    <tr>
+                        <th class="px-6 py-3">Correo</th>
+                        <th class="px-6 py-3">Usuario</th>
+                        <th class="px-6 py-3">¿Está bloqueado?</th>
+                        <th class="px-6 py-3">Roles</th>
+                        <th class="px-6 py-3"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se llenarán las filas con los resultados -->
+                </tbody>
+            </table>
 
-    <h1>
-        <%= title %>
-    </h1>
-
-    <h2>Reporte mensual</h2>
-
-    <table id="result-table">
-        <thead>
-            <tr>
-                <th>Correo</th>
-                <th>Usuario</th>
-                <th>¿Está bloqueado?</th>
-                <th>Roles</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Aquí se llenarán las filas con los resultados -->
-        </tbody>
-    </table>
-
+        </div>
+    </div>
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
             const resultTableBody = document.querySelector("#result-table tbody");
@@ -33,15 +30,13 @@
                     data.forEach((item) => {
                         const row = document.createElement("tr");
                         row.innerHTML = `
-                        <td>${item.Email}</td>
-                        <td>${item.User}</td>
-                        <td>${item.IsLockedOut === 1 ?
+                        <td  class="px-6 py-3">${item.Email}</td>
+                        <td  class="px-6 py-3">${item.User}</td>
+                        <td  class="px-6 py-3">${item.IsLockedOut === 1 ?
                                 `<button class="${activarButton.slice(1)}" data-id="${item.UserId}">Activar</button>`
                                 : 'Activado'}</td>
                         <td>${item.Roles || 'Sin asignación'}</td>
-                        <td>
-                            asdasju
-                        </td>           
+                        <td  class="px-6 py-3"></td>           
                         `;
                         resultTableBody.appendChild(row);
                     });
@@ -84,4 +79,4 @@
         });
     </script>
 
-    <%- include('../partials/footer') %>
+    <%- include('../partials/footer',{user}) %>

@@ -1,0 +1,178 @@
+<%- include('../partials/header') %>
+    <div class="px-8 py-2">
+        <!-- Diálogo para seleccionar archivo -->
+        <dialog id="file-upload-dialog"
+            class="bg-gray-800 bg-opacity-50 items-center justify-center">
+            <div class="bg-white rounded-lg p-6 w-full sm:w-96">
+                <form action="/upload" method="POST" enctype="multipart/form-data" id="upload-form">
+                    <input type="hidden" name="slide" value="true">
+
+                    <h2 class="text-xl font-semibold text-center mb-4">Subir archivo</h2>
+
+                    <div class="mb-4">
+                        <label for="file" class="block text-lg font-medium text-gray-700">Selecciona un archivo</label>
+                        <input type="file" name="file" id="file" required
+                            class="mt-2 p-2 border border-gray-300 rounded-md w-full" accept="image/*">
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">Vista previa:</p>
+                        <div id="image-preview"
+                            class="mt-2 w-full h-48 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100">
+                            <p class="text-gray-500">No hay imagen seleccionada</p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between space-x-4">
+                        <button type="button" id="close-dialog"
+                            class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">
+                            Cerrar
+                        </button>
+                        <button type="submit"
+                            class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            Subir archivo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </dialog>
+
+        <!-- Botón para abrir el diálogo -->
+        <div class="flex flex-col justify-between items-center mt-4">
+            <button id="open-dialog" aria-label="Abrir diálogo para subir archivo"
+                class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                Subir archivo
+            </button>
+        </div>
+
+        <!-- Tabla donde se muestran los resultados -->
+        <div id="result-container" class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Aquí se agregarán las tarjetas de imágenes -->
+        </div>
+    </div>
+
+    <script defer>
+        const $ = (el) => document.querySelector(el);
+        const dialog = $("#file-upload-dialog");
+        const openDialogButton = $("#open-dialog");
+        const closeDialogButton = $("#close-dialog");
+        const form = $("form");
+        const resultTableBody = $("#result-container");
+        const fileInput = $("#file");
+        const imagePreview = $("#image-preview");
+
+        // Función para actualizar la tabla de resultados
+        const updateTable = (files) => {
+            resultTableBody.innerHTML = "";  // Limpiar tabla
+            if (files.length > 0) {
+                files.forEach((file) => {
+                    const card = document.createElement("div");
+                    card.classList.add("max-w-sm", "w-full", "rounded-lg", "overflow-hidden", "shadow-lg", "bg-white");
+
+                    card.innerHTML = `
+                    <img class="w-full h-48 object-cover" src="/uploads/slides/${file}" alt="${file}" width="100" height="100">
+                    <div class="px-4 py-2">
+                        <h3 class="font-semibold text-xl text-center text-gray-800">${file}</h3>
+                        <div class="flex flex-col justify-between items-center mt-4">
+                            <button class="delete-btn px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" data-file="${file}">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                    resultTableBody.appendChild(card);
+                });
+            } else {
+                resultTableBody.innerHTML = `<p>No se encontraron archivos</p>`;
+            }
+        };
+
+        // Función para obtener los archivos y actualizar la tabla
+        const fetchAndUpdateTable = async () => {
+            const url = "/upload/slide";
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data?.files && Array.isArray(data.files)) {
+                    updateTable(data.files);
+                } else {
+                    alert("Hubo un problema con los resultados. Intenta nuevamente.");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Error al obtener los archivos.");
+            }
+        };
+
+        // Manejo de la subida de archivo
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();  // Evitar el envío tradicional del formulario
+            const formData = new FormData(form);  // Crear el FormData con los datos del formulario
+
+            try {
+                // Enviar la petición POST con el FormData
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error("Error al subir archivo");
+                }
+
+                alert("Archivo subido correctamente");
+                dialog.close();  // Cerrar el diálogo después de la subida
+                form.reset(); // Limpiar formulario
+                imagePreview.innerHTML = `<p class="text-gray-500">No hay imagen seleccionada</p>`; // Limpiar vista previa
+                fetchAndUpdateTable();  // Actualizar la tabla con los nuevos archivos
+            } catch (error) {
+                console.error("Error al subir archivo:", error);
+                alert("Hubo un problema al subir el archivo. Intenta nuevamente.");
+            }
+        });
+
+        // Mostrar el diálogo cuando se hace clic en "Subir archivo"
+        openDialogButton.addEventListener("click", () => {
+            dialog.showModal();
+        });
+
+        // Cerrar el diálogo
+        closeDialogButton.addEventListener("click", () => {
+            dialog.close();
+            form.reset(); // Limpiar formulario al cerrar
+            imagePreview.innerHTML = `<p class="text-gray-500">No hay imagen seleccionada</p>`; // Limpiar vista previa
+        });
+
+        // Eliminar archivo
+        resultTableBody.addEventListener("click", async (e) => {
+            if (e.target && e.target.matches("button.delete-btn")) {
+                const fileName = e.target.dataset.file;
+                if (confirm(`¿Seguro que deseas eliminar el archivo ${fileName}?`)) {
+                    const response = await fetch(`/upload/${fileName}`, {
+                        method: "DELETE",
+                    });
+                    fetchAndUpdateTable();  // Actualiza la tabla después de eliminar
+                    alert(`Archivo ${fileName} eliminado.`);
+                }
+            }
+        });
+
+        // Vista previa de imagen
+        fileInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    imagePreview.innerHTML = `<img src="${event.target.result}" class="w-full h-full object-cover rounded-md" alt="Vista previa">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.innerHTML = `<p class="text-gray-500">No hay imagen seleccionada</p>`;
+            }
+        });
+
+        // Cargar los archivos y actualizar la tabla al cargar la página
+        document.addEventListener("DOMContentLoaded", fetchAndUpdateTable);
+    </script>
+
+    <%- include('../partials/footer',{user}) %>

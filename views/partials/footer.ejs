@@ -1,60 +1,89 @@
-<footer>
-    <div>
-      <div>
-        <div>
-          <section>
-            <h3>AVISO LEGAL</h3>
-            <p>Ésta página es propiedad del Ilustre Colegio de Abogados de La Paz y todos sus colegiados.</p>
-            <p>www.icalp.org.bo</p>
-            <div>
-              <span>Síguenos en FACEBOOK:</span>
-              <a href="https://www.facebook.com/icalp" title="Facebook">
-                <span>Facebook</span>
-              </a>
-            </div>
-            <p>La Paz - Bolivia</p>
-          </section>
-  
-          <section>
-            <h3>PRESIDENCIA</h3>
-            <p>Calle Yanacocha Nº 630 Piso 3</p>
-            <p>Teléfono: (+591-2) 2407713- 2406227</p>
-            <p>presidencia@icalp.org.bo</p>
-          </section>
-  
-          <section>
-            <h3>CENTRO DE CONCILIACIÓN Y ARBITRAJE</h3>
-            <p>Calle YANACOCHA Nº 630 Piso 3</p>
-            <p>Teléfono: (+591-2) 2407713- 2406227</p>
-            <p>conciliacionyarbitraje@icalp.org.bo</p>
-          </section>
-  
-          <section>
-            <h3>TRIBUNAL DE HONOR</h3>
-            <p>Calle INDABURO casi YANACOCHA Nº 1062 Edificio Antiguo del ICALP</p>
-            <p>Teléfono: (+591-2) 2407407</p>
-            <p>Email: tribunaldehonor@icalp.org.bo</p>
-  
-            <section>
-              <h3>GERENCIA</h3>
-              <p>Calle Yanacocha Nº 630 Piso 3</p>
-              <p>Teléfono: (+591-2) 2407713- 2406227</p>
-              <p>Email: gerencia@icalp.org.bo</p>
-            </section>
-          </section>
+</main>
+</div>
+<footer class="bg-[#2C3E8C] text-white py-12 <%= user ? 'hidden' : '' %>">
+
+  <div class="container mx-auto px-4">
+    <!-- Main Footer Content -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+      <!-- AVISO LEGAL -->
+      <section>
+        <h3 class="text-xl font-bold mb-4 border-b border-white/20 pb-2">AVISO LEGAL</h3>
+        <div class="space-y-3">
+          <p class="text-sm">Ésta página es propiedad del Ilustre Colegio de Abogados de La Paz y todos sus colegiados.
+          </p>
+          <p class="text-sm">www.icalp.org.bo</p>
+          <div class="flex items-center gap-2">
+            <span class="text-sm">Síguenos en FACEBOOK:</span>
+            <a href="https://www.facebook.com/icalp" title="Facebook"
+              class="text-white hover:text-blue-300 transition-colors">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd"
+                  d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                  clip-rule="evenodd" />
+              </svg>
+              <span class="sr-only">Facebook</span>
+            </a>
+          </div>
+          <p class="text-sm">La Paz - Bolivia</p>
         </div>
-      </div>
-  
-      <div>
-        <p>© <span id="currentYear"></span> Ilustre Colegio de Abogados de La Paz. Todos los derechos reservados.</p>
+      </section>
+
+      <!-- PRESIDENCIA -->
+      <section>
+        <h3 class="text-xl font-bold mb-4 border-b border-white/20 pb-2">PRESIDENCIA</h3>
+        <div class="space-y-3">
+          <p class="text-sm">Calle Yanacocha Nº 630 Piso 3</p>
+          <p class="text-sm">Teléfono: (+591-2) 2407713- 2406227</p>
+          <p class="text-sm">presidencia@icalp.org.bo</p>
+        </div>
+      </section>
+
+      <!-- CENTRO DE CONCILIACIÓN Y ARBITRAJE -->
+      <section>
+        <h3 class="text-xl font-bold mb-4 border-b border-white/20 pb-2">CENTRO DE CONCILIACIÓN Y ARBITRAJE</h3>
+        <div class="space-y-3">
+          <p class="text-sm">Calle YANACOCHA Nº 630 Piso 3</p>
+          <p class="text-sm">Teléfono: (+591-2) 2407713- 2406227</p>
+          <p class="text-sm">conciliacionyarbitraje@icalp.org.bo</p>
+        </div>
+      </section>
+
+      <!-- TRIBUNAL DE HONOR y GERENCIA -->
+      <div class="space-y-8">
+        <section>
+          <h3 class="text-xl font-bold mb-4 border-b border-white/20 pb-2">TRIBUNAL DE HONOR</h3>
+          <div class="space-y-3">
+            <p class="text-sm">Calle INDABURO casi YANACOCHA Nº 1062 Edificio Antiguo del ICALP</p>
+            <p class="text-sm">Teléfono: (+591-2) 2407407</p>
+            <p class="text-sm">Email: tribunaldehonor@icalp.org.bo</p>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="text-xl font-bold mb-4 border-b border-white/20 pb-2">GERENCIA</h3>
+          <div class="space-y-3">
+            <p class="text-sm">Calle Yanacocha Nº 630 Piso 3</p>
+            <p class="text-sm">Teléfono: (+591-2) 2407713- 2406227</p>
+            <p class="text-sm">Email: gerencia@icalp.org.bo</p>
+          </div>
+        </section>
       </div>
     </div>
-  </footer>
-  
-  <script>
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-  </script>
-  
+
+    <!-- Copyright -->
+    <div class="border-t border-white/20 pt-4 text-center">
+      <p class="text-sm">
+        © <span id="currentYear"></span> Ilustre Colegio de Abogados de La Paz. Todos los derechos reservados.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
+</script>
+
 
 </body>
+
 </html>

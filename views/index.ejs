@@ -1,11 +1,215 @@
-<%- include('partials/header',{title, user}) %>
+<%- include('partials/header', {title, user}) %>
+
+<!-- Carousel Section -->
+<div id="default-carousel" class="relative w-full  max-2xl:px-16 z-10" data-carousel="slide">
+  <!-- Carousel Wrapper -->
+  <% if (result && result.length > 0) { %>
+    <div class="relative h-[80vh] overflow-hidden">
+      <% result.forEach(function(file, index) { %>
+        <div class="hidden duration-700 ease-in-out absolute w-full h-full transition-transform transform" 
+             data-carousel-item <%= index === 0 ? 'style="display:block"' : 'style="opacity: 0;"' %>>
+          <img src="/uploads/slides/<%= file %>" alt="<%= file %>" 
+               class="absolute block w-full h-full  -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
+        </div>
+      <% }); %>
+    </div>
+
+    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-5 cursor-pointer group " data-carousel-prev aria-label="Previous Slide">
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 group-hover:bg-black/50 max-2xl:bg-black/30 max-2xl:hover:bg-black/50 group-focus:ring-white">
+        <svg class="w-4 h-4 text-white max-2xl:text-black rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
+        </svg>
+        <span class="sr-only">Previous</span>
+      </span>
+    </button>
+    
+    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-5 cursor-pointer group " data-carousel-next aria-label="Next Slide">
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 group-hover:bg-black/50 max-2xl:bg-black/30 max-2xl:hover:bg-black/50 group-focus:ring-white">
+        <svg class="w-4 h-4 text-white max-2xl:text-black rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+        </svg>
+        <span class="sr-only">Next</span>
+      </span>
+    </button>
+    
+  <% } %>
+</div>
+
+<!-- Header Section with Buttons -->
+<header class="bg-[#2C3E8C] text-white py-6 text-center">
+  <div class="container mx-auto px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="text-center md:text-left">
+      <h2 class="text-xl uppercase mb-2">QUIERO COLEGIARME</h2>
+      <button class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR AHORA</button>
+    </div>
+    <div class="text-center">
+      <h2 class="text-xl uppercase mb-2">¿CUANDO SALDRAN NUEVOS DIPLOMADOS?</h2>
+      <button class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR AHORA</button>
+    </div>
+    <div class="text-center md:text-right">
+      <h2 class="text-xl uppercase mb-2">¿CUANDO INICIAN LOS DIPLOMADOS?</h2>
+      <button class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR AHORA</button>
+    </div>
+  </div>
+</header>
+
+<!-- Welcome Section -->
+<section class="container mx-auto px-4 py-12">
+  <h1 class="text-center text-3xl font-bold mb-6">
+    BIENVENIDO AL <span class="text-red-600">ICALP</span>
+  </h1>
+  <p class="text-center text-gray-600 max-w-3xl mx-auto">
+    Convencidos del poder del derecho y la justicia, trabajamos incansablemente para formar abogados íntegros e innovadores, comprometidos con ser agentes de cambio y transformar positivamente la sociedad.
+  </p>
+</section>
+
+<!-- Features Section -->
+<section class="container mx-auto px-8 py-8">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="bg-red-600 flex flex-col justify-between rounded-lg shadow-lg overflow-hidden relative hover:scale-105 transition-transform duration-300">
+      <div class="absolute inset-0 flex items-center justify-center flex-col p-6">
+        <svg class="w-16 h-16 mb-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M10 8l5 4-5 4V8z" />
+        </svg>
+        <h3 class="text-2xl font-bold text-white text-center">Listo para el gran inicio</h3>
+      </div>
+    </div>
+
+    <div class="bg-[#2C3E8C] text-white p-6 rounded-lg hover:scale-105 transition-transform duration-300">
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-xl font-bold mb-3">¿Por qué Colegiarse en el ICALP?</h3>
+          <p class="text-sm">
+            Por el respaldo institucional que brinda a sus colegiados, fortalecer tu prestigio profesional y formar parte de una comunidad comprometida con la justicia y el desarrollo social.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Vida Universitaria</h3>
+          <p class="text-sm">
+            En el ICALP fomentamos el crecimiento integral de nuestros futuros colegiados, porque más que colegas, somos una comunidad comprometida con la justicia y el desarrollo social.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Requisitos de Admisión</h3>
+          <p class="text-sm">Estos son los requisitos para colegiarte en el ICALP.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white flex flex-col justify-between rounded-lg shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300">
+      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-CsKIFBudJPfKY1LNvPdCF6NfhWBJXK.png" alt="Derecho" class="w-full h-full object-cover">
+      <div class="bg-[#2C3E8C] p-6">
+        <h3 class="text-xl font-bold text-white text-center mb-4">"Una formación integral con vocación de servicio"</h3>
+        <div class="flex items-center justify-center gap-4">
+          <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"></div>
+          <div>
+            <p class="font-semibold text-white">Juan Martinez</p>
+            <p class="text-sm text-gray-300">Colegiado</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Blog Section -->
+<div class="bg-[#2C3E8C] p-8">
+  <div class="container mx-auto px-8 py-8">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-white text-4xl font-bold">BLOG ICALP</h1>
+      <div class="flex items-center">
+        <p class="text-white mr-4 max-w-md">Forma parte de la comunidad en la ICALP. Entérate y conoce más sobre nuestros eventos y todo lo que acontece.</p>
+        <button class="bg-gray-200 text-[#2C3E8C] px-6 py-2 rounded-md hover:bg-white transition-colors">IR AL BLOG</button>
+      </div>
+    </div>
+
+    <!-- Blog Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <!-- Blog Card Template (can be repeated) -->
+      <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+        <div class="relative">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-CsKIFBudJPfKY1LNvPdCF6NfhWBJXK.png" alt="Derecho" class="w-full h-48 object-cover">
+          <div class="absolute top-4 right-4 bg-[#2C3E8C] text-white p-2 rounded">
+            <div class="text-center">
+              <span class="block text-xl font-bold">07</span>
+              <span class="block text-sm">Ene</span>
+            </div>
+          </div>
+        </div>
+        <div class="p-4">
+          <h3 class="font-bold text-lg mb-2">El derecho cambió con la......</h3>
+          <p class="text-gray-600 text-sm mb-4">La tecnología ha transformado las ventas a nivel global, con el comercio electrónico y las compras en línea dominando el mercado.</p>
+          <a href="#" class="text-[#2C3E8C] font-bold text-sm hover:underline">LEER MÁS ➤</a>
+        </div>
+      </div>
+
+      <!-- Repeat the Blog Cards as needed -->
+    </div>
+  </div>
+</div>
+
+<!-- Denuncia Section -->
+<div class="bg-black overflow-hidden mx-auto">
+  <div class="container mx-auto px-8 py-8">
+    <h1 class="text-white text-4xl font-bold">DENUNCIAS</h1>
+    <div class="flex flex-col md:flex-row">
+      <!-- Image Section -->
+      <div class="md:w-1/3">
+        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-tz40Py2YYaCpfbEFk6FPlZHUHMDlND.png" alt="Martillo de juez" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Form Section -->
+      <div class="md:w-2/3 p-6">
+        <form class="space-y-4">
+          <!-- Form Fields -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-white mb-2">Nombre <span class="text-red-500">*</span></label>
+              <input type="text" required class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-white mb-2">Apellidos <span class="text-red-500">*</span></label>
+              <input type="text" required class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-white mb-2">Correo <span class="text-red-500">*</span></label>
+            <input type="email" required class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+
+          <div>
+            <label class="block text-white mb-2">Numero de telefono <span class="text-red-500">*</span></label>
+            <div class="flex gap-2">
+              <select class="px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option>Bolivia</option>
+              </select>
+              <input type="text" value="+591" readonly class="w-20 px-3 py-2 bg-gray-100 rounded border border-gray-300">
+              <input type="tel" required class="flex-1 px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div>
+            <textarea placeholder="Descripción de la denuncia..." rows="4" class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex flex-wrap gap-4">
+            <button type="button" class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Subir archivo pdf</button>
+            <button type="submit" class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Enviar denuncia</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
   <form id="search-form">
     <input id="search" type="search" placeholder="Buscar por Matricula, Carnet, Nombre o apellido" />
     <button id="search-button" type="submitx">Buscar</button>
   </form>
-<div>
-  <img src="" alt="">
-</div>
   <ul id="result-list">
     <!-- Los resultados se insertarán aquí dinámicamente -->
   </ul>

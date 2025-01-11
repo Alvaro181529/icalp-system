@@ -1,45 +1,61 @@
 <%- include('../partials/header') %>
 
-    <h1>
-        <%= title %>
-    </h1>
+    <div class="px-8 py-2">
 
-    <h2>Reporte Historial</h2>
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+                <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+                    <tr>
+                        <th class="px-6 py-3">ColegiadosLogId</th>
+                        <th class="px-6 py-3">ColegiadoId</th>
+                        <th class="px-6 py-3">TableName</th>
+                        <th class="px-6 py-3">ColumnName</th>
+                        <th class="px-6 py-3">Antiguo</th>
+                        <th class="px-6 py-3">Nuevo</th>
+                        <th class="px-6 py-3">Estado</th>
+                        <th class="px-6 py-3">Fecha</th>
+                        <th class="px-6 py-3">Usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se llenarán las filas con los resultados -->
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Selector de Año -->
-    <!-- Tabla de Resultados -->
-    <table id="result-table">
-        <thead>
-            <tr>
-                <th>ColegiadosLogId</th>
-                <th>ColegiadoId</th>
-                <th>TableName</th>
-                <th>ColumnName</th>
-                <th>Antiguo</th>
-                <th>Nuevo</th>
-                <th>Estado</th>
-                <th>Fecha</th>
-                <th>Usuario</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Aquí se llenarán las filas con los resultados -->
-        </tbody>
-    </table>
+        <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+            <div>
+                <span class="text-sm text-gray-700">
+                    Mostrando
+                    <span id="start-item" class="font-semibold text-gray-900">
+                        <span id="current-page">Página 1</span> de
+                    </span>
+                    <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"> </span>
 
-    <!-- Paginación -->
-    <div id="pagination">
-        <button id="prev-page" disabled>Anterior</button>
-        <span id="current-page">Página 1</span>
-        <button id="next-page">Siguiente</button>
+                </span>
+            </div>
+            <div class="inline-flex mt-2 xs:mt-0">
+                <button id="prev-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800  rounded-s hover:bg-blue-900  disabled:opacity-50 disabled:cursor-not-allowed">
+                    Anterior
+                </button>
+                <button id="next-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900">
+                    Siguiente
+                </button>
+            </div>
+        </div>
     </div>
-
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
-            const resultTableBody = document.querySelector("#result-table tbody");
-            const prevPageButton = document.getElementById("prev-page");
-            const nextPageButton = document.getElementById("next-page");
-            const currentPageSpan = document.getElementById("current-page");
+            const $ = (el) => document.querySelector(el);
+
+            const resultTableBody = $("#result-table tbody");
+            const prevPageButton = $("#prev-page");
+            const nextPageButton = $("#next-page");
+            const currentPageSpan = $("#current-page");
+            const itemPage = $("#item-page");
+
 
             let page = 1;  // Página actual
             let totalPages = 23;  // Número total de páginas
@@ -65,15 +81,15 @@
                             hour12: true
                         });
                         row.innerHTML = `
-                        <td>${item.ColegiadosLogId}</td>
-                        <td>${item.ColegiadoId}</td>
-                        <td>${item.TableName}</td>
-                        <td>${item.ColumnName}</td>
-                        <td>${item.Antiguo}</td>
-                        <td>${item.Nuevo}</td>
-                        <td>${item.Estado}</td>
-                        <td>${fecha || "No disponible"}</td>
-                        <td>${item.Usuario || "No encontrado"}</td>
+                        <td class="px-6 py-3">${item.ColegiadosLogId}</td>
+                        <td class="px-6 py-3">${item.ColegiadoId}</td>
+                        <td class="px-6 py-3">${item.TableName}</td>
+                        <td class="px-6 py-3">${item.ColumnName}</td>
+                        <td class="px-6 py-3">${item.Antiguo}</td>
+                        <td class="px-6 py-3">${item.Nuevo}</td>
+                        <td class="px-6 py-3">${item.Estado}</td>
+                        <td class="px-6 py-3">${fecha || "No disponible"}</td>
+                        <td class="px-6 py-3">${item.Usuario || "No encontrado"}</td>
                     `;
                         resultTableBody.appendChild(row);
                     });
@@ -86,8 +102,9 @@
                 // Actualizar el estado de los botones de paginación
                 prevPageButton.disabled = page === 1;
                 nextPageButton.disabled = page === totalPages;
-
                 currentPageSpan.textContent = `Página ${page}`;
+                itemPage.textContent = totalPages;
+
             };
 
             // Función para realizar la búsqueda y actualizar la tabla
@@ -137,4 +154,4 @@
         });
     </script>
 
-    <%- include('../partials/footer') %>
+    <%- include('../partials/footer',{user}) %>

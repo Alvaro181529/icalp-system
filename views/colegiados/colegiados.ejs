@@ -1,212 +1,771 @@
 <%- include('../partials/header', { title, user }) %>
-  <h1>Listado de colegiados</h1>
-  <form id="search-form">
-    <input id="search" type="search" placeholder="Buscar por Matricula o Nombre " />
-    <button id="search-button" type="submit">Buscar</button>
-  </form>
-  <button id="openDialogButton">Registrar</button>
+  <div class="px-8">
+    <div class="flex items-center w-full py-2 ">
+      <form id="search-form" method="get" class="w-full flex items-center">
+        <input id="search" type="text"
+          name="search" placeholder="Buscar por Matricula o Nombre"
+          class="w-full px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button id="search-button" type="submit"
+          class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Buscar
+        </button>
+      </form>
+    </div>
 
-  <table id="result-table">
-    <thead>
-      <tr>
-        <th>Matricula</th>
-        <th>Nombre</th>
-        <th>Carnet</th>
-        <th>Ruc</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí se llenarán las filas con los resultados -->
-    </tbody>
-  </table>
-  <div id="pagination">
-    <button id="prev-page" disabled>Anterior</button>
-    <span id="current-page">Página 1</span>
-    <button id="next-page">Siguiente</button>
-    <p id="item-page"></p>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+        <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+          <tr>
+            <th class="px-6 py-3">Matricula</th>
+            <th class="px-6 py-3">Nombre</th>
+            <th class="px-6 py-3">Carnet</th>
+            <th class="px-6 py-3">Ruc</th>
+            <th class="px-6 py-3 flex justify-center items-center">
+              <button id="openDialogButton"
+                class="bg-blue-900 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <p class="mx-6 my-2 ">
+                  Registrar
+                </p>
+              </button>
+            </th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+      </table>
+    </div>
+    <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+      <div>
+        <span class="text-sm text-gray-700">
+          Mostrando
+          <span id="start-item" class="font-semibold text-gray-900">
+            <span id="current-page">Página 1</span> de
+          </span>
+          <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"> </span>
+
+        </span>
+      </div>
+      <div class="inline-flex mt-2 xs:mt-0">
+        <button id="prev-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800  rounded-s hover:bg-blue-900  disabled:opacity-50 disabled:cursor-not-allowed">
+          Anterior
+        </button>
+        <button id="next-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900">
+          Siguiente
+        </button>
+      </div>
+    </div>
+
+    <!-- El diálogo que contiene el formulario -->
+    <dialog id="personalDataDialog" class="p-8 max-w-6xl w-full max-h-screen mx-auto bg-white rounded-lg shadow-lg overflow-y-auto">
+      <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Formulario de Registro</h2>
+      <form id="personalDataForm" class="space-y-8">
+        <section>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-700">Datos personales</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label htmlFor="matricula" class="block text-sm font-medium text-gray-700 mb-1">Matrícula:</label>
+              <input type="text" id="matricula" name="matricula"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="matriculaConalab" class="block text-sm font-medium text-gray-700 mb-1">Matrícula Conalab:</label>
+              <input type="text" id="matriculaConalab" name="matriculaConalab"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="nombres" class="block text-sm font-medium text-gray-700 mb-1">Nombres:</label>
+              <input type="text" id="nombres" name="nombres"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="paterno" class="block text-sm font-medium text-gray-700 mb-1">Apellido Paterno:</label>
+              <input type="text" id="paterno" name="paterno"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="materno" class="block text-sm font-medium text-gray-700 mb-1">Apellido Materno:</label>
+              <input type="text" id="materno" name="materno"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="telefonoOficina" class="block text-sm font-medium text-gray-700 mb-1">Teléfono Oficina:</label>
+              <input type="tel" id="telefonoOficina" name="telefonoOficina"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="direccionOficina" class="block text-sm font-medium text-gray-700 mb-1">Dirección Oficina:</label>
+              <input type="text" id="direccionOficina" name="direccionOficina"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="correo" class="block text-sm font-medium text-gray-700 mb-1">Correo:</label>
+              <input type="email" id="correo" name="correo"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="lugarNacimiento" class="block text-sm font-medium text-gray-700 mb-1">Lugar de Nacimiento:</label>
+              <input type="text" id="lugarNacimiento" name="lugarNacimiento"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="fechaNacimiento" class="block text-sm font-medium text-gray-700 mb-1">Fecha de Nacimiento:</label>
+              <input type="date" id="fechaNacimiento" name="fechaNacimiento"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="numeroCI" class="block text-sm font-medium text-gray-700 mb-1">Número CI:</label>
+              <input type="text" id="numeroCI" name="numeroCI"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="numeroRuc" class="block text-sm font-medium text-gray-700 mb-1">Número RUC:</label>
+              <input type="text" id="numeroRuc" name="numeroRuc"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="estadoCivil" class="block text-sm font-medium text-gray-700 mb-1">Estado Civil:</label>
+              <select id="estadoCivil" name="estadoCivil"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"">
+                <option value="soltero">Soltero</option>
+                <option value="casado">Casado</option>
+                <option value="divorciado">Divorciado</option>
+                <option value="viudo">Viudo</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-700">Estudios</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label htmlFor="universidad" class="block text-sm font-medium text-gray-700 mb-1">Universidad:</label>
+              <input type="text" id="universidad" name="universidad"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="fechaTesis" class="block text-sm font-medium text-gray-700 mb-1">Fecha Tesis:</label>
+              <input type="date" id="fechaTesis" name="fechaTesis"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="universidadLicenciatura" class="block text-sm font-medium text-gray-700 mb-1">Universidad Licenciatura:</label>
+              <input type="text" id="universidadLicenciatura" name="universidadLicenciatura"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="fechaLicenciatura" class="block text-sm font-medium text-gray-700 mb-1">Fecha Licenciatura:</label>
+              <input type="date" id="fechaLicenciatura" name="fechaLicenciatura"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="fechaProvisionNacional" class="block text-sm font-medium text-gray-700 mb-1">Fecha Provisión Nacional:</label>
+              <input type="date" id="fechaProvisionNacional" name="fechaProvisionNacional"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="entidadProvisionNacional" class="block text-sm font-medium text-gray-700 mb-1">Entidad Provisión Nacional:</label>
+              <input type="text" id="entidadProvisionNacional" name="entidadProvisionNacional"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="fechaMatriculacionAlColegio" class="block text-sm font-medium text-gray-700 mb-1">Fecha Matriculación al Colegio:</label>
+              <input type="date" id="fechaMatriculacionAlColegio" name="fechaMatriculacionAlColegio"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-700">Cargos Desempeñados</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label htmlFor="cargosAdministracionPublica" class="block text-sm font-medium text-gray-700 mb-1">Cargos Administración Pública:</label>
+              <textarea id="cargosAdministracionPublica" name="cargosAdministracionPublica" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+            <div>
+              <label htmlFor="cargosEmpresaPrivada" class="block text-sm font-medium text-gray-700 mb-1">Cargos Empresa Privada:</label>
+              <textarea id="cargosEmpresaPrivada" name="cargosEmpresaPrivada" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+            <div>
+              <label htmlFor="cargosBufete" class="block text-sm font-medium text-gray-700 mb-1">Cargos Bufete:</label>
+              <textarea id="cargosBufete" name="cargosBufete" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+            <div>
+              <label htmlFor="cargoActual" class="block text-sm font-medium text-gray-700 mb-1">Cargo Actual:</label>
+              <input type="text" id="cargoActual" name="cargoActual"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-700">Especialidades y Reconocimientos</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label htmlFor="especialidadPrimaria" class="block text-sm font-medium text-gray-700 mb-1">Especialidad Primaria:</label>
+              <input type="text" id="especialidadPrimaria" name="especialidadPrimaria"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="especialidadSecundaria" class="block text-sm font-medium text-gray-700 mb-1">Especialidad Secundaria:</label>
+              <input type="text" id="especialidadSecundaria" name="especialidadSecundaria"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="producciones" class="block text-sm font-medium text-gray-700 mb-1">Producciones:</label>
+              <textarea id="producciones" name="producciones" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+            <div>
+              <label htmlFor="catedra" class="block text-sm font-medium text-graylabel htmlFor="catedra" class="block text-sm font-medium text-gray-700 mb-1">Cátedra:</label>
+              <textarea id="catedra" name="catedra" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+            <div>
+              <label htmlFor="estudiosEspecializacion" class="block text-sm font-medium text-gray-700 mb-1">Estudios de Especialización:</label>
+              <textarea id="estudiosEspecializacion" name="estudiosEspecializacion" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+            <div>
+              <label htmlFor="reconocimientos" class="block text-sm font-medium text-gray-700 mb-1">Reconocimientos:</label>
+              <textarea id="reconocimientos" name="reconocimientos" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+            <div>
+              <label htmlFor="asistenciaEventosInternacionales" class="block text-sm font-medium text-gray-700 mb-1">Asistencia a Eventos Internacionales:</label>
+              <textarea id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-700">Otros</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label htmlFor="institucionAsegurado" class="block text-sm font-medium text-gray-700 mb-1">Institución Asegurado:</label>
+              <input type="text" id="institucionAsegurado" name="institucionAsegurado"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="beneficiarios" class="block text-sm font-medium text-gray-700 mb-1">Beneficiarios:</label>
+              <textarea id="beneficiarios" name="beneficiarios" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+            <div>
+              <label htmlFor="direccionDomicilio" class="block text-sm font-medium text-gray-700 mb-1">Dirección Domicilio:</label>
+              <input type="text" id="direccionDomicilio" name="direccionDomicilio"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="telefonoDomicilio" class="block text-sm font-medium text-gray-700 mb-1">Teléfono Domicilio:</label>
+              <input type="tel" id="telefonoDomicilio" name="telefonoDomicilio"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="casilla" class="block text-sm font-medium text-gray-700 mb-1">Casilla:</label>
+              <input type="text" id="casilla" name="casilla"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="situacion" class="block text-sm font-medium text-gray-700 mb-1">Situación:</label>
+              <input type="text" id="situacion" name="situacion"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="observacion" class="block text-sm font-medium text-gray-700 mb-1">Observación:</label>
+              <textarea id="observacion" name="observacion" rows={3}  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500""></textarea>
+            </div>
+            <div>
+              <label htmlFor="zona" class="block text-sm font-medium text-gray-700 mb-1">Zona:</label>
+              <input type="text" id="zona" name="zona"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="nacionalidad" class="block text-sm font-medium text-gray-700 mb-1">Nacionalidad:</label>
+              <input type="text" id="nacionalidad" name="nacionalidad"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="celular" class="block text-sm font-medium text-gray-700 mb-1">Celular:</label>
+              <input type="tel" id="celular" name="celular"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="gradoAcademico" class="block text-sm font-medium text-gray-700 mb-1">Grado Académico:</label>
+              <input type="text" id="gradoAcademico" name="gradoAcademico"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="licenciatura" class="block text-sm font-medium text-gray-700 mb-1">Licenciatura:</label>
+              <input type="text" id="licenciatura" name="licenciatura"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="zonaTrabajo" class="block text-sm font-medium text-gray-700 mb-1">Zona de Trabajo:</label>
+              <input type="text" id="zonaTrabajo" name="zonaTrabajo"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="formaDePago" class="block text-sm font-medium text-gray-700 mb-1">Forma de Pago:</label>
+              <select id="formaDePago" name="formaDePago"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"">
+                <option value="efectivo">Efectivo</option>
+                <option value="cheque">Cheque</option>
+                <option value="transferencia">Transferencia</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="boletaDepositoNumero" class="block text-sm font-medium text-gray-700 mb-1">Boleta Depósito Número:</label>
+              <input type="text" id="boletaDepositoNumero" name="boletaDepositoNumero"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="montoDeposito" class="block text-sm font-medium text-gray-700 mb-1">Monto Depósito:</label>
+              <input type="number" id="montoDeposito" name="montoDeposito" step="0.01"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="formularioAdmision" class="block text-sm font-medium text-gray-700 mb-1">Formulario de Admisión:</label>
+              <input type="text" id="formularioAdmision" name="formularioAdmision"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="fotocopiaTituloProfesional" class="block text-sm font-medium text-gray-700 mb-1">Fotocopia Título Profesional:</label>
+              <input type="text" id="fotocopiaTituloProfesional" name="fotocopiaTituloProfesional"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="certificadoNacimientoOriginal" class="block text-sm font-medium text-gray-700 mb-1">Certificado Nacimiento Original:</label>
+              <input type="text" id="certificadoNacimientoOriginal" name="certificadoNacimientoOriginal"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="fotocopiaCI" class="block text-sm font-medium text-gray-700 mb-1">Fotocopia C.I.:</label>
+              <input type="text" id="fotocopiaCI" name="fotocopiaCI"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="curriculumVitae" class="block text-sm font-medium text-gray-700 mb-1">Curriculum Vitae:</label>
+              <input type="text" id="curriculumVitae" name="curriculumVitae"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"" />
+            </div>
+            <div>
+              <label htmlFor="estado" class="block text-sm font-medium text-gray-700 mb-1">Estado:</label>
+              <select name="estado" id="estado"  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"">
+                <option value="Activo">Activos</option>
+                <option value="Inactivo">Inactivos</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <div class="flex justify-between mt-8">
+          <button type="button" id="closeDialogButton" class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors">
+            Cerrar
+          </button>
+          <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">
+            Enviar
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <!-- <dialog id="personalDataDialog"
+      class="p-8 max-w-6xl w-full max-h-screen mx-auto bg-white rounded-lg shadow-lg overflow-y-auto">
+
+      <h2>Formulario de Registro</h2>
+      <form id="personalDataForm">
+        <h3>Datos personales</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div>
+            <label for="matricula">Matrícula:</label>
+            <input type="text" id="matricula"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="matricula">
+          </div>
+
+          <div>
+            <label for="matriculaConalab">Matrícula Conalab:</label>
+            <input type="text" id="matriculaConalab"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="matriculaConalab">
+          </div>
+          <div>
+
+            <label for="nombres">Nombres:</label>
+            <input type="text" id="nombres"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="nombres">
+          </div>
+          <div>
+
+
+            <label for="paterno">Apellido Paterno:</label>
+            <input type="text" id="paterno"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="paterno">
+          </div>
+          <div>
+
+            <label for="materno">Apellido Materno:</label>
+            <input type="text" id="materno"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="materno">
+          </div>
+          <div>
+
+            <label for="telefonoOficina">Teléfono Oficina:</label>
+            <input type="tel" id="telefonoOficina"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="telefonoOficina">
+          </div>
+          <div>
+
+            <label for="direccionOficina">Dirección Oficina:</label>
+            <input type="text" id="direccionOficina"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="direccionOficina">
+          </div>
+          <div>
+
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="correo">
+
+          </div>
+          <div>
+
+            <label for="lugarNacimiento">Lugar de Nacimiento:</label>
+            <input type="text" id="lugarNacimiento"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="lugarNacimiento">
+          </div>
+          <div>
+
+
+            <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="fechaNacimiento"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="fechaNacimiento">
+          </div>
+          <div>
+
+
+            <label for="numeroCI">Número CI:</label>
+            <input type="text" id="numeroCI"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="numeroCI">
+          </div>
+          <div>
+
+
+            <label for="numeroRuc">Número RUC:</label>
+            <input type="text" id="numeroRuc"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="numeroRuc">
+          </div>
+          <div>
+            <div class="mb-4">
+              <label for="estadoCivil" class="block text-gray-700 font-medium mb-2">Estado Civil:</label>
+              <select id="estadoCivil" name="estadoCivil"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="soltero">Soltero</option>
+                <option value="casado">Casado</option>
+                <option value="divorciado">Divorciado</option>
+                <option value="viudo">Viudo</option>
+              </select>
+            </div>
+          </div>
+          <h3>Estudios</h3>
+          <div>
+
+            <label for="universidad">Universidad:</label>
+            <input type="text" id="universidad"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="universidad">
+
+          </div>
+          <div>
+
+            <label for="fechaTesis">Fecha Tesis:</label>
+            <input type="date" id="fechaTesis"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="fechaTesis">
+          </div>
+          <div>
+
+
+            <label for="universidadLicenciatura">Universidad Licenciatura:</label>
+            <input type="text" id="universidadLicenciatura"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="universidadLicenciatura">
+          </div>
+          <div>
+
+
+            <label for="fechaLicenciatura">Fecha Licenciatura:</label>
+            <input type="date" id="fechaLicenciatura"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="fechaLicenciatura">
+          </div>
+          <div>
+
+
+            <label for="fechaProvisionNacional">Fecha Provisión Nacional:</label>
+            <input type="date" id="fechaProvisionNacional"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="fechaProvisionNacional">
+          </div>
+          <div>
+
+
+            <label for="entidadProvisionNacional">Entidad Provisión Nacional:</label>
+            <input type="text" id="entidadProvisionNacional"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="entidadProvisionNacional">
+          </div>
+          <div>
+
+
+            <label for="fechaMatriculacionAlColegio">Fecha Matriculación al Colegio:</label>
+            <input type="date" id="fechaMatriculacionAlColegio"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="fechaMatriculacionAlColegio">
+          </div>
+          <h3>Cargos Desempeñados</h3>
+          <div>
+
+
+            <label for="cargosAdministracionPublica">Cargos Administración Pública:</label>
+            <input id="cargosAdministracionPublica" name="cargosAdministracionPublica"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+
+          </div>
+          <div>
+
+
+            <label for="cargosEmpresaPrivada">Cargos Empresa Privada:</label>
+            <input id="cargosEmpresaPrivada" name="cargosEmpresaPrivada"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+          </div>
+          <div>
+
+
+            <label for="cargosBufete">Cargos Bufete:</label>
+            <input id="cargosBufete" name="cargosBufete"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+          </div>
+          <div>
+
+
+            <label for="cargoActual">Cargo Actual:</label>
+            <input type="text" id="cargoActual"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="cargoActual">
+          </div>
+          <div>
+
+
+            <label for="especialidadPrimaria">Especialidad Primaria:</label>
+            <input type="text" id="especialidadPrimaria"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="especialidadPrimaria">
+          </div>
+          <div>
+
+
+            <label for="especialidadSecundaria">Especialidad Secundaria:</label>
+            <input type="text" id="especialidadSecundaria"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="especialidadSecundaria">
+          </div>
+          <div>
+
+
+            <label for="producciones">Producciones:</label>
+            <input id="producciones" name="producciones"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+          </div>
+          <div>
+
+
+            <label for="catedra">Cátedra:</label>
+            <input id="catedra" name="catedra"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+          </div>
+          <div>
+
+
+            <label for="estudiosEspecializacion">Estudios de Especialización:</label>
+            <input id="estudiosEspecializacion" name="estudiosEspecializacion"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+          </div>
+          <div>
+
+
+            <label for="reconocimientos">Reconocimientos:</label>
+            <input id="reconocimientos" name="reconocimientos"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+          </div>
+          <div>
+
+
+            <label for="asistenciaEventosInternacionales">Asistencia a Eventos Internacionales:</label>
+            <input id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+          </div>
+          <h3>Otros</h3>
+          <div>
+
+
+            <label for="institucionAsegurado">Institución Asegurado:</label>
+            <input type="text" id="institucionAsegurado"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="institucionAsegurado">
+          </div>
+          <div>
+
+
+            <label for="beneficiarios">Beneficiarios:</label>
+            <input id="beneficiarios" name="beneficiarios"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+          </div>
+          <div>
+
+
+            <label for="direccionDomicilio">Dirección Domicilio:</label>
+            <input type="text" id="direccionDomicilio"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="direccionDomicilio">
+          </div>
+          <div>
+
+
+            <label for="telefonoDomicilio">Teléfono Domicilio:</label>
+            <input type="tel" id="telefonoDomicilio"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="telefonoDomicilio">
+          </div>
+          <div>
+
+
+            <label for="casilla">Casilla:</label>
+            <input type="text" id="casilla"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="casilla">
+          </div>
+          <div>
+
+
+            <label for="situacion">Situación:</label>
+            <input type="text" id="situacion"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="situacion">
+          </div>
+          <div>
+
+
+            <label for="observacion">Observación:</label>
+            <input id="observacion" name="observacion"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+          </div>
+          <div>
+
+
+            <label for="zona">Zona:</label>
+            <input type="text" id="zona"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="zona">
+          </div>
+          <div>
+
+
+            <label for="nacionalidad">Nacionalidad:</label>
+            <input type="text" id="nacionalidad"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="nacionalidad">
+          </div>
+          <div>
+
+
+            <label for="celular">Celular:</label>
+            <input type="tel" id="celular"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="celular">
+          </div>
+          <div>
+
+
+            <label for="gradoAcademico">Grado Académico:</label>
+            <input type="text" id="gradoAcademico"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="gradoAcademico">
+          </div>
+          <div>
+
+
+            <label for="licenciatura">Licenciatura:</label>
+            <input type="text" id="licenciatura"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="licenciatura">
+          </div>
+          <div>
+
+
+            <label for="zonaTrabajo">Zona de Trabajo:</label>
+            <input type="text" id="zonaTrabajo"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="zonaTrabajo">
+          </div>
+          <div>
+
+
+            <label for="formaDePago">Forma de Pago:</label>
+            <select id="formaDePago" name="formaDePago"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="efectivo">Efectivo</option>
+              <option value="cheque">Cheque</option>
+              <option value="transferencia">Transferencia</option>
+            </select>
+
+          </div>
+          <div>
+
+
+            <label for="boletaDepositoNumero">Boleta Depósito Número:</label>
+            <input type="text" id="boletaDepositoNumero"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="boletaDepositoNumero">
+          </div>
+          <div>
+
+
+            <label for="montoDeposito">Monto Depósito:</label>
+            <input type="number" id="montoDeposito"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="montoDeposito" step="0.01">
+          </div>
+          <div>
+
+            <label for="formularioAdmision">Formulario de Admisión:</label>
+            <input type="text" id="formularioAdmision"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="formularioAdmision">
+          </div>
+          <div>
+
+            <label for="fotocopiaTituloProfesional">Fotocopia Título Profesional:</label>
+            <input type="text" id="fotocopiaTituloProfesional"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="fotocopiaTituloProfesional">
+          </div>
+          <div>
+
+
+            <label for="certificadoNacimientoOriginal">Certificado Nacimiento Original:</label>
+            <input type="text" id="certificadoNacimientoOriginal"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="certificadoNacimientoOriginal">
+          </div>
+          <div>
+
+
+            <label for="fotocopiaCI">Fotocopia C.I.:</label>
+            <input type="text" id="fotocopiaCI"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="fotocopiaCI">
+          </div>
+          <div>
+
+
+            <label for="curriculumVitae">Curriculum Vitae:</label>
+            <input type="text" id="curriculumVitae"
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              name="curriculumVitae">
+          </div>
+          <div>
+
+
+            <label for="estado">Estado:</label>
+            <select name="estado" id="estado"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="Activo">Activos</option>
+              <option value="Inactivo">Inactivos</option>
+            </select>
+          </div>
+          <div class="flex justify-between mt-6">
+            <button type="button" id="closeDialogButton"
+              class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none">
+              Cerrar
+            </button>
+            <button type="submit"
+              class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none">
+              Enviar
+            </button>
+          </div>
+        </div>
+      </form>
+    </dialog> -->
   </div>
-
-  <!-- Botón para abrir el diálogo -->
-
-  <!-- El diálogo que contiene el formulario -->
-  <dialog id="personalDataDialog">
-    <h2>Formulario de Registros</h2>
-    <form id="personalDataForm">
-      <h3>Datos personales</h3>
-      <label for="matricula">Matrícula:</label>
-      <input type="text" id="matricula" name="matricula">
-
-      <label for="matriculaConalab">Matrícula Conalab:</label>
-      <input type="text" id="matriculaConalab" name="matriculaConalab">
-
-      <label for="nombres">Nombres:</label>
-      <input type="text" id="nombres" name="nombres">
-
-      <label for="paterno">Apellido Paterno:</label>
-      <input type="text" id="paterno" name="paterno">
-
-      <label for="materno">Apellido Materno:</label>
-      <input type="text" id="materno" name="materno">
-
-      <label for="telefonoOficina">Teléfono Oficina:</label>
-      <input type="tel" id="telefonoOficina" name="telefonoOficina">
-
-      <label for="direccionOficina">Dirección Oficina:</label>
-      <input type="text" id="direccionOficina" name="direccionOficina">
-
-      <label for="correo">Correo:</label>
-      <input type="email" id="correo" name="correo">
-
-      <label for="lugarNacimiento">Lugar de Nacimiento:</label>
-      <input type="text" id="lugarNacimiento" name="lugarNacimiento">
-
-      <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-      <input type="date" id="fechaNacimiento" name="fechaNacimiento">
-
-      <label for="numeroCI">Número CI:</label>
-      <input type="text" id="numeroCI" name="numeroCI">
-
-      <label for="numeroRuc">Número RUC:</label>
-      <input type="text" id="numeroRuc" name="numeroRuc">
-
-      <label for="estadoCivil">Estado Civil:</label>
-      <select id="estadoCivil" name="estadoCivil">
-        <option value="soltero">Soltero</option>
-        <option value="casado">Casado</option>
-        <option value="divorciado">Divorciado</option>
-        <option value="viudo">Viudo</option>
-      </select>
-      <h3>Estudios</h3>
-      <label for="universidad">Universidad:</label>
-      <input type="text" id="universidad" name="universidad">
-
-      <label for="fechaTesis">Fecha Tesis:</label>
-      <input type="date" id="fechaTesis" name="fechaTesis">
-
-      <label for="universidadLicenciatura">Universidad Licenciatura:</label>
-      <input type="text" id="universidadLicenciatura" name="universidadLicenciatura">
-
-      <label for="fechaLicenciatura">Fecha Licenciatura:</label>
-      <input type="date" id="fechaLicenciatura" name="fechaLicenciatura">
-
-      <label for="fechaProvisionNacional">Fecha Provisión Nacional:</label>
-      <input type="date" id="fechaProvisionNacional" name="fechaProvisionNacional">
-
-      <label for="entidadProvisionNacional">Entidad Provisión Nacional:</label>
-      <input type="text" id="entidadProvisionNacional" name="entidadProvisionNacional">
-
-      <label for="fechaMatriculacionAlColegio">Fecha Matriculación al Colegio:</label>
-      <input type="date" id="fechaMatriculacionAlColegio" name="fechaMatriculacionAlColegio">
-      <h3>Cargos Desempeñados</h3>
-      <label for="cargosAdministracionPublica">Cargos Administración Pública:</label>
-      <input id="cargosAdministracionPublica" name="cargosAdministracionPublica"></input>
-
-      <label for="cargosEmpresaPrivada">Cargos Empresa Privada:</label>
-      <input id="cargosEmpresaPrivada" name="cargosEmpresaPrivada"></input>
-
-      <label for="cargosBufete">Cargos Bufete:</label>
-      <input id="cargosBufete" name="cargosBufete"></input>
-
-      <label for="cargoActual">Cargo Actual:</label>
-      <input type="text" id="cargoActual" name="cargoActual">
-
-      <label for="especialidadPrimaria">Especialidad Primaria:</label>
-      <input type="text" id="especialidadPrimaria" name="especialidadPrimaria">
-
-      <label for="especialidadSecundaria">Especialidad Secundaria:</label>
-      <input type="text" id="especialidadSecundaria" name="especialidadSecundaria">
-
-      <label for="producciones">Producciones:</label>
-      <input id="producciones" name="producciones"></input>
-
-      <label for="catedra">Cátedra:</label>
-      <input id="catedra" name="catedra"></input>
-
-      <label for="estudiosEspecializacion">Estudios de Especialización:</label>
-      <input id="estudiosEspecializacion" name="estudiosEspecializacion"></input>
-
-      <label for="reconocimientos">Reconocimientos:</label>
-      <input id="reconocimientos" name="reconocimientos"></input>
-
-      <label for="asistenciaEventosInternacionales">Asistencia a Eventos Internacionales:</label>
-      <input id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales"></input>
-      <h3>Otros</h3>
-      <label for="institucionAsegurado">Institución Asegurado:</label>
-      <input type="text" id="institucionAsegurado" name="institucionAsegurado">
-
-      <label for="beneficiarios">Beneficiarios:</label>
-      <input id="beneficiarios" name="beneficiarios"></input>
-
-      <label for="direccionDomicilio">Dirección Domicilio:</label>
-      <input type="text" id="direccionDomicilio" name="direccionDomicilio">
-
-      <label for="telefonoDomicilio">Teléfono Domicilio:</label>
-      <input type="tel" id="telefonoDomicilio" name="telefonoDomicilio">
-
-      <label for="casilla">Casilla:</label>
-      <input type="text" id="casilla" name="casilla">
-
-      <label for="situacion">Situación:</label>
-      <input type="text" id="situacion" name="situacion">
-
-      <label for="observacion">Observación:</label>
-      <input id="observacion" name="observacion"></input>
-
-      <label for="zona">Zona:</label>
-      <input type="text" id="zona" name="zona">
-
-      <label for="nacionalidad">Nacionalidad:</label>
-      <input type="text" id="nacionalidad" name="nacionalidad">
-
-      <label for="celular">Celular:</label>
-      <input type="tel" id="celular" name="celular">
-
-      <label for="gradoAcademico">Grado Académico:</label>
-      <input type="text" id="gradoAcademico" name="gradoAcademico">
-
-      <label for="licenciatura">Licenciatura:</label>
-      <input type="text" id="licenciatura" name="licenciatura">
-
-      <label for="zonaTrabajo">Zona de Trabajo:</label>
-      <input type="text" id="zonaTrabajo" name="zonaTrabajo">
-
-      <label for="formaDePago">Forma de Pago:</label>
-      <select id="formaDePago" name="formaDePago">
-        <option value="efectivo">Efectivo</option>
-        <option value="cheque">Cheque</option>
-        <option value="transferencia">Transferencia</option>
-      </select>
-
-      <label for="boletaDepositoNumero">Boleta Depósito Número:</label>
-      <input type="text" id="boletaDepositoNumero" name="boletaDepositoNumero">
-
-      <label for="montoDeposito">Monto Depósito:</label>
-      <input type="number" id="montoDeposito" name="montoDeposito" step="0.01">
-
-      <label for="formularioAdmision">Formulario de Admisión:</label>
-      <input type="text" id="formularioAdmision" name="formularioAdmision">
-
-      <label for="fotocopiaTituloProfesional">Fotocopia Título Profesional:</label>
-      <input type="text" id="fotocopiaTituloProfesional" name="fotocopiaTituloProfesional">
-
-      <label for="certificadoNacimientoOriginal">Certificado Nacimiento Original:</label>
-      <input type="text" id="certificadoNacimientoOriginal" name="certificadoNacimientoOriginal">
-
-      <label for="fotocopiaCI">Fotocopia C.I.:</label>
-      <input type="text" id="fotocopiaCI" name="fotocopiaCI">
-
-      <label for="curriculumVitae">Curriculum Vitae:</label>
-      <input type="text" id="curriculumVitae" name="curriculumVitae">
-      <label for="estado">Estado:</label>
-      <select name="estado" id="estado">
-        <option value="Activo">Activos</option>
-        <option value="Inactivo">Inactivos</option>
-      </select>
-      <button type="submit">Enviar</button>
-      <button type="button" id="closeDialogButton">Cerrar</button>
-    </form>
-  </dialog>
 
   <script defer>
     document.addEventListener("DOMContentLoaded", function () {
@@ -229,12 +788,11 @@
           users.forEach((colegiado) => {
             const row = document.createElement("tr");
             row.innerHTML = `
-            <td>${colegiado.Matricula.toString().padStart(5, "0")}</td>
-            <td>${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno
-              }</td>
-            <td>${colegiado.NumeroCI || "No disponible"}</td>
-            <td>${colegiado.NumeroRuc || "No disponible"}</td>
-            <td><a href="/colegiado/${colegiado.ColegiadoId}">Ver más</a></td>
+            <td class="px-6 py-3">${colegiado.Matricula.toString().padStart(5, "0")}</td>
+            <td class="px-6 py-3">${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno}</td>
+            <td class="px-6 py-3">${colegiado.NumeroCI || "No disponible"}</td>
+            <td class="px-6 py-3">${colegiado.NumeroRuc || "No disponible"}</td>
+            <td class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center"><a href="/colegiado/${colegiado.ColegiadoId}">Ver más</a></td>
           `;
             resultTableBody.appendChild(row);
           });
@@ -246,8 +804,8 @@
         // Actualizar el estado de los botones de paginación
         prevPageButton.disabled = page === 1;
         nextPageButton.disabled = page === totalPages;
-        currentPageSpan.textContent = `Página ${page}`;
-        itemPage.textContent = 'total de paginas: ' + totalPages;
+        currentPageSpan.textContent = `página ${page}`;
+        itemPage.textContent = totalPages;
       };
       const fetchAndUpdateTable = async (searchValue) => {
         const url = `/collegiate?search=${encodeURIComponent(searchValue || "")}&page=${page}&pageSize=10`;
@@ -309,7 +867,7 @@
             throw new Error("La respuesta del servidor no es un JSON válido.");
           }
 
-          if (data.success) {
+          if (data) {
             alert("Registro exitoso");
             formRegistro.reset();
             document.getElementById("personalDataDialog").close();

@@ -1,5 +1,9 @@
 <%- include('partials/header',{title, user}) %>
-  <h1>404</h1>
-  <p><%=message%></p>
-  <a href="/">Ir al inicio</a>
-<%- include('partials/footer'); %>
+  <div class="flex flex-col items-center justify-center min-h-screen">
+    <h1 class="text-9xl font-bold">404</h1>
+    <p class="text-2xl font-semibold">
+      <%=message%>
+    </p>
+    <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" href="/">Ir al inicio</a>
+  </div>
+  <%- include('partials/footer'); %>

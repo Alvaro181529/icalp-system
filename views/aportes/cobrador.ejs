@@ -1,39 +1,39 @@
 <%- include('../partials/header') %>
 
-<h1>
-    <%= title %>
-</h1>
+  <div class="px-8 py-2">
 
-<h2>Reporte mensual</h2>
-<label for="year">Año:</label>
-<label for="year">Seleccione un año:</label>
-<select id="year" name="year">
-  <!-- Las opciones de años se generarán dinámicamente con JavaScript -->
-</select>
-<table id="result-table">
-    <thead>
-        <tr>
-            <th>Año</th>
-            <th>Mes</th>
-            <th>Cobros</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Aquí se llenarán las filas con los resultados -->
-    </tbody>
-</table>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+        <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+          <tr>
+            <th class="px-4 py-3 text-left">
+              Año
+              <select id="year" name="year"
+                class="mt-1 ml-12 p-2 border border-blue-300 rounded-lg bg-transparent focus:ring-2 focus:ring-blue-500">
+              </select>
+            </th>
+            <th class="px-4 py-3 text-left">Mes</th>
+            <th class="px-4 py-3 text-left">Cobros</th>
+            <th class="px-4 py-3 text-left">Total</th>
+          </tr>
 
-<script defer>
+        </thead>
+        <tbody>
+          <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script defer>
     document.addEventListener("DOMContentLoaded", function () {
       const selectYear = document.getElementById("year");
       const resultTableBody = document.querySelector("#result-table tbody");
-  
+
       // Obtener el año actual
       const currentYear = new Date().getFullYear();
       const startYear = 2000;  // Año de inicio
       const endYear = currentYear;  // Año final (el año actual)
-  
+
       // Crear las opciones de años
       for (let year = startYear; year <= endYear; year++) {
         const option = document.createElement("option");
@@ -44,19 +44,19 @@
       selectYear.value = currentYear;
       // Obtener el año seleccionado (por defecto el año actual)
       let year = currentYear;
-  
+
       // Función para actualizar la tabla con los resultados
       const updateTable = (data) => {
         resultTableBody.innerHTML = "";  // Limpiar la tabla
-  
+
         if (data.length > 0) {
           data.forEach((item) => {
             const row = document.createElement("tr");
             row.innerHTML = `
-              <td>${item.Ano}</td>
-              <td>${item.Mes}</td>
-              <td>${item.Cobrador || "No disponible"}</td>
-             <td>${item.Total ? item.Total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 20 }) + " Bs" : "No disponible"}</td>
+              <td class="px-6 py-3 text-wrap">${item.Ano}</td>
+              <td class="px-6 py-3 text-wrap">${item.Mes}</td>
+              <td class="px-6 py-3 text-wrap">${item.Cobrador || "No disponible"}</td>
+              <td class="px-6 py-3 text-wrap">${item.Total ? item.Total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 20 }) + " Bs" : "No disponible"}</td>
 
             `;
             resultTableBody.appendChild(row);
@@ -67,20 +67,20 @@
           resultTableBody.appendChild(row);
         }
       };
-  
+
       // Función para realizar la búsqueda y actualizar la tabla
       const fetchAndUpdateTable = async () => {
         const url = `/contributionsCobrador?year=${year}`;
-  
+
         try {
           const response = await fetch(url);
-  
+
           if (!response.ok) {
             throw new Error("Error en la solicitud");
           }
-  
+
           const data = await response.json(); // Suponemos que la respuesta es un JSON
-  
+
           // Verificar si la estructura de la respuesta es válida
           if (data && data.result && Array.isArray(data.result)) {
             updateTable(data.result);
@@ -93,10 +93,10 @@
           alert("Hubo un problema al obtener los datos. Intenta nuevamente.");
         }
       };
-  
+
       // Ejecutar la búsqueda inmediatamente con el valor del año seleccionado
       fetchAndUpdateTable();
-  
+
       // Agregar un evento al select para actualizar la tabla cuando cambie el año
       selectYear.addEventListener("change", function () {
         year = selectYear.value;  // Obtener el año seleccionado
@@ -105,4 +105,4 @@
     });
   </script>
 
-<%- include('../partials/footer') %>
+  <%- include('../partials/footer') %>

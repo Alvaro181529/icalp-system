@@ -1,39 +1,59 @@
 <%- include('../partials/header') %>
+  <div class="px-8">
 
-  <h1>
-    <%= title %>
-  </h1>
+    <div class="flex items-center w-full py-2 ">
+      <form id="form-search" method="get" class="w-full flex items-center">
+        <input id="search" type="text" name="search" placeholder="Buscar por Matricula o Nombre"
+          class="w-full px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button id="search-button" type="submit"
+          class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Buscar
+        </button>
+      </form>
+    </div>
 
-  <h2>Reporte aporte</h2>
-  <label for="year">Busqueda</label>
-  <form id="form-search">
-    <input type="text" placeholder="Nombre o Matricula" id="search" name="search">
-    <button type="submit">Buscar</button>
-  </form>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+        <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+          <tr>
+            <th class="px-4 py-3">Fecha aporte cobrador</th>
+            <th class="px-4 py-3">Matricula</th>
+            <th class="px-4 py-3">Nombres</th>
+            <th class="px-4 py-3">Apellidos</th>
+            <th class="px-4 py-3">Talonario</th>
+            <th class="px-4 py-3">Fecha Inicio</th>
+            <th class="px-4 py-3">Fecha final</th>
+            <th class="px-4 py-3">Monto</th>
+            <th class="px-4 py-3">Observacion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+      </table>
+    </div>
+    <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+      <div>
+        <span class="text-sm text-gray-700">
+          Mostrando
+          <span id="start-item" class="font-semibold text-gray-900">
+            <span id="current-page">Página 1</span> de
+          </span>
+          <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"> </span>
 
-  <table id="result-table">
-    <thead>
-      <tr>
-        <th>Fecha aporte cobrador</th>
-        <th>Matricula</th>
-        <th>Nombres</th>
-        <th>Apellidos</th>
-        <th>Talonario</th>
-        <th>Fecha Inicio</th>
-        <th>Fecha final</th>
-        <th>Monto</th>
-        <th>Observacion</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí se llenarán las filas con los resultados -->
-    </tbody>
-  </table>
-  <div id="pagination">
-    <button id="prev-page" disabled>Anterior</button>
-    <span id="current-page">Página 1</span>
-    <button id="next-page">Siguiente</button>
-    <p id="item-page"></p>
+        </span>
+      </div>
+      <div class="inline-flex mt-2 xs:mt-0">
+        <button id="prev-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800  rounded-s hover:bg-blue-900  disabled:opacity-50 disabled:cursor-not-allowed">
+          Anterior
+        </button>
+        <button id="next-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900">
+          Siguiente
+        </button>
+      </div>
+    </div>
   </div>
 
   <script defer>
@@ -71,15 +91,15 @@
             });
             // Construir la fila
             row.innerHTML = `
-          <td><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
-          <td>${item.Matricula.toString().padStart(5, "0") || "No disponible"}</td>
-          <td>${item.Nombres || "No disponible"}</td>
-          <td>${item.Apellidos || "No disponible"}</td>
-          <td>${item.Talonario || 'No disponible'}</td>
-          <td>${item.FechaInicial || "No disponible"}</td>
-          <td>${item.FechaFinal || "No disponible"}</td>
-          <td>${item.Monto ? item.Monto.toLocaleString('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Bs" : "No disponible"}</td>
-          <td> 
+          <td class="px-6 py-3 text-wrap" ><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
+          <td class="px-6 py-3 text-wrap" >${item.Matricula.toString().padStart(5, "0") || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.Nombres || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.Apellidos || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.Talonario || 'No disponible'}</td>
+          <td class="px-6 py-3 text-wrap" >${item.FechaInicial || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.FechaFinal || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.Monto ? item.Monto.toLocaleString('es-BO', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " Bs" : "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" > 
             <p><strong>${item.MesesPagados}</strong> Cuotas pagadas</p>
             <p>Faltante: <b style='color:crimson'> ${item.Faltante}</b></p>
             ${item.Observacion || "No disponible"}
@@ -97,7 +117,7 @@
         prevPageButton.disabled = page === 1;
         nextPageButton.disabled = page === totalPages;
         currentPageSpan.textContent = `Página ${page}`;
-        itemPage.textContent = 'total de paginas: ' + totalPages;
+        itemPage.textContent = totalPages;
       };
 
       // Función para obtener los datos desde el servidor y actualizar la tabla
@@ -151,4 +171,4 @@
   </script>
 
 
-  <%- include('../partials/footer') %>
+  <%- include('../partials/footer',{user}) %>
