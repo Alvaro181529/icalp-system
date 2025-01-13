@@ -1,4 +1,4 @@
-<%- include('../partials/header') %>
+<%- include('../partials/header', {title, user}) %>
   <div class="px-8">
 
     <div class="flex items-center w-full py-2 ">
@@ -109,7 +109,7 @@
           });
         } else {
           const row = document.createElement("tr");
-          row.innerHTML = `<td colspan="9">No se encontraron resultados</td>`;
+          row.innerHTML = `<td class="px-6 py-3 text-wrap" colspan="9">No se encontraron resultados</td>`;
           resultTableBody.appendChild(row);
         }
 

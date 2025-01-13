@@ -1,19 +1,18 @@
 export class ConfigController {
-
-  getOpcion = async (req, res) => {
+  getMenu = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
-    res.render("config/slides", { title: "Slides", user });
+    res.render("paginas/menu", { title: "Menu", user });
   };
-  getPagina = async (req, res) => {
+  getOpciones = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
-    res.render("config/slides", { title: "Slides", user });
+    res.render("paginas/opciones", { title: "Opciones", user });
   };
   getContenido = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
-    res.render("config/slides", { title: "Slides", user });
+    res.render("paginas/contenido", { title: "Contenido", user });
   };
   getSlides = async (req, res) => {
     const { user } = req.session;

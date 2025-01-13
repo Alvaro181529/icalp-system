@@ -12,15 +12,14 @@ export class HomeController {
     const { user } = req.session;
     const slidesDir = path.join(__dirname, "../uploads/slides");
     fs.readdir(slidesDir, (err, files) => {
+      let result;
       if (err) {
-        return res
-          .status(500)
-          .json({ message: "Error al leer la carpeta de slides", error: err });
+        result = { files: [], message: "Error con slides" };
+      } else {
+        result = files.filter((file) =>
+          fs.statSync(path.join(slidesDir, file)).isFile()
+        );
       }
-
-      const result = files.filter((file) =>
-        fs.statSync(path.join(slidesDir, file)).isFile()
-      );
       res.render("index", { title: "ICALP", user, result });
     });
   };

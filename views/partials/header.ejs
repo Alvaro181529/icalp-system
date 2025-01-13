@@ -96,7 +96,7 @@
               </summary>
               <ul class="pl-8 mt-2 space-y-1">
                 <li><a href="/usuarios" class="block px-4 py-2 hover:bg-blue-950 rounded">Registro de Usuarios</a></li>
-                <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Registro de Cobradores</a>
+                <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Usuarios Cobradores</a>
                 </li>
                 <li><a href="/slides" class="block px-4 py-2 hover:bg-blue-950 rounded">Imagenes de Slider</a></li>
                 <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li>
@@ -110,9 +110,9 @@
                 <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
               </summary>
               <ul class="pl-8 mt-2 space-y-1">
-                <li><a href="/opcion" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de menu</a></li>
-                <li><a href="/pagina" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de paginas</a></li>
-                <li><a href="/contenido" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de contenidos</a>
+                <li><a href="/menus" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de menu</a></li>
+                <li><a href="/opciones" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de opciones</a></li>
+                <li><a href="/contenidos" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de contenidos</a>
                 </li>
               </ul>
             </details>
@@ -151,15 +151,13 @@
             </div>
           </nav>
           <nav id="nav2"
-            class="bg-blue-950 bg-opacity-50 backdrop-blur-sm  <%= user ? '' : 'fixed' %> z-20 w-full transition-all">
+            class="bg-blue-950 bg-opacity-50 backdrop-blur-sm  <%= user ? 'sticky top-0' : 'fixed' %> z-50 w-full transition-all">
             <div class="container mx-auto px-8 px-4 py-3 mx-auto text-white">
               <div class="flex items-center gap-4">
                 <a href="https://flowbite.com" class="flex items-center space-x-3">
                   <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
                   <span class="self-center text-2xl font-semibold whitespace-nowrap">Flowbite</span>
                 </a>
-                <!-- <ul id="lista"
-                  class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white"> -->
                 <ul id="lista" class="flex flex-row font-medium mt-0 space-x-8 text-sm ml-auto">
                 </ul>
 
@@ -192,7 +190,6 @@
 
             window.addEventListener('scroll', function () {
               const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-              console.log(currentScroll);
               if (currentScroll > lastScrollTop) {
                 nav1.style.transform = 'translateY(0%)'; // Esconde el primer nav
                 nav2.style.transform = 'translateY(-120%)'; // Mueve el segundo nav hacia abajo (fuera de vista)
@@ -231,8 +228,6 @@
                 // Solicitar los datos del backend
                 const result = await fetch('/view');
                 const res = await result.json();
-                console.log(res);
-
                 // Obtener la lista donde se agregarán los elementos
                 const lista = document.getElementById('lista');
                 lista.innerHTML = '';  // Limpiar la lista antes de llenarla

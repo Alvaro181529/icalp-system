@@ -11,7 +11,6 @@ export class UsersModel {
           LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId
           LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId
           WHERE 1 = 1
-          GROUP BY u.Email, u.User, u.IsApproved
         `;
     let queryParams = [];
 
@@ -33,7 +32,9 @@ export class UsersModel {
                 OR Email LIKE ? )
             `;
     }
-    baseQuery += ` LIMIT ? OFFSET ?`;
+    baseQuery += `
+    GROUP BY u.Email, u.User, u.IsApproved
+    LIMIT ? OFFSET ?`;
     queryParams.push(limit, offset);
 
     try {

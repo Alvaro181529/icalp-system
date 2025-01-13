@@ -69,27 +69,27 @@
           users.forEach((colegiado) => {
             const row = document.createElement("tr");
             row.innerHTML = `
-       <td class="px-6 py-3 text-wrap">${colegiado.Matricula.toString().padStart(5, "0")}</td>
-<td class="px-6 py-3 text-wrap">${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno}</td>
-<td class="px-6 py-3 text-wrap">${colegiado.MatriculaConalab || "No disponible"}</td>
-<td class="px-6 py-3 text-wrap">${colegiado.DireccionOficina || "No disponible"}</td>
-<td class="px-6 py-3 text-wrap">${colegiado.TelefonoOficina || "No disponible"}</td>
-<td class="px-6 py-3 text-wrap">
-  ${colegiado.Correo ? `${colegiado.Correo.slice(0, 30)}${colegiado.Correo.length > 30 ? '...' : ''}` : "No disponible"}
-</td>
-<td class="py-3 text-wrap">
-  ${colegiado.UltimaFechaPago || "No disponible"}
-</td>
-<td class="px-6 py-3 text-wrap">
-  <p>${colegiado.MesesDeuda ? `${colegiado.MesesDeuda} Meses con deuda` : "Sin deuda"}</p>
-  <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" href="/colegiado/${colegiado.ColegiadoId}">Ver más</a>
-</td>
+      <td class="px-6 py-3 text-wrap">${colegiado.Matricula.toString().padStart(5, "0")}</td>
+      <td class="px-6 py-3 text-wrap">${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno}</td>
+      <td class="px-6 py-3 text-wrap">${colegiado.MatriculaConalab || "No disponible"}</td>
+      <td class="px-6 py-3 text-wrap">${colegiado.DireccionOficina || "No disponible"}</td>
+      <td class="px-6 py-3 text-wrap">${colegiado.TelefonoOficina || "No disponible"}</td>
+      <td class="px-6 py-3 text-wrap">
+        ${colegiado.Correo ? `${colegiado.Correo.slice(0, 30)}${colegiado.Correo.length > 30 ? '...' : ''}` : "No disponible"}
+      </td>
+      <td class="py-3 text-wrap">
+        ${colegiado.UltimaFechaPago || "No disponible"}
+      </td>
+      <td class="px-6 py-3 text-wrap">
+        <p>${colegiado.MesesDeuda ? `${colegiado.MesesDeuda} Meses con deuda` : "Sin deuda"}</p>
+        <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" href="/colegiado/${colegiado.ColegiadoId}">Ver más</a>
+      </td>
                 `;
             resultTableBody.appendChild(row);
           });
         } else {
           const row = document.createElement("tr");
-          row.innerHTML = `<td colspan="3">No se encontraron resultados</td>`;
+          row.innerHTML = `<td class="px-6 py-3 text-wrap" colspan="3">No se encontraron resultados</td>`;
           resultTableBody.appendChild(row);
         }
         // Actualizar el estado de los botones de paginación

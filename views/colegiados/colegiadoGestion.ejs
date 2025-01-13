@@ -67,26 +67,27 @@
     const resultTableBody = $("#result-table tbody");
 
     let page = 1;
-    let totalPages = 1; // Se inicializa correctamente
-    let year = new Date().getFullYear(); // Año actual
+    let totalPages = 1; 
+    let year = new Date().getFullYear(); 
 
-    // Obtener el año actual
+    
     const currentYear = new Date().getFullYear();
-    const startYear = 2000;  // Año de inicio
-    const endYear = currentYear;  // Año final (el año actual)
+    const startYear = 2000;  
+    const endYear = currentYear;  
 
-    // Crear las opciones de años dinámicamente
+    
     for (let year = startYear; year <= endYear; year++) {
       const option = document.createElement("option");
+      option.classList.add('text-black');
       option.value = year;
       option.textContent = year;
       selectYear.appendChild(option);
     }
 
-    // Establecer el valor seleccionado por defecto al año actual
+    
     selectYear.value = currentYear;
 
-    // Función para crear una fila de la tabla
+    
     const createRow = (item) => {
       const row = document.createElement("tr");
       const fecha = new Date(item.FechaMatriculacionAlColegio);
@@ -124,30 +125,30 @@
       return row;
     };
 
-    // Función para actualizar la tabla con los datos
+    
     const updateTable = (data) => {
-      resultTableBody.innerHTML = ''; // Limpiar la tabla
+      resultTableBody.innerHTML = ''; 
 
       if (data.length > 0) {
         data.forEach(item => {
-          resultTableBody.appendChild(createRow(item)); // Usar la función createRow
+          resultTableBody.appendChild(createRow(item)); 
         });
       } else {
         const row = document.createElement("tr");
-        row.innerHTML = `<td colspan="14">No se encontraron resultados</td>`;
+        row.innerHTML = `<td class="px-6 py-3 text-wrap" colspan="14">No se encontraron resultados</td>`;
         resultTableBody.appendChild(row);
       }
 
-      // Actualizar el estado de los botones de paginación
+      
       prevPageButton.disabled = page === 1;
       nextPageButton.disabled = page === totalPages;
       currentPageSpan.textContent = `Página ${page}`;
       itemPage.textContent = totalPages;
     };
 
-    // Función para obtener los datos y actualizar la tabla
+    
     const fetchData = async () => {
-      const url = `/collegiate/years?year=${year}&page=${page}`; // Incluir página en la URL
+      const url = `/collegiate/years?year=${year}&page=${page}`; 
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -155,8 +156,8 @@
         }
         const res = await response.json();
         if (Array.isArray(res.users)) {
-          totalPages = res.pages; // Actualizar el total de páginas
-          updateTable(res.users); // Actualizar la tabla con los usuarios
+          totalPages = res.pages; 
+          updateTable(res.users); 
         } else {
           console.error("La estructura de la respuesta no es válida");
         }
@@ -165,17 +166,17 @@
       }
     };
 
-    // Ejecutar la función al cargar la página con el año por defecto
+    
     fetchData();
 
-    // Agregar un evento al select para actualizar la tabla cuando cambie el año
+    
     selectYear.addEventListener("change", function () {
-      year = selectYear.value;  // Obtener el año seleccionado
-      page = 1; // Volver a la primera página cuando se cambie el año
-      fetchData();  // Actualizar la tabla con el nuevo año
+      year = selectYear.value;  
+      page = 1; 
+      fetchData();  
     });
 
-    // Evento para cambiar a la página anterior
+    
     prevPageButton.addEventListener("click", function () {
       if (page > 1) {
         page--;
@@ -183,7 +184,7 @@
       }
     });
 
-    // Evento para cambiar a la página siguiente
+    
     nextPageButton.addEventListener("click", function () {
       if (page < totalPages) {
         page++;

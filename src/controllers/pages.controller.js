@@ -15,7 +15,6 @@ export class PagesController {
   };
   vistas = async (req, res) => {
     const result = await pages.vistas();
-    console.log(result);
     res.json(result);
   };
   view = async (req, res) => {
@@ -24,34 +23,31 @@ export class PagesController {
   };
   //menu
   menu = async (req, res) => {
-    res.send("¡Hola, Mundo!");
+    const result = await pages.menu();
+    res.json(result);
   };
-  menuAdd = async (req, res) => {
-    res.send("¡Hola, Mundo!");
-  };
-  menuOne = async (req, res) => {
-    res.send("¡Hola, Mundo!");
-  };
+
   menuUpdate = async (req, res) => {
-    res.send("¡Hola, Mundo!");
+    const { id, MenuName } = req.body
+    const result = await pages.menuUpdate(id, MenuName);
+    res.json(result);
   };
-  menuDelete = async (req, res) => {
-    res.send("¡Hola, Mundo!");
-  };
+
   //page
-  pages = async (req, res) => {
+  option = async (req, res) => {
+    const result = await pages.option(req.query);
+    res.json(result)
+  };
+  optionOne = async (req, res) => {
     res.send("¡Hola, Mundo!");
   };
-  pagesOne = async (req, res) => {
+  optionAdd = async (req, res) => {
     res.send("¡Hola, Mundo!");
   };
-  pagesAdd = async (req, res) => {
+  optionUpdate = async (req, res) => {
     res.send("¡Hola, Mundo!");
   };
-  pagesUpdate = async (req, res) => {
-    res.send("¡Hola, Mundo!");
-  };
-  pagesDelete = async (req, res) => {
+  optionDelete = async (req, res) => {
     res.send("¡Hola, Mundo!");
   };
 
@@ -86,19 +82,20 @@ export class PagesController {
   getSlide = async (req, res) => {
     const slidesDir = path.join(__dirname, "../uploads/slides");
     fs.readdir(slidesDir, (err, files) => {
+      let fileNames
       if (err) {
-        return res
-          .status(500)
-          .json({ message: "Error al leer la carpeta de slides", error: err });
+        fileNames = { files: [], message: "Error con la carpeta de slides" };
+        res.json(
+          fileNames, // Devuelves los nombres de los archivos en la carpeta 'slides'
+        );
+      } else {
+        fileNames = files.filter((file) =>
+          fs.statSync(path.join(slidesDir, file)).isFile()
+        );
+        res.json({
+          files: fileNames, // Devuelves los nombres de los archivos en la carpeta 'slides'
+        });
       }
-
-      const fileNames = files.filter((file) =>
-        fs.statSync(path.join(slidesDir, file)).isFile()
-      );
-
-      res.json({
-        files: fileNames, // Devuelves los nombres de los archivos en la carpeta 'slides'
-      });
     });
   };
   deleteSlide = async (req, res) => {

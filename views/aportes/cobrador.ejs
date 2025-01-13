@@ -1,15 +1,15 @@
-<%- include('../partials/header') %>
+<%- include('../partials/header', {title, user}) %>
 
   <div class="px-8 py-2">
 
-       <div class="overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
       <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
         <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
           <tr>
             <th class="px-4 py-3 text-left">
               Año
               <select id="year" name="year"
-                class="mt-1 ml-12 p-2 border border-blue-300 rounded-lg bg-transparent focus:ring-2 focus:ring-blue-500">
+                class="mt-1 ml-12 p-2 border border-blue-300 rounded-lg bg-transparent focus:ring-2 focus:ring-blue-500 ">
               </select>
             </th>
             <th class="px-4 py-3 text-left">Mes</th>
@@ -37,6 +37,7 @@
       // Crear las opciones de años
       for (let year = startYear; year <= endYear; year++) {
         const option = document.createElement("option");
+        option.classList.add('text-black');
         option.value = year;
         option.textContent = year;
         selectYear.appendChild(option);
@@ -63,7 +64,7 @@
           });
         } else {
           const row = document.createElement("tr");
-          row.innerHTML = `<td colspan="4">No se encontraron resultados</td>`;
+          row.innerHTML = `<td class="px-6 py-3" colspan="4">No se encontraron resultados</td>`;
           resultTableBody.appendChild(row);
         }
       };

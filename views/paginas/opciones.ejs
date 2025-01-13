@@ -1,0 +1,264 @@
+<%- include('../partials/header', {title, user}) %>
+<div class="px-8 py-4">
+  <div class="overflow-x-auto shadow-md sm:rounded-lg">
+    <table
+      id="result-table"
+      class="w-full text-sm text-left rtl:text-right text-gray-600"
+    >
+      <thead class="text-xs text-gray-200 uppercase bg-blue-950">
+        <tr>
+          <th class="px-6 py-3">Menu</th>
+          <th class="px-6 py-3">Opciones</th>
+          <th class="px-6 py-3 text-center">
+            <button
+              id="openDialogButton"
+              class="bg-blue-900 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+            >
+              <p class="mx-6 my-2">Registrar</p>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí se llenarán las filas con los resultados -->
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Dialog de actualización -->
+<dialog
+  id="dialog-update"
+  class="p-6 max-w-md mx-auto bg-white rounded-lg shadow-lg"
+>
+  <form id="form-update" action="" class="space-y-4">
+    <input type="text" name="SortNumber" id="SortNumber" hidden />
+    <select
+      name="selectMenu"
+      id="selectMenu"
+      class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    ></select>
+    <div>
+      <label for="MenuName" class="block text-sm font-semibold text-gray-700"
+        >Nombre de la página</label
+      >
+      <input
+        type="text"
+        name="MenuName"
+        id="MenuName"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
+        required
+      />
+    </div>
+    <div class="flex justify-between gap-4">
+      <button
+        id="cerrarDialog"
+        class="w-full py-2 bg-red-500 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+      >
+        Cerrar
+      </button>
+      <button
+        type="submit"
+        class="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+      >
+        Guardar
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<script defer>
+  const $ = (el) => document.querySelector(el);
+  const resultTableBody = $("#result-table tbody");
+  const dialogUpdate = $("#dialog-update");
+  const formUpdate = $("#form-update");
+  const buttonDialog = $("#openDialogButton");
+  const select = $("#selectMenu");
+  // Función para actualizar la tabla
+  const updateTable = (data) => {
+    resultTableBody.innerHTML = ""; // Limpiar el cuerpo de la tabla
+    if (data.length > 0) {
+      data.forEach((item) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+                    <td class="px-6 py-3 break-words">${item.MenuNameEnglish}</td>
+                    <td class="px-6 py-3 break-words">${item.TitleEnglish}</td>
+                    <td class="px-6 py-3">
+                      <div class="flex justify-center gap-4">
+                        <button class="py-2 px-4 bg-red-600 text-white rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 eliminar-button" 
+                        data-id="${item.PageId}">Eliminar</button>
+                        <button class="py-2 px-4 bg-blue-900 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 actualizar-button" 
+                        data-id="${item.PageId}" data-menu-name="${item.TitleEnglish}">Actualizar</button>
+                      </div>
+                    </td>
+                `;
+        resultTableBody.appendChild(row);
+      });
+    } else {
+      resultTableBody.innerHTML = `<tr><td colspan="3" class="px-6 py-3 text-center">No hay resultados</td></tr>`;
+    }
+  };
+
+  // Función para manejar el clic en los botones de acción
+  const handleButtonClick = async (e) => {
+    const button = e.target;
+    const PageId = button.getAttribute("data-id");
+
+    if (button.classList.contains("actualizar-button")) {
+      const MenuName = button.getAttribute("data-menu-name");
+      // Rellenar los campos del formulario en el dialog
+      $("#SortNumber").value = PageId;
+      $("#MenuName").value = MenuName;
+
+      // Mostrar el dialog para actualizar
+      dialogUpdate.showModal();
+
+      // Manejar el envío del formulario de actualización
+      formUpdate.onsubmit = async (e) => {
+        e.preventDefault();
+    console.log('Actualizar');
+
+        const updatedMenuName = $("#MenuName").value;
+        const updatedSortNumber = $("#SortNumber").value;
+
+        // Capitalizar la primera letra del nombre
+        const capitalizeFirstLetter = (str) => {
+          if (!str) return str;
+          return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        };
+
+        const MenuName = capitalizeFirstLetter(updatedMenuName);
+        try {
+          const response = await fetch(`/option/${PageId}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: updatedSortNumber, MenuName }),
+          });
+          const data = await response.json();
+          if (response.ok) {
+            alert(
+              "Menú actualizado exitosamente. Actualice la página para ver los cambios."
+            );
+            dialogUpdate.close();
+            fetchAndUpdateTable(); // Actualizar la tabla
+          } else {
+            alert(
+              "Error al actualizar el menú: " +
+                (data.message || "Intenta de nuevo.")
+            );
+          }
+        } catch (error) {
+          console.error("Error al actualizar el menú:", error);
+          alert("Hubo un error al actualizar el menú. Intenta de nuevo.");
+        }
+      };
+    } else if (button.classList.contains("eliminar-button")) {
+      // Confirmar eliminación
+      const confirmDelete = confirm(
+        "¿Estás seguro de que quieres eliminar este menú?"
+      );
+      if (confirmDelete) {
+        try {
+          const response = await fetch(`/option/${PageId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.json();
+          if (response.ok) {
+            alert(
+              "Menú eliminado exitosamente. Actualice la página para ver los cambios."
+            );
+            fetchAndUpdateTable(); // Actualizar la tabla después de eliminar
+          } else {
+            alert(
+              "Error al eliminar el menú: " +
+                (data.message || "Intenta de nuevo.")
+            );
+          }
+        } catch (error) {
+          console.error("Error al eliminar el menú:", error);
+          alert("Hubo un error al eliminar el menú. Intenta de nuevo.");
+        }
+      }
+    }
+  };
+
+  // Función para obtener los datos y actualizar la tabla
+  const fetchAndUpdateTable = async () => {
+    const url = `/option`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Error al obtener los datos");
+      }
+      const data = await response.json();
+      if (Array.isArray(data.option)) {
+        updateTable(data.option);
+      } else {
+        alert("La respuesta no es válida.");
+      }
+    } catch (error) {
+      console.error("Error en la búsqueda:", error);
+      alert("Hubo un problema al cargar los datos. Intenta nuevamente.");
+    }
+  };
+  // Función para obtener los datos y actualizar la tabla
+  const fetchMenu = async () => {
+    const url = `/menu`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Error al obtener los datos");
+      }
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        select.innerHTML = ""; // Limpiar el cuerpo de la tabla
+        if (data.length > 0) {
+          data.forEach((item) => {
+            const option = document.createElement("option");
+            option.classList.add("text-black");
+            option.value = item.MenuId;
+            option.textContent = item.MenuNameEnglish;
+            select.appendChild(option);
+          });
+        } else {
+          select.innerHTML = `<option>No hay opciones</option>`;
+        }
+      } else {
+        alert("La respuesta no es válida.");
+      }
+    } catch (error) {
+      console.error("Error en la búsqueda:", error);
+      alert("Hubo un problema al cargar los datos. Intenta nuevamente.");
+    }
+  };
+  formUpdate.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const formData = new FormData(formUpdate);
+    const IdOption = formData.get("SortNumber");
+    if(IdOption){
+      console.log('Agregar');
+      console.log(formData);
+
+    }
+  });
+  buttonDialog.addEventListener("click", (e) => {
+    e.preventDefault();
+    dialogUpdate.showModal();
+  });
+  cerrarDialog.addEventListener("click", (e) => {
+    e.preventDefault();
+    dialogUpdate.close();
+  });
+  // Escuchar clics en los botones de actualizar y eliminar
+  resultTableBody.addEventListener("click", handleButtonClick);
+  fetchMenu();
+  fetchAndUpdateTable(); // Llamada inicial para cargar los datos
+</script>
+
+<%- include('../partials/footer') %>

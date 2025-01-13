@@ -3,8 +3,8 @@
 <!-- Carousel Section -->
 <div id="default-carousel" class="relative w-full  max-2xl:px-16 z-10" data-carousel="slide">
   <!-- Carousel Wrapper -->
-  <% if (result && result.length > 0) { %>
-    <div class="relative h-[80vh] overflow-hidden">
+  <div class="relative h-[80vh] overflow-hidden">
+      <% if (result && result.length > 0) { %>
       <% result.forEach(function(file, index) { %>
         <div class="hidden duration-700 ease-in-out absolute w-full h-full transition-transform transform" 
              data-carousel-item <%= index === 0 ? 'style="display:block"' : 'style="opacity: 0;"' %>>
@@ -12,6 +12,13 @@
                class="absolute block w-full h-full  -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
         </div>
       <% }); %>
+  <% } else { %>
+    <div class="hidden duration-700 ease-in-out absolute w-full h-full transition-transform transform" 
+             data-carousel-item style="display:block">
+          <img src="/public/img/defaultSlider.svg" alt="default" 
+               class="absolute block w-full h-full object-cover  -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
+        </div>
+  <% }  %>
     </div>
 
     <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-5 cursor-pointer group " data-carousel-prev aria-label="Previous Slide">
@@ -32,7 +39,6 @@
       </span>
     </button>
     
-  <% } %>
 </div>
 
 <!-- Header Section with Buttons -->

@@ -1,4 +1,4 @@
-<%- include('../partials/header') %>
+<%- include('../partials/header', {title, user}) %>
     <div class="px-8 py-2">
         <!-- Diálogo para seleccionar archivo -->
         <dialog id="file-upload-dialog"
@@ -100,7 +100,6 @@
                 }
             } catch (error) {
                 console.error(error);
-                alert("Error al obtener los archivos.");
             }
         };
 
