@@ -78,7 +78,7 @@
         }
       })
       .catch((error) => {
-        loginSpan.textContent = `Error: ${error.message}`;
+        loginSpan.textContent = `Contraseña o correo electrónico incorrecto.`;
         loginSpan.style.color = "red";
       });
   });

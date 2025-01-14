@@ -18,8 +18,12 @@ export class PagesController {
     res.json(result);
   };
   view = async (req, res) => {
-    console.log(req.params);
-    res.send("¡Hola, Mundo!");
+    const {user} = req.session;
+    const {ruta, pagina} = req.params;
+    const result = await pages.view(ruta, pagina);
+    if (!result)return res.redirect("/");
+    const Title = result.TitleEnglish;
+    res.render("paginas/vistas", { title: Title, user, result });
   };
   //menu
   menu = async (req, res) => {
@@ -56,7 +60,7 @@ export class PagesController {
 
   //consten
   content = async (req, res) => {
-    const result = await pages.content();
+    const result = await pages.content(req.query);
     console.log(result);
     res.json(result);
   };
@@ -69,11 +73,11 @@ export class PagesController {
     res.json(result);
   };
   contentUpdate = async (req, res) => {
-    res.send("¡Hola, Mundo!");
+    const {user} = req.session;
+    const result = await pages.contentUpdate(req.body, user.correo);
+    res.json(result)
   };
-  contentDelete = async (req, res) => {
-    res.send("¡Hola, Mundo!");
-  };
+
 
   file = async (req, res) => {
     //api

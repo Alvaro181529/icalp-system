@@ -1,0 +1,15 @@
+<%- include('../partials/header', {title, user}) %>
+<div class="pt-10">
+    <%if(result.Title || result.MenuTitle)  {%>
+        <div class="max-w-2xl mx-auto my-8">
+            <div class="my-8">
+                <h1 class="text-5xl font-bold m-0"><%=result.MenuTitle%></h1>
+                <h5 class="text-lg mt-2 font-semibold text-gray-600"><%= result.Title%></h5>
+            </div>
+            <h5 class="text-xs text-gray-600 text-muted-foreground">Publicado el <%= new Date(result.Datetime).toLocaleString('es-VE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false }) %></h5>
+            <hr class="mx-3 my-4 border-t border-gray-400 mb-5">
+            <%- result.Content %>
+        </div>
+        <%}%>
+</div>
+<%- include('../partials/footer') %>

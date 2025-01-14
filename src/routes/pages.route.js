@@ -25,7 +25,6 @@ router.get("/content", pages.content);
 router.get("/content/:id", pages.contentOne);
 router.post("/content", pages.contentAdd);
 router.patch("/content/:id", pages.contentUpdate);
-router.delete("/content/:id", pages.contentDelete);
 
 //archivos
 router.get("/upload/slide", pages.getSlide);

@@ -1,5 +1,13 @@
 import pool from "../../config/db.connect.js";
 export class PagesModel {
+  view = async (ruta, pagina) => {
+    try {
+      const result = await pool.query(`SELECT m.MenuNameEnglish, a.TitleEnglish,o.Content ,o.MenuTitle, o.Title,o.Datetime FROM posts o INNER JOIN pages a ON a.PageId = o.PageId INNER JOIN menus m ON m.MenuId = a.MenuId WHERE m.MenuNameEnglish = ? AND a.TitleEnglish = ?`, [ruta, pagina]);
+      return result[0];
+    } catch (error) {
+      return[]
+    }
+  }
   vistas = async () => {
     const groupedResult = [];
     let currentMenu = null;
@@ -69,9 +77,10 @@ export class PagesModel {
     const limit = parseInt(size);
     const offset = (page - 1) * size;
     let baseQuery = `
-    SELECT p.PageId,p.MenuId, m.MenuNameEnglish, p.SortNumber, p.TitleEnglish
-    FROM pages p
-    INNER JOIN menus m ON p.MenuId = m.MenuId
+    SELECT p.PageId, p.MenuId, m.MenuNameEnglish, p.SortNumber, p.TitleEnglish, o.PageId as Pagina
+FROM pages p
+INNER JOIN menus m ON p.MenuId = m.MenuId
+LEFT JOIN posts o ON o.PageId = p.PageId
   `;
 
     let queryParams = [];
@@ -152,12 +161,46 @@ export class PagesModel {
     }
   };
 
-  content = async () => {
-    const result = await pool.query(
-      `SELECT a.*, o.* FROM pages a LEFT JOIN posts o ON o.PageId = a.PageId`
-    );
-    return result;
+  content = async (query) => {
+    const { page = 1, size = 10 } = query;
+    const limit = parseInt(size, 10); // aseguramos que size sea un número
+    const offset = (page - 1) * limit;
+
+    // Base de la consulta principal
+    let baseQuery = `SELECT a.PageId, a.TitleEnglish, o.PostId, o.PageId as Pagina, o.MenuTitle, o.Title, o.Datetime FROM pages a LEFT JOIN posts o ON o.PageId = a.PageId`;
+    let queryParams = [];
+
+
+
+    // Consulta para contar el total de resultados
+    let countQuery = `SELECT COUNT(*) as total FROM pages a LEFT JOIN posts o ON o.PageId = a.PageId`;
+    let countParams = [...queryParams];
+
+
+
+    // Añadimos los límites y el desplazamiento
+    baseQuery += ` LIMIT ? OFFSET ?`;
+    queryParams.push(limit, offset);
+
+    try {
+      const [rows, countResult] = await Promise.all([
+        pool.query(baseQuery, queryParams),
+        pool.query(countQuery, countParams),
+      ]);
+
+      const total = countResult[0].total;
+      return {
+        content: rows,
+        total,
+        pages: Math.ceil(total / limit),  // Calculamos la cantidad de páginas
+        currentPage: page,
+      };
+    } catch (error) {
+      console.error("Error al obtener los contenidos:", error);
+      throw new Error("Error al obtener los contenidos");
+    }
   };
+
   contentId = async (id) => {
     const result = await pool.query(
       `SELECT a.*, o.* FROM pages a LEFT JOIN posts o ON o.PageId = a.PageId WHERE a.PageId = ?`,
@@ -175,7 +218,26 @@ export class PagesModel {
     console.log(body);
     const result = await pool.query(`
       INSERT INTO posts ( PageId, LanguageId, MenuTitle, Title, Content, Datetime, User, ContentBinary) VALUES (?, '1', ?, ?, ?, NOW(), ?, NULL); `,
-      [pageId,menu,title,content,user])
-      return result;
+      [pageId, menu, title, content, user])
+    return result;
   };
+  contentUpdate = async (body, user) => {
+    const { menu, title, content, pageId } = body;
+    console.log(body);
+
+    const result = await pool.query(`
+      UPDATE posts 
+      SET 
+        MenuTitle = ?, 
+        Title = ?, 
+        Content = ?, 
+        Datetime = NOW(), 
+        User = ?, 
+        ContentBinary = NULL 
+      WHERE PageId = ?;
+    `, [menu, title, content, user, pageId]);
+
+    return result;
+  };
+
 }
