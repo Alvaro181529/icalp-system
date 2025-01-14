@@ -5,7 +5,7 @@ import mysql from 'mysql'
 dotenv.config()
 const pool = mysql.createPool({
   host: process.env.HOST,
-  user: process.env.USER,
+  user: process.env.USER_DATABASE,
   database: process.env.DATABASE,
   password: process.env.PASSWORD
 })

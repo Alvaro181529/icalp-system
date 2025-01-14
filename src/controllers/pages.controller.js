@@ -28,7 +28,7 @@ export class PagesController {
   };
 
   menuUpdate = async (req, res) => {
-    const { id, MenuName } = req.body
+    const { id, MenuName } = req.body;
     const result = await pages.menuUpdate(id, MenuName);
     res.json(result);
   };
@@ -36,30 +36,37 @@ export class PagesController {
   //page
   option = async (req, res) => {
     const result = await pages.option(req.query);
-    res.json(result)
+    res.json(result);
   };
-  optionOne = async (req, res) => {
-    res.send("¡Hola, Mundo!");
-  };
+
   optionAdd = async (req, res) => {
-    res.send("¡Hola, Mundo!");
+    console.log("jasnhdaskbdhki");
+    const result = await pages.optionAdd(req.body);
+    res.json(result);
   };
   optionUpdate = async (req, res) => {
-    res.send("¡Hola, Mundo!");
+    const result = await pages.optionUpdate(req.body);
+    res.json(result);
   };
   optionDelete = async (req, res) => {
-    res.send("¡Hola, Mundo!");
+    const { id } = req.params;
+    const result = await pages.optionDelete(id);
+    res.json(result);
   };
 
   //consten
   content = async (req, res) => {
-    res.send("¡Hola, Mundo!");
+    const result = await pages.content();
+    console.log(result);
+    res.json(result);
   };
   contentOne = async (req, res) => {
     res.send("¡Hola, Mundo!");
   };
   contentAdd = async (req, res) => {
-    res.send("¡Hola, Mundo!");
+    const { user } = req.session;
+    const result = await pages.contentAdd(req.body, user.correo);
+    res.json(result);
   };
   contentUpdate = async (req, res) => {
     res.send("¡Hola, Mundo!");
@@ -82,11 +89,11 @@ export class PagesController {
   getSlide = async (req, res) => {
     const slidesDir = path.join(__dirname, "../uploads/slides");
     fs.readdir(slidesDir, (err, files) => {
-      let fileNames
+      let fileNames;
       if (err) {
         fileNames = { files: [], message: "Error con la carpeta de slides" };
         res.json(
-          fileNames, // Devuelves los nombres de los archivos en la carpeta 'slides'
+          fileNames // Devuelves los nombres de los archivos en la carpeta 'slides'
         );
       } else {
         fileNames = files.filter((file) =>

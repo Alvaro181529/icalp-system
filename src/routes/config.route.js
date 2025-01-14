@@ -5,6 +5,7 @@ const config = new ConfigController()
 
 router.get("/menus", config.getMenu);
 router.get("/opciones", config.getOpciones);
+router.get("/opciones/:id", config.getContenidoOpcion);
 router.get("/contenidos", config.getContenido);
 
 router.get('/slides', config.getSlides)

@@ -16,7 +16,6 @@ router.patch("/menu/:id", pages.menuUpdate);
 
 //option
 router.get("/option", pages.option);
-router.get("/option/:id", pages.optionOne);
 router.post("/option", pages.optionAdd);
 router.patch("/option/:id", pages.optionUpdate);
 router.delete("/option/:id", pages.optionDelete);
