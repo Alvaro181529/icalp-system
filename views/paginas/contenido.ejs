@@ -1,129 +1,127 @@
 <%- include('../partials/header', {title, user}) %>
-<div class="px-8 py-2">
-  <div class="overflow-x-auto shadow-md sm:rounded-lg">
-    <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600">
-      <thead class="text-xs text-gray-200 uppercase bg-blue-950">
-        <tr>
-          <th class="px-4 py-3 text-left">Menu</th>
-          <th class="px-4 py-3 text-left">Titulo</th>
-          <th class="px-4 py-3 text-left">Subtitulo</th>
-          <th class="px-4 py-3 text-left">Fecha de la publicacion</th>
-          <th class="px-4 py-3 text-left">Usuario</th>
-          <th class="px-4 py-3 text-left"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Aquí se llenarán las filas con los resultados -->
-      </tbody>
-    </table>
-  </div>
-  <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
-    <div>
-      <span class="text-sm text-gray-700">
-        Mostrando
-        <span id="start-item" class="font-semibold text-gray-900">
-          <span id="current-page">Página 1</span> de
+  <div class="px-8 py-2">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
+      <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600">
+        <thead class="text-xs text-gray-200 uppercase bg-blue-950">
+          <tr>
+            <th class="px-4 py-3 text-left">Menu</th>
+            <th class="px-4 py-3 text-left">Titulo</th>
+            <th class="px-4 py-3 text-left">Subtitulo</th>
+            <th class="px-4 py-3 text-left">Fecha de la publicacion</th>
+            <th class="px-4 py-3 text-left">Usuario</th>
+            <th class="px-4 py-3 text-left"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+      </table>
+    </div>
+    <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+      <div>
+        <span class="text-sm text-gray-700">
+          Mostrando
+          <span id="start-item" class="font-semibold text-gray-900">
+            <span id="current-page">Página 1</span> de
+          </span>
+          <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"></span>
         </span>
-        <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"></span>
-      </span>
-    </div>
-    <div class="inline-flex mt-2 xs:mt-0">
-      <button
-        id="prev-page"
-        class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 rounded-s hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Anterior
-      </button>
-      <button
-        id="next-page"
-        class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900"
-      >
-        Siguiente
-      </button>
+      </div>
+      <div class="inline-flex mt-2 xs:mt-0">
+        <button id="prev-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 rounded-s hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed">
+          Anterior
+        </button>
+        <button id="next-page"
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900">
+          Siguiente
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<script defer>
-  const $ = (el) => document.querySelector(el);
-  const resultTableBody = $("#result-table tbody");
-  const prevPageButton = $("#prev-page");
-  const nextPageButton = $("#next-page");
-  const currentPageSpan = $("#current-page");
-  const itemPage = $("#item-page");
+  <script defer>
 
-  let page = 1;
-  let totalPages = 1;
+    const resultTableBody = $("#result-table tbody");
+    const prevPageButton = $("#prev-page");
+    const nextPageButton = $("#next-page");
+    const currentPageSpan = $("#current-page");
+    const itemPage = $("#item-page");
 
-  const updateTable = (data) => {
-    resultTableBody.innerHTML = "";
+    let page = 1;
+    let totalPages = 1;
 
-    if (data.length > 0) {
-      data.forEach((item) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
+    const updateTable = (data) => {
+      resultTableBody.innerHTML = "";
+
+      if (data.length > 0) {
+        data.forEach((item) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
           <td class="px-6 py-3 text-wrap"><p>${item.TitleEnglish || "No disponible"}</p></td>
           <td class="px-6 py-3 text-wrap"><p>${item.MenuTitle || "No disponible"}</p></td>
           <td class="px-6 py-3 text-wrap">${item.Title || "No disponible"}</td>
-          <td class="px-6 py-3 text-wrap">${new Date(item.Datetime).toLocaleString()|| "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap">${new Date(item.Datetime).toLocaleString() || "No disponible"}</td>
           <td class="px-6 py-3 text-wrap">${item.User || "No disponible"}</td>
-          <td class="px-6 py-3 text-wrap">
-            ${item.Pagina ? '<a href="/opciones/${item.PageId}" class="text-blue-500 hover:underline cursor-pointer">Ver contenido</a>':'  <a href="/opciones/${item.PageId}" class="text-blue-500 hover:underline">Añadir contenido</a>'}
-          
+         <td class="px-6 py-3 text-wrap">
+            ${item.Pagina
+                        ? `<a href="/opciones/${item.PageId}" class="text-blue-500 hover:underline cursor-pointer">Ver contenido</a>`
+                        : `<a href="/opciones/${item.PageId}" class="text-blue-500 hover:underline">Añadir contenido</a>`
+                      }
           </td>
         `;
-        resultTableBody.appendChild(row); // Aquí agregamos cada fila a la tabla
-      });
-    } else {
-      const row = document.createElement("tr");
-      row.innerHTML = `<td class="px-6 py-3 text-wrap" colspan="5">No se encontraron resultados</td>`;
-      resultTableBody.appendChild(row);
-    }
-
-    prevPageButton.disabled = page === 1;
-    nextPageButton.disabled = page === totalPages;
-    currentPageSpan.textContent = `Página ${page}`;
-    itemPage.textContent = totalPages;
-  };
-
-  const fetchAndUpdateTable = async () => {
-    const url = `/content?page=${page}`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Error en la búsqueda");
-      }
-
-      const data = await response.json();
-      if (data && data.content && Array.isArray(data.content)) {
-        totalPages = data.pages;
-        updateTable(data.content);
+          resultTableBody.appendChild(row); // Aquí agregamos cada fila a la tabla
+        });
       } else {
-        console.error("La estructura de la respuesta no es válida");
-        alert("Hubo un problema con los resultados. Intenta nuevamente.");
+        const row = document.createElement("tr");
+        row.innerHTML = `<td class="px-6 py-3 text-wrap" colspan="5">No se encontraron resultados</td>`;
+        resultTableBody.appendChild(row);
       }
-    } catch (error) {
-      console.error("Error en la búsqueda:", error);
-      alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
-    }
-  };
 
-  prevPageButton.addEventListener("click", function () {
-    if (page > 1) {
-      page--;
-      fetchAndUpdateTable();
-    }
-  });
+      prevPageButton.disabled = page === 1;
+      nextPageButton.disabled = page === totalPages;
+      currentPageSpan.textContent = `Página ${page}`;
+      itemPage.textContent = totalPages;
+    };
 
-  nextPageButton.addEventListener("click", function () {
-    if (page < totalPages) {
-      page++;
-      fetchAndUpdateTable();
-    }
-  });
+    const fetchAndUpdateTable = async () => {
+      const url = `/content?page=${page}`;
 
-  fetchAndUpdateTable();
-</script>
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Error en la búsqueda");
+        }
 
-<%- include('../partials/footer') %>
+        const data = await response.json();
+        if (data && data.content && Array.isArray(data.content)) {
+          totalPages = data.pages;
+          updateTable(data.content);
+        } else {
+          console.error("La estructura de la respuesta no es válida");
+          alert("Hubo un problema con los resultados. Intenta nuevamente.");
+        }
+      } catch (error) {
+        console.error("Error en la búsqueda:", error);
+        alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+      }
+    };
+
+    prevPageButton.addEventListener("click", function () {
+      if (page > 1) {
+        page--;
+        fetchAndUpdateTable();
+      }
+    });
+
+    nextPageButton.addEventListener("click", function () {
+      if (page < totalPages) {
+        page++;
+        fetchAndUpdateTable();
+      }
+    });
+
+    fetchAndUpdateTable();
+  </script>
+
+  <%- include('../partials/footer') %>

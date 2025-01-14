@@ -1,673 +1,789 @@
 <%- include('../partials/header', { title, user }) %>
-
-  <h1>Detalles del Colegiado</h1>
-  <button id="button">Pagos</button>
-  <button id="openDialogButton">Actualizar</button>
-  <button id="entrega-agenda">Entrega de Agenda</button>
-  <button id="diplomado-gratuito">Diplomado Gratuito</button>
-  <a href="/collegiate/<%= result.ColegiadoId %>/pdf" target="_blank">
-    <button>Generar Reporte PDF</button>
-  </a>
-  <table>
-    <thead>
-      <tr>
-        <th>Campo</th>
-        <th>Valor</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Matricula</td>
-        <td>
-          <%= result.Matricula %>
-        </td>
-      </tr>
-      <tr>
-        <td>Matricula Conalab</td>
-        <td>
-          <%= result.MatriculaConalab || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Foto</td>
-        <td><img src="" alt="<%= result.Foto %>" width="100"></td>
-      </tr>
-      <tr>
-        <td>Firma</td>
-        <td><img src="#" alt="<%= result.Firma %>" width="100"></td>
-      </tr>
-      <tr>
-        <td>PDF</td>
-        <td><a href="#"" target=" _blank">Ver PDF <%= result.Pdf %>"</a></td>
-      </tr>
-      <tr>
-        <td>Nombre Completo</td>
-        <td>
-          <%= result.Nombres %>
-            <%= result.Paterno %>
-              <%= result.Materno %>
-        </td>
-      </tr>
-      <tr>
-        <td>Teléfono Oficina</td>
-        <td>
-          <%= result.TelefonoOficina %>
-        </td>
-      </tr>
-      <tr>
-        <td>Dirección Oficina</td>
-        <td>
-          <%= result.DireccionOficina %>
-        </td>
-      </tr>
-      <tr>
-        <td>Correo</td>
-        <td>
-          <%= result.Correo || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Lugar de Nacimiento</td>
-        <td>
-          <%= result.LugarNacimiento %>
-        </td>
-      </tr>
-      <tr>
-        <td>Fecha de Nacimiento</td>
-        <td>
-          <%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toLocaleDateString() : "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Numero CI</td>
-        <td>
-          <%= result.NumeroCI %>
-        </td>
-      </tr>
-      <tr>
-        <td>Numero RUC</td>
-        <td>
-          <%= result.NumeroRuc %>
-        </td>
-      </tr>
-      <tr>
-        <td>Estado Civil</td>
-        <td>
-          <%= result.EstadoCivil %>
-        </td>
-      </tr>
-      <tr>
-        <td>Universidad</td>
-        <td>
-          <%= result.Universidad %>
-        </td>
-      </tr>
-      <tr>
-        <td>Fecha Tesis</td>
-        <td>
-          <%= result.FechaTesis || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Universidad Licenciatura</td>
-        <td>
-          <%= result.UniversidadLicenciatura %>
-        </td>
-      </tr>
-      <tr>
-        <td>Fecha Licenciatura</td>
-        <td>
-          <%= result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toLocaleDateString() : "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Fecha Provision Nacional</td>
-        <td>
-          <%= result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toLocaleDateString()
-            : "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Entidad Provision Nacional</td>
-        <td>
-          <%= result.EntidadProvisionNacional %>
-        </td>
-      </tr>
-      <tr>
-        <td>Fecha Matriculación al Colegio</td>
-        <td>
-          <%= result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toLocaleDateString()
-            : "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Cargos Administración Pública</td>
-        <td>
-          <%= result.CargosAdministracionPublica %>
-        </td>
-      </tr>
-      <tr>
-        <td>Cargos Empresa Privada</td>
-        <td>
-          <%= result.CargosEmpresaPrivada %>
-        </td>
-      </tr>
-      <tr>
-        <td>Cargos Bufete</td>
-        <td>
-          <%= result.CargosBufete || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Cargo Actual</td>
-        <td>
-          <%= result.CargoActual %>
-        </td>
-      </tr>
-      <tr>
-        <td>Especialidad Primaria</td>
-        <td>
-          <%= result.EspecialidadPrimaria || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Especialidad Secundaria</td>
-        <td>
-          <%= result.EspecialidadSecundaria %>
-        </td>
-      </tr>
-      <tr>
-        <td>Producciones</td>
-        <td>
-          <%= result.Producciones || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Cátedra</td>
-        <td>
-          <%= result.Catedra %>
-        </td>
-      </tr>
-      <tr>
-        <td>Estudios Especialización</td>
-        <td>
-          <%= result.EstudiosEspecializacion %>
-        </td>
-      </tr>
-      <tr>
-        <td>Reconocimientos</td>
-        <td>
-          <%= result.Reconocimientos || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Asistencia a Eventos Internacionales</td>
-        <td>
-          <%= result.AsistenciaEventosInternacionales %>
-        </td>
-      </tr>
-      <tr>
-        <td>Institución Asegurado</td>
-        <td>
-          <%= result.InstitucionAsegurado %>
-        </td>
-      </tr>
-      <tr>
-        <td>Beneficiarios</td>
-        <td>
-          <%= result.Beneficiarios || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Dirección Domicilio</td>
-        <td>
-          <%= result.DireccionDomicilio %>
-        </td>
-      </tr>
-      <tr>
-        <td>Teléfono Domicilio</td>
-        <td>
-          <%= result.TelefonoDomicilio %>
-        </td>
-      </tr>
-      <tr>
-        <td>Casilla</td>
-        <td>
-          <%= result.Casilla || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Situación</td>
-        <td>
-          <%= result.Situacion || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Observación</td>
-        <td>
-          <%= result.Observacion || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Zona Id</td>
-        <td>
-          <%= result.ZonaId || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Nacionalidad</td>
-        <td>
-          <%= result.Nacionalidad || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Celular</td>
-        <td>
-          <%= result.Celular || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Grado Académico</td>
-        <td>
-          <%= result.GradoAcademico || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Licenciatura</td>
-        <td>
-          <%= result.Licenciatura || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Zona Trabajo Id</td>
-        <td>
-          <%= result.ZonaTrabajoId || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Forma de Pago</td>
-        <td>
-          <%= result.FormaDePago || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Boleta Depósito Número</td>
-        <td>
-          <%= result.BoletaDepositoNumero || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Monto Depósito</td>
-        <td>
-          <%= result.MontoDeposito || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Formulario de Admisión</td>
-        <td>
-          <%= result.FormularioDeAdmision || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Fotocopia Título Profesional</td>
-        <td>
-          <%= result.FotocopiaTituloProfesional || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Certificado Nacimiento Original</td>
-        <td>
-          <%= result.CertificadoNacimientoOriginal || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Fotocopia CI</td>
-        <td>
-          <%= result.FotocopiaCI || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Currículum Vitae</td>
-        <td>
-          <%= result.CurriculumVitae || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Usuario Registro</td>
-        <td>
-          <%= result.UsuarioRegistro || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Fecha Registro</td>
-        <td>
-          <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Usuario Modificación</td>
-        <td>
-          <%= result.UsuarioModificacion || "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Fecha Modificación</td>
-        <td>
-          <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No disponible" %>
-        </td>
-      </tr>
-      <tr>
-        <td>Estado</td>
-        <td>
-          <%= result.Estado %>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h1>Aportes</h1>
-  <table id="result-table">
-    <thead>
-      <tr>
-        <th>Matricula</th>
-        <th>Fechas</th>
-        <th>Monto</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí se llenarán las filas con los resultados -->
-    </tbody>
-  </table>
-  <h1>Notas</h1>
-  <table id="notas-table">
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Nota</th>
-        <th>Usuario</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí se llenarán las filas con los resultados -->
-    </tbody>
-  </table>
-  <dialog id="personalDataDialog">
-    <h2>Formulario de Registros</h2>
-    <form id="personalDataForm">
-      <h3>Datos personales</h3>
-      <label for="matricula">Matrícula:</label>
-      <input type="text" id="matricula" name="matricula" value="<%=result.Matricula%>">
-
-      <label for="matriculaConalab">Matrícula Conalab:</label>
-      <input type="text" id="matriculaConalab" name="matriculaConalab" value="<%=result.matriculaConalab%>">
-
-      <label for="nombres">Nombres:</label>
-      <input type="text" id="nombres" name="nombres" value="<%=result.Nombres%>">
-
-      <label for="paterno">Apellido Paterno:</label>
-      <input type="text" id="paterno" name="paterno" value="<%=result.Paterno%>">
-
-      <label for="materno">Apellido Materno:</label>
-      <input type="text" id="materno" name="materno" value="<%=result.Materno%>">
-
-      <label for="telefonoOficina">Teléfono Oficina:</label>
-      <input type="tel" id="telefonoOficina" name="telefonoOficina" value="<%=result.TelefonoOficina%>">
-
-      <label for="direccionOficina">Dirección Oficina:</label>
-      <input type="text" id="direccionOficina" name="direccionOficina" value="<%=result.DireccionOficina%>">
-
-      <label for="correo">Correo:</label>
-      <input type="email" id="correo" name="correo" value="<%=result.Correo%>">
-
-      <label for="lugarNacimiento">Lugar de Nacimiento: </label>
-      <input type="text" id="lugarNacimiento" name="lugarNacimiento" value="<%=result.LugarNacimiento%>">
-
-      <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-      <input type="date" id="fechaNacimiento" name="fechaNacimiento"
-        value="<%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toISOString().split('T')[0] : '' %>">
-
-      <label for="numeroCI">Número CI:</label>
-      <input type="text" id="numeroCI" name="numeroCI" value="<%=result.NumeroCI%>">
-
-      <label for="numeroRuc">Número RUC:</label>
-      <input type="text" id="numeroRuc" name="numeroRuc" value="<%=result.NumeroRuc%>">
-
-      <label for="estadoCivil">Estado Civil:</label>
-      <select id="estadoCivil" name="estadoCivil" value="<%=result.EstadoCivil%>">
-        <option value="soltero">Soltero</option>
-        <option value="casado">Casado</option>
-        <option value="divorciado">Divorciado</option>
-        <option value="viudo">Viudo</option>
-      </select>
-      <h3>Estudios</h3>
-      <label for="universidad">Universidad:</label>
-      <input type="text" id="universidad" name="universidad" value="<%=result.Universidad%>">
-
-      <label for="fechaTesis">Fecha Tesis: MM/DD/AAAA</label>
-      <input type="text" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis %>" placeholder="MM/DD/AAAA">
+  <div class="bg-[#2C3E8C] mt-2 mx-8 py-10 px-16 rounded-lg text-white">
 
 
-      <label for="universidadLicenciatura">Universidad Licenciatura: MM/DD/AAAA</label>
-      <input type="text" id="universidadLicenciatura" name="universidadLicenciatura" placeholder="MM/DD/AAAA"
-        value="<%=result.UniversidadLicenciatura%>">
+    <div class="w-full">
+      <div class="flex justify-between ">
+        <h1 class="font-semibold text-3xl">Perfil</h1>
+        <div>
+          <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2" id="button">Pagos</button>
+          <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2"
+            id="openDialogButton">Actualizar</button>
+          <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
+            id="entrega-agenda">Entrega de Agenda</button>
+          <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
+            id="diplomado-gratuito">Diplomado Gratuito</button>
+          <a href="/collegiate/<%= result.ColegiadoId %>/pdf" target="_blank">
+            <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2">Generar Reporte PDF</button>
+          </a>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- Profil+e Image Section -->
+        <div class="flex flex-col items-center">
+          <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-white mx-8">
+            <img src="<%= result.Foto ? '/uploads/imagenes/' + result.Foto : '/public/img/imageDefault1 .png' %>"
+              alt="<%= result.Nombres %><%= result.Paterno %><%= result.Materno %>"
+              class="w-full h-full object-cover" />
+          </div>
+        </div>
 
-      <label for="fechaLicenciatura">Fecha Licenciatura:</label>
-      <input type="text" id="fechaLicenciatura" name="fechaLicenciatura" value="<%=result.FechaLicenciatura%>">
+        <!-- Profile Information Section -->
+        <div class="flex-1">
 
-      <label for="fechaProvisionNacional">Fecha Provisión Nacional:</label>
-      <input type="date" id="fechaProvisionNacional" name="fechaProvisionNacional"
-        value="<%=result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toISOString().split('T')[0] : ''%>">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h1 class="text-2xl font-bold mb-4 uppercase">
+                <%= result.Nombres %>
+                  <%= result.Paterno %>
+                    <%= result.Materno %>
+              </h1>
+              <div class="mb-4">
+                <p class="text-gray-300">Email:</p>
+                <p>
+                  <%=result.correo || 'Sin correo proporcionado' %>
+                </p>
+              </div>
 
-      <label for="entidadProvisionNacional">Entidad Provisión Nacional:</label>
-      <input type="text" id="entidadProvisionNacional" name="entidadProvisionNacional"
-        value="<%=result.EntidadProvisionNacional%>">
+              <div class="mb-4">
+                <p class="text-gray-300">Dirección de oficina:</p>
+                <p>
+                  <%= result.DireccionOficina %>
+                </p>
+              </div>
 
-      <label for="fechaMatriculacionAlColegio">Fecha Matriculación al Colegio:</label>
-      <input type="date" id="fechaMatriculacionAlColegio" name="fechaMatriculacionAlColegio"
-        value="<%=result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toISOString().split('T')[0] : ''%>">
-      <h3>Cargos Desempeñados</h3>
-      <label for="cargosAdministracionPublica">Cargos Administración Pública:</label>
-      <input id="cargosAdministracionPublica" name="cargosAdministracionPublica"
-        value="<%=result.CargosAdministracionPublica%>"></input>
+              <div class="mb-4">
+                <p class="text-gray-300">Fecha de nacimiento:</p>
+                <p>
+                  <%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toLocaleDateString() : "No disponible"
+                    %>
+                </p>
+              </div>
 
-      <label for="cargosEmpresaPrivada">Cargos Empresa Privada:</label>
-      <input id="cargosEmpresaPrivada" name="cargosEmpresaPrivada" value="<%=result.CargosEmpresaPrivada%>"></input>
+              <div class="mb-4">
+                <p class="text-gray-300">Matrícula:</p>
+                <p>
+                  <%= result.Matricula.toString().padStart(5, "0" )%>
+                </p>
+              </div>
+            </div>
 
-      <label for="cargosBufete">Cargos Bufete:</label>
-      <input id="cargosBufete" name="cargosBufete" value="<%=result.CargosBufete%>"></input>
+            <div>
+              <div class="mb-4">
+                <p class="text-gray-300">Numero de telefono:</p>
+                <p>
+                  <%= result.TelefonoDomicilio %>
+                </p>
+              </div>
 
-      <label for="cargoActual">Cargo Actual:</label>
-      <input type="text" id="cargoActual" name="cargoActual" value="<%=result.CargoActual%>">
+              <div class="mb-4">
+                <p class="text-gray-300">Telefono de oficina:</p>
+                <p>
+                  <%= result.TelefonoOficina%>
+                </p>
+              </div>
 
-      <label for="especialidadPrimaria">Especialidad Primaria:</label>
-      <input type="text" id="especialidadPrimaria" name="especialidadPrimaria" value="<%=result.EspecialidadPrimaria%>">
+              <div class="mb-4">
+                <p class="text-gray-300">Lugar de nacimiento:</p>
+                <p>
+                  <%= result.LugarNacimiento %>
+                </p>
+              </div>
 
-      <label for="especialidadSecundaria">Especialidad Secundaria:</label>
-      <input type="text" id="especialidadSecundaria" name="especialidadSecundaria"
-        value="<%=result.EspecialidadSecundaria%>">
+              <div class="mb-4">
+                <p class="text-gray-300">Numero de C.I.:</p>
+                <p>
+                  <%= result.NumeroCI %>
+                </p>
+              </div>
 
-      <label for="producciones">Producciones:</label>
-      <input id="producciones" name="producciones" value="<%=result.Producciones%>"></input>
+              <div class="mb-4">
+                <p class="text-gray-300">Cuotas:</p>
+                <p class="flex items-center">
+                  <span class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
+                  Al día
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Campo</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Matricula</td>
+          <td>
+            <%= result.Matricula %>
+          </td>
+        </tr>
+        <tr>
+          <td>Matricula Conalab</td>
+          <td>
+            <%= result.MatriculaConalab || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Foto</td>
+          <td><img src="" alt="<%= result.Foto %>" width="100"></td>
+        </tr>
+        <tr>
+          <td>Firma</td>
+          <td><img src="#" alt="<%= result.Firma %>" width="100"></td>
+        </tr>
+        <tr>
+          <td>PDF</td>
+          <td><a href="#"" target=" _blank">Ver PDF <%= result.Pdf %>"</a></td>
+        </tr>
+        <tr>
+          <td>Nombre Completo</td>
+          <td>
+            <%= result.Nombres %>
+              <%= result.Paterno %>
+                <%= result.Materno %>
+          </td>
+        </tr>
+        <tr>
+          <td>Teléfono Oficina</td>
+          <td>
+            <%= result.TelefonoOficina %>
+          </td>
+        </tr>
+        <tr>
+          <td>Dirección Oficina</td>
+          <td>
+            <%= result.DireccionOficina %>
+          </td>
+        </tr>
+        <tr>
+          <td>Correo</td>
+          <td>
+            <%= result.Correo || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Lugar de Nacimiento</td>
+          <td>
+            <%= result.LugarNacimiento %>
+          </td>
+        </tr>
+        <tr>
+          <td>Fecha de Nacimiento</td>
+          <td>
+            <%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toLocaleDateString() : "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Numero CI</td>
+          <td>
+            <%= result.NumeroCI %>
+          </td>
+        </tr>
+        <tr>
+          <td>Numero RUC</td>
+          <td>
+            <%= result.NumeroRuc %>
+          </td>
+        </tr>
+        <tr>
+          <td>Estado Civil</td>
+          <td>
+            <%= result.EstadoCivil %>
+          </td>
+        </tr>
+        <tr>
+          <td>Universidad</td>
+          <td>
+            <%= result.Universidad %>
+          </td>
+        </tr>
+        <tr>
+          <td>Fecha Tesis</td>
+          <td>
+            <%= result.FechaTesis || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Universidad Licenciatura</td>
+          <td>
+            <%= result.UniversidadLicenciatura %>
+          </td>
+        </tr>
+        <tr>
+          <td>Fecha Licenciatura</td>
+          <td>
+            <%= result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toLocaleDateString() : "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Fecha Provision Nacional</td>
+          <td>
+            <%= result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toLocaleDateString()
+              : "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Entidad Provision Nacional</td>
+          <td>
+            <%= result.EntidadProvisionNacional %>
+          </td>
+        </tr>
+        <tr>
+          <td>Fecha Matriculación al Colegio</td>
+          <td>
+            <%= result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toLocaleDateString()
+              : "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Cargos Administración Pública</td>
+          <td>
+            <%= result.CargosAdministracionPublica %>
+          </td>
+        </tr>
+        <tr>
+          <td>Cargos Empresa Privada</td>
+          <td>
+            <%= result.CargosEmpresaPrivada %>
+          </td>
+        </tr>
+        <tr>
+          <td>Cargos Bufete</td>
+          <td>
+            <%= result.CargosBufete || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Cargo Actual</td>
+          <td>
+            <%= result.CargoActual %>
+          </td>
+        </tr>
+        <tr>
+          <td>Especialidad Primaria</td>
+          <td>
+            <%= result.EspecialidadPrimaria || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Especialidad Secundaria</td>
+          <td>
+            <%= result.EspecialidadSecundaria %>
+          </td>
+        </tr>
+        <tr>
+          <td>Producciones</td>
+          <td>
+            <%= result.Producciones || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Cátedra</td>
+          <td>
+            <%= result.Catedra %>
+          </td>
+        </tr>
+        <tr>
+          <td>Estudios Especialización</td>
+          <td>
+            <%= result.EstudiosEspecializacion %>
+          </td>
+        </tr>
+        <tr>
+          <td>Reconocimientos</td>
+          <td>
+            <%= result.Reconocimientos || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Asistencia a Eventos Internacionales</td>
+          <td>
+            <%= result.AsistenciaEventosInternacionales %>
+          </td>
+        </tr>
+        <tr>
+          <td>Institución Asegurado</td>
+          <td>
+            <%= result.InstitucionAsegurado %>
+          </td>
+        </tr>
+        <tr>
+          <td>Beneficiarios</td>
+          <td>
+            <%= result.Beneficiarios || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Dirección Domicilio</td>
+          <td>
+            <%= result.DireccionDomicilio %>
+          </td>
+        </tr>
+        <tr>
+          <td>Teléfono Domicilio</td>
+          <td>
+            <%= result.TelefonoDomicilio %>
+          </td>
+        </tr>
+        <tr>
+          <td>Casilla</td>
+          <td>
+            <%= result.Casilla || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Situación</td>
+          <td>
+            <%= result.Situacion || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Observación</td>
+          <td>
+            <%= result.Observacion || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Zona Id</td>
+          <td>
+            <%= result.ZonaId || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Nacionalidad</td>
+          <td>
+            <%= result.Nacionalidad || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Celular</td>
+          <td>
+            <%= result.Celular || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Grado Académico</td>
+          <td>
+            <%= result.GradoAcademico || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Licenciatura</td>
+          <td>
+            <%= result.Licenciatura || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Zona Trabajo Id</td>
+          <td>
+            <%= result.ZonaTrabajoId || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Forma de Pago</td>
+          <td>
+            <%= result.FormaDePago || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Boleta Depósito Número</td>
+          <td>
+            <%= result.BoletaDepositoNumero || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Monto Depósito</td>
+          <td>
+            <%= result.MontoDeposito || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Formulario de Admisión</td>
+          <td>
+            <%= result.FormularioDeAdmision || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Fotocopia Título Profesional</td>
+          <td>
+            <%= result.FotocopiaTituloProfesional || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Certificado Nacimiento Original</td>
+          <td>
+            <%= result.CertificadoNacimientoOriginal || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Fotocopia CI</td>
+          <td>
+            <%= result.FotocopiaCI || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Currículum Vitae</td>
+          <td>
+            <%= result.CurriculumVitae || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Usuario Registro</td>
+          <td>
+            <%= result.UsuarioRegistro || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Fecha Registro</td>
+          <td>
+            <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Usuario Modificación</td>
+          <td>
+            <%= result.UsuarioModificacion || "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Fecha Modificación</td>
+          <td>
+            <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No disponible" %>
+          </td>
+        </tr>
+        <tr>
+          <td>Estado</td>
+          <td>
+            <%= result.Estado %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <h1 class="font-semibold text-3xl mt-8">Aportes</h1>
+    <hr class="my-2">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
+      <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
+        <thead class="text-xs text-gray-200 uppercase bg-gray-300 ">
+          <tr class="text-gray-800">
+            <th class="px-4 py-3">Matricula</th>
+            <th class="px-4 py-3">Fechas</th>
+            <th class="px-4 py-3">Monto</th>
+            <th class="px-4 py-3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+      </table>
+    </div>
+    <h1 class="font-semibold text-3xl mt-8">Notas</h1>
+    <hr class="my-2">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
+      <table id="notas-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
+        <thead class="text-xs text-gray-200 uppercase bg-gray-300 ">
+          <tr class="text-gray-800">
+            <th class="px-4 py-3">Fecha</th>
+            <th class="px-4 py-3">Nota</th>
+            <th class="px-4 py-3">Usuario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se llenarán las filas con los resultados -->
+        </tbody>
+      </table>
+    </div>
+    <dialog id="personalDataDialog">
+      <h2>Formulario de Registros</h2>
+      <form id="personalDataForm">
+        <h3>Datos personales</h3>
+        <label for="matricula">Matrícula:</label>
+        <input type="text" id="matricula" name="matricula" value="<%=result.Matricula%>">
 
-      <label for="catedra">Cátedra:</label>
-      <input id="catedra" name="catedra" value="<%=result.Catedra%>"></input>
+        <label for="matriculaConalab">Matrícula Conalab:</label>
+        <input type="text" id="matriculaConalab" name="matriculaConalab" value="<%=result.matriculaConalab%>">
 
-      <label for="estudiosEspecializacion">Estudios de Especialización:</label>
-      <input id="estudiosEspecializacion" name="estudiosEspecializacion"
-        value="<%=result.EstudiosEspecializacion%>"></input>
+        <label for="nombres">Nombres:</label>
+        <input type="text" id="nombres" name="nombres" value="<%=result.Nombres%>">
 
-      <label for="reconocimientos">Reconocimientos:</label>
-      <input id="reconocimientos" name="reconocimientos" value="<%=result.Reconocimientos%>"></input>
+        <label for="paterno">Apellido Paterno:</label>
+        <input type="text" id="paterno" name="paterno" value="<%=result.Paterno%>">
 
-      <label for="asistenciaEventosInternacionales">Asistencia a Eventos Internacionales:</label>
-      <input id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales"
-        value="<%=result.AsistenciaEventosInternacionales%>"></input>
-      <h3>Otros</h3>
-      <label for="institucionAsegurado">Institución Asegurado:</label>
-      <input type="text" id="institucionAsegurado" name="institucionAsegurado" value="<%=result.InstitucionAsegurado%>">
+        <label for="materno">Apellido Materno:</label>
+        <input type="text" id="materno" name="materno" value="<%=result.Materno%>">
 
-      <label for="beneficiarios">Beneficiarios:</label>
-      <input id="beneficiarios" name="beneficiarios" value="<%=result.Beneficiarios%>"></input>
+        <label for="telefonoOficina">Teléfono Oficina:</label>
+        <input type="tel" id="telefonoOficina" name="telefonoOficina" value="<%=result.TelefonoOficina%>">
 
-      <label for="direccionDomicilio">Dirección Domicilio:</label>
-      <input type="text" id="direccionDomicilio" name="direccionDomicilio" value="<%=result.DireccionDomicilio%>">
+        <label for="direccionOficina">Dirección Oficina:</label>
+        <input type="text" id="direccionOficina" name="direccionOficina" value="<%=result.DireccionOficina%>">
 
-      <label for="telefonoDomicilio">Teléfono Domicilio:</label>
-      <input type="tel" id="telefonoDomicilio" name="telefonoDomicilio" value="<%=result.TelefonoDomicilio%>">
+        <label for="correo">Correo:</label>
+        <input type="email" id="correo" name="correo" value="<%=result.Correo%>">
 
-      <label for="casilla">Casilla:</label>
-      <input type="text" id="casilla" name="casilla" value="<%=result.Casilla%>">
+        <label for="lugarNacimiento">Lugar de Nacimiento: </label>
+        <input type="text" id="lugarNacimiento" name="lugarNacimiento" value="<%=result.LugarNacimiento%>">
 
-      <label for="situacion">Situación:</label>
-      <input type="text" id="situacion" name="situacion" value="<%=result.Situación%>">
+        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+        <input type="date" id="fechaNacimiento" name="fechaNacimiento"
+          value="<%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toISOString().split('T')[0] : '' %>">
 
-      <label for="observacion">Observación:</label>
-      <input id="observacion" name="observacion" value="<%=result.Observacion%>"></input>
+        <label for="numeroCI">Número CI:</label>
+        <input type="text" id="numeroCI" name="numeroCI" value="<%=result.NumeroCI%>">
 
-      <label for="zona">Zona:</label>
-      <input type="text" id="zona" name="zona">
+        <label for="numeroRuc">Número RUC:</label>
+        <input type="text" id="numeroRuc" name="numeroRuc" value="<%=result.NumeroRuc%>">
 
-      <label for="nacionalidad">Nacionalidad:</label>
-      <input type="text" id="nacionalidad" name="nacionalidad" value="<%=result.Nacionalidad%>">
+        <label for="estadoCivil">Estado Civil:</label>
+        <select id="estadoCivil" name="estadoCivil" value="<%=result.EstadoCivil%>">
+          <option value="soltero">Soltero</option>
+          <option value="casado">Casado</option>
+          <option value="divorciado">Divorciado</option>
+          <option value="viudo">Viudo</option>
+        </select>
+        <h3>Estudios</h3>
+        <label for="universidad">Universidad:</label>
+        <input type="text" id="universidad" name="universidad" value="<%=result.Universidad%>">
 
-      <label for="celular">Celular:</label>
-      <input type="tel" id="celular" name="celular" value="<%=result.Celular%>">
+        <label for="fechaTesis">Fecha Tesis: MM/DD/AAAA</label>
+        <input type="text" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis %>" placeholder="MM/DD/AAAA">
 
-      <label for="gradoAcademico">Grado Académico:</label>
-      <input type="text" id="gradoAcademico" name="gradoAcademico" value="<%=result.GradoAcademico%>">
 
-      <label for="licenciatura">Licenciatura:</label>
-      <input type="text" id="licenciatura" name="licenciatura" value="<%=result.Licenciatura%>">
+        <label for="universidadLicenciatura">Universidad Licenciatura: MM/DD/AAAA</label>
+        <input type="text" id="universidadLicenciatura" name="universidadLicenciatura" placeholder="MM/DD/AAAA"
+          value="<%=result.UniversidadLicenciatura%>">
 
-      <label for="zonaTrabajo">Zona de Trabajo:</label>
-      <input type="text" id="zonaTrabajo" name="zonaTrabajo" value="<%=result.ZonaTrabajoId%>">
+        <label for="fechaLicenciatura">Fecha Licenciatura:</label>
+        <input type="text" id="fechaLicenciatura" name="fechaLicenciatura" value="<%=result.FechaLicenciatura%>">
 
-      <label for="formaDePago">Forma de Pago:</label>
-      <select id="formaDePago" name="formaDePago" value="<%=result.FormaDePago%>">
-        <option value="efectivo">Efectivo</option>
-        <option value="cheque">Cheque</option>
-        <option value="transferencia">Transferencia</option>
-      </select>
+        <label for="fechaProvisionNacional">Fecha Provisión Nacional:</label>
+        <input type="date" id="fechaProvisionNacional" name="fechaProvisionNacional"
+          value="<%=result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toISOString().split('T')[0] : ''%>">
 
-      <label for="boletaDepositoNumero">Boleta Depósito Número:</label>
-      <input type="text" id="boletaDepositoNumero" name="boletaDepositoNumero" value="<%=result.BoletaDepositoNumero%>">
+        <label for="entidadProvisionNacional">Entidad Provisión Nacional:</label>
+        <input type="text" id="entidadProvisionNacional" name="entidadProvisionNacional"
+          value="<%=result.EntidadProvisionNacional%>">
 
-      <label for="montoDeposito">Monto Depósito:</label>
-      <input type="number" id="montoDeposito" name="montoDeposito" value="<%=result.MontoDeposito%>" step="0.01">
+        <label for="fechaMatriculacionAlColegio">Fecha Matriculación al Colegio:</label>
+        <input type="date" id="fechaMatriculacionAlColegio" name="fechaMatriculacionAlColegio"
+          value="<%=result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toISOString().split('T')[0] : ''%>">
+        <h3>Cargos Desempeñados</h3>
+        <label for="cargosAdministracionPublica">Cargos Administración Pública:</label>
+        <input id="cargosAdministracionPublica" name="cargosAdministracionPublica"
+          value="<%=result.CargosAdministracionPublica%>"></input>
 
-      <label for="formularioAdmision">Formulario de Admisión:</label>
-      <input type="text" id="formularioAdmision" name="formularioAdmision" value="<%=result.FormularioAdmision%>">
+        <label for="cargosEmpresaPrivada">Cargos Empresa Privada:</label>
+        <input id="cargosEmpresaPrivada" name="cargosEmpresaPrivada" value="<%=result.CargosEmpresaPrivada%>"></input>
 
-      <label for="fotocopiaTituloProfesional">Fotocopia Título Profesional:</label>
-      <input type="text" id="fotocopiaTituloProfesional" name="fotocopiaTituloProfesional"
-        value="<%=result.FotocopiaTituloProfesional%>">
+        <label for="cargosBufete">Cargos Bufete:</label>
+        <input id="cargosBufete" name="cargosBufete" value="<%=result.CargosBufete%>"></input>
 
-      <label for="certificadoNacimientoOriginal">Certificado Nacimiento Original:</label>
-      <input type="text" id="certificadoNacimientoOriginal" name="certificadoNacimientoOriginal"
-        value="<%=result.CertificadoNacimientoOriginal%>">
+        <label for="cargoActual">Cargo Actual:</label>
+        <input type="text" id="cargoActual" name="cargoActual" value="<%=result.CargoActual%>">
 
-      <label for="fotocopiaCI">Fotocopia C.I.:</label>
-      <input type="text" id="fotocopiaCI" name="fotocopiaCI" value="<%=result.FotocopiaCI%>">
+        <label for="especialidadPrimaria">Especialidad Primaria:</label>
+        <input type="text" id="especialidadPrimaria" name="especialidadPrimaria"
+          value="<%=result.EspecialidadPrimaria%>">
 
-      <label for="curriculumVitae">Curriculum Vitae:</label>
-      <input type="text" id="curriculumVitae" name="curriculumVitae" value="<%=result.CurriculumVitae%>">
-      <label for="estado">Estado:</label>
-      <select name="estado" id="" value="<%=result.Estado%>">
-        <option value="">Activos</option>
-        <option value="">Inactivos</option>
-      </select>
-      <button type="submit">Enviar</button>
-      <button type="button" id="closeDialogButton">Cerrar</button>
-    </form>
-  </dialog>
+        <label for="especialidadSecundaria">Especialidad Secundaria:</label>
+        <input type="text" id="especialidadSecundaria" name="especialidadSecundaria"
+          value="<%=result.EspecialidadSecundaria%>">
 
-  <dialog id="dialog-aporte">
-    <h2>Hola</h2>
-    <label for="" id="label"></label>
-    <form id="form-aporte" action="">
-      <label for="motivo">Motivo</label>
-      <input type="text" id="motivo" name="motivo" placeholder="Motivo">
-      <button type="reset" id="cancelar-aporte">Cancelar</button>
-      <button id="button-aporte">Confirmar</button>
-    </form>
-  </dialog>
-  <dialog id="dialog">
-    <h3>Pagos</h3>
-    <form id="form-create" method="POST">
-      <label for="meses">Meses</label>
-      <input type="text" id="meses" name="meses" value="1" disabled>
+        <label for="producciones">Producciones:</label>
+        <input id="producciones" name="producciones" value="<%=result.Producciones%>"></input>
 
-      <% const anoActual=2050; const inicioAno=1990; %>
+        <label for="catedra">Cátedra:</label>
+        <input id="catedra" name="catedra" value="<%=result.Catedra%>"></input>
 
-        <label for="fechaInicial">Desde:</label>
-        <select id="mesInicial" name="mesInicial">
-          <option value="1">Enero</option>
-          <option value="2">Febrero</option>
-          <option value="3">Marzo</option>
-          <option value="4">Abril</option>
-          <option value="5">Mayo</option>
-          <option value="6">Junio</option>
-          <option value="7">Julio</option>
-          <option value="8">Agosto</option>
-          <option value="9">Septiembre</option>
-          <option value="10">Octubre</option>
-          <option value="11">Noviembre</option>
-          <option value="12">Diciembre</option>
+        <label for="estudiosEspecializacion">Estudios de Especialización:</label>
+        <input id="estudiosEspecializacion" name="estudiosEspecializacion"
+          value="<%=result.EstudiosEspecializacion%>"></input>
+
+        <label for="reconocimientos">Reconocimientos:</label>
+        <input id="reconocimientos" name="reconocimientos" value="<%=result.Reconocimientos%>"></input>
+
+        <label for="asistenciaEventosInternacionales">Asistencia a Eventos Internacionales:</label>
+        <input id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales"
+          value="<%=result.AsistenciaEventosInternacionales%>"></input>
+        <h3>Otros</h3>
+        <label for="institucionAsegurado">Institución Asegurado:</label>
+        <input type="text" id="institucionAsegurado" name="institucionAsegurado"
+          value="<%=result.InstitucionAsegurado%>">
+
+        <label for="beneficiarios">Beneficiarios:</label>
+        <input id="beneficiarios" name="beneficiarios" value="<%=result.Beneficiarios%>"></input>
+
+        <label for="direccionDomicilio">Dirección Domicilio:</label>
+        <input type="text" id="direccionDomicilio" name="direccionDomicilio" value="<%=result.DireccionDomicilio%>">
+
+        <label for="telefonoDomicilio">Teléfono Domicilio:</label>
+        <input type="tel" id="telefonoDomicilio" name="telefonoDomicilio" value="<%=result.TelefonoDomicilio%>">
+
+        <label for="casilla">Casilla:</label>
+        <input type="text" id="casilla" name="casilla" value="<%=result.Casilla%>">
+
+        <label for="situacion">Situación:</label>
+        <input type="text" id="situacion" name="situacion" value="<%=result.Situación%>">
+
+        <label for="observacion">Observación:</label>
+        <input id="observacion" name="observacion" value="<%=result.Observacion%>"></input>
+
+        <label for="zona">Zona:</label>
+        <input type="text" id="zona" name="zona">
+
+        <label for="nacionalidad">Nacionalidad:</label>
+        <input type="text" id="nacionalidad" name="nacionalidad" value="<%=result.Nacionalidad%>">
+
+        <label for="celular">Celular:</label>
+        <input type="tel" id="celular" name="celular" value="<%=result.Celular%>">
+
+        <label for="gradoAcademico">Grado Académico:</label>
+        <input type="text" id="gradoAcademico" name="gradoAcademico" value="<%=result.GradoAcademico%>">
+
+        <label for="licenciatura">Licenciatura:</label>
+        <input type="text" id="licenciatura" name="licenciatura" value="<%=result.Licenciatura%>">
+
+        <label for="zonaTrabajo">Zona de Trabajo:</label>
+        <input type="text" id="zonaTrabajo" name="zonaTrabajo" value="<%=result.ZonaTrabajoId%>">
+
+        <label for="formaDePago">Forma de Pago:</label>
+        <select id="formaDePago" name="formaDePago" value="<%=result.FormaDePago%>">
+          <option value="efectivo">Efectivo</option>
+          <option value="cheque">Cheque</option>
+          <option value="transferencia">Transferencia</option>
         </select>
 
-        <select id="anoInicial" name="anoInicial">
-          <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
-            <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
-            </option>
-            <% } %>
+        <label for="boletaDepositoNumero">Boleta Depósito Número:</label>
+        <input type="text" id="boletaDepositoNumero" name="boletaDepositoNumero"
+          value="<%=result.BoletaDepositoNumero%>">
+
+        <label for="montoDeposito">Monto Depósito:</label>
+        <input type="number" id="montoDeposito" name="montoDeposito" value="<%=result.MontoDeposito%>" step="0.01">
+
+        <label for="formularioAdmision">Formulario de Admisión:</label>
+        <input type="text" id="formularioAdmision" name="formularioAdmision" value="<%=result.FormularioAdmision%>">
+
+        <label for="fotocopiaTituloProfesional">Fotocopia Título Profesional:</label>
+        <input type="text" id="fotocopiaTituloProfesional" name="fotocopiaTituloProfesional"
+          value="<%=result.FotocopiaTituloProfesional%>">
+
+        <label for="certificadoNacimientoOriginal">Certificado Nacimiento Original:</label>
+        <input type="text" id="certificadoNacimientoOriginal" name="certificadoNacimientoOriginal"
+          value="<%=result.CertificadoNacimientoOriginal%>">
+
+        <label for="fotocopiaCI">Fotocopia C.I.:</label>
+        <input type="text" id="fotocopiaCI" name="fotocopiaCI" value="<%=result.FotocopiaCI%>">
+
+        <label for="curriculumVitae">Curriculum Vitae:</label>
+        <input type="text" id="curriculumVitae" name="curriculumVitae" value="<%=result.CurriculumVitae%>">
+        <label for="estado">Estado:</label>
+        <select name="estado" id="" value="<%=result.Estado%>">
+          <option value="">Activos</option>
+          <option value="">Inactivos</option>
         </select>
+        <button type="submit">Enviar</button>
+        <button type="button" id="closeDialogButton">Cerrar</button>
+      </form>
+    </dialog>
 
-        <label for="fechaFinal">Hasta:</label>
-        <select id="mesFinal" name="mesFinal">
-          <option value="1">Enero</option>
-          <option value="2">Febrero</option>
-          <option value="3">Marzo</option>
-          <option value="4">Abril</option>
-          <option value="5">Mayo</option>
-          <option value="6">Junio</option>
-          <option value="7">Julio</option>
-          <option value="8">Agosto</option>
-          <option value="9">Septiembre</option>
-          <option value="10">Octubre</option>
-          <option value="11">Noviembre</option>
-          <option value="12">Diciembre</option>
-        </select>
+    <dialog id="dialog-aporte">
+      <h2>Hola</h2>
+      <label for="" id="label"></label>
+      <form id="form-aporte" action="">
+        <label for="motivo">Motivo</label>
+        <input type="text" id="motivo" name="motivo" placeholder="Motivo">
+        <button type="reset" id="cancelar-aporte">Cancelar</button>
+        <button id="button-aporte">Confirmar</button>
+      </form>
+    </dialog>
+    <dialog id="dialog">
+      <h3>Pagos</h3>
+      <form id="form-create" method="POST">
+        <label for="meses">Meses</label>
+        <input type="text" id="meses" name="meses" value="1" disabled>
 
-        <select id="anoFinal" name="anoFinal">
-          <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
-            <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
-            </option>
-            <% } %>
-        </select>
+        <% const anoActual=2050; const inicioAno=1990; %>
 
-        <label for="recibo">Numero de recibo</label>
-        <input id="recibo" type="number" name="recibo">
+          <label for="fechaInicial">Desde:</label>
+          <select id="mesInicial" name="mesInicial">
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+          </select>
 
-        <label for="talonario">Numero de talonario</label>
-        <input id="talonario" type="number" name="talonario">
+          <select id="anoInicial" name="anoInicial">
+            <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
+              <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
+              </option>
+              <% } %>
+          </select>
 
-        <label for="fechaDeCobro">Fecha de cobro</label>
-        <input type="date" id="fechaDeCobro" name="fechaDeCobro" value="<%= new Date().toISOString().split('T')[0] %>">
+          <label for="fechaFinal">Hasta:</label>
+          <select id="mesFinal" name="mesFinal">
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Septiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+          </select>
 
-        <label for="monto">Monto</label>
-        <input id="monto" type="number" name="monto" value="20">
+          <select id="anoFinal" name="anoFinal">
+            <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
+              <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
+              </option>
+              <% } %>
+          </select>
 
-        <label for="observacion">Observacion</label>
-        <input id="observacion" type="text" name="observacion">
+          <label for="recibo">Numero de recibo</label>
+          <input id="recibo" type="number" name="recibo">
 
-        <button type="submit">Registrar</button>
-        <span id="error-message"></span>
-    </form>
+          <label for="talonario">Numero de talonario</label>
+          <input id="talonario" type="number" name="talonario">
 
-  </dialog>
+          <label for="fechaDeCobro">Fecha de cobro</label>
+          <input type="date" id="fechaDeCobro" name="fechaDeCobro"
+            value="<%= new Date().toISOString().split('T')[0] %>">
+
+          <label for="monto">Monto</label>
+          <input id="monto" type="number" name="monto" value="20">
+
+          <label for="observacion">Observacion</label>
+          <input id="observacion" type="text" name="observacion">
+
+          <button type="submit">Registrar</button>
+          <span id="error-message"></span>
+      </form>
+
+    </dialog>
+
+  </div>
+
   <script defer>
     document.addEventListener("DOMContentLoaded", function () {
-      const $ = (el) => document.querySelector(el);
+
       const mesInicial = $('#mesInicial');
       const anoInicial = $('#anoInicial');
       const mesFinal = $('#mesFinal');
@@ -719,13 +835,13 @@
               });
               const row = document.createElement("tr");
               row.innerHTML = `
-              <td>
+              <td class="px-4 py-3">
                 <p>${fechaFormateada} - ${horaFormateada}</p>
               </td>
-              <td>
+              <td class="px-4 py-3">
                 <p>${item.Nota}</p>
               </td>
-              <td>
+              <td class="px-4 py-3">
                 <p>Registrado por: ${item.Usuario}</p>
               </td>
             `;
@@ -770,7 +886,7 @@
 
               const row = document.createElement("tr");
               row.innerHTML = `
-              <td>
+              <td class="px-4 py-3">
                 <p>T.- ${item.Talonario || 0} - ${item.Recibo || 0}</p>
                 ${item.Matricula.toString().padStart(5, "0")}
                 <p>${item.Cobrador}</p>
@@ -778,16 +894,16 @@
                 <p><strong>Hora:</strong> ${horaFormateada}</p>
                 <p>${item.Observacion ?? "S/O"}</p>
               </td>
-              <td>
+              <td class="px-4 py-3">
                 <p>${item.FechaInicial} - ${item.FechaFinal}</p>
                 <p><strong>${item.MesesPagados}</strong> Meses</p>
               </td>
-              <td>
+              <td class="px-4 py-3">
                 <p>${item.Monto}</p>
                 <p style='color:crimson'>${item.Faltante}</p>
               </td>
-              <td>
-                <button class="actualizar-button" data-id="${item.AporteId}">Anular</button>
+              <td class="px-4 py-3">
+                <button class="actualizar-button px-6 py-2 bg-red-600 rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-white" data-id="${item.AporteId}">Anular</button>
               </td>
             `;
               resultTableBody.appendChild(row);
@@ -1027,4 +1143,4 @@
     });
   </script>
 
-   <%- include('../partials/footer',{user}) %>
+  <%- include('../partials/footer',{user}) %>

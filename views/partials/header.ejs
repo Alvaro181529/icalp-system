@@ -144,9 +144,13 @@
                 <a href="#" class="hover:text-gray-400 max-md:hidden">Comunicados oficiales</a>
               </section>
               <section class="flex items-center rtl:space-x-reverse">
-                <input type="text" id=""
-                  class="bg-gray-50 border border-gray-300  text-sm rounded-lg block w-full p-2.5"
-                  placeholder="Busqueda" required />
+                <form id="search-form">
+                  <!-- <input id="search" type="search" placeholder="Buscar por Matricula, Carnet, Nombre o apellido" /> -->
+                  <input type="text" id="search"
+                    class="bg-gray-50 border border-gray-300  text-sm rounded-lg block w-full p-2.5"
+                    placeholder="Busqueda" required />
+                  <button id="search-button" type="submit" hidden>Buscar</button>
+                </form>
               </section>
             </div>
           </nav>
@@ -176,8 +180,22 @@
               </div>
             </div>
           </nav>
-
+          <dialog id="dialog-search" class="px-6 py-4 max-w-md w-full max-h-screen rounded-xl items-center justify-start bg-white shadow-lg border border-gray-300">
+           <div class="flex flex-col ">
+             <div class="flex  justify-between w-full mb-4">
+               <h3 class="text-2xl font-semibold text-gray-700">Resultados de Búsqueda</h3>
+               <button id="cerrar-dialog" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                 <i class="fa-solid fa-xmark fa-2x"></i>
+                </button>
+              </div>
+              
+              <ul id="result-list" class="flex flex-col w-full overflow-auto max-h-96 space-y-4">
+                <!-- Los resultados se insertarán aquí dinámicamente -->
+              </ul>
+            </div>
+          </dialog>
           <script defer>
+            const $ = (el) => document.querySelector(el);
             function toggleSidebar() {
               const sidebar = document.querySelector('aside');
               sidebar.classList.toggle('hidden');
@@ -275,7 +293,66 @@
             };
 
             FetchData();
+            const searchUsers = $("#search");
+            const searchForm = $("#search-form");
+            const dialogSearch = $('#dialog-search')
+            const cerrarDialogSearch = $('#cerrar-dialog')
+            searchForm?.addEventListener("submit", async (e) => {
+              e.preventDefault(); // Evitar el envío de formulario o recarga de la página
+              dialogSearch.showModal()
 
+              const searchValue = searchUsers.value.trim(); // Obtener y recortar el valor de búsqueda
+
+              if (!searchValue) {
+                alert("Por favor, ingrese un término de búsqueda.");
+                return;
+              }
+
+              const url = `search?search=${encodeURIComponent(searchValue)}`;
+
+              try {
+                // Hacer la solicitud fetch
+                const response = await fetch(url);
+                if (!response.ok) {
+                  throw new Error("Error en la búsqueda");
+                }
+
+                const data = await response.json(); // Asumimos que la respuesta es un JSON
+                const resultContainer = document.querySelector("#result-list");
+                resultContainer.innerHTML = ""; // Limpiar resultados previos
+
+                data.result.users.forEach((colegiado) => {
+                  const listItem = document.createElement("li");
+                  listItem.classList.add("w-full");
+                  listItem.innerHTML = `
+                      <div class="max-w-sm w-full rounded-lg overflow-hidden shadow-lg bg-white p-6">
+                          <div class="text-lg font-semibold text-gray-700 mb-3">Información del Colegiado</div>
+                          <div class="space-y-2">
+                              <div>
+                                  <strong class="text-gray-500">ID:</strong>
+                                  <span class="text-gray-800">${colegiado.Matricula}</span>
+                              </div>
+                              <div>
+                                  <strong class="text-gray-500">Nombre:</strong>
+                                  <span class="text-gray-800">${colegiado.Nombres}</span>
+                              </div>
+                              <div>
+                                  <strong class="text-gray-500">Email:</strong>
+                                  <span class="text-gray-800">${colegiado.Correo}</span>
+                              </div>
+                          </div>
+                        </div>
+      `;
+                  resultContainer.appendChild(listItem);
+                });
+              } catch (error) {
+                console.error("Error en la búsqueda:", error);
+                alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+              }
+            });
+            cerrarDialogSearch.addEventListener('click',()=>{
+              dialogSearch.close()
+            })
           </script>
 </body>
 

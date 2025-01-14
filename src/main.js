@@ -20,7 +20,7 @@ import { router as notaRouter } from "./routes/nota.route.js";
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // template
 app.set("view engine", "ejs");

@@ -4,7 +4,7 @@
     <div class="flex flex-col md:flex-row">
       <!-- Columna de la imagen -->
       <div class="w-full md:w-1/2 bg-[#2C3E8C]/90">
-        <img src="/public/img/image.png" alt="Login Image" class="object-cover w-full h-full">
+        <img src="/public/img/imageLogin.png" alt="Login Image" class="object-cover w-full h-full">
       </div>
       
       <!-- Columna del formulario -->
@@ -33,8 +33,6 @@
   </div>
 </div>
 <script defer>
-  // Función para seleccionar elementos
-  const $ = (el) => document.querySelector(el);
 
   // Selección del formulario y el elemento span
   const loginForm = $("#loginForm");
@@ -42,7 +40,7 @@
 
   // Evento de submit
   loginForm?.addEventListener("submit", async (e) => {
-    e.preventDefault(); // Corregido el nombre del método
+    e.preventDefault(); // Previene el envío por defecto del formulario
 
     const email = $("#login-email").value;
     const password = $("#login-pass").value;
@@ -54,33 +52,34 @@
       return;
     }
 
-    // Petición fetch
-    await fetch("/signin", {
-      // Asegúrate de que la URL sea correcta
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", // Corregido el tipo MIME
-      },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((response) => {
-        console.log(response);
-        if (response.ok) {
-          loginSpan.textContent = "¡Bienvenido!";
-          loginSpan.style.color = "green";
-          setTimeout(() => {
-            window.location.href = "/";
-          }, 2000);
-        } else {
-          loginSpan.textContent = "Error de autenticación.";
-          loginSpan.style.color = "red";
-          throw new Error("Error en la autenticación");
-        }
-      })
-      .catch((error) => {
-        loginSpan.textContent = `Contraseña o correo electrónico incorrecto.`;
-        loginSpan.style.color = "red";
+    try {
+      // Petición fetch
+      const response = await fetch("/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
+
+      // Verificación de respuesta
+      if (response.ok) {
+        loginSpan.textContent = "¡Bienvenido!";
+        loginSpan.style.color = "green";
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
+      } else {
+        // Si la respuesta no es exitosa
+        loginSpan.textContent = "Correo o contraseña incorrectos.";
+        loginSpan.style.color = "red";
+        throw new Error("Error en la autenticación");
+      }
+    } catch (error) {
+      // Manejo de errores
+      loginSpan.textContent = `Hubo un problema con la conexión: ${error.message}`;
+      loginSpan.style.color = "red";
+    }
   });
 </script>
 <%- include('../partials/footer') %>
