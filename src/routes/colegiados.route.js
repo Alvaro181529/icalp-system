@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { ColegiadoController } from "../controllers/colegiado.controller.js";
+import { upload } from "../utils/multier.utils.js";
 export const router = Router();
 const colegiado = new ColegiadoController();
 // rutas para la pagina de colegiado
@@ -17,4 +18,5 @@ router.get("/collegiate/provition", colegiado.getCollegiateByProvition);
 router.get("/collegiate/:id", colegiado.getCollegiate);
 router.post("/collegiate", colegiado.postCollegiate);
 router.patch("/collegiate/:id", colegiado.patchCollegiate);
+router.patch("/collegiate/upload/:id",upload.single('file'), colegiado.patchUploads);
 router.delete("/collegiate/:id", colegiado.deleteCollegiate);

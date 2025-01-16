@@ -4,7 +4,7 @@
         <dialog id="file-upload-dialog"
             class="bg-gray-800 bg-opacity-50 items-center justify-center">
             <div class="bg-white rounded-lg p-6 w-full sm:w-96">
-                <form action="/upload" method="POST" enctype="multipart/form-data" id="upload-form">
+                <form action="/upload" method="POST" enctype="multipart/form-data" id="formSlide">
                     <input type="hidden" name="slide" value="true">
 
                     <h2 class="text-xl font-semibold text-center mb-4">Subir archivo</h2>
@@ -56,7 +56,7 @@
         const dialog = $("#file-upload-dialog");
         const openDialogButton = $("#open-dialog");
         const closeDialogButton = $("#close-dialog");
-        const form = $("form");
+        const form = $("#formSlide");
         const resultTableBody = $("#result-container");
         const fileInput = $("#file");
         const imagePreview = $("#image-preview");

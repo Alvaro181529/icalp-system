@@ -5,36 +5,52 @@ import jwt from "jsonwebtoken";
 export class AuthModel {
   signIn = async (body) => {
     const { email, password } = body;
-
+  
     try {
       const result = await pool.query(
-        "SELECT * FROM aspnetusers WHERE Email = ?",
+        `SELECT u.UserId, u.Email, u.User, u.IsApproved, 
+                GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles, u.PasswordHash
+         FROM aspnetusers u
+         LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId
+         LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId 
+         WHERE u.Email = ?
+         GROUP BY u.Email, u.User, u.IsApproved, u.PasswordHash`,
         [email]
       );
-      if (result.length == 0) {
+  
+      if (result.length === 0) {
         return { message: "Usuario no encontrado." };
       }
-
+  
       const user = result[0];
-
+  
       if (!user.PasswordHash) {
         return {
           message: "Error interno: El usuario no tiene una contraseña válida.",
         };
       }
+  
       if (!password) {
         return { message: "Contraseña no proporcionada." };
       }
+  
+      // Compara la contraseña proporcionada con la contraseña almacenada (PasswordHash)
       const isValidPassword = await bcrypt.compare(password, user.PasswordHash);
       if (!isValidPassword) {
         return { message: "Contraseña incorrecta." };
       }
+  
+      // Si es un login exitoso, generamos el token JWT
       const token = jwt.sign(
-        { userId: user.UserId, correo: user.Email },
+        {
+          userId: user.UserId,
+          correo: user.Email,
+          roles: user.Roles ? user.Roles.split(", ") : [], // Los roles estarán en el JWT como una lista
+        },
         process.env.SECRET_KEY,
         { expiresIn: "1d" }
       );
-
+  
       return {
         message: "Inicio de sesión exitoso.",
         correo: user.Email,
@@ -45,6 +61,7 @@ export class AuthModel {
       return { message: "Error al intentar iniciar sesión." };
     }
   };
+  
   signUp = async (body) => {
     const { user, email, password, confirmedPassword } = body;
     const validationError = validate(email, password, confirmedPassword, user);

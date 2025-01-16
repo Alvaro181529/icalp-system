@@ -1,185 +1,407 @@
-import PDFDocument from "pdfkit";
+import PDFDocument from "pdfkit-table";
 import pool from "../../config/db.connect.js";
 import path from "path";
+import fs from "fs"
 import { AporteController } from "../controllers/aporte.controller.js";
 const aporte = new AporteController();
 const generatePdf = (data, aportes, user) => {
   const doc = new PDFDocument();
-  // Foto y Firma (si existen)
+
+  // Título principal en negrita, centrado
+  doc.fontSize(20).font("Helvetica-Bold").text("KARDEX", { align: "center" });
+
+  // Foto y Firma en la misma línea, imagen a la izquierda y firma a la derecha
+
   if (data.Foto) {
-    doc.fontSize(12).text("FOTO:");
-    const fotoPath = path.join(process.cwd(), "src/public", "image.png"); // Ruta a la imagen
-    doc.image(fotoPath, { width: 100, align: "center" });
-    doc.moveDown(1);
+    doc.fontSize(12).text("", { continued: true });
+    
+    const fotoPath = path.join(process.cwd(), "src/uploads/imagenes", data.Foto);
+    const fotoPathEmpty = path.join(process.cwd(), "src/public/img", "imageDefault.png");
+  
+    // Verifica si el archivo de la foto existe
+    const foto = fs.existsSync(fotoPath) ? fotoPath : fotoPathEmpty;
+  
+    // Ruta a la imagen de la foto
+    doc.image(foto, { width: 100, x: 50, y: doc.y }); // Posiciona la foto a la izquierda
+    doc.moveDown(1); // Espacio después de la imagen
   }
-
+  
   if (data.Firma) {
-    doc.fontSize(12).text("FIRMA:");
-    const firmaPath = path.join(process.cwd(), "src/public", "image.png"); // Ruta a la firma
-    doc.image(firmaPath, { width: 100, align: "center" });
-    doc.moveDown(1);
+    doc.fontSize(12).text("", { continued: true });
+  
+    const firmaPath = path.join(process.cwd(), "src/uploads/imagenes", data.Firma);
+    const firmaPathEmpty = path.join(process.cwd(), "src/public/img", "imageDefault.png");
+  
+    // Verifica si el archivo de la firma existe
+    const firma = fs.existsSync(firmaPath) ? firmaPath : firmaPathEmpty;
+  
+    // Ruta a la imagen de la firma
+    doc.image(firma, { width: 100, x: 450, y: doc.y - 15 }); // Posiciona la firma a la derecha
+    doc.moveDown(1); // Espacio después de la firma
   }
-  // Título principal
-  doc.fontSize(20).text("KARDEX", { align: "center" });
-  doc.moveDown(2);
+  doc.moveDown(6);
 
-  // Información personal
+  // Título "INFORMACIÓN PERSONAL" subrayado
   doc
-    .fontSize(14)
+    .fontSize(10)
     .fillColor("black")
     .text("INFORMACIÓN PERSONAL", { underline: true });
-  doc.moveDown(0.5);
+  doc.moveDown(0.5); // Agregar un pequeño espacio después del título
+
   doc
-    .fontSize(12)
-    .text(`MATRÍCULA: ${data.Matricula.toString().padStart(5, "0")}`);
-  doc.text(`NOMBRES: ${data.Nombres} ${data.Paterno} ${data.Materno}`);
-  doc.text(`TELÉFONO OFICINA: ${data.TelefonoOficina || "NO ESPECIFICADO"}`);
-  doc.text(`DIRECCIÓN OFICINA: ${data.DireccionOficina || "NO ESPECIFICADO"}`);
-  doc.text(`CORREO: ${data.Correo || "NO ESPECIFICADO"}`);
-  doc.text(`LUGAR DE NACIMIENTO: ${data.LugarNacimiento || "NO ESPECIFICADO"}`);
-  doc.text(
-    `FECHA DE NACIMIENTO: ${
-      new Date(data.FechaNacimiento).toLocaleDateString() || "NO ESPECIFICADO"
-    } `
-  );
-  doc.text(`NÚMERO DE CI: ${data.NumeroCI || "NO ESPECIFICADO"}`);
-  doc.text(`ESTADO CIVIL: ${data.EstadoCivil || "NO ESPECIFICADO"}`);
-  doc.moveDown(1);
+    .fontSize(8)
+    .font("Helvetica-Bold") // Negrita solo para la etiqueta "MATRÍCULA:"
+    .text("MATRÍCULA:", { continued: true }); // Usamos `continued: true` para continuar en la misma línea
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.Matricula.toString().padStart(5, "0")}`); // Aquí se imprime el valor sin negrita
+
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "NOMBRES:"
+    .text("NOMBRES:", { continued: true }); // Continuamos en la misma línea
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.Nombres} ${data.Paterno} ${data.Materno}`);
+
+  // Repite el mismo patrón para el resto de los campos
+  doc.font("Helvetica-Bold").text("TELÉFONO OFICINA:", { continued: true });
+
+  doc.font("Helvetica").text(` ${data.TelefonoOficina || "NO ESPECIFICADO"}`);
+
+  doc.font("Helvetica-Bold").text("DIRECCIÓN OFICINA:", { continued: true });
+
+  doc.font("Helvetica").text(` ${data.DireccionOficina || "NO ESPECIFICADO"}`);
+
+  doc.font("Helvetica-Bold").text("CORREO:", { continued: true });
+
+  doc.font("Helvetica").text(` ${data.Correo || "NO ESPECIFICADO"}`);
+
+  doc.font("Helvetica-Bold").text("LUGAR DE NACIMIENTO:", { continued: true });
+
+  doc.font("Helvetica").text(` ${data.LugarNacimiento || "NO ESPECIFICADO"}`);
+
+  doc.font("Helvetica-Bold").text("FECHA DE NACIMIENTO:", { continued: true });
+
+  doc
+    .font("Helvetica")
+    .text(
+      ` ${
+        new Date(data.FechaNacimiento).toLocaleDateString() || "NO ESPECIFICADO"
+      }`
+    );
+
+  doc.font("Helvetica-Bold").text("NÚMERO DE CI:", { continued: true });
+
+  doc.font("Helvetica").text(` ${data.NumeroCI || "NO ESPECIFICADO"}`);
+
+  doc.font("Helvetica-Bold").text("ESTADO CIVIL:", { continued: true });
+
+  doc.font("Helvetica").text(` ${data.EstadoCivil || "NO ESPECIFICADO"}`);
+
+  doc.moveDown(1.5);
 
   // Información académica
   doc
-    .fontSize(14)
+    .fontSize(10)
+    .font("Helvetica-Bold")
     .fillColor("black")
     .text("INFORMACIÓN ACADÉMICA", { underline: true });
   doc.moveDown(0.5);
+
+  // Información académica - Universidad
   doc
-    .fontSize(12)
-    .text(`UNIVERSIDAD: ${data.Universidad || "NO ESPECIFICADO"}`);
-  doc.text(`FECHA DE TESIS: ${data.FechaTesis || "NO ESPECIFICADO"}`);
-  doc.text(
-    `FECHA DE LICENCIATURA: ${data.FechaLicenciatura || "NO ESPECIFICADO"}`
-  );
-  doc.text(
-    `ESPECIALIDAD SECUNDARIA: ${
-      data.EspecialidadSecundaria || "NO ESPECIFICADO"
-    }`
-  );
-  doc.moveDown(1);
+    .fontSize(8)
+    .font("Helvetica-Bold") // Negrita para la etiqueta "UNIVERSIDAD:"
+    .text("UNIVERSIDAD:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.Universidad || "NO ESPECIFICADO"}`);
+
+  // Información académica - Fecha de tesis
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "FECHA DE TESIS:"
+    .text("FECHA DE TESIS:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.FechaTesis || "NO ESPECIFICADO"}`);
+
+  // Información académica - Fecha de licenciatura
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "FECHA DE LICENCIATURA:"
+    .text("FECHA DE LICENCIATURA:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.FechaLicenciatura || "NO ESPECIFICADO"}`);
+
+  // Información académica - Especialidad secundaria
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "ESPECIALIDAD SECUNDARIA:"
+    .text("ESPECIALIDAD SECUNDARIA:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.EspecialidadSecundaria || "NO ESPECIFICADO"}`);
+
+  doc.moveDown(1.5);
 
   // Información profesional
   doc
-    .fontSize(14)
+    .fontSize(10)
+    .font("Helvetica-Bold")
     .fillColor("black")
     .text("INFORMACIÓN PROFESIONAL", { underline: true });
   doc.moveDown(0.5);
+
+  // Información profesional - Cargos en administración pública
   doc
-    .fontSize(12)
-    .text(
-      `CARGOS EN ADMINISTRACIÓN PÚBLICA: ${
-        data.CargosAdministracionPublica || "NO ESPECIFICADO"
-      }`
-    );
-  doc.text(
-    `CARGOS EN EMPRESA PRIVADA: ${
-      data.CargosEmpresaPrivada || "NO ESPECIFICADO"
-    }`
-  );
-  doc.text(`CARGOS EN BUFETE: ${data.CargosBufete}`);
-  doc.text(`CARGO ACTUAL: ${data.CargoActual || "NO ESPECIFICADO"}`);
-  doc.moveDown(1);
+    .fontSize(8)
+    .font("Helvetica-Bold") // Negrita para la etiqueta "CARGOS EN ADMINISTRACIÓN PÚBLICA:"
+    .text("CARGOS EN ADMINISTRACIÓN PÚBLICA:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.CargosAdministracionPublica || "NO ESPECIFICADO"}`);
+
+  // Información profesional - Cargos en empresa privada
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "CARGOS EN EMPRESA PRIVADA:"
+    .text("CARGOS EN EMPRESA PRIVADA:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.CargosEmpresaPrivada || "NO ESPECIFICADO"}`);
+
+  // Información profesional - Cargos en bufete
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "CARGOS EN BUFETE:"
+    .text("CARGOS EN BUFETE:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.CargosBufete || "NO ESPECIFICADO"}`);
+
+  // Información profesional - Cargo actual
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "CARGO ACTUAL:"
+    .text("CARGO ACTUAL:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.CargoActual || "NO ESPECIFICADO"}`);
+
+  doc.moveDown(1.5);
 
   // Reconocimientos y otros
   doc
-    .fontSize(14)
+    .fontSize(10)
+    .font("Helvetica-Bold")
     .fillColor("black")
     .text("RECONOCIMIENTOS Y ASISTENCIA", { underline: true });
   doc.moveDown(0.5);
+
+  // Reconocimientos
   doc
-    .fontSize(12)
-    .text(`RECONOCIMIENTOS: ${data.Reconocimientos || "NO ESPECIFICADO"}`);
-  doc.text(
-    `ASISTENCIA A EVENTOS INTERNACIONALES: ${
-      data.AsistenciaEventosInternacionales || "NO ESPECIFICADO"
-    }`
-  );
-  doc.moveDown(1);
+    .fontSize(8)
+    .font("Helvetica-Bold") // Negrita para la etiqueta "RECONOCIMIENTOS:"
+    .text("RECONOCIMIENTOS:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.Reconocimientos || "NO ESPECIFICADO"}`);
+
+  // Asistencia a eventos internacionales
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "ASISTENCIA A EVENTOS INTERNACIONALES:"
+    .text("ASISTENCIA A EVENTOS INTERNACIONALES:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.AsistenciaEventosInternacionales || "NO ESPECIFICADO"}`);
+
+  doc.moveDown(2);
 
   // Información de contacto
   doc
-    .fontSize(14)
+    .fontSize(10)
+    .font("Helvetica-Bold")
     .fillColor("black")
     .text("INFORMACIÓN DE CONTACTO", { underline: true });
   doc.moveDown(0.5);
+
+  // Institución asegurada
   doc
-    .fontSize(12)
-    .text(
-      `INSTITUCIÓN ASEGURADA: ${data.InstitucionAsegurado || "NO ESPECIFICADO"}`
-    );
-  doc.text(`BENEFICIARIOS: ${data.Beneficiarios || "NO ESPECIFICADO"}`);
-  doc.text(
-    `DIRECCIÓN DOMICILIO: ${data.DireccionDomicilio || "NO ESPECIFICADO"}`
-  );
-  doc.text(
-    `TELÉFONO DOMICILIO: ${data.TelefonoDomicilio || "NO ESPECIFICADO"}`
-  );
-  doc.text(`CELULAR: ${data.Celular || "NO ESPECIFICADO"}`);
-  doc.moveDown(1);
+    .fontSize(8)
+    .font("Helvetica-Bold") // Negrita para la etiqueta "INSTITUCIÓN ASEGURADA:"
+    .text("INSTITUCIÓN ASEGURADA:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.InstitucionAsegurado || "NO ESPECIFICADO"}`);
+
+  // Beneficiarios
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "BENEFICIARIOS:"
+    .text("BENEFICIARIOS:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.Beneficiarios || "NO ESPECIFICADO"}`);
+
+  // Dirección domicilio
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "DIRECCIÓN DOMICILIO:"
+    .text("DIRECCIÓN DOMICILIO:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.DireccionDomicilio || "NO ESPECIFICADO"}`);
+
+  // Teléfono domicilio
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "TELÉFONO DOMICILIO:"
+    .text("TELÉFONO DOMICILIO:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.TelefonoDomicilio || "NO ESPECIFICADO"}`);
+
+  // Celular
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "CELULAR:"
+    .text("CELULAR:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.Celular || "NO ESPECIFICADO"}`);
+
+  doc.moveDown(1.5);
 
   // Estado y otros
   doc
-    .fontSize(14)
+    .fontSize(10)
+    .font("Helvetica-Bold")
     .fillColor("black")
     .text("ESTADO Y OTROS DATOS", { underline: true });
   doc.moveDown(0.5);
-  doc.fontSize(12).text(`ESTADO: ${data.Estado}`);
-  doc.text(
-    `FECHA DE REGISTRO: ${
-      data.FechaRegistro
-        ? new Date(data.FechaRegistro).toLocaleDateString()
-        : "NO ESPECIFICADO"
-    }`
-  );
-  doc.text(
-    `FECHA DE MODIFICACIÓN: ${
-      data.FechaModificacion
-        ? new Date(data.FechaModificacion).toLocaleDateString()
-        : "NO ESPECIFICADO"
-    }`
-  );
-  doc.moveDown(1);
 
-  doc.fontSize(20).text("HISTORIAL APORTES", { align: "center" });
-  doc.moveDown(1);
+  // Estado
+  doc
+    .fontSize(8)
+    .font("Helvetica-Bold") // Negrita para la etiqueta "ESTADO:"
+    .text("ESTADO:", { continued: true });
 
-  // Itera sobre los aportes y muestra la información
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(` ${data.Estado || "NO ESPECIFICADO"}`);
+
+  // Fecha de registro
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "FECHA DE REGISTRO:"
+    .text("FECHA DE REGISTRO:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(
+      ` ${
+        data.FechaRegistro
+          ? new Date(data.FechaRegistro).toLocaleDateString()
+          : "NO ESPECIFICADO"
+      }`
+    );
+
+  // Fecha de modificación
+  doc
+    .font("Helvetica-Bold") // Negrita para la etiqueta "FECHA DE MODIFICACIÓN:"
+    .text("FECHA DE MODIFICACIÓN:", { continued: true });
+
+  doc
+    .font("Helvetica") // Fuente normal para el valor
+    .text(
+      ` ${
+        data.FechaModificacion
+          ? new Date(data.FechaModificacion).toLocaleDateString()
+          : "NO ESPECIFICADO"
+      }`
+    );
+
+  doc.moveDown(1.5);
+  doc.addPage();
+  const table = {
+    headers: [
+      "FECHA DE COBRO",
+      "TALONARIO",
+      "RECIBO",
+      "COBRADOR",
+      "OBSERVACIÓN",
+      "MESES PAGADOS",
+      "MONTO",
+    ],
+    rows: [],
+  };
+
+  // Variable para calcular el total
   let totalMonto = 0;
+
+  // Itera sobre los aportes y agrega los datos a las filas de la tabla
   aportes.forEach((item) => {
-    doc.moveDown(0.5);
-    doc
-      .fontSize(12)
-      .text(
-        `FECHA DE COBRO: ${
-          new Date(item.FechaDeCobro).toLocaleDateString() || "NO ESPECIFICADO"
-        }`
-      );
-    doc.text(`TALONARIO: ${item.Talonario || "NO ESPECIFICADO"}`);
-    doc.text(`RECIBO: ${item.Recibo || "NO ESPECIFICADO"}`);
-    doc.text(`COBRADOR: ${item.Cobrador || "NO ESPECIFICADO"}`);
-    doc.text(`OBSERVACIÓN: ${item.Observacion || "NO ESPECIFICADA"}`);
-    doc.text(`MESES PAGADOS: ${item.MesesPagados || "NO ESPECIFICADO"}`);
-    doc.text(`MONTO: ${item.Monto || "NO ESPECIFICADO"}`);
-    doc.moveDown(1);
-    totalMonto += parseFloat(item.Monto); // Suma el monto
+    const fechaCobro =
+      new Date(item.FechaDeCobro).toLocaleDateString() || "NO ESPECIFICADO";
+    const talonario = item.Talonario || "NO ESPECIFICADO";
+    const recibo = item.Recibo || "NO ESPECIFICADO";
+    const cobrador = item.Cobrador || "NO ESPECIFICADO";
+    const observacion = item.Observacion || "NO ESPECIFICADA";
+    const mesesPagados = item.MesesPagados || "NO ESPECIFICADO";
+    const monto = item.Monto ? parseFloat(item.Monto) : 0;
+
+    table.rows.push([
+      fechaCobro,
+      talonario,
+      recibo,
+      cobrador,
+      observacion,
+      mesesPagados,
+      monto.toFixed(2),
+    ]);
+
+    // Suma el monto al total
+    totalMonto += monto;
   });
 
-  // Muestra la suma total de los montos
+  // Imprime el título
   doc
-    .fontSize(14)
+    .fontSize(20)
+    .font("Helvetica-Bold")
     .fillColor("black")
+    .text("HISTORIAL APORTES", { align: "center" });
+  doc.moveDown(1);
+
+  // Agrega la tabla con los datos
+  doc.table(table, { width: 470 });
+
+  // Muestra la suma total de los montos al final
+  doc
+    .fontSize(10)
+    .fillColor("black")
+    .font("Helvetica-Bold")
     .text("TOTAL MONTO DE APORTES: " + totalMonto.toFixed(2), {
       align: "right",
     });
-    doc.fontSize(9).text("Elaborado a solicitud del Presidente del ICALP Dr. Israel Centellas " + new Date().toLocaleDateString()+" por el usuario: "+user);
+  doc.moveDown(2);
+
+  doc
+    .fontSize(7)
+    .text(
+      "Elaborado a solicitud del Presidente del ICALP Dr. Israel Centellas " +
+        new Date().toLocaleDateString() +
+        " por el usuario: " +
+        user
+    );
+
   doc.moveDown(2);
   return doc;
 };

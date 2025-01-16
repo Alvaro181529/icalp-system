@@ -1,18 +1,21 @@
 <%- include('../partials/header', { title, user }) %>
   <div class="bg-[#2C3E8C] mt-2 mx-8 py-10 px-16 rounded-lg text-white">
-
-
+    <nav class="p-4">
+      <ul class="flex space-x-8 justify-center">
+        <li><a href="#Perfil" class="text-white text-lg hover:text-blue-300 transition duration-300 underline">Ir
+            Perfil</a></li>
+        <li><a href="#Aportes" class="text-white text-lg hover:text-blue-300 transition duration-300 underline">Ir
+            Aportes</a></li>
+        <li><a href="#Notas" class="text-white text-lg hover:text-blue-300 transition duration-300 underline">Ir
+            Notas</a></li>
+      </ul>
+    </nav>
     <div class="w-full">
       <div class="flex justify-between ">
-        <h1 class="font-semibold text-3xl">Perfil</h1>
+        <h1 class="font-semibold text-3xl" id="Perfil">Perfil</h1>
         <div>
-          <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2" id="button">Pagos</button>
           <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2"
             id="openDialogButton">Actualizar</button>
-          <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
-            id="entrega-agenda">Entrega de Agenda</button>
-          <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
-            id="diplomado-gratuito">Diplomado Gratuito</button>
           <a href="/collegiate/<%= result.ColegiadoId %>/pdf" target="_blank">
             <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2">Generar Reporte PDF</button>
           </a>
@@ -23,9 +26,18 @@
         <!-- Profil+e Image Section -->
         <div class="flex flex-col items-center">
           <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-white mx-8">
-            <img src="<%= result.Foto ? '/uploads/imagenes/' + result.Foto : '/public/img/imageDefault1 .png' %>"
+            <img
+              src="<%= result.Foto ? '/uploads/imagenes/' + result.Foto.toString().padStart(5, '0') : '/public/img/imageDefault1.png' %>"
               alt="<%= result.Nombres %><%= result.Paterno %><%= result.Materno %>"
               class="w-full h-full object-cover" />
+          </div>
+          <div class="mx-8 flex flex-col mt-2 gap-2">
+            <button class="bg-blue-500 py-2 px-4 rounded " id="upload-foto">
+              <%= result.Foto?'Actualizar imagen':'Agregar imagen'%>
+            </button>
+            <button class="bg-blue-500 py-2 px-4 rounded " id="upload-firma">
+              <%= result.Foto?'Actualizar firma':'Agregar firma'%>
+            </button>
           </div>
         </div>
 
@@ -42,7 +54,7 @@
               <div class="mb-4">
                 <p class="text-gray-300">Email:</p>
                 <p>
-                  <%=result.correo || 'Sin correo proporcionado' %>
+                  <%=result.Correo || 'Sin correo proporcionado' %>
                 </p>
               </div>
 
@@ -97,12 +109,10 @@
                   <%= result.NumeroCI %>
                 </p>
               </div>
-
               <div class="mb-4">
-                <p class="text-gray-300">Cuotas:</p>
-                <p class="flex items-center">
-                  <span class="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                  Al día
+                <p class="text-gray-300">Matricula Conalab</p>
+                <p>
+                  <%= result.MatriculaConalab || "No disponible" %>
                 </p>
               </div>
             </div>
@@ -110,364 +120,321 @@
         </div>
       </div>
     </div>
-    <table>
+   
+    <h1 class="font-semibold text-3xl mt-8 mb-4">Information adicional</h1>
+    <hr>
+    <div class="ml-12">
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="mb-4">
+          <p class="text-gray-300">Numero Ruc</p>
+          <p>
+            <%= result.NumeroRuc || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Estado Civil</p>
+          <p>
+            <%= result.EstadoCivil || 'No disponible'%>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Universidad</p>
+          <p>
+            <%= result.Universidad || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Fecha tesis</p>
+          <p>
+            <%= result.FechaTesis || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Universidad licenciatura</p>
+          <p>
+            <%= result.UniversidadLicenciatura || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Fecha licenciatura</p>
+          <p>
+            <%= result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toLocaleDateString() : "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Fecha Provicion nacional</p>
+          <p>
+            <%= result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toLocaleDateString()
+              : "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Entidad Provicion nacional</p>
+          <p>
+            <%= result.EntidadProvisionNacional || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Fecha matriculacion del colegio</p>
+          <p>
+            <%= result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toLocaleDateString()
+              : "No disponible" %>
+          </p>
+        </div>
+      </div>
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="mb-4">
+          <p class="text-gray-300">Cargos administracion publica</p>
+          <p>
+            <%= result.CargosAdministracionPublica || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Cargos administracion publica</p>
+          <p>
+            <%= result.CargosEmpresaPrivada || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Cargos Buffete</p>
+          <p>
+            <%= result.CargosBufete || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Cargo actual</p>
+          <p>
+            <%= result.CargoActual || 'No disponible' %>
+          </p>
+        </div>
+      </div>
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="mb-4">
+          <p class="text-gray-300">Especialidad primaria</p>
+          <p>
+            <%= result.EspecialidadPrimaria || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Especialidad secundaria</p>
+          <p>
+            <%= result.EspecialidadSecundaria || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Producciones</p>
+          <p>
+            <%= result.Producciones || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Catedra</p>
+          <p>
+            <%= result.Catedra || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Estudios especializacion</p>
+          <p>
+            <%= result.EstudiosEspecializacion || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Reconocimientos</p>
+          <p>
+            <%= result.Reconocimientos || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Asistencia a eventos internacionales</p>
+          <p>
+            <%= result.AsistenciaEventosInternacionales || 'No disponible' %>
+          </p>
+        </div>
+      </div>
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="mb-4">
+          <p class="text-gray-300">Institucion asegurado</p>
+          <p>
+            <%= result.InstitucionAsegurado || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Institucion asegurado</p>
+          <p>
+            <%= result.InstitucionAsegurado || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Beneficiarios</p>
+          <p>
+            <%= result.Beneficiarios || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Direccion domicilio</p>
+          <p>
+            <%= result.DireccionDomicilio || 'No disponible' %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Casilla</p>
+          <p>
+            <%= result.Casilla || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Situacion</p>
+          <p>
+            <%= result.Situacion || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Observacion</p>
+          <p>
+            <%= result.Observacion || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Zona</p>
+          <p>
+            <%= result.ZonaId || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Nacionalidad</p>
+          <p>
+            <%= result.Nacionalidad || "No disponible" %>
+          </p>
+        </div>
+
+        <div class="mb-4">
+          <p class="text-gray-300">Celular</p>
+          <p>
+            <%= result.Celular || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Grado academico</p>
+          <p>
+            <%= result.GradoAcademico || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Licenciatura</p>
+          <p>
+            <%= result.Licenciatura || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">ZonaTrabajoId</p>
+          <p>
+            <%= result.ZonaTrabajoId || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Forma de pago</p>
+          <p>
+            <%= result.FormaDePago || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Numero de boleta de deposito</p>
+          <p>
+            <%= result.BoletaDepositoNumero || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Monto deposito</p>
+          <p>
+            <%= result.MontoDeposito || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Formulario de admisión</p>
+          <p>
+            <%= result.FormularioDeAdmision || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Fotocopia titulo profecional</p>
+          <p>
+            <%= result.FotocopiaTituloProfesional || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Certificado de nacimiento original</p>
+          <p>
+            <%= result.CertificadoNacimientoOriginal || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Fotocopia C.I.</p>
+          <p>
+            <%= result.FotocopiaCI || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Curriculum vitae</p>
+          <p>
+            <%= result.CurriculumVitae || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Usuario quien registro</p>
+          <p>
+            <%= result.UsuarioRegistro || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Fecha registro</p>
+          <p>
+            <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Usuario modificación</p>
+          <p>
+            <%= result.UsuarioModificacion || "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Fecha modificación</p>
+          <p>
+            <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No disponible" %>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-gray-300">Estado</p>
+          <p>
+            <%= result.Estado %>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!-- <table>
       <thead>
         <tr>
           <th>Campo</th>
           <th>Valor</th>
+
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Matricula</td>
-          <td>
-            <%= result.Matricula %>
-          </td>
-        </tr>
-        <tr>
-          <td>Matricula Conalab</td>
-          <td>
-            <%= result.MatriculaConalab || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Foto</td>
-          <td><img src="" alt="<%= result.Foto %>" width="100"></td>
-        </tr>
-        <tr>
-          <td>Firma</td>
-          <td><img src="#" alt="<%= result.Firma %>" width="100"></td>
-        </tr>
-        <tr>
           <td>PDF</td>
           <td><a href="#"" target=" _blank">Ver PDF <%= result.Pdf %>"</a></td>
-        </tr>
         <tr>
-          <td>Nombre Completo</td>
-          <td>
-            <%= result.Nombres %>
-              <%= result.Paterno %>
-                <%= result.Materno %>
-          </td>
-        </tr>
-        <tr>
-          <td>Teléfono Oficina</td>
-          <td>
-            <%= result.TelefonoOficina %>
-          </td>
-        </tr>
-        <tr>
-          <td>Dirección Oficina</td>
-          <td>
-            <%= result.DireccionOficina %>
-          </td>
-        </tr>
-        <tr>
-          <td>Correo</td>
-          <td>
-            <%= result.Correo || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Lugar de Nacimiento</td>
-          <td>
-            <%= result.LugarNacimiento %>
-          </td>
-        </tr>
-        <tr>
-          <td>Fecha de Nacimiento</td>
-          <td>
-            <%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toLocaleDateString() : "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Numero CI</td>
-          <td>
-            <%= result.NumeroCI %>
-          </td>
-        </tr>
-        <tr>
-          <td>Numero RUC</td>
-          <td>
-            <%= result.NumeroRuc %>
-          </td>
-        </tr>
-        <tr>
-          <td>Estado Civil</td>
-          <td>
-            <%= result.EstadoCivil %>
-          </td>
-        </tr>
-        <tr>
-          <td>Universidad</td>
-          <td>
-            <%= result.Universidad %>
-          </td>
-        </tr>
-        <tr>
-          <td>Fecha Tesis</td>
-          <td>
-            <%= result.FechaTesis || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Universidad Licenciatura</td>
-          <td>
-            <%= result.UniversidadLicenciatura %>
-          </td>
-        </tr>
-        <tr>
-          <td>Fecha Licenciatura</td>
-          <td>
-            <%= result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toLocaleDateString() : "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Fecha Provision Nacional</td>
-          <td>
-            <%= result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toLocaleDateString()
-              : "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Entidad Provision Nacional</td>
-          <td>
-            <%= result.EntidadProvisionNacional %>
-          </td>
-        </tr>
-        <tr>
-          <td>Fecha Matriculación al Colegio</td>
-          <td>
-            <%= result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toLocaleDateString()
-              : "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Cargos Administración Pública</td>
-          <td>
-            <%= result.CargosAdministracionPublica %>
-          </td>
-        </tr>
-        <tr>
-          <td>Cargos Empresa Privada</td>
-          <td>
-            <%= result.CargosEmpresaPrivada %>
-          </td>
-        </tr>
-        <tr>
-          <td>Cargos Bufete</td>
-          <td>
-            <%= result.CargosBufete || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Cargo Actual</td>
-          <td>
-            <%= result.CargoActual %>
-          </td>
-        </tr>
-        <tr>
-          <td>Especialidad Primaria</td>
-          <td>
-            <%= result.EspecialidadPrimaria || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Especialidad Secundaria</td>
-          <td>
-            <%= result.EspecialidadSecundaria %>
-          </td>
-        </tr>
-        <tr>
-          <td>Producciones</td>
-          <td>
-            <%= result.Producciones || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Cátedra</td>
-          <td>
-            <%= result.Catedra %>
-          </td>
-        </tr>
-        <tr>
-          <td>Estudios Especialización</td>
-          <td>
-            <%= result.EstudiosEspecializacion %>
-          </td>
-        </tr>
-        <tr>
-          <td>Reconocimientos</td>
-          <td>
-            <%= result.Reconocimientos || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Asistencia a Eventos Internacionales</td>
-          <td>
-            <%= result.AsistenciaEventosInternacionales %>
-          </td>
-        </tr>
-        <tr>
-          <td>Institución Asegurado</td>
-          <td>
-            <%= result.InstitucionAsegurado %>
-          </td>
-        </tr>
-        <tr>
-          <td>Beneficiarios</td>
-          <td>
-            <%= result.Beneficiarios || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Dirección Domicilio</td>
-          <td>
-            <%= result.DireccionDomicilio %>
-          </td>
-        </tr>
-        <tr>
-          <td>Teléfono Domicilio</td>
-          <td>
-            <%= result.TelefonoDomicilio %>
-          </td>
-        </tr>
-        <tr>
-          <td>Casilla</td>
-          <td>
-            <%= result.Casilla || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Situación</td>
-          <td>
-            <%= result.Situacion || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Observación</td>
-          <td>
-            <%= result.Observacion || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Zona Id</td>
-          <td>
-            <%= result.ZonaId || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Nacionalidad</td>
-          <td>
-            <%= result.Nacionalidad || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Celular</td>
-          <td>
-            <%= result.Celular || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Grado Académico</td>
-          <td>
-            <%= result.GradoAcademico || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Licenciatura</td>
-          <td>
-            <%= result.Licenciatura || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Zona Trabajo Id</td>
-          <td>
-            <%= result.ZonaTrabajoId || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Forma de Pago</td>
-          <td>
-            <%= result.FormaDePago || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Boleta Depósito Número</td>
-          <td>
-            <%= result.BoletaDepositoNumero || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Monto Depósito</td>
-          <td>
-            <%= result.MontoDeposito || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Formulario de Admisión</td>
-          <td>
-            <%= result.FormularioDeAdmision || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Fotocopia Título Profesional</td>
-          <td>
-            <%= result.FotocopiaTituloProfesional || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Certificado Nacimiento Original</td>
-          <td>
-            <%= result.CertificadoNacimientoOriginal || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Fotocopia CI</td>
-          <td>
-            <%= result.FotocopiaCI || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Currículum Vitae</td>
-          <td>
-            <%= result.CurriculumVitae || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Usuario Registro</td>
-          <td>
-            <%= result.UsuarioRegistro || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Fecha Registro</td>
-          <td>
-            <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Usuario Modificación</td>
-          <td>
-            <%= result.UsuarioModificacion || "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Fecha Modificación</td>
-          <td>
-            <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No disponible" %>
-          </td>
-        </tr>
-        <tr>
-          <td>Estado</td>
-          <td>
-            <%= result.Estado %>
-          </td>
-        </tr>
       </tbody>
-    </table>
-    
-    <h1 class="font-semibold text-3xl mt-8">Aportes</h1>
+    </table> -->
+
+    <div class="flex justify-between mt-8">
+      <h1 class="font-semibold text-3xl" id="Aportes">Aportes</h1>
+      <div>
+        <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2" id="button">Pagos</button>
+      </div>
+    </div>
+
     <hr class="my-2">
     <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
       <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
@@ -484,7 +451,15 @@
         </tbody>
       </table>
     </div>
-    <h1 class="font-semibold text-3xl mt-8">Notas</h1>
+    <div class="flex justify-between mt-8">
+      <h1 class="font-semibold text-3xl" id="Notas">Notas</h1>
+      <div>
+        <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
+          id="entrega-agenda">Entrega de Agenda</button>
+        <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
+          id="diplomado-gratuito">Diplomado Gratuito</button>
+      </div>
+    </div>
     <hr class="my-2">
     <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
       <table id="notas-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
@@ -500,289 +475,681 @@
         </tbody>
       </table>
     </div>
-    <dialog id="personalDataDialog">
-      <h2>Formulario de Registros</h2>
-      <form id="personalDataForm">
-        <h3>Datos personales</h3>
-        <label for="matricula">Matrícula:</label>
-        <input type="text" id="matricula" name="matricula" value="<%=result.Matricula%>">
+    <dialog id="personalDataDialog"
+      class="p-8 max-w-6xl w-full max-h-screen mx-auto bg-white rounded-lg shadow-lg overflow-y-auto">
+      <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Formulario de Registros</h2>
+      <form id="personalDataForm" class="space-y-8">
+        <section>
+          <h3 class="text-2xl font-semibold mb-4 text-gray-700">Datos personales</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="matricula">Matrícula:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="matricula" name="matricula" value="<%=result.Matricula%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="matriculaConalab">Matrícula
+                Conalab:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="matriculaConalab" name="matriculaConalab" value="<%=result.matriculaConalab%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="nombres">Nombres:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="nombres" name="nombres" value="<%=result.Nombres%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="paterno">Apellido Paterno:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="paterno" name="paterno" value="<%=result.Paterno%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="materno">Apellido Materno:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="materno" name="materno" value="<%=result.Materno%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="telefonoOficina">Teléfono
+                Oficina:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="tel" id="telefonoOficina" name="telefonoOficina" value="<%=result.TelefonoOficina%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="direccionOficina">Dirección
+                Oficina:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="direccionOficina" name="direccionOficina" value="<%=result.DireccionOficina%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="correo">Correo:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="email" id="correo" name="correo" value="<%=result.Correo%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="lugarNacimiento">Lugar de Nacimiento:
+              </label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="lugarNacimiento" name="lugarNacimiento" value="<%=result.LugarNacimiento%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaNacimiento">Fecha de
+                Nacimiento:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="date" id="fechaNacimiento" name="fechaNacimiento"
+                value="<%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toISOString().split('T')[0] : '' %>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="numeroCI">Número CI:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="numeroCI" name="numeroCI" value="<%=result.NumeroCI%>">
+            </div>
+            <div>
 
-        <label for="matriculaConalab">Matrícula Conalab:</label>
-        <input type="text" id="matriculaConalab" name="matriculaConalab" value="<%=result.matriculaConalab%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="numeroRuc">Número RUC:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="numeroRuc" name="numeroRuc" value="<%=result.NumeroRuc%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="estadoCivil">Estado Civil:</label>
+              <select
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="estadoCivil" name="estadoCivil" value="<%=result.EstadoCivil%>">
+                <option value="soltero">Soltero</option>
+                <option value="casado">Casado</option>
+                <option value="divorciado">Divorciado</option>
+                <option value="viudo">Viudo</option>
+              </select>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-2xl font-semibold mb-4 mt-6 text-gray-700">Estudios</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
 
-        <label for="nombres">Nombres:</label>
-        <input type="text" id="nombres" name="nombres" value="<%=result.Nombres%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="universidad">Universidad:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="universidad" name="universidad" value="<%=result.Universidad%>">
+            </div>
+            <div>
 
-        <label for="paterno">Apellido Paterno:</label>
-        <input type="text" id="paterno" name="paterno" value="<%=result.Paterno%>">
-
-        <label for="materno">Apellido Materno:</label>
-        <input type="text" id="materno" name="materno" value="<%=result.Materno%>">
-
-        <label for="telefonoOficina">Teléfono Oficina:</label>
-        <input type="tel" id="telefonoOficina" name="telefonoOficina" value="<%=result.TelefonoOficina%>">
-
-        <label for="direccionOficina">Dirección Oficina:</label>
-        <input type="text" id="direccionOficina" name="direccionOficina" value="<%=result.DireccionOficina%>">
-
-        <label for="correo">Correo:</label>
-        <input type="email" id="correo" name="correo" value="<%=result.Correo%>">
-
-        <label for="lugarNacimiento">Lugar de Nacimiento: </label>
-        <input type="text" id="lugarNacimiento" name="lugarNacimiento" value="<%=result.LugarNacimiento%>">
-
-        <label for="fechaNacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fechaNacimiento" name="fechaNacimiento"
-          value="<%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toISOString().split('T')[0] : '' %>">
-
-        <label for="numeroCI">Número CI:</label>
-        <input type="text" id="numeroCI" name="numeroCI" value="<%=result.NumeroCI%>">
-
-        <label for="numeroRuc">Número RUC:</label>
-        <input type="text" id="numeroRuc" name="numeroRuc" value="<%=result.NumeroRuc%>">
-
-        <label for="estadoCivil">Estado Civil:</label>
-        <select id="estadoCivil" name="estadoCivil" value="<%=result.EstadoCivil%>">
-          <option value="soltero">Soltero</option>
-          <option value="casado">Casado</option>
-          <option value="divorciado">Divorciado</option>
-          <option value="viudo">Viudo</option>
-        </select>
-        <h3>Estudios</h3>
-        <label for="universidad">Universidad:</label>
-        <input type="text" id="universidad" name="universidad" value="<%=result.Universidad%>">
-
-        <label for="fechaTesis">Fecha Tesis: MM/DD/AAAA</label>
-        <input type="text" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis %>" placeholder="MM/DD/AAAA">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaTesis">Fecha Tesis:
+                MM/DD/AAAA</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis %>" placeholder="MM/DD/AAAA">
+            </div>
+            <div>
 
 
-        <label for="universidadLicenciatura">Universidad Licenciatura: MM/DD/AAAA</label>
-        <input type="text" id="universidadLicenciatura" name="universidadLicenciatura" placeholder="MM/DD/AAAA"
-          value="<%=result.UniversidadLicenciatura%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="universidadLicenciatura">Universidad
+                Licenciatura: MM/DD/AAAA</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="universidadLicenciatura" name="universidadLicenciatura" placeholder="MM/DD/AAAA"
+                value="<%=result.UniversidadLicenciatura%>">
+            </div>
+            <div>
 
-        <label for="fechaLicenciatura">Fecha Licenciatura:</label>
-        <input type="text" id="fechaLicenciatura" name="fechaLicenciatura" value="<%=result.FechaLicenciatura%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaLicenciatura">Fecha
+                Licenciatura:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="fechaLicenciatura" name="fechaLicenciatura" value="<%=result.FechaLicenciatura%>">
+            </div>
+            <div>
 
-        <label for="fechaProvisionNacional">Fecha Provisión Nacional:</label>
-        <input type="date" id="fechaProvisionNacional" name="fechaProvisionNacional"
-          value="<%=result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toISOString().split('T')[0] : ''%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaProvisionNacional">Fecha Provisión
+                Nacional:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="date" id="fechaProvisionNacional" name="fechaProvisionNacional"
+                value="<%=result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toISOString().split('T')[0] : ''%>">
+            </div>
+            <div>
 
-        <label for="entidadProvisionNacional">Entidad Provisión Nacional:</label>
-        <input type="text" id="entidadProvisionNacional" name="entidadProvisionNacional"
-          value="<%=result.EntidadProvisionNacional%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="entidadProvisionNacional">Entidad
+                Provisión
+                Nacional:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="entidadProvisionNacional" name="entidadProvisionNacional"
+                value="<%=result.EntidadProvisionNacional%>">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaMatriculacionAlColegio">Fecha
+                Matriculación al Colegio:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="date" id="fechaMatriculacionAlColegio" name="fechaMatriculacionAlColegio"
+                value="<%=result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toISOString().split('T')[0] : ''%>">
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-2xl font-semibold mb-4 mt-6 text-gray-700">Cargos Desempeñados</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="cargosAdministracionPublica">Cargos
+                Administración Pública:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="cargosAdministracionPublica" name="cargosAdministracionPublica"
+                value="<%=result.CargosAdministracionPublica%>"></input>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="cargosEmpresaPrivada">Cargos Empresa
+                Privada:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="cargosEmpresaPrivada" name="cargosEmpresaPrivada" value="<%=result.CargosEmpresaPrivada%>"></input>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="cargosBufete">Cargos Bufete:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="cargosBufete" name="cargosBufete" value="<%=result.CargosBufete%>"></input>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="cargoActual">Cargo Actual:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="cargoActual" name="cargoActual" value="<%=result.CargoActual%>">
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-2xl font-semibold mb-4 mt-6 text-gray-700">Especialidades y Reconocimientos</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="especialidadPrimaria">Especialidad
+                Primaria:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="especialidadPrimaria" name="especialidadPrimaria"
+                value="<%=result.EspecialidadPrimaria%>">
+            </div>
+            <div>
 
-        <label for="fechaMatriculacionAlColegio">Fecha Matriculación al Colegio:</label>
-        <input type="date" id="fechaMatriculacionAlColegio" name="fechaMatriculacionAlColegio"
-          value="<%=result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toISOString().split('T')[0] : ''%>">
-        <h3>Cargos Desempeñados</h3>
-        <label for="cargosAdministracionPublica">Cargos Administración Pública:</label>
-        <input id="cargosAdministracionPublica" name="cargosAdministracionPublica"
-          value="<%=result.CargosAdministracionPublica%>"></input>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="especialidadSecundaria">Especialidad
+                Secundaria:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="especialidadSecundaria" name="especialidadSecundaria"
+                value="<%=result.EspecialidadSecundaria%>">
+            </div>
+            <div>
 
-        <label for="cargosEmpresaPrivada">Cargos Empresa Privada:</label>
-        <input id="cargosEmpresaPrivada" name="cargosEmpresaPrivada" value="<%=result.CargosEmpresaPrivada%>"></input>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="producciones">Producciones:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="producciones" name="producciones" value="<%=result.Producciones%>"></input>
+            </div>
+            <div>
 
-        <label for="cargosBufete">Cargos Bufete:</label>
-        <input id="cargosBufete" name="cargosBufete" value="<%=result.CargosBufete%>"></input>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="catedra">Cátedra:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="catedra" name="catedra" value="<%=result.Catedra%>"></input>
+            </div>
+            <div>
 
-        <label for="cargoActual">Cargo Actual:</label>
-        <input type="text" id="cargoActual" name="cargoActual" value="<%=result.CargoActual%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="estudiosEspecializacion">Estudios de
+                Especialización:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="estudiosEspecializacion" name="estudiosEspecializacion"
+                value="<%=result.EstudiosEspecializacion%>"></input>
+            </div>
 
-        <label for="especialidadPrimaria">Especialidad Primaria:</label>
-        <input type="text" id="especialidadPrimaria" name="especialidadPrimaria"
-          value="<%=result.EspecialidadPrimaria%>">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="reconocimientos">Reconocimientos:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="reconocimientos" name="reconocimientos" value="<%=result.Reconocimientos%>"></input>
+            </div>
+            <div>
 
-        <label for="especialidadSecundaria">Especialidad Secundaria:</label>
-        <input type="text" id="especialidadSecundaria" name="especialidadSecundaria"
-          value="<%=result.EspecialidadSecundaria%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                for="asistenciaEventosInternacionales">Asistencia a
+                Eventos Internacionales:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales"
+                value="<%=result.AsistenciaEventosInternacionales%>"></input>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h3 class="text-2xl font-semibold mt-6 mb-4 text-gray-700">Otros</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div>
 
-        <label for="producciones">Producciones:</label>
-        <input id="producciones" name="producciones" value="<%=result.Producciones%>"></input>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="institucionAsegurado">Institución
+                Asegurado:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="institucionAsegurado" name="institucionAsegurado"
+                value="<%=result.InstitucionAsegurado%>">
+            </div>
+            <div>
 
-        <label for="catedra">Cátedra:</label>
-        <input id="catedra" name="catedra" value="<%=result.Catedra%>"></input>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="beneficiarios">Beneficiarios:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="beneficiarios" name="beneficiarios" value="<%=result.Beneficiarios%>"></input>
+            </div>
+            <div>
 
-        <label for="estudiosEspecializacion">Estudios de Especialización:</label>
-        <input id="estudiosEspecializacion" name="estudiosEspecializacion"
-          value="<%=result.EstudiosEspecializacion%>"></input>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="direccionDomicilio">Dirección
+                Domicilio:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="direccionDomicilio" name="direccionDomicilio" value="<%=result.DireccionDomicilio%>">
+            </div>
+            <div>
 
-        <label for="reconocimientos">Reconocimientos:</label>
-        <input id="reconocimientos" name="reconocimientos" value="<%=result.Reconocimientos%>"></input>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="telefonoDomicilio">Teléfono
+                Domicilio:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="tel" id="telefonoDomicilio" name="telefonoDomicilio" value="<%=result.TelefonoDomicilio%>">
+            </div>
+            <div>
 
-        <label for="asistenciaEventosInternacionales">Asistencia a Eventos Internacionales:</label>
-        <input id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales"
-          value="<%=result.AsistenciaEventosInternacionales%>"></input>
-        <h3>Otros</h3>
-        <label for="institucionAsegurado">Institución Asegurado:</label>
-        <input type="text" id="institucionAsegurado" name="institucionAsegurado"
-          value="<%=result.InstitucionAsegurado%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="casilla">Casilla:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="casilla" name="casilla" value="<%=result.Casilla%>">
+            </div>
+            <div>
 
-        <label for="beneficiarios">Beneficiarios:</label>
-        <input id="beneficiarios" name="beneficiarios" value="<%=result.Beneficiarios%>"></input>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="situacion">Situación:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="situacion" name="situacion" value="<%=result.Situación%>">
+            </div>
+            <div>
 
-        <label for="direccionDomicilio">Dirección Domicilio:</label>
-        <input type="text" id="direccionDomicilio" name="direccionDomicilio" value="<%=result.DireccionDomicilio%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="observacion">Observación:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="observacion" name="observacion" value="<%=result.Observacion%>"></input>
+            </div>
+            <div>
 
-        <label for="telefonoDomicilio">Teléfono Domicilio:</label>
-        <input type="tel" id="telefonoDomicilio" name="telefonoDomicilio" value="<%=result.TelefonoDomicilio%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="zona">Zona:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="zona" name="zona">
+            </div>
+            <div>
 
-        <label for="casilla">Casilla:</label>
-        <input type="text" id="casilla" name="casilla" value="<%=result.Casilla%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="nacionalidad">Nacionalidad:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="nacionalidad" name="nacionalidad" value="<%=result.Nacionalidad%>">
+            </div>
+            <div>
 
-        <label for="situacion">Situación:</label>
-        <input type="text" id="situacion" name="situacion" value="<%=result.Situación%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="celular">Celular:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="tel" id="celular" name="celular" value="<%=result.Celular%>">
+            </div>
+            <div>
 
-        <label for="observacion">Observación:</label>
-        <input id="observacion" name="observacion" value="<%=result.Observacion%>"></input>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="gradoAcademico">Grado Académico:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="gradoAcademico" name="gradoAcademico" value="<%=result.GradoAcademico%>">
+            </div>
+            <div>
 
-        <label for="zona">Zona:</label>
-        <input type="text" id="zona" name="zona">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="licenciatura">Licenciatura:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="licenciatura" name="licenciatura" value="<%=result.Licenciatura%>">
+            </div>
+            <div>
 
-        <label for="nacionalidad">Nacionalidad:</label>
-        <input type="text" id="nacionalidad" name="nacionalidad" value="<%=result.Nacionalidad%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="zonaTrabajo">Zona de Trabajo:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="zonaTrabajo" name="zonaTrabajo" value="<%=result.ZonaTrabajoId%>">
+            </div>
+            <div>
 
-        <label for="celular">Celular:</label>
-        <input type="tel" id="celular" name="celular" value="<%=result.Celular%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="formaDePago">Forma de Pago:</label>
+              <select
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="formaDePago" name="formaDePago" value="<%=result.FormaDePago%>">
+                <option value="efectivo">Efectivo</option>
+                <option value="cheque">Cheque</option>
+                <option value="transferencia">Transferencia</option>
+              </select>
+            </div>
+            <div>
 
-        <label for="gradoAcademico">Grado Académico:</label>
-        <input type="text" id="gradoAcademico" name="gradoAcademico" value="<%=result.GradoAcademico%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="boletaDepositoNumero">Boleta Depósito
+                Número:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="boletaDepositoNumero" name="boletaDepositoNumero"
+                value="<%=result.BoletaDepositoNumero%>">
+            </div>
+            <div>
 
-        <label for="licenciatura">Licenciatura:</label>
-        <input type="text" id="licenciatura" name="licenciatura" value="<%=result.Licenciatura%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="montoDeposito">Monto Depósito:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="number" id="montoDeposito" name="montoDeposito" value="<%=result.MontoDeposito%>" required
+                step="0.01">
+            </div>
+            <div>
 
-        <label for="zonaTrabajo">Zona de Trabajo:</label>
-        <input type="text" id="zonaTrabajo" name="zonaTrabajo" value="<%=result.ZonaTrabajoId%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="formularioAdmision">Formulario de
+                Admisión:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="formularioAdmision" name="formularioAdmision" value="<%=result.FormularioAdmision%>">
+            </div>
+            <div>
 
-        <label for="formaDePago">Forma de Pago:</label>
-        <select id="formaDePago" name="formaDePago" value="<%=result.FormaDePago%>">
-          <option value="efectivo">Efectivo</option>
-          <option value="cheque">Cheque</option>
-          <option value="transferencia">Transferencia</option>
-        </select>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="fotocopiaTituloProfesional">Fotocopia
+                Título
+                Profesional:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="fotocopiaTituloProfesional" name="fotocopiaTituloProfesional"
+                value="<%=result.FotocopiaTituloProfesional%>">
+            </div>
+            <div>
 
-        <label for="boletaDepositoNumero">Boleta Depósito Número:</label>
-        <input type="text" id="boletaDepositoNumero" name="boletaDepositoNumero"
-          value="<%=result.BoletaDepositoNumero%>">
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                for="certificadoNacimientoOriginal">Certificado
+                Nacimiento Original:</label>
+              <input
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="text" id="certificadoNacimientoOriginal" name="certificadoNacimientoOriginal"
+                value="<%=result.CertificadoNacimientoOriginal%>">
+            </div>
+            <div>
+              <label for="fotocopiaCI" class="block text-sm font-medium text-gray-700 mb-1">Fotocopia C.I.:</label>
+              <select name="fotocopiaCI" id="fotocopiaCI"
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Si" <%=result.FotocopiaCI==='Si' ? 'selected' : '' %>>Si</option>
+                <option value="No" <%=result.FotocopiaCI==='No' ? 'selected' : '' %>>No</option>
+              </select>
+            </div>
 
-        <label for="montoDeposito">Monto Depósito:</label>
-        <input type="number" id="montoDeposito" name="montoDeposito" value="<%=result.MontoDeposito%>" step="0.01">
-
-        <label for="formularioAdmision">Formulario de Admisión:</label>
-        <input type="text" id="formularioAdmision" name="formularioAdmision" value="<%=result.FormularioAdmision%>">
-
-        <label for="fotocopiaTituloProfesional">Fotocopia Título Profesional:</label>
-        <input type="text" id="fotocopiaTituloProfesional" name="fotocopiaTituloProfesional"
-          value="<%=result.FotocopiaTituloProfesional%>">
-
-        <label for="certificadoNacimientoOriginal">Certificado Nacimiento Original:</label>
-        <input type="text" id="certificadoNacimientoOriginal" name="certificadoNacimientoOriginal"
-          value="<%=result.CertificadoNacimientoOriginal%>">
-
-        <label for="fotocopiaCI">Fotocopia C.I.:</label>
-        <input type="text" id="fotocopiaCI" name="fotocopiaCI" value="<%=result.FotocopiaCI%>">
-
-        <label for="curriculumVitae">Curriculum Vitae:</label>
-        <input type="text" id="curriculumVitae" name="curriculumVitae" value="<%=result.CurriculumVitae%>">
-        <label for="estado">Estado:</label>
-        <select name="estado" id="" value="<%=result.Estado%>">
-          <option value="">Activos</option>
-          <option value="">Inactivos</option>
-        </select>
-        <button type="submit">Enviar</button>
-        <button type="button" id="closeDialogButton">Cerrar</button>
+            <div>
+              <label for="curriculumVitae" class="block text-sm font-medium text-gray-700 mb-1">Curriculum
+                Vitae:</label>
+              <select name="curriculumVitae" id="curriculumVitae"
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="Si" <%=result.CurriculumVitae==='Si' ? 'selected' : '' %>>Si</option>
+                <option value="No" <%=result.CurriculumVitae==='No' ? 'selected' : '' %>>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1" for="estado">Estado:</label>
+              <select
+                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                name="estado" id="estado" value="<%= result.Estado ? 'Activo' : 'Inactivo' %>">
+                <option value="Activo" <%=result.Estado==='Activo' ? 'selected' : '' %>>Activos</option>
+                <option value="Inactivo" <%=result.Estado==='Inactivo' ? 'selected' : '' %>>Inactivos</option>
+              </select>
+            </div>
+          </div>
+        </section>
+        <div class="flex justify-between mt-8">
+          <button type="button" id="closeDialogButton"
+            class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors">Cerrar</button>
+          <button type="submit"
+            class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">Enviar</button>
+        </div>
       </form>
     </dialog>
 
-    <dialog id="dialog-aporte">
-      <h2>Hola</h2>
-      <label for="" id="label"></label>
+    <dialog id="dialog-aporte" class="bg-white rounded-lg p-6 w-full sm:w-96">
+      <h2 class="text-xl font-semibold text-center mb-4">Anular Aporte</h2>
       <form id="form-aporte" action="">
-        <label for="motivo">Motivo</label>
-        <input type="text" id="motivo" name="motivo" placeholder="Motivo">
-        <button type="reset" id="cancelar-aporte">Cancelar</button>
-        <button id="button-aporte">Confirmar</button>
+        <label for="motivo" class="block text-sm font-medium text-gray-700 mb-1">Motivo</label>
+        <input type="text" id="motivo" name="motivo" placeholder="Motivo"
+          class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <div class="flex justify-between space-x-4 pt-4">
+          <button type="reset" id="cancelar-aporte"
+            class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">Cancelar</button>
+          <button id="button-aporte"
+            class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">Confirmar</button>
+        </div>
       </form>
     </dialog>
-    <dialog id="dialog">
-      <h3>Pagos</h3>
-      <form id="form-create" method="POST">
-        <label for="meses">Meses</label>
-        <input type="text" id="meses" name="meses" value="1" disabled>
+    <dialog id="dialog" class="bg-white rounded-lg p-6 w-full sm:w-96 shadow-lg">
+      <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">Pagos</h3>
+      <form id="form-create" method="POST" class="space-y-6">
+        <div class="space-y-4">
+          <div>
+            <label for="meses" class="block text-sm font-medium text-gray-700 mb-2">Meses</label>
+            <input
+              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="text" id="meses" name="meses" value="1" disabled>
+          </div>
 
-        <% const anoActual=2050; const inicioAno=1990; %>
+          <% const anoActual=2050; const inicioAno=1990; %>
 
-          <label for="fechaInicial">Desde:</label>
-          <select id="mesInicial" name="mesInicial">
-            <option value="1">Enero</option>
-            <option value="2">Febrero</option>
-            <option value="3">Marzo</option>
-            <option value="4">Abril</option>
-            <option value="5">Mayo</option>
-            <option value="6">Junio</option>
-            <option value="7">Julio</option>
-            <option value="8">Agosto</option>
-            <option value="9">Septiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>
-          </select>
+            <div class="space-y-4">
+              <label class="block text-sm font-medium text-gray-700">Desde:</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <select
+                  class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  id="mesInicial" name="mesInicial">
+                  <option value="1">Enero</option>
+                  <option value="2">Febrero</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Abril</option>
+                  <option value="5">Mayo</option>
+                  <option value="6">Junio</option>
+                  <option value="7">Julio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Septiembre</option>
+                  <option value="10">Octubre</option>
+                  <option value="11">Noviembre</option>
+                  <option value="12">Diciembre</option>
+                </select>
+                <select
+                  class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  id="anoInicial" name="anoInicial">
+                  <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
+                    <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
+                    </option>
+                    <% } %>
+                </select>
+              </div>
+            </div>
 
-          <select id="anoInicial" name="anoInicial">
-            <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
-              <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
-              </option>
-              <% } %>
-          </select>
+            <div class="space-y-4">
+              <label class="block text-sm font-medium text-gray-700">Hasta:</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <select
+                  class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  id="mesFinal" name="mesFinal">
+                  <option value="1">Enero</option>
+                  <option value="2">Febrero</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Abril</option>
+                  <option value="5">Mayo</option>
+                  <option value="6">Junio</option>
+                  <option value="7">Julio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Septiembre</option>
+                  <option value="10">Octubre</option>
+                  <option value="11">Noviembre</option>
+                  <option value="12">Diciembre</option>
+                </select>
+                <select
+                  class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  id="anoFinal" name="anoFinal">
+                  <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
+                    <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
+                    </option>
+                    <% } %>
+                </select>
+              </div>
+            </div>
 
-          <label for="fechaFinal">Hasta:</label>
-          <select id="mesFinal" name="mesFinal">
-            <option value="1">Enero</option>
-            <option value="2">Febrero</option>
-            <option value="3">Marzo</option>
-            <option value="4">Abril</option>
-            <option value="5">Mayo</option>
-            <option value="6">Junio</option>
-            <option value="7">Julio</option>
-            <option value="8">Agosto</option>
-            <option value="9">Septiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>
-          </select>
+            <div>
+              <label for="recibo" class="block text-sm font-medium text-gray-700 mb-2">Numero de recibo</label>
+              <input
+                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="recibo" type="number" name="recibo" required>
+            </div>
 
-          <select id="anoFinal" name="anoFinal">
-            <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
-              <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
-              </option>
-              <% } %>
-          </select>
+            <div>
+              <label for="talonario" class="block text-sm font-medium text-gray-700 mb-2">Numero de talonario</label>
+              <input
+                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="talonario" type="number" name="talonario" required>
+            </div>
 
-          <label for="recibo">Numero de recibo</label>
-          <input id="recibo" type="number" name="recibo">
+            <div>
+              <label for="fechaDeCobro" class="block text-sm font-medium text-gray-700 mb-2">Fecha de cobro</label>
+              <input
+                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                type="date" id="fechaDeCobro" name="fechaDeCobro" value="<%= new Date().toISOString().split('T')[0] %>">
+            </div>
 
-          <label for="talonario">Numero de talonario</label>
-          <input id="talonario" type="number" name="talonario">
+            <div>
+              <label for="monto" class="block text-sm font-medium text-gray-700 mb-2">Monto</label>
+              <input
+                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="monto" type="number" name="monto" value="20">
+            </div>
 
-          <label for="fechaDeCobro">Fecha de cobro</label>
-          <input type="date" id="fechaDeCobro" name="fechaDeCobro"
-            value="<%= new Date().toISOString().split('T')[0] %>">
+            <div>
+              <label for="observacion" class="block text-sm font-medium text-gray-700 mb-2">Observación</label>
+              <input
+                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                id="observacion" type="text" name="observacion">
+            </div>
+        </div>
 
-          <label for="monto">Monto</label>
-          <input id="monto" type="number" name="monto" value="20">
-
-          <label for="observacion">Observacion</label>
-          <input id="observacion" type="text" name="observacion">
-
-          <button type="submit">Registrar</button>
-          <span id="error-message"></span>
+        <div class="flex justify-between items-center">
+          <button type="submit"
+            class="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Registrar
+          </button>
+          <span id="error-message" class="text-red-500 text-sm"></span>
+        </div>
       </form>
+    </dialog>
 
+    <dialog id="file-upload-dialog-foto" class="bg-gray-800 bg-opacity-50 items-center justify-center">
+      <div class="bg-white rounded-lg p-6 w-full sm:w-96">
+        <form enctype="multipart/form-data" id="upload-form-foto">
+          <input type="hidden" name="foto" value="true">
+          <input type="hidden" name="ColegiadoId" value="<%=result.ColegiadoId %>">
+          <input type="hidden" name="Matricula" value="<%=result.Matricula %>">
+          <input type="hidden" name="Archivo" value="<%=result.Foto %>">
+
+          <h2 class="text-xl font-semibold text-center mb-4">Subir foto</h2>
+
+          <div class="mb-4">
+            <label for="file" class="block text-lg font-medium text-gray-700">Selecciona un archivo</label>
+            <input type="file" name="file" id="file" required class="mt-2 p-2 border border-gray-300 rounded-md w-full"
+              accept="image/*">
+          </div>
+
+          <div class="mb-4">
+            <p class="text-sm text-gray-500">Vista previa:</p>
+            <div id="image-preview"
+              class="mt-2 w-full h-48 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100">
+              <p class="text-gray-500">No hay imagen seleccionada</p>
+            </div>
+          </div>
+
+          <div class="flex justify-between space-x-4">
+            <button type="button" id="close-dialog-foto"
+              class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">
+              Cerrar
+            </button>
+            <button type="submit"
+              class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              Subir archivo
+            </button>
+          </div>
+        </form>
+      </div>
+    </dialog>
+
+    <dialog id="file-upload-dialog-firma" class="bg-gray-800 bg-opacity-50 items-center justify-center">
+      <div class="bg-white rounded-lg p-6 w-full sm:w-96">
+        <form enctype="multipart/form-data" id="upload-form-firma">
+          <input type="hidden" name="firma" value="true">
+          <input type="hidden" name="ColegiadoId" value="<%=result.ColegiadoId %>">
+          <input type="hidden" name="Matricula" value="<%=result.Matricula %>">
+          <input type="hidden" name="Archivo" value="<%=result.Firma %>">
+
+          <h2 class="text-xl font-semibold text-center mb-4">Subir firma</h2>
+
+          <div class="mb-4">
+            <label for="file" class="block text-lg font-medium objecttext-gray-700">Selecciona un archivo</label>
+            <input type="file" name="file" id="fileFirma" required
+              class="mt-2 p-2 border border-gray-300 rounded-md w-full" accept="image/*">
+          </div>
+
+          <div class="mb-4">
+            <p class="text-sm text-gray-500">Vista previa:</p>
+            <div id="image-previewFirma"
+              class="mt-2 w-full h-48 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100">
+              <p class="text-gray-500">No hay imagen seleccionada</p>
+            </div>
+          </div>
+
+          <div class="flex justify-between space-x-4">
+            <button type="button" id="close-dialog-firma"
+              class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">
+              Cerrar
+            </button>
+            <button type="submit"
+              class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              Subir archivo
+            </button>
+          </div>
+        </form>
+      </div>
     </dialog>
 
   </div>
 
   <script defer>
     document.addEventListener("DOMContentLoaded", function () {
+      const btnCloseFirma = $("#close-dialog-firma");
+      const btnCloseFoto = $("#close-dialog-foto");
+      const btnFirma = $("#upload-firma");
+      const btnFoto = $("#upload-foto");
+      const dialogFoto = $("#file-upload-dialog-foto");
+      const dialogFirma = $("#file-upload-dialog-firma");
+      const formFoto = $("#upload-form-foto");
+      const formFirma = $("#upload-form-firma");
+      const fileInput = $("#file");
+      const fileInputFirma = $("#fileFirma");
+      const imagePreview = $("#image-preview");
+      const imagePreviewFirma = $("#image-previewFirma");
 
       const mesInicial = $('#mesInicial');
       const anoInicial = $('#anoInicial');
@@ -799,9 +1166,98 @@
       const formAporte = $("#form-aporte");
       const motivoText = $("#motivo");
       const cancelarAporte = $("#cancelar-aporte");
-      const pathname = window.location.pathname;  // Ejemplo: "/item/554"
+      const pathname = window.location.pathname;
       const parts = pathname.split("/");
       const userId = parts[parts.length - 1];
+      btnFirma.addEventListener('click', () => {
+        dialogFirma.showModal()
+      })
+      btnFoto.addEventListener('click', () => {
+        dialogFoto.showModal()
+      })
+      btnCloseFirma.addEventListener('click', () => {
+        dialogFirma.close()
+      })
+      btnCloseFoto.addEventListener('click', () => {
+        dialogFoto.close()
+      })
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            imagePreview.innerHTML = `<img src="${event.target.result}" class="w-full h-full object-cover rounded-md" alt="Vista previa">`;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          imagePreview.innerHTML = `<p class="text-gray-500">No hay imagen seleccionada</p>`;
+        }
+      });
+      fileInputFirma.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            imagePreviewFirma.innerHTML = `<img src="${event.target.result}" class="w-full h-full object-cover rounded-md" alt="Vista previa">`;
+          };
+          reader.readAsDataURL(file);
+        } else {
+          imagePreviewFirma.innerHTML = `<p class="text-gray-500">No hay imagen seleccionada</p>`;
+        }
+      });
+      formFoto.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(formFoto);
+        try {
+          const response = await fetch(`/collegiate/upload/${userId}`, {
+            method: 'PATCH',
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error("Error al subir archivo");
+          }
+
+
+          const result = await response.json();
+          alert("Archivo subido correctamente");
+          dialog.close();
+          formFoto.reset();
+          imagePreview.innerHTML = `<p class="text-gray-500">No hay imagen seleccionada</p>`;
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000)
+        } catch (error) {
+          console.error("Error al subir archivo:", error);
+          alert("Hubo un problema al subir el archivo. Intenta nuevamente.");
+        }
+      });
+      formFirma.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(formFirma);
+        try {
+          const response = await fetch(`/collegiate/upload/${userId}`, {
+            method: 'PATCH',
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error("Error al subir archivo");
+          }
+
+          const result = await response.json();
+          alert("Archivo subido correctamente");
+          dialog.close();
+          formFirma.reset();
+          imagePreviewFirma.innerHTML = `<p class="text-gray-500">No hay imagen seleccionada</p>`;
+          setTimeout(() => {
+            window.location.reload();
+          }, 10)
+        } catch (error) {
+          console.error("Error al subir archivo:", error);
+          alert("Hubo un problema al subir el archivo. Intenta nuevamente.");
+        }
+      });
       const fetchNotas = async () => {
         const url = `/notas/${userId}`;
         try {
@@ -814,13 +1270,13 @@
           if (Array.isArray(res.data) && res.data.length > 0) {
             res.data.forEach(item => {
               const fecha = new Date(item.Fecha);
-              const anoItem = fecha.getFullYear(); // Obtener el año de `item.Fecha`
-              const anoActual = new Date().getFullYear(); // Obtener el año actual
+              const anoItem = fecha.getFullYear();
+              const anoActual = new Date().getFullYear();
               if ((item.Identificador == "Agenda" || item.Identificador == "Nota") && anoItem === anoActual) {
-                agendaEntrega.disabled = true; // Desactivar el botón si las condiciones se cumplen
+                agendaEntrega.disabled = true;
               }
               if (item.Identificador == "Diplomado" || item.Identificador == "DiplomadoGratuito") {
-                diplomadoGratuito.disabled = true; // Desactivar el botón si las condiciones se cumplen
+                diplomadoGratuito.disabled = true;
               }
               const fechaFormateada = fecha.toLocaleDateString("es-ES", {
                 weekday: 'long',
@@ -849,7 +1305,7 @@
             });
           } else {
             const row = document.createElement("tr");
-            row.innerHTML = `<td colspan="4">No se encontraron resultados</td>`;
+            row.innerHTML = `<td   class="px-4 py-3" colspan="4">No se encontraron resultados</td>`;
             resultTableBodyNotas.appendChild(row);
           }
         } catch (error) {
@@ -857,7 +1313,7 @@
           alert("Hubo un error al obtener los datos. Intenta de nuevo.");
         }
       }
-      // Función para obtener los datos de los aportes
+
       const fetchData = async () => {
         const url = `/contributions/${userId}`;
 
@@ -910,7 +1366,7 @@
             });
           } else {
             const row = document.createElement("tr");
-            row.innerHTML = `<td colspan="4">No se encontraron resultados</td>`;
+            row.innerHTML = `<td  class="px-4 py-3" colspan="4">No se encontraron resultados</td>`;
             resultTableBody.appendChild(row);
           }
         } catch (error) {
@@ -919,7 +1375,7 @@
         }
       };
 
-      // Manejar el evento de clic en el botón "Editar"
+
       resultTableBody.addEventListener('click', async (e) => {
         const button = e.target;
         const AporteId = button.getAttribute('data-id');
@@ -929,13 +1385,13 @@
         }
       });
       pagoAporte.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Prevent the form from submitting the default way
+        e.preventDefault();
 
-        // Create a FormData object from the form
+
         const formData = new FormData(pagoAporte);
-        // Build an object from the FormData
+
         const data = {
-          colegiadoId: userId, // You should define `userId` elsewhere in your script
+          colegiadoId: userId,
           mesInicial: formData.get('mesInicial'),
           mesFinal: formData.get('mesFinal'),
           anoInicial: formData.get('anoInicial'),
@@ -946,7 +1402,7 @@
           observacion: formData.get('observacion')
         };
 
-        // Log the data to the console (or send it via AJAX, etc.)
+
         console.log(data);
         const result = await fetch('/contributions', {
           method: 'POST',
@@ -957,14 +1413,18 @@
         })
         dialog.close()
         fetchData();
-        // Optional: Show error message if any field is invalid
+
         if (!data.recibo || !data.monto) {
           document.getElementById('error-message').innerText = 'Please fill out all required fields!';
         }
       })
-      actualizacionUsuario.addEventListener('sumbit', (e) => {
+      actualizacionUsuario.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+
         const formData = new FormData(actualizacionUsuario);
+
+
         const data = {
           matricula: formData.get('matricula'),
           matriculaConalab: formData.get('matriculaConalab'),
@@ -1002,9 +1462,51 @@
           direccionDomicilio: formData.get('direccionDomicilio'),
           telefonoDomicilio: formData.get('telefonoDomicilio'),
           casilla: formData.get('casilla'),
+          situacion: formData.get('situacion'),
+          observacion: formData.get('observacion'),
+          zona: formData.get('zona'),
+          nacionalidad: formData.get('nacionalidad'),
+          celular: formData.get('celular'),
+          gradoAcademico: formData.get('gradoAcademico'),
+          licenciatura: formData.get('licenciatura'),
+          zonaTrabajo: formData.get('zonaTrabajo'),
+          formaDePago: formData.get('formaDePago'),
+          boletaDepositoNumero: formData.get('boletaDepositoNumero'),
+          montoDeposito: formData.get('montoDeposito'),
+          formularioAdmision: formData.get('formularioAdmision'),
+          fotocopiaTituloProfesional: formData.get('fotocopiaTituloProfesional'),
+          certificadoNacimientoOriginal: formData.get('certificadoNacimientoOriginal'),
+          fotocopiaCI: formData.get('fotocopiaCI'),
+          curriculumVitae: formData.get('curriculumVitae'),
+          estado: formData.get('estado'),
+        };
+
+        try {
+
+          const response = await fetch(`/collegiate/${userId}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+          });
+
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+          }
+
+
+          const result = await response.json();
+          console.log('Datos actualizados correctamente:', result);
+
+
+
+        } catch (error) {
+          console.error('Error en la solicitud:', error);
         }
-      })
-      // Actualizar los aportes de un usuario
+      });
+
       const handleUserAporteUpdate = async (AporteId) => {
         dialogAportes.showModal();
         formAporte.onsubmit = async (e) => {
@@ -1035,7 +1537,7 @@
           }
         };
       };
-      // Función para enviar la solicitud POST
+
       async function enviarAgenda(url, userId) {
         try {
           const res = await fetch(`/notas/${url}/${userId}`, {
@@ -1056,7 +1558,7 @@
         }
       }
 
-      // Agregar event listener para la agenda de entrega
+
       agendaEntrega.addEventListener('click', async (e) => {
         e.preventDefault();
         console.log(userId);
@@ -1066,7 +1568,7 @@
         await enviarAgenda('agenda', userId);
       });
 
-      // Agregar event listener para el diplomado gratuito
+
       diplomadoGratuito.addEventListener('click', async (e) => {
         e.preventDefault();
         const register = confirm('¿Estás seguro de entregar el diplomado gratuito?');
@@ -1084,7 +1586,7 @@
       cancelarAporte.addEventListener('click', () => dialogAportes.close());
       button.addEventListener('click', () => dialog.showModal());
       function closeModal() {
-        update.close(); // Cierra el modal
+        update.close();
       }
       function closeDialog() {
         dialog.close();
@@ -1096,8 +1598,8 @@
         const mesFin = parseInt(mesFinal.value);
         const anoFin = parseInt(anoFinal.value);
 
-        // Validación de fecha inicial no mayor a la fecha final
-        const fechaIni = new Date(anoIni, mesIni - 1, 1); // El mes es 0-based en JavaScript
+
+        const fechaIni = new Date(anoIni, mesIni - 1, 1);
         const fechaFin = new Date(anoFin, mesFin - 1, 1);
 
         if (fechaIni > fechaFin) {
@@ -1105,27 +1607,27 @@
           return;
         }
 
-        // Calcular la diferencia en meses
+
         const diffMeses = (anoFin - anoIni) * 12 + (mesFin - mesIni) + 1;
 
-        // Asegurarse de que no sea un valor negativo
+
         inputMeses.value = diffMeses >= 0 ? diffMeses : 0;
         $("#monto").value = diffMeses * 20;
       }
-      // Asignar eventos de cambio a los selects
+
       mesInicial.addEventListener('change', sincronizarFechas, calcularMeses);
       anoInicial.addEventListener('change', sincronizarFechas, calcularMeses);
       mesFinal.addEventListener('change', calcularMeses);
       anoFinal.addEventListener('change', calcularMeses);
 
-      // Llamar a la función al cargar para calcular de inmediato con las opciones por defecto
+
       function sincronizarFechas() {
         const mesIni = parseInt(mesInicial.value);
         const anoIni = parseInt(anoInicial.value);
         const mesFin = parseInt(mesFinal.value);
         const anoFin = parseInt(anoFinal.value);
 
-        // Sincronizar el año y mes final con los valores seleccionados en inicial
+
         if (anoIni > anoFin || (anoIni === anoFin && mesIni > mesFin)) {
           anoFinal.value = anoIni;
           mesFinal.value = mesIni;
@@ -1134,10 +1636,10 @@
           anoIni.value = anoFin;
           mesIni.value = mesFin;
         }
-        // Llamar a la función para recalcular los meses
+
         calcularMeses();
       }
-      // Inicializar la carga de los datos
+
       fetchData();
       fetchNotas();
     });

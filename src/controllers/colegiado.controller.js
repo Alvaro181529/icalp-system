@@ -120,7 +120,22 @@ export class ColegiadoController {
     res.json(result);
   };
   patchCollegiate = async (req, res) => {
-    res.send("Actualizacion del colegiado");
+    const { user } = req.session;
+    const { id } = req.params;
+    const result = await colegiado.updateUser(id, req.body, user.correo);
+    res.json(result);
+  };
+    patchUploads = async (req, res) => {
+    const { user } = req.session;
+    const { id } = req.params;
+    const {Archivo}=req.body
+    let result;
+    console.log(req.body);
+    if (req.body.foto)
+      result = await colegiado.updateFoto(req.file.filename, id, user.correo, Archivo);
+    if (req.body.firma)
+      result = await colegiado.updateFirma(req.file.filename, id, user.correo, Archivo);
+    res.json(result);
   };
   deleteCollegiate = async (req, res) => {
     res.send("eliminar del colegiado");

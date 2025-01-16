@@ -10,7 +10,6 @@ const storage = multer.diskStorage({
     // Determinamos el destino de los archivos basado en su tipo
     const imageTypes = /jpeg|jpg|png|gif/; // Tipos permitidos para imágenes
     const documentTypes = /pdf|docx|txt/; // Tipos permitidos para documentos
-    console.log(req.body);
     // Si es una imagen
     if (
       imageTypes.test(path.extname(file.originalname).toLowerCase()) &&
@@ -23,7 +22,7 @@ const storage = multer.diskStorage({
       } else if (req.body.blog) {
         // Si tiene la propiedad `slide`, lo guardamos en la carpeta "slides"
         cb(null, path.join(__dirname, "../uploads/blog"));
-      }  else {
+      } else {
         // Si no tiene la propiedad `slide`, lo guardamos en la carpeta "imagenes"
         cb(null, path.join(__dirname, "../uploads/imagenes"));
       }
@@ -45,8 +44,25 @@ const storage = multer.diskStorage({
     }
   },
   filename: function (req, file, cb) {
-    // Asignamos un nombre único al archivo, añadiendo la extensión original
-    cb(null, Date.now() + path.extname(file.originalname));
+    if (req.body.foto) {
+      cb(
+        null,
+        'Foto' +
+          "-" +
+          req.body.Matricula.toString().padStart(5, "0") +
+          path.extname(file.originalname)
+      );
+    } else if (req.body.firma) {
+      cb(
+        null,
+        'Firma' +
+          "-" +
+          req.body.Matricula.toString().padStart(5, "0") +
+          path.extname(file.originalname)
+      );
+    } else {
+      cb(null, Date.now() + "-" + file.originalname);
+    }
   },
 });
 

@@ -49,8 +49,6 @@
                 </li>
                 <li><a href="/colegiado/dia" class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados al día</a>
                 </li>
-                <li><a href="/aportes-anulados" class="block px-4 py-2 hover:bg-blue-950 rounded">Anulación de
-                    aportes</a></li>
               </ul>
             </details>
 
@@ -67,6 +65,8 @@
                     cobrador</a></li>
                 <li><a href="/aporte-mensual" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes mensuales</a>
                 </li>
+                <li><a href="/aportes-anulados" class="block px-4 py-2 hover:bg-blue-950 rounded">Anulación de
+                  aportes</a></li>
               </ul>
             </details>
 
@@ -87,6 +87,22 @@
               </ul>
             </details>
 
+            <details class="group">
+              <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                <i class="fa fa-file-text mr-2  " aria-hidden="true"></i>
+                <span>Creacion de paginas</span>
+                <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+              </summary>
+              <ul class="pl-8 mt-2 space-y-1">
+                <li><a href="/slides" class="block px-4 py-2 hover:bg-blue-950 rounded">Imagenes de Slider</a></li>
+                <li><a href="/menus" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de menu</a></li>
+                <li><a href="/opciones" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de opciones</a></li>
+                <li><a href="/contenidos" class="block px-4 py-2 hover:bg-blue-950 rounded">Contenidos</a>
+                </li>
+                <!-- <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li> -->
+              </ul>
+            </details>
+            <% if (user && user.roles.includes('Administrador')) { %>
             <!-- Configuración Section -->
             <details class="group">
               <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
@@ -98,24 +114,10 @@
                 <li><a href="/usuarios" class="block px-4 py-2 hover:bg-blue-950 rounded">Registro de Usuarios</a></li>
                 <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Usuarios Cobradores</a>
                 </li>
-                <li><a href="/slides" class="block px-4 py-2 hover:bg-blue-950 rounded">Imagenes de Slider</a></li>
-                <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li>
                 <li><a href="/historial" class="block px-4 py-2 hover:bg-blue-950 rounded">Historial de Cambios</a></li>
               </ul>
             </details>
-            <details class="group">
-              <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
-                <i class="fa fa-file-text mr-2  " aria-hidden="true"></i>
-                <span>Creacion de paginas</span>
-                <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
-              </summary>
-              <ul class="pl-8 mt-2 space-y-1">
-                <li><a href="/menus" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de menu</a></li>
-                <li><a href="/opciones" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de opciones</a></li>
-                <li><a href="/contenidos" class="block px-4 py-2 hover:bg-blue-950 rounded">Contenidos</a>
-                </li>
-              </ul>
-            </details>
+            <%}%>
 
             <button type="button" id="cerrar"
               class="text-white bg-transparent text-gray-200  rounded hover:bg-blue-950  px-4 py-2 text-center">
@@ -144,9 +146,9 @@
                 <a href="#" class="hover:text-gray-400 max-md:hidden">Comunicados oficiales</a>
               </section>
               <section class="flex items-center rtl:space-x-reverse">
-                <form id="search-form">
+                <form id="search-form-header">
                   <!-- <input id="search" type="search" placeholder="Buscar por Matricula, Carnet, Nombre o apellido" /> -->
-                  <input type="text" id="search"
+                  <input type="text" id="searchCol"
                     class="bg-gray-50 border border-gray-300  text-sm rounded-lg block w-full p-2.5"
                     placeholder="Busqueda" required />
                   <button id="search-button" type="submit" hidden>Buscar</button>
@@ -180,15 +182,16 @@
               </div>
             </div>
           </nav>
-          <dialog id="dialog-search" class="px-6 py-4 max-w-md w-full max-h-screen rounded-xl items-center justify-start bg-white shadow-lg border border-gray-300">
-           <div class="flex flex-col ">
-             <div class="flex  justify-between w-full mb-4">
-               <h3 class="text-2xl font-semibold text-gray-700">Resultados de Búsqueda</h3>
-               <button id="cerrar-dialog" class="text-gray-500 hover:text-gray-700 focus:outline-none">
-                 <i class="fa-solid fa-xmark fa-2x"></i>
+          <dialog id="dialog-search"
+            class="px-6 py-4 max-w-md w-full max-h-screen rounded-xl items-center justify-start bg-white shadow-lg border border-gray-300">
+            <div class="flex flex-col ">
+              <div class="flex  justify-between w-full mb-4">
+                <h3 class="text-2xl font-semibold text-gray-700">Resultados de Búsqueda</h3>
+                <button id="cerrar-dialog" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                  <i class="fa-solid fa-xmark fa-2x"></i>
                 </button>
               </div>
-              
+
               <ul id="result-list" class="flex flex-col w-full overflow-auto max-h-96 space-y-4">
                 <!-- Los resultados se insertarán aquí dinámicamente -->
               </ul>
@@ -293,11 +296,11 @@
             };
 
             FetchData();
-            const searchUsers = $("#search");
-            const searchForm = $("#search-form");
+            const searchUsers = $("#searchCol");
+            const searchFormHeader = $("#search-form-header");
             const dialogSearch = $('#dialog-search')
             const cerrarDialogSearch = $('#cerrar-dialog')
-            searchForm?.addEventListener("submit", async (e) => {
+            searchFormHeader?.addEventListener("submit", async (e) => {
               e.preventDefault(); // Evitar el envío de formulario o recarga de la página
               dialogSearch.showModal()
 
@@ -320,11 +323,11 @@
                 const data = await response.json(); // Asumimos que la respuesta es un JSON
                 const resultContainer = document.querySelector("#result-list");
                 resultContainer.innerHTML = ""; // Limpiar resultados previos
-
-                data.result.users.forEach((colegiado) => {
-                  const listItem = document.createElement("li");
-                  listItem.classList.add("w-full");
-                  listItem.innerHTML = `
+                if (data.result.users.length > 0) {
+                  data.result.users.forEach((colegiado) => {
+                    const listItem = document.createElement("li");
+                    listItem.classList.add("w-full");
+                    listItem.innerHTML = `
                       <div class="max-w-sm w-full rounded-lg overflow-hidden shadow-lg bg-white p-6">
                           <div class="text-lg font-semibold text-gray-700 mb-3">Información del Colegiado</div>
                           <div class="space-y-2">
@@ -343,14 +346,19 @@
                           </div>
                         </div>
       `;
+                    resultContainer.appendChild(listItem);
+                  });
+                } else {
+                  const listItem = document.createElement("li");
+                  listItem.innerHTML = `<h2 class="text-gray-500">No se encontraron resultados </h2>`
                   resultContainer.appendChild(listItem);
-                });
+                }
               } catch (error) {
                 console.error("Error en la búsqueda:", error);
                 alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
               }
             });
-            cerrarDialogSearch.addEventListener('click',()=>{
+            cerrarDialogSearch.addEventListener('click', () => {
               dialogSearch.close()
             })
           </script>
