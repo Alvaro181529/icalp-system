@@ -1,5 +1,6 @@
 import pool from "../../config/db.connect.js";
-
+import bcrypt from "bcrypt";
+import crypto from "crypto";
 export class UsersModel {
   getUsers = async (query) => {
     const { search, page = 1, size = 10 } = query;
@@ -78,7 +79,79 @@ export class UsersModel {
     }
     return { result, message: "Roles actualizados" };
   };
-  patchUsers = async (query) => {};
+  patchUsers = async (body,userId) => {
+    const {  user, email, password, confirmedPassword } = body;
+    console.log(body);
+    const saltRounds = 10;
+    const validationError = validate(email, password, confirmedPassword, user);
+    if (validationError) {
+      return validationError; // Retorna error de validación
+    }
+
+    try {
+      // Si se proporcionó una nueva contraseña, validarla
+      if (password !== confirmedPassword) {
+        return { message: "Las contraseñas no coinciden." };
+      }
+
+      let hashedPassword;
+      if (password) {
+        console.log(userId);
+        hashedPassword = await bcrypt.hash(password, saltRounds);
+      }
+
+      // Fecha de actualización
+      const updateDate = new Date()
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
+
+      // Actualización de los datos del usuario
+      const updateQuery = `
+        UPDATE aspnetusers 
+        SET 
+          User = ?, 
+          Email = ?, 
+          LoweredEmail = ?, 
+          PasswordHash = ?, 
+          PasswordSalt = ?, 
+          CreateDate = ?
+        WHERE UserId = ?
+      `;
+      const salt = bcrypt.genSaltSync(saltRounds);
+
+      // Si no se proporciona una nueva contraseña, solo actualizamos los otros campos
+      if (!hashedPassword) {
+        await pool.query(updateQuery, [
+          user,
+          email,
+          email.toLowerCase(),
+          null, // Sin cambio en la contraseña
+          null, // Sin cambio en la sal de la contraseña
+          updateDate,
+          userId,
+        ]);
+      } else {
+        console.log(hashedPassword);
+        console.log(salt);
+        await pool.query(updateQuery, [
+          user,
+          email,
+          email.toLowerCase(),
+          hashedPassword,
+          salt,
+          updateDate,
+          userId,
+        ]);
+      }
+
+      return { message: "Usuario actualizado exitosamente.", correo: email };
+    } catch (error) {
+      console.error(error);
+      return { message: "Error al actualizar el usuario." };
+    }
+  };
+
   removeUsers = async (query) => {
     const result = await pool.query(
       `DELETE FROM aspnetusers WHERE UserId = ?`,
@@ -97,4 +170,14 @@ export class UsersModel {
     const query = await pool.query();
     return query;
   };
+}
+function validate(email, password, confirmedPassword, user) {
+  if (!email) return { message: "El email no puede estar vacío." };
+  if (!password) return { message: "La contraseña no puede estar vacía." };
+  if (!confirmedPassword)
+    return {
+      message: "La confirmación de la contraseña no puede estar vacía.",
+    };
+  if (!user) return { message: "El usuario no puede estar vacio" };
+  return null;
 }

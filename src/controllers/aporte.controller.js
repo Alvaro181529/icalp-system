@@ -27,13 +27,12 @@ export class AporteController {
     try {
       // Obtener los datos de los aportes
       const result = await aporte.getAporte(req.query);
-
-      // Transformar los resultados dependiendo de si es un array o un solo objeto
       const resultadoTransformado = Array.isArray(result.users)
         ? result.users.map((item) => this.transformarJson(item)) // Si es un array
         : [this.transformarJson(result.users)]; // Convertir a array si es un solo objeto
       res.json({
         users: resultadoTransformado,
+        totalMonto: result.totalMonto,
         total: result.total,
         pages: result.totalPages,
         currentPage: result.currentPage,

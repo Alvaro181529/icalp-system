@@ -102,10 +102,17 @@ ORDER BY
     return result;
   };
   getAporte = async (query) => {
-    const { search, inicio, fin, page = 1, size = 10 } = query;
+    const {
+      search,
+      inicio = new Date(new Date().setDate(1)),
+      fin = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+      page = 1,
+      size = 10,
+    } = query;
+  
     const limit = parseInt(size);
     const offset = (page - 1) * size;
-
+  
     // Base query para obtener los aportes con concatenación de fechas
     let baseQuery = `
       SELECT a.*, 
@@ -114,16 +121,15 @@ ORDER BY
              c.DireccionOficina,
              CONCAT(c.Paterno,' ', c.Materno) as Apellidos, 
              c.Matricula,
-             a.FechaAporte,
              CONCAT(MesInicial, '/', AnoInicial) AS FechaInicial, 
              CONCAT(MesFinal, '/', AnoFinal) AS FechaFinal
       FROM aportes a
       INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
       WHERE 1=1
     `;
-
+  
     let queryParams = [];
-
+  
     // Filtro de búsqueda por Matricula, Talonario
     if (search) {
       baseQuery += `
@@ -134,23 +140,59 @@ ORDER BY
       `;
       queryParams.push(`%${search}%`, `%${search}%`);
     }
-
-    // Filtro por fecha de inicio (FechaAporte) - Comparar directamente con FechaAporte
+  
+    // Filtro por fecha de inicio (FechaAporte)
     if (inicio) {
       baseQuery += `
         AND a.FechaAporte >= ?
       `;
       queryParams.push(`${inicio}`);
     }
-
-    // Filtro por fecha de fin (FechaAporte) - Comparar directamente con FechaAporte
+  
+    // Filtro por fecha de fin (FechaAporte)
     if (fin) {
       baseQuery += `
         AND a.FechaAporte <= ?
       `;
       queryParams.push(`${fin}`);
     }
-
+  
+    // Consulta para obtener el total de Monto
+    let totalMontoQuery = `
+    SELECT 
+      SUM(a.Monto) AS TotalMonto
+    FROM aportes a
+    INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
+    WHERE 1=1
+    `;
+    
+    let totalMontoParams = [...queryParams];
+    
+    // Repetir filtros de búsqueda y fechas para la consulta de totalMonto
+    if (search) {
+      totalMontoQuery += `
+        AND (
+          c.Matricula LIKE ? OR 
+          a.Talonario LIKE ?
+        )
+      `;
+      totalMontoParams.push(`%${search}%`, `%${search}%`);
+    }
+  
+    if (inicio) {
+      totalMontoQuery += `
+        AND a.FechaAporte >= ?
+      `;
+      totalMontoParams.push(`${inicio}`);
+    }
+  
+    if (fin) {
+      totalMontoQuery += `
+        AND a.FechaAporte <= ?
+      `;
+      totalMontoParams.push(`${fin}`);
+    }
+  
     // Consulta para contar el total de registros (sin LIMIT)
     let countQuery = `
       SELECT COUNT(*) AS total
@@ -158,9 +200,9 @@ ORDER BY
       INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
       WHERE 1=1
     `;
-
+  
     let countParams = [...queryParams]; // Parámetros para el conteo
-
+  
     // Repetir filtros de búsqueda y fechas para el conteo
     if (search) {
       countQuery += `
@@ -171,38 +213,41 @@ ORDER BY
       `;
       countParams.push(`%${search}%`, `%${search}%`);
     }
-
+  
     if (inicio) {
       countQuery += `
         AND a.FechaAporte >= ?
       `;
       countParams.push(`${inicio}`);
     }
-
+  
     if (fin) {
       countQuery += `
         AND a.FechaAporte <= ?
       `;
       countParams.push(`${fin}`);
     }
-
+  
     // Agregar LIMIT y OFFSET a la consulta principal
     baseQuery += ` LIMIT ? OFFSET ?`;
     queryParams.push(limit, offset);
-
+  
     try {
       // Ejecutar ambas consultas en paralelo
-      const [rows, countResult] = await Promise.all([
+      const [rows, countResult, totalMontoResult] = await Promise.all([
         pool.query(baseQuery, queryParams),
         pool.query(countQuery, countParams),
+        pool.query(totalMontoQuery, totalMontoParams),
       ]);
-
+  
       const total = countResult[0].total; // Obtener el total de registros
-
+      const totalMonto = totalMontoResult[0].TotalMonto || 0; // Obtener el total de monto, con valor 0 si es nulo
+  
       // Retornar los resultados con paginación
       return {
         users: rows,
         total,
+        totalMonto,
         totalPages: Math.ceil(total / limit),
         currentPage: page,
       };
@@ -211,6 +256,7 @@ ORDER BY
       throw new Error("Error al obtener los aportes");
     }
   };
+  
   getAporteByOne = async (id) => {
     const result = await pool.query(
       "SELECT * FROM aportes WHERE ColegiadoId = ?",
@@ -219,7 +265,6 @@ ORDER BY
     return result;
   };
   postAporte = async (body, user) => {
-    console.log(body); // Para verificar el contenido del body
     const {
       colegiadoId,
       mesInicial, // Asegúrate de corregir "mesInical" por "mesInicial"

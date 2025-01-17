@@ -1,215 +1,389 @@
 <%- include('partials/header', {title, user}) %>
 
-<!-- Carousel Section -->
-<div id="default-carousel" class="relative w-full  max-2xl:px-16 z-10" data-carousel="slide">
-  <!-- Carousel Wrapper -->
-  <div class="relative h-[80vh] overflow-hidden">
-      <% if (result && result.length > 0) { %>
-      <% result.forEach(function(file, index) { %>
-        <div class="hidden duration-700 ease-in-out absolute w-full h-full transition-transform transform" 
-             data-carousel-item <%= index === 0 ? 'style="display:block"' : 'style="opacity: 0;"' %>>
-          <img src="/uploads/slides/<%= file %>" alt="<%= file %>" 
-               class="absolute block w-full h-full  -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
-        </div>
-      <% }); %>
-  <% } else { %>
-    <div class="hidden duration-700 ease-in-out absolute w-full h-full transition-transform transform" 
-             data-carousel-item style="display:block">
-          <img src="/public/img/defaultSlider.svg" alt="default" 
-               class="absolute block w-full h-full object-cover  -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
-        </div>
-  <% }  %>
+  <!-- Carousel Section -->
+  <div id="default-carousel" class="relative w-full  max-2xl:px-16 z-10 max-sm:px-0" data-carousel="slide">
+    <!-- Carousel Wrapper -->
+    <div class="relative h-[80vh] max-sm:h-64 overflow-hidden">
+      <% if (result && result.length> 0) { %>
+        <% result.forEach(function(file, index) { %>
+          <div class="hidden duration-700 ease-in-out absolute w-full h-full transition-transform transform"
+            data-carousel-item <%=index===0 ? 'style="display:block"' : 'style="opacity: 0;"' %>>
+            <img src="/uploads/slides/<%= file %>" alt="<%= file %>"
+              class="absolute block w-full h-full  -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
+          </div>
+          <% }); %>
+            <% } else { %>
+              <div class="hidden duration-700 ease-in-out absolute w-full h-full transition-transform transform"
+                data-carousel-item style="display:block">
+                <img src="/public/img/defaultSlider.svg" alt="default"
+                  class="absolute block w-full h-full object-cover  -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" />
+              </div>
+              <% } %>
     </div>
 
-    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-5 cursor-pointer group " data-carousel-prev aria-label="Previous Slide">
-      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 group-hover:bg-black/50 max-2xl:bg-black/30 max-2xl:hover:bg-black/50 group-focus:ring-white">
-        <svg class="w-4 h-4 text-white max-2xl:text-black rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
+    <button type="button"
+      class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-5 cursor-pointer group "
+      data-carousel-prev aria-label="Previous Slide">
+      <span
+        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 group-hover:bg-black/50 max-2xl:bg-black/30 max-2xl:hover:bg-black/50 group-focus:ring-white">
+        <svg class="w-4 h-4  max-sm:text-white text-white max-2xl:text-black rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M5 1 1 5l4 4" />
         </svg>
         <span class="sr-only">Previous</span>
       </span>
     </button>
-    
-    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-5 cursor-pointer group " data-carousel-next aria-label="Next Slide">
-      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 group-hover:bg-black/50 max-2xl:bg-black/30 max-2xl:hover:bg-black/50 group-focus:ring-white">
-        <svg class="w-4 h-4 text-white max-2xl:text-black rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+
+    <button type="button"
+      class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-5 cursor-pointer group "
+      data-carousel-next aria-label="Next Slide">
+      <span
+        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 group-hover:bg-black/50 max-2xl:bg-black/30 max-2xl:hover:bg-black/50 group-focus:ring-white">
+        <svg class="w-4 h-4 max-sm:text-white text-white max-2xl:text-black rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 6 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="m1 9 4-4-4-4" />
         </svg>
         <span class="sr-only">Next</span>
       </span>
     </button>
-    
-</div>
 
-<!-- Header Section with Buttons -->
-<header class="bg-[#2C3E8C] text-white py-6 text-center">
-  <div class="container mx-auto px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
-    <div class="text-center md:text-left">
-      <h2 class="text-xl uppercase mb-2">QUIERO COLEGIARME</h2>
-      <button class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR AHORA</button>
-    </div>
-    <div class="text-center">
-      <h2 class="text-xl uppercase mb-2">¿CUANDO SALDRAN NUEVOS DIPLOMADOS?</h2>
-      <button class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR AHORA</button>
-    </div>
-    <div class="text-center md:text-right">
-      <h2 class="text-xl uppercase mb-2">¿CUANDO INICIAN LOS DIPLOMADOS?</h2>
-      <button class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR AHORA</button>
-    </div>
   </div>
-</header>
 
-<!-- Welcome Section -->
-<section class="container mx-auto px-4 py-12">
-  <h1 class="text-center text-3xl font-bold mb-6">
-    BIENVENIDO AL <span class="text-red-600">ICALP</span>
-  </h1>
-  <p class="text-center text-gray-600 max-w-3xl mx-auto">
-    Convencidos del poder del derecho y la justicia, trabajamos incansablemente para formar abogados íntegros e innovadores, comprometidos con ser agentes de cambio y transformar positivamente la sociedad.
-  </p>
-</section>
-
-<!-- Features Section -->
-<section class="container mx-auto px-8 py-8">
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <div class="bg-red-600 flex flex-col justify-between rounded-lg shadow-lg overflow-hidden relative hover:scale-105 transition-transform duration-300">
-      <div class="absolute inset-0 flex items-center justify-center flex-col p-6">
-        <svg class="w-16 h-16 mb-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M10 8l5 4-5 4V8z" />
-        </svg>
-        <h3 class="text-2xl font-bold text-white text-center">Listo para el gran inicio</h3>
+  <!-- Header Section with Buttons -->
+  <header class="bg-[#2C3E8C] text-white py-6 text-center ">
+    <div class="container mx-auto px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-16">
+      <div class="text-center">
+        <h2 class="text-xl uppercase mb-2">QUIERO COLEGIARME</h2>
+        <button
+          class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR
+          AHORA</button>
+      </div>
+      <div class="text-center">
+        <h2 class="text-xl uppercase mb-2">¿CUANDO SALDRAN NUEVOS DIPLOMADOS?</h2>
+        <button
+          class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR
+          AHORA</button>
+      </div>
+      <div class="text-center">
+        <h2 class="text-xl uppercase mb-2">¿CUANDO INICIAN LOS DIPLOMADOS?</h2>
+        <button
+          class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR
+          AHORA</button>
       </div>
     </div>
+  </header>
 
-    <div class="bg-[#2C3E8C] text-white p-6 rounded-lg hover:scale-105 transition-transform duration-300">
-      <div class="space-y-6">
-        <div>
-          <h3 class="text-xl font-bold mb-3">¿Por qué Colegiarse en el ICALP?</h3>
-          <p class="text-sm">
-            Por el respaldo institucional que brinda a sus colegiados, fortalecer tu prestigio profesional y formar parte de una comunidad comprometida con la justicia y el desarrollo social.
-          </p>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-3">Vida Universitaria</h3>
-          <p class="text-sm">
-            En el ICALP fomentamos el crecimiento integral de nuestros futuros colegiados, porque más que colegas, somos una comunidad comprometida con la justicia y el desarrollo social.
-          </p>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-3">Requisitos de Admisión</h3>
-          <p class="text-sm">Estos son los requisitos para colegiarte en el ICALP.</p>
+  <!-- Section Search -->
+  <section class="container mx-auto px-32 py-8 uppercase">
+    <h1 class="text-center text-3xl font-bold mb-6">
+      Buscador colegiados
+    </h1>
+    <form id="search-form-header" action="" class="flex items-center ">
+      <input id="searchCol"
+        class="py-3 px-4 w-full rounded-l-lg bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+        type="search" placeholder="Busca por Nombre, Carnet o Matricula, Especialidades" name="" >
+      <button id="search-button" type="submit"
+        class="px-8 py-3 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        Buscar
+      </button>
+    </form>
+  </section>
+
+  <!-- Welcome Section -->
+  <section class="container mx-auto px-4 py-12">
+    <h1 class="text-center text-3xl font-bold mb-6">
+      BIENVENIDO AL <span class="text-red-600">ICALP</span>
+    </h1>
+    <p class="text-center text-gray-600 max-w-3xl mx-auto">
+      Convencidos del poder del derecho y la justicia, trabajamos incansablemente para formar abogados íntegros e
+      innovadores, comprometidos con ser agentes de cambio y transformar positivamente la sociedad.
+    </p>
+  </section>
+
+  <!-- Features Section -->
+  <section class="container mx-auto px-8 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div
+        class="bg-red-600 flex flex-col justify-between rounded-lg shadow-lg overflow-hidden relative hover:scale-105 transition-transform duration-300">
+        <div class="absolute inset-0 flex items-center justify-center flex-col p-6">
+          <svg class="w-16 h-16 mb-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M10 8l5 4-5 4V8z" />
+          </svg>
+          <h3 class="text-2xl font-bold text-white text-center">Listo para el gran inicio</h3>
         </div>
       </div>
-    </div>
 
-    <div class="bg-white flex flex-col justify-between rounded-lg shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300">
-      <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-CsKIFBudJPfKY1LNvPdCF6NfhWBJXK.png" alt="Derecho" class="w-full h-full object-cover">
-      <div class="bg-[#2C3E8C] p-6">
-        <h3 class="text-xl font-bold text-white text-center mb-4">"Una formación integral con vocación de servicio"</h3>
-        <div class="flex items-center justify-center gap-4">
-          <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"></div>
+      <div class="bg-[#2C3E8C] text-white p-6 rounded-lg hover:scale-105 transition-transform duration-300">
+        <div class="space-y-6">
           <div>
-            <p class="font-semibold text-white">Juan Martinez</p>
-            <p class="text-sm text-gray-300">Colegiado</p>
+            <h3 class="text-xl font-bold mb-3">¿Por qué Colegiarse en el ICALP?</h3>
+            <p class="text-sm">
+              Por el respaldo institucional que brinda a sus colegiados, fortalecer tu prestigio profesional y formar
+              parte de una comunidad comprometida con la justicia y el desarrollo social.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold mb-3">Vida Universitaria</h3>
+            <p class="text-sm">
+              En el ICALP fomentamos el crecimiento integral de nuestros futuros colegiados, porque más que colegas,
+              somos una comunidad comprometida con la justicia y el desarrollo social.
+            </p>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold mb-3">Requisitos de Admisión</h3>
+            <p class="text-sm">Estos son los requisitos para colegiarte en el ICALP.</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- Blog Section -->
-<div class="bg-[#2C3E8C] p-8">
-  <div class="container mx-auto px-8 py-8">
-    <div class="flex justify-between items-center mb-8">
-      <h1 class="text-white text-4xl font-bold">BLOG ICALP</h1>
-      <div class="flex items-center">
-        <p class="text-white mr-4 max-w-md">Forma parte de la comunidad en la ICALP. Entérate y conoce más sobre nuestros eventos y todo lo que acontece.</p>
-        <button class="bg-gray-200 text-[#2C3E8C] px-6 py-2 rounded-md hover:bg-white transition-colors">IR AL BLOG</button>
-      </div>
-    </div>
-
-    <!-- Blog Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <!-- Blog Card Template (can be repeated) -->
-      <div class="bg-white rounded-lg overflow-hidden shadow-lg">
-        <div class="relative">
-          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-CsKIFBudJPfKY1LNvPdCF6NfhWBJXK.png" alt="Derecho" class="w-full h-48 object-cover">
-          <div class="absolute top-4 right-4 bg-[#2C3E8C] text-white p-2 rounded">
-            <div class="text-center">
-              <span class="block text-xl font-bold">07</span>
-              <span class="block text-sm">Ene</span>
-            </div>
-          </div>
-        </div>
-        <div class="p-4">
-          <h3 class="font-bold text-lg mb-2">El derecho cambió con la......</h3>
-          <p class="text-gray-600 text-sm mb-4">La tecnología ha transformado las ventas a nivel global, con el comercio electrónico y las compras en línea dominando el mercado.</p>
-          <a href="#" class="text-[#2C3E8C] font-bold text-sm hover:underline">LEER MÁS ➤</a>
-        </div>
-      </div>
-
-      <!-- Repeat the Blog Cards as needed -->
-    </div>
-  </div>
-</div>
-
-<!-- Denuncia Section -->
-<div class="bg-black overflow-hidden mx-auto">
-  <div class="container mx-auto px-8 py-8">
-    <h1 class="text-white text-4xl font-bold">DENUNCIAS</h1>
-    <div class="flex flex-col md:flex-row">
-      <!-- Image Section -->
-      <div class="md:w-1/3">
-        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-tz40Py2YYaCpfbEFk6FPlZHUHMDlND.png" alt="Martillo de juez" class="w-full h-full object-cover">
-      </div>
-
-      <!-- Form Section -->
-      <div class="md:w-2/3 p-6">
-        <form class="space-y-4">
-          <!-- Form Fields -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div
+        class="bg-white flex flex-col justify-between rounded-lg shadow-lg overflow-hidden hover:scale-105 transition-transform duration-300">
+        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-CsKIFBudJPfKY1LNvPdCF6NfhWBJXK.png"
+          alt="Derecho" class="w-full h-full object-cover">
+        <div class="bg-[#2C3E8C] p-6">
+          <h3 class="text-xl font-bold text-white text-center mb-4">"Una formación integral con vocación de servicio"
+          </h3>
+          <div class="flex items-center justify-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"></div>
             <div>
-              <label class="block text-white mb-2">Nombre <span class="text-red-500">*</span></label>
-              <input type="text" required class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            </div>
-            <div>
-              <label class="block text-white mb-2">Apellidos <span class="text-red-500">*</span></label>
-              <input type="text" required class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <p class="font-semibold text-white">Juan Martinez</p>
+              <p class="text-sm text-gray-300">Colegiado</p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div>
-            <label class="block text-white mb-2">Correo <span class="text-red-500">*</span></label>
-            <input type="email" required class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
+  <!-- Blog Section -->
+  <div class="bg-[#2C3E8C] p-8">
+    <div class="container mx-auto px-8 py-8">
+      <div class="flex justify-between items-center mb-8 max-sm:flex-col">
+        <h1 class="text-white text-4xl font-bold max-sm:my-4">BLOG ICALP</h1>
+        <div class="flex items-center max-sm:flex-col">
+          <p class="text-white mr-4 max-w-md max-sm:py-4">Forma parte de la comunidad en la ICALP. Entérate y conoce más
+            sobre nuestros eventos y todo lo que acontece.</p>
+          <button class="bg-gray-200 text-[#2C3E8C] px-6 py-2 rounded-md hover:bg-white transition-colors">IR AL
+            BLOG</button>
+        </div>
+      </div>
 
-          <div>
-            <label class="block text-white mb-2">Numero de telefono <span class="text-red-500">*</span></label>
-            <div class="flex gap-2">
-              <select class="px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option>Bolivia</option>
-              </select>
-              <input type="text" value="+591" readonly class="w-20 px-3 py-2 bg-gray-100 rounded border border-gray-300">
-              <input type="tel" required class="flex-1 px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <!-- Blog Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <!-- Blog Card Template (can be repeated) -->
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+          <div class="relative">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-CsKIFBudJPfKY1LNvPdCF6NfhWBJXK.png"
+              alt="Derecho" class="w-full h-48 object-cover">
+            <div class="absolute top-4 right-4 bg-[#2C3E8C] text-white p-2 rounded">
+              <div class="text-center">
+                <span class="block text-xl font-bold">07</span>
+                <span class="block text-sm">Ene</span>
+              </div>
             </div>
           </div>
-
-          <!-- Description -->
-          <div>
-            <textarea placeholder="Descripción de la denuncia..." rows="4" class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          <div class="p-4">
+            <h3 class="font-bold text-lg mb-2">El derecho cambió con la......</h3>
+            <p class="text-gray-600 text-sm mb-4">La tecnología ha transformado las ventas a nivel global, con el
+              comercio electrónico y las compras en línea dominando el mercado.</p>
+            <a href="#" class="text-[#2C3E8C] font-bold text-sm hover:underline">LEER MÁS ➤</a>
           </div>
+        </div>
 
-          <!-- Buttons -->
-          <div class="flex flex-wrap gap-4">
-            <button type="button" class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Subir archivo pdf</button>
-            <button type="submit" class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Enviar denuncia</button>
-          </div>
-        </form>
+        <!-- Repeat the Blog Cards as needed -->
       </div>
     </div>
   </div>
-</div>
 
+  <!-- Denuncia Section -->
+  <div class="bg-black overflow-hidden mx-auto">
+    <div class="container mx-auto px-8 py-8">
+      <h1 class="text-white text-4xl font-bold">DENUNCIAS</h1>
+      <div class="flex flex-col md:flex-row">
+        <!-- Image Section -->
+        <div class="md:w-1/3">
+          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-tz40Py2YYaCpfbEFk6FPlZHUHMDlND.png"
+            alt="Martillo de juez" class="w-full h-full object-cover">
+        </div>
+
+        <!-- Form Section -->
+        <div class="md:w-2/3 p-6">
+          <form class="space-y-4">
+            <!-- Form Fields -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-white mb-2">Nombre <span class="text-red-500">*</span></label>
+                <input type="text" required
+                  class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+              <div>
+                <label class="block text-white mb-2">Apellidos <span class="text-red-500">*</span></label>
+                <input type="text" required
+                  class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-white mb-2">Correo <span class="text-red-500">*</span></label>
+              <input type="email" required
+                class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-white mb-2">Numero de telefono <span class="text-red-500">*</span></label>
+              <div class="flex gap-2 max-sm:flex-col">
+                <select
+                  class="px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option>Bolivia</option>
+                </select>
+                <div class="flex w-full gap-2">
+                  <input type="text" value="+591" readonly
+                    class="w-20 px-3 py-2 bg-gray-100 rounded border border-gray-300">
+                  <input type="tel" required
+                    class="w-full sm:flex-1 px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+              <textarea placeholder="Descripción de la denuncia..." rows="4"
+                class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex flex-wrap gap-4">
+              <button type="button"
+                class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Subir
+                archivo pdf</button>
+              <button type="submit"
+                class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Enviar
+                denuncia</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <dialog id="dialog-search"
+  class="px-6 py-4 max-w-6xl w-full max-h-screen rounded-xl items-center justify-start bg-white shadow-lg border border-gray-300">
+  <div class="flex flex-col ">
+    <div class="flex  justify-between w-full mb-4">
+      <h3 class="text-2xl font-semibold text-gray-700 ">Resultados de Búsqueda</h3>
+      <button id="cerrar-dialog" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+        <i class="fa-solid fa-xmark fa-2x"></i>
+      </button>
+    </div>
+    <ul id="result-list" class="grid grid-cols-3 overflow-auto max-h-full space-y-2 gap-1">
+      <!-- Los resultados se insertarán aquí dinámicamente -->
+    </ul>
+  </div>
+</dialog>
+  <script defer>
+    const searchUsers = $("#searchCol");
+    const searchFormHeader = $("#search-form-header");
+    const dialogSearch = $('#dialog-search')
+    const cerrarDialogSearch = $('#cerrar-dialog')
+    searchFormHeader?.addEventListener("submit", async (e) => {
+      e.preventDefault(); // Evitar el envío de formulario o recarga de la página
+      dialogSearch.showModal()
+
+      const searchValue = searchUsers.value.trim(); // Obtener y recortar el valor de búsqueda
+
+      if (!searchValue) {
+        alert("Por favor, ingrese un término de búsqueda.");
+        return;
+      }
+
+      const url = `search?search=${encodeURIComponent(searchValue)}`;
+
+      try {
+        // Hacer la solicitud fetch
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Error en la búsqueda");
+        }
+
+        const data = await response.json(); // Asumimos que la respuesta es un JSON
+        const resultContainer = document.querySelector("#result-list");
+        resultContainer.innerHTML = ""; // Limpiar resultados previos
+        if (data.result.users.length > 0) {
+          data.result.users.forEach((colegiado) => {
+            const listItem = document.createElement("li");
+            listItem.classList.add("w-full");
+            listItem.innerHTML = `
+   <div class="w-[300px] bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="p-4 bg-blue-900 text-white border-b">
+        <h3 class="text-lg font-bold text-gray-50 leading-tight text-center text-wrap">
+        ${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno}
+        </h3>
+      </div>
+
+      <div class="p-4 flex justify-center border-b">
+        <img
+          src="${colegiado.Foto ?'/uploads/imagenes/'+colegiado.Foto: '/public/img/imageDefault.png'}"
+          alt="FOTO DE: ${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno}"
+          class="w-32 h-32 object-cover"
+        />
+      </div>
+
+      <div class="p-4 space-y-3 border-b">
+        <div class="grid grid-cols-2 gap-2">
+          <div class="text-gray-600 text-sm">MATRÍCULA:</div>
+          <div class="text-gray-900 font-medium text-sm">${colegiado.Matricula.toString().padStart(5,'0')}</div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="text-gray-600 text-sm">CONALAB:</div>
+          <div class="text-gray-900 font-medium text-sm">${colegiado.MatriculaConalab|| 'S/N'}</div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="text-gray-600 text-sm">FECHA REGISTRO:</div>
+          <div class="text-gray-900 font-medium text-sm">${new Date(colegiado.FechaMatriculacionAlColegio).toLocaleDateString()}</div>
+        </div>
+      </div>
+
+      <div class="p-4 space-y-3 bg-gray-50">
+        <div class="text-sm font-semibold text-gray-700 mb-2">
+          MAS INFORMACIÓN 
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="text-gray-600 text-sm">DIRECCION:</div>
+          <div class="text-gray-900 font-medium text-sm text-wrap">${colegiado.DireccionOficina || 'S/N'}</div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div class="text-gray-600 text-sm">TELEFONO:</div>
+          <div class="text-gray-900 font-medium text-sm text-wrap">${colegiado.TelefonoOficina || 'S/N'}</div>
+        </div>
+      </div>
+
+      <div class="p-4 flex justify-center">
+        <span
+          class='bg-green-100 text-green-800 px-4 py-2 rounded-xl'
+              
+        >
+          ${colegiado.Estado}
+        </span>
+      </div>
+    </div>
+      `;
+            resultContainer.appendChild(listItem);
+          });
+        } else {
+          const listItem = document.createElement("li");
+          listItem.innerHTML = `<h2 class="text-gray-500">No se encontraron resultados </h2>`
+          resultContainer.appendChild(listItem);
+        }
+      } catch (error) {
+        console.error("Error en la búsqueda:", error);
+        alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+      }
+    });
+    cerrarDialogSearch.addEventListener('click', () => {
+      dialogSearch.close()
+    })
+  </script>
   <%- include('partials/footer'); %>

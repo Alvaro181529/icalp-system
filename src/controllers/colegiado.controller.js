@@ -130,7 +130,6 @@ export class ColegiadoController {
     const { id } = req.params;
     const {Archivo}=req.body
     let result;
-    console.log(req.body);
     if (req.body.foto)
       result = await colegiado.updateFoto(req.file.filename, id, user.correo, Archivo);
     if (req.body.firma)

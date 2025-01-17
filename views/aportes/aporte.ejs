@@ -1,25 +1,49 @@
 <%- include('../partials/header', {title, user}) %>
   <div class="px-8">
 
-    <div class="flex items-center w-full py-2 ">
-      <form id="form-search" method="get" class="w-full flex items-center">
+    <div class="flex flex-col md:flex-row items-center w-full py-4 gap-4">
+      <!-- Formulario de búsqueda por texto -->
+      <form id="form-search" method="get" class="flex items-center w-full md:w-auto ">
         <input id="search" type="text" name="search" placeholder="Buscar por Matricula o Nombre"
-          class="w-full px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          class="px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-80" />
         <button id="search-button" type="submit"
           class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
           Buscar
         </button>
       </form>
-    </div>
 
-       <div class="overflow-x-auto shadow-md sm:rounded-lg">
+      <!-- Formulario de búsqueda por fechas -->
+      <form id="form-search-date" method="get" class="flex items-center w-full md:w-auto gap-2">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-2">
+          <label for="search-date-inicio" class="text-gray-700">Fecha de inicio</label>
+          <input id="search-date-inicio" type="date" name="inicio"
+            class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-40" />
+        </div>
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-2">
+          <label for="search-date-fin" class="text-gray-700">Fecha de fin</label>
+          <input id="search-date-fin" type="date" name="fin"
+            class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-40" />
+        </div>
+        <button id="search-button" type="submit"
+          class="px-8 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Buscar
+        </button>
+      </form>
+    </div>
+    <div>
+      <h1 class="py-2 text-gray-500 font-bold" > Total recaudado entre fechas: 
+        <span class="py-2 text-gray-500 font-semibold" id="TotalMonto"></span>
+      </h1>
+    </div>
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
       <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
         <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
           <tr>
             <th class="px-4 py-3">Fecha aporte cobrador</th>
             <th class="px-4 py-3">Matricula</th>
-            <th class="px-4 py-3">Nombres</th>
-            <th class="px-4 py-3">Apellidos</th>
+            <th class="px-4 py-3">Cobrador</th>
+            <th class="px-4 py-3">Nombre</th>
+            <th class="px-4 py-3">Recibo</th>
             <th class="px-4 py-3">Talonario</th>
             <th class="px-4 py-3">Fecha Inicio</th>
             <th class="px-4 py-3">Fecha final</th>
@@ -49,7 +73,7 @@
           Anterior
         </button>
         <button id="next-page"
-           class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed   disabled:opacity-50 disabled:cursor-not-allowed">
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed   disabled:opacity-50 disabled:cursor-not-allowed">
           Siguiente
         </button>
       </div>
@@ -59,7 +83,7 @@
   <script defer>
     // Script modificado
     document.addEventListener("DOMContentLoaded", function () {
-      
+
       const prevPageButton = $("#prev-page");
       const nextPageButton = $("#next-page");
       const currentPageSpan = $("#current-page");
@@ -67,13 +91,19 @@
       const resultTableBody = $("#result-table tbody");
       const searchForm = $('#form-search');
       const searchInput = $('#search');
+      const searchInicio = $('#search-date-inicio');
+      const searchFin = $('#search-date-fin');
+      const formDate = $('#form-search-date')
       let page = 1;  // Página actual
+      let dateInicio
+      let dateFin
       let searchValue = "";  // Guardar el valor de búsqueda actual
 
       // Actualiza la tabla con los datos
-      const updateTable = (data, totalPages) => {
+      const updateTable = (data, totalPages, totalMonto) => {
         resultTableBody.innerHTML = ""; // Limpiar tabla antes de llenarla
-
+        console.log(totalMonto);
+        $('#TotalMonto').textContent = totalMonto
         if (data.length > 0) {
           data.forEach((item) => {
             const row = document.createElement("tr");
@@ -91,10 +121,13 @@
             });
             // Construir la fila
             row.innerHTML = `
-          <td class="px-6 py-3 text-wrap" ><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
+          <td class="px-6 py-3 text-wrap" ><p>
+            ${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}
+            </p></td>
           <td class="px-6 py-3 text-wrap" >${item.Matricula.toString().padStart(5, "0") || "No disponible"}</td>
-          <td class="px-6 py-3 text-wrap" >${item.Nombres || "No disponible"}</td>
-          <td class="px-6 py-3 text-wrap" >${item.Apellidos || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.Cobrador || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.Nombres || "No disponible"} ${item.Apellidos || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.Recibo || 'No disponible'}</td>
           <td class="px-6 py-3 text-wrap" >${item.Talonario || 'No disponible'}</td>
           <td class="px-6 py-3 text-wrap" >${item.FechaInicial || "No disponible"}</td>
           <td class="px-6 py-3 text-wrap" >${item.FechaFinal || "No disponible"}</td>
@@ -122,7 +155,7 @@
 
       // Función para obtener los datos desde el servidor y actualizar la tabla
       const fetchAndUpdateTable = async () => {
-        const url = `/contribution?search=${searchValue || ""}&page=${page}&pageSize=10`;
+        const url = `/contribution?search=${searchValue || ""}&page=${page}&inicio=${dateInicio}&fin=${dateFin}&pageSize=10`;
         try {
           const response = await fetch(url);
           if (!response.ok) {
@@ -131,8 +164,10 @@
 
           const data = await response.json();
           if (Array.isArray(data.users)) {
+            console.log(data);
             totalPages = data.pages; // Actualizar el total de páginas
-            updateTable(data.users, totalPages);
+            totalMonto = data.totalMonto; // Actualizar el total de páginas
+            updateTable(data.users, totalPages, totalMonto);
           } else {
             console.error("La estructura de la respuesta no es válida");
           }
@@ -152,9 +187,20 @@
         fetchAndUpdateTable();
       });
 
+      formDate.addEventListener("submit", function (event) {
+        event.preventDefault();
+        dateFin = searchFin.value.trim() || "";
+        dateInicio = searchInicio.value.trim() || "";
+        page = 1; // Volver a la primera página al realizar una nueva búsqueda
+        fetchAndUpdateTable();
+      });
+
       // Evento para cambiar a la página anterior
       prevPageButton.addEventListener("click", function () {
         if (page > 1) {
+          searchValue = searchInput.value.trim();
+          dateFin = searchFin.value.trim() || "";
+          dateInicio = searchInicio.value.trim() || "";
           page--;
           fetchAndUpdateTable();
         }
@@ -163,6 +209,9 @@
       // Evento para cambiar a la página siguiente
       nextPageButton.addEventListener("click", function () {
         if (page < totalPages) {
+          searchValue = searchInput.value.trim();
+          dateFin = searchFin.value.trim() || "";
+          dateInicio = searchInicio.value.trim() || "";
           page++;
           fetchAndUpdateTable();
         }

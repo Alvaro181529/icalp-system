@@ -48,7 +48,6 @@ export class PagesModel {
   };
 
   menuUpdate = async (id, menuName) => {
-    console.log(id, menuName);
     try {
       // Realizar la actualización de `MenuNameEnglish` para el `MenuId` proporcionado
       const result = await pool.query(
@@ -138,7 +137,6 @@ LEFT JOIN posts o ON o.PageId = p.PageId
     }
   };
   optionUpdate = async (body) => {
-    console.log(body);
     const { menu, id, SortNumber, updatedMenuName } = body;
     try {
       const result = await pool.query(
@@ -215,7 +213,6 @@ LEFT JOIN posts o ON o.PageId = p.PageId
       content,
       pageId
     } = body
-    console.log(body);
     const result = await pool.query(`
       INSERT INTO posts ( PageId, LanguageId, MenuTitle, Title, Content, Datetime, User, ContentBinary) VALUES (?, '1', ?, ?, ?, NOW(), ?, NULL); `,
       [pageId, menu, title, content, user])
@@ -223,7 +220,6 @@ LEFT JOIN posts o ON o.PageId = p.PageId
   };
   contentUpdate = async (body, user) => {
     const { menu, title, content, pageId } = body;
-    console.log(body);
 
     const result = await pool.query(`
       UPDATE posts 

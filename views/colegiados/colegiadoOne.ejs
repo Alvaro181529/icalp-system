@@ -13,13 +13,18 @@
     <div class="w-full">
       <div class="flex justify-between ">
         <h1 class="font-semibold text-3xl" id="Perfil">Perfil</h1>
-        <div>
-          <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2"
-            id="openDialogButton">Actualizar</button>
-          <a href="/collegiate/<%= result.ColegiadoId %>/pdf" target="_blank">
-            <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2">Generar Reporte PDF</button>
-          </a>
-        </div>
+        <% if (user && user.roles.includes('Administrador') ){ %>
+          <div>
+            <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2"
+              id="openDialogButton">Actualizar</button>
+            <a href="/collegiate/<%= result.ColegiadoId %>/pdf" target="_blank">
+              <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2">Generar Reporte
+                PDF</button>
+            </a>
+          </div>
+          <%}else {%>
+            <button hidden id="openDialogButton"></button>
+            <%}%>
       </div>
       <hr class="my-4">
       <div class="flex flex-col md:flex-row gap-6">
@@ -31,16 +36,25 @@
               alt="<%= result.Nombres %><%= result.Paterno %><%= result.Materno %>"
               class="w-full h-full object-cover" />
           </div>
-          <div class="mx-8 flex flex-col mt-2 gap-2">
-            <button class="bg-blue-500 py-2 px-4 rounded " id="upload-foto">
-              <%= result.Foto?'Actualizar imagen':'Agregar imagen'%>
-            </button>
-            <button class="bg-blue-500 py-2 px-4 rounded " id="upload-firma">
-              <%= result.Foto?'Actualizar firma':'Agregar firma'%>
-            </button>
-          </div>
-        </div>
 
+          <% if (user && user.roles.includes('Administrador') ){ %>
+            <div class="mx-8 flex flex-col mt-2 gap-2">
+              <button class="bg-blue-500 py-2 px-4 rounded " id="upload-foto">
+                <%= result.Foto?'Actualizar imagen':'Agregar imagen'%>
+              </button>
+              <button class="bg-blue-500 py-2 px-4 rounded " id="upload-firma">
+                <%= result.Foto?'Actualizar firma':'Agregar firma'%>
+              </button>
+            </div>
+            <%}else{%>
+              <div class="mx-8 flex flex-col mt-2 gap-2">
+                <button hidden id="upload-foto">
+                </button>
+                <button hidden id="upload-firma">
+                </button>
+              </div>
+              <%}%>
+        </div>
         <!-- Profile Information Section -->
         <div class="flex-1">
 
@@ -120,299 +134,302 @@
         </div>
       </div>
     </div>
-   
-    <h1 class="font-semibold text-3xl mt-8 mb-4">Information adicional</h1>
-    <hr>
-    <div class="ml-12">
-      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="mb-4">
-          <p class="text-gray-300">Numero Ruc</p>
-          <p>
-            <%= result.NumeroRuc || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Estado Civil</p>
-          <p>
-            <%= result.EstadoCivil || 'No disponible'%>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Universidad</p>
-          <p>
-            <%= result.Universidad || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Fecha tesis</p>
-          <p>
-            <%= result.FechaTesis || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Universidad licenciatura</p>
-          <p>
-            <%= result.UniversidadLicenciatura || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Fecha licenciatura</p>
-          <p>
-            <%= result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toLocaleDateString() : "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Fecha Provicion nacional</p>
-          <p>
-            <%= result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toLocaleDateString()
-              : "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Entidad Provicion nacional</p>
-          <p>
-            <%= result.EntidadProvisionNacional || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Fecha matriculacion del colegio</p>
-          <p>
-            <%= result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toLocaleDateString()
-              : "No disponible" %>
-          </p>
-        </div>
-      </div>
-      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="mb-4">
-          <p class="text-gray-300">Cargos administracion publica</p>
-          <p>
-            <%= result.CargosAdministracionPublica || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Cargos administracion publica</p>
-          <p>
-            <%= result.CargosEmpresaPrivada || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Cargos Buffete</p>
-          <p>
-            <%= result.CargosBufete || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Cargo actual</p>
-          <p>
-            <%= result.CargoActual || 'No disponible' %>
-          </p>
-        </div>
-      </div>
-      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="mb-4">
-          <p class="text-gray-300">Especialidad primaria</p>
-          <p>
-            <%= result.EspecialidadPrimaria || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Especialidad secundaria</p>
-          <p>
-            <%= result.EspecialidadSecundaria || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Producciones</p>
-          <p>
-            <%= result.Producciones || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Catedra</p>
-          <p>
-            <%= result.Catedra || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Estudios especializacion</p>
-          <p>
-            <%= result.EstudiosEspecializacion || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Reconocimientos</p>
-          <p>
-            <%= result.Reconocimientos || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Asistencia a eventos internacionales</p>
-          <p>
-            <%= result.AsistenciaEventosInternacionales || 'No disponible' %>
-          </p>
-        </div>
-      </div>
-      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="mb-4">
-          <p class="text-gray-300">Institucion asegurado</p>
-          <p>
-            <%= result.InstitucionAsegurado || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Institucion asegurado</p>
-          <p>
-            <%= result.InstitucionAsegurado || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Beneficiarios</p>
-          <p>
-            <%= result.Beneficiarios || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Direccion domicilio</p>
-          <p>
-            <%= result.DireccionDomicilio || 'No disponible' %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Casilla</p>
-          <p>
-            <%= result.Casilla || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Situacion</p>
-          <p>
-            <%= result.Situacion || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Observacion</p>
-          <p>
-            <%= result.Observacion || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Zona</p>
-          <p>
-            <%= result.ZonaId || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Nacionalidad</p>
-          <p>
-            <%= result.Nacionalidad || "No disponible" %>
-          </p>
-        </div>
+    <% if (user && user.roles.includes('Administrador') ){ %>
 
-        <div class="mb-4">
-          <p class="text-gray-300">Celular</p>
-          <p>
-            <%= result.Celular || "No disponible" %>
-          </p>
+      <h1 class="font-semibold text-3xl mt-8 mb-4">Information adicional</h1>
+      <hr>
+      <div class="ml-12">
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="mb-4">
+            <p class="text-gray-300">Numero Ruc</p>
+            <p>
+              <%= result.NumeroRuc || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Estado Civil</p>
+            <p>
+              <%= result.EstadoCivil || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Universidad</p>
+            <p>
+              <%= result.Universidad || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Fecha tesis</p>
+            <p>
+              <%= result.FechaTesis || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Universidad licenciatura</p>
+            <p>
+              <%= result.UniversidadLicenciatura || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Fecha licenciatura</p>
+            <p>
+              <%= result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toLocaleDateString() : "No disponible"
+                %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Fecha Provicion nacional</p>
+            <p>
+              <%= result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toLocaleDateString()
+                : "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Entidad Provicion nacional</p>
+            <p>
+              <%= result.EntidadProvisionNacional || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Fecha matriculacion del colegio</p>
+            <p>
+              <%= result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toLocaleDateString()
+                : "No disponible" %>
+            </p>
+          </div>
         </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Grado academico</p>
-          <p>
-            <%= result.GradoAcademico || "No disponible" %>
-          </p>
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="mb-4">
+            <p class="text-gray-300">Cargos administracion publica</p>
+            <p>
+              <%= result.CargosAdministracionPublica || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Cargos administracion publica</p>
+            <p>
+              <%= result.CargosEmpresaPrivada || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Cargos Buffete</p>
+            <p>
+              <%= result.CargosBufete || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Cargo actual</p>
+            <p>
+              <%= result.CargoActual || 'No disponible' %>
+            </p>
+          </div>
         </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Licenciatura</p>
-          <p>
-            <%= result.Licenciatura || "No disponible" %>
-          </p>
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="mb-4">
+            <p class="text-gray-300">Especialidad primaria</p>
+            <p>
+              <%= result.EspecialidadPrimaria || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Especialidad secundaria</p>
+            <p>
+              <%= result.EspecialidadSecundaria || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Producciones</p>
+            <p>
+              <%= result.Producciones || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Catedra</p>
+            <p>
+              <%= result.Catedra || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Estudios especializacion</p>
+            <p>
+              <%= result.EstudiosEspecializacion || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Reconocimientos</p>
+            <p>
+              <%= result.Reconocimientos || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Asistencia a eventos internacionales</p>
+            <p>
+              <%= result.AsistenciaEventosInternacionales || 'No disponible' %>
+            </p>
+          </div>
         </div>
-        <div class="mb-4">
-          <p class="text-gray-300">ZonaTrabajoId</p>
-          <p>
-            <%= result.ZonaTrabajoId || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Forma de pago</p>
-          <p>
-            <%= result.FormaDePago || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Numero de boleta de deposito</p>
-          <p>
-            <%= result.BoletaDepositoNumero || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Monto deposito</p>
-          <p>
-            <%= result.MontoDeposito || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Formulario de admisión</p>
-          <p>
-            <%= result.FormularioDeAdmision || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Fotocopia titulo profecional</p>
-          <p>
-            <%= result.FotocopiaTituloProfesional || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Certificado de nacimiento original</p>
-          <p>
-            <%= result.CertificadoNacimientoOriginal || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Fotocopia C.I.</p>
-          <p>
-            <%= result.FotocopiaCI || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Curriculum vitae</p>
-          <p>
-            <%= result.CurriculumVitae || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Usuario quien registro</p>
-          <p>
-            <%= result.UsuarioRegistro || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Fecha registro</p>
-          <p>
-            <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Usuario modificación</p>
-          <p>
-            <%= result.UsuarioModificacion || "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Fecha modificación</p>
-          <p>
-            <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No disponible" %>
-          </p>
-        </div>
-        <div class="mb-4">
-          <p class="text-gray-300">Estado</p>
-          <p>
-            <%= result.Estado %>
-          </p>
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="mb-4">
+            <p class="text-gray-300">Institucion asegurado</p>
+            <p>
+              <%= result.InstitucionAsegurado || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Institucion asegurado</p>
+            <p>
+              <%= result.InstitucionAsegurado || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Beneficiarios</p>
+            <p>
+              <%= result.Beneficiarios || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Direccion domicilio</p>
+            <p>
+              <%= result.DireccionDomicilio || 'No disponible' %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Casilla</p>
+            <p>
+              <%= result.Casilla || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Situacion</p>
+            <p>
+              <%= result.Situacion || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Observacion</p>
+            <p>
+              <%= result.Observacion || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Zona</p>
+            <p>
+              <%= result.ZonaId || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Nacionalidad</p>
+            <p>
+              <%= result.Nacionalidad || "No disponible" %>
+            </p>
+          </div>
+
+          <div class="mb-4">
+            <p class="text-gray-300">Celular</p>
+            <p>
+              <%= result.Celular || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Grado academico</p>
+            <p>
+              <%= result.GradoAcademico || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Licenciatura</p>
+            <p>
+              <%= result.Licenciatura || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">ZonaTrabajoId</p>
+            <p>
+              <%= result.ZonaTrabajoId || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Forma de pago</p>
+            <p>
+              <%= result.FormaDePago || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Numero de boleta de deposito</p>
+            <p>
+              <%= result.BoletaDepositoNumero || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Monto deposito</p>
+            <p>
+              <%= result.MontoDeposito || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Formulario de admisión</p>
+            <p>
+              <%= result.FormularioDeAdmision || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Fotocopia titulo profecional</p>
+            <p>
+              <%= result.FotocopiaTituloProfesional || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Certificado de nacimiento original</p>
+            <p>
+              <%= result.CertificadoNacimientoOriginal || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Fotocopia C.I.</p>
+            <p>
+              <%= result.FotocopiaCI || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Curriculum vitae</p>
+            <p>
+              <%= result.CurriculumVitae || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Usuario quien registro</p>
+            <p>
+              <%= result.UsuarioRegistro || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Fecha registro</p>
+            <p>
+              <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Usuario modificación</p>
+            <p>
+              <%= result.UsuarioModificacion || "No disponible" %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Fecha modificación</p>
+            <p>
+              <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No disponible"
+                %>
+            </p>
+          </div>
+          <div class="mb-4">
+            <p class="text-gray-300">Estado</p>
+            <p>
+              <%= result.Estado %>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- <table>
+      <!-- <table>
       <thead>
         <tr>
           <th>Campo</th>
@@ -427,712 +444,723 @@
         <tr>
       </tbody>
     </table> -->
+      <%}%>
 
-    <div class="flex justify-between mt-8">
-      <h1 class="font-semibold text-3xl" id="Aportes">Aportes</h1>
-      <div>
-        <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2" id="button">Pagos</button>
-      </div>
-    </div>
-
-    <hr class="my-2">
-    <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
-      <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
-        <thead class="text-xs text-gray-200 uppercase bg-gray-300 ">
-          <tr class="text-gray-800">
-            <th class="px-4 py-3">Matricula</th>
-            <th class="px-4 py-3">Fechas</th>
-            <th class="px-4 py-3">Monto</th>
-            <th class="px-4 py-3"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Aquí se llenarán las filas con los resultados -->
-        </tbody>
-      </table>
-    </div>
-    <div class="flex justify-between mt-8">
-      <h1 class="font-semibold text-3xl" id="Notas">Notas</h1>
-      <div>
-        <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
-          id="entrega-agenda">Entrega de Agenda</button>
-        <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
-          id="diplomado-gratuito">Diplomado Gratuito</button>
-      </div>
-    </div>
-    <hr class="my-2">
-    <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
-      <table id="notas-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
-        <thead class="text-xs text-gray-200 uppercase bg-gray-300 ">
-          <tr class="text-gray-800">
-            <th class="px-4 py-3">Fecha</th>
-            <th class="px-4 py-3">Nota</th>
-            <th class="px-4 py-3">Usuario</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Aquí se llenarán las filas con los resultados -->
-        </tbody>
-      </table>
-    </div>
-    <dialog id="personalDataDialog"
-      class="p-8 max-w-6xl w-full max-h-screen mx-auto bg-white rounded-lg shadow-lg overflow-y-auto">
-      <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Formulario de Registros</h2>
-      <form id="personalDataForm" class="space-y-8">
-        <section>
-          <h3 class="text-2xl font-semibold mb-4 text-gray-700">Datos personales</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="matricula">Matrícula:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="matricula" name="matricula" value="<%=result.Matricula%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="matriculaConalab">Matrícula
-                Conalab:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="matriculaConalab" name="matriculaConalab" value="<%=result.matriculaConalab%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="nombres">Nombres:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="nombres" name="nombres" value="<%=result.Nombres%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="paterno">Apellido Paterno:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="paterno" name="paterno" value="<%=result.Paterno%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="materno">Apellido Materno:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="materno" name="materno" value="<%=result.Materno%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="telefonoOficina">Teléfono
-                Oficina:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="tel" id="telefonoOficina" name="telefonoOficina" value="<%=result.TelefonoOficina%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="direccionOficina">Dirección
-                Oficina:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="direccionOficina" name="direccionOficina" value="<%=result.DireccionOficina%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="correo">Correo:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="email" id="correo" name="correo" value="<%=result.Correo%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="lugarNacimiento">Lugar de Nacimiento:
-              </label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="lugarNacimiento" name="lugarNacimiento" value="<%=result.LugarNacimiento%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaNacimiento">Fecha de
-                Nacimiento:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="date" id="fechaNacimiento" name="fechaNacimiento"
-                value="<%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toISOString().split('T')[0] : '' %>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="numeroCI">Número CI:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="numeroCI" name="numeroCI" value="<%=result.NumeroCI%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="numeroRuc">Número RUC:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="numeroRuc" name="numeroRuc" value="<%=result.NumeroRuc%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="estadoCivil">Estado Civil:</label>
-              <select
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="estadoCivil" name="estadoCivil" value="<%=result.EstadoCivil%>">
-                <option value="soltero">Soltero</option>
-                <option value="casado">Casado</option>
-                <option value="divorciado">Divorciado</option>
-                <option value="viudo">Viudo</option>
-              </select>
-            </div>
-          </div>
-        </section>
-        <section>
-          <h3 class="text-2xl font-semibold mb-4 mt-6 text-gray-700">Estudios</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="universidad">Universidad:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="universidad" name="universidad" value="<%=result.Universidad%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaTesis">Fecha Tesis:
-                MM/DD/AAAA</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis %>" placeholder="MM/DD/AAAA">
-            </div>
-            <div>
-
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="universidadLicenciatura">Universidad
-                Licenciatura: MM/DD/AAAA</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="universidadLicenciatura" name="universidadLicenciatura" placeholder="MM/DD/AAAA"
-                value="<%=result.UniversidadLicenciatura%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaLicenciatura">Fecha
-                Licenciatura:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="fechaLicenciatura" name="fechaLicenciatura" value="<%=result.FechaLicenciatura%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaProvisionNacional">Fecha Provisión
-                Nacional:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="date" id="fechaProvisionNacional" name="fechaProvisionNacional"
-                value="<%=result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toISOString().split('T')[0] : ''%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="entidadProvisionNacional">Entidad
-                Provisión
-                Nacional:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="entidadProvisionNacional" name="entidadProvisionNacional"
-                value="<%=result.EntidadProvisionNacional%>">
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaMatriculacionAlColegio">Fecha
-                Matriculación al Colegio:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="date" id="fechaMatriculacionAlColegio" name="fechaMatriculacionAlColegio"
-                value="<%=result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toISOString().split('T')[0] : ''%>">
-            </div>
-          </div>
-        </section>
-        <section>
-          <h3 class="text-2xl font-semibold mb-4 mt-6 text-gray-700">Cargos Desempeñados</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="cargosAdministracionPublica">Cargos
-                Administración Pública:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="cargosAdministracionPublica" name="cargosAdministracionPublica"
-                value="<%=result.CargosAdministracionPublica%>"></input>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="cargosEmpresaPrivada">Cargos Empresa
-                Privada:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="cargosEmpresaPrivada" name="cargosEmpresaPrivada" value="<%=result.CargosEmpresaPrivada%>"></input>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="cargosBufete">Cargos Bufete:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="cargosBufete" name="cargosBufete" value="<%=result.CargosBufete%>"></input>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="cargoActual">Cargo Actual:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="cargoActual" name="cargoActual" value="<%=result.CargoActual%>">
-            </div>
-          </div>
-        </section>
-        <section>
-          <h3 class="text-2xl font-semibold mb-4 mt-6 text-gray-700">Especialidades y Reconocimientos</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="especialidadPrimaria">Especialidad
-                Primaria:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="especialidadPrimaria" name="especialidadPrimaria"
-                value="<%=result.EspecialidadPrimaria%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="especialidadSecundaria">Especialidad
-                Secundaria:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="especialidadSecundaria" name="especialidadSecundaria"
-                value="<%=result.EspecialidadSecundaria%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="producciones">Producciones:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="producciones" name="producciones" value="<%=result.Producciones%>"></input>
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="catedra">Cátedra:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="catedra" name="catedra" value="<%=result.Catedra%>"></input>
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="estudiosEspecializacion">Estudios de
-                Especialización:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="estudiosEspecializacion" name="estudiosEspecializacion"
-                value="<%=result.EstudiosEspecializacion%>"></input>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="reconocimientos">Reconocimientos:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="reconocimientos" name="reconocimientos" value="<%=result.Reconocimientos%>"></input>
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                for="asistenciaEventosInternacionales">Asistencia a
-                Eventos Internacionales:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales"
-                value="<%=result.AsistenciaEventosInternacionales%>"></input>
-            </div>
-          </div>
-        </section>
-        <section>
-          <h3 class="text-2xl font-semibold mt-6 mb-4 text-gray-700">Otros</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="institucionAsegurado">Institución
-                Asegurado:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="institucionAsegurado" name="institucionAsegurado"
-                value="<%=result.InstitucionAsegurado%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="beneficiarios">Beneficiarios:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="beneficiarios" name="beneficiarios" value="<%=result.Beneficiarios%>"></input>
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="direccionDomicilio">Dirección
-                Domicilio:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="direccionDomicilio" name="direccionDomicilio" value="<%=result.DireccionDomicilio%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="telefonoDomicilio">Teléfono
-                Domicilio:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="tel" id="telefonoDomicilio" name="telefonoDomicilio" value="<%=result.TelefonoDomicilio%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="casilla">Casilla:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="casilla" name="casilla" value="<%=result.Casilla%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="situacion">Situación:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="situacion" name="situacion" value="<%=result.Situación%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="observacion">Observación:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="observacion" name="observacion" value="<%=result.Observacion%>"></input>
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="zona">Zona:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="zona" name="zona">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="nacionalidad">Nacionalidad:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="nacionalidad" name="nacionalidad" value="<%=result.Nacionalidad%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="celular">Celular:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="tel" id="celular" name="celular" value="<%=result.Celular%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="gradoAcademico">Grado Académico:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="gradoAcademico" name="gradoAcademico" value="<%=result.GradoAcademico%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="licenciatura">Licenciatura:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="licenciatura" name="licenciatura" value="<%=result.Licenciatura%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="zonaTrabajo">Zona de Trabajo:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="zonaTrabajo" name="zonaTrabajo" value="<%=result.ZonaTrabajoId%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="formaDePago">Forma de Pago:</label>
-              <select
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="formaDePago" name="formaDePago" value="<%=result.FormaDePago%>">
-                <option value="efectivo">Efectivo</option>
-                <option value="cheque">Cheque</option>
-                <option value="transferencia">Transferencia</option>
-              </select>
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="boletaDepositoNumero">Boleta Depósito
-                Número:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="boletaDepositoNumero" name="boletaDepositoNumero"
-                value="<%=result.BoletaDepositoNumero%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="montoDeposito">Monto Depósito:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="number" id="montoDeposito" name="montoDeposito" value="<%=result.MontoDeposito%>" required
-                step="0.01">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="formularioAdmision">Formulario de
-                Admisión:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="formularioAdmision" name="formularioAdmision" value="<%=result.FormularioAdmision%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="fotocopiaTituloProfesional">Fotocopia
-                Título
-                Profesional:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="fotocopiaTituloProfesional" name="fotocopiaTituloProfesional"
-                value="<%=result.FotocopiaTituloProfesional%>">
-            </div>
-            <div>
-
-              <label class="block text-sm font-medium text-gray-700 mb-1"
-                for="certificadoNacimientoOriginal">Certificado
-                Nacimiento Original:</label>
-              <input
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text" id="certificadoNacimientoOriginal" name="certificadoNacimientoOriginal"
-                value="<%=result.CertificadoNacimientoOriginal%>">
-            </div>
-            <div>
-              <label for="fotocopiaCI" class="block text-sm font-medium text-gray-700 mb-1">Fotocopia C.I.:</label>
-              <select name="fotocopiaCI" id="fotocopiaCI"
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="Si" <%=result.FotocopiaCI==='Si' ? 'selected' : '' %>>Si</option>
-                <option value="No" <%=result.FotocopiaCI==='No' ? 'selected' : '' %>>No</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="curriculumVitae" class="block text-sm font-medium text-gray-700 mb-1">Curriculum
-                Vitae:</label>
-              <select name="curriculumVitae" id="curriculumVitae"
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <option value="Si" <%=result.CurriculumVitae==='Si' ? 'selected' : '' %>>Si</option>
-                <option value="No" <%=result.CurriculumVitae==='No' ? 'selected' : '' %>>No</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1" for="estado">Estado:</label>
-              <select
-                class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                name="estado" id="estado" value="<%= result.Estado ? 'Activo' : 'Inactivo' %>">
-                <option value="Activo" <%=result.Estado==='Activo' ? 'selected' : '' %>>Activos</option>
-                <option value="Inactivo" <%=result.Estado==='Inactivo' ? 'selected' : '' %>>Inactivos</option>
-              </select>
-            </div>
-          </div>
-        </section>
         <div class="flex justify-between mt-8">
-          <button type="button" id="closeDialogButton"
-            class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors">Cerrar</button>
-          <button type="submit"
-            class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">Enviar</button>
-        </div>
-      </form>
-    </dialog>
-
-    <dialog id="dialog-aporte" class="bg-white rounded-lg p-6 w-full sm:w-96">
-      <h2 class="text-xl font-semibold text-center mb-4">Anular Aporte</h2>
-      <form id="form-aporte" action="">
-        <label for="motivo" class="block text-sm font-medium text-gray-700 mb-1">Motivo</label>
-        <input type="text" id="motivo" name="motivo" placeholder="Motivo"
-          class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <div class="flex justify-between space-x-4 pt-4">
-          <button type="reset" id="cancelar-aporte"
-            class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">Cancelar</button>
-          <button id="button-aporte"
-            class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">Confirmar</button>
-        </div>
-      </form>
-    </dialog>
-    <dialog id="dialog" class="bg-white rounded-lg p-6 w-full sm:w-96 shadow-lg">
-      <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">Pagos</h3>
-      <form id="form-create" method="POST" class="space-y-6">
-        <div class="space-y-4">
+          <h1 class="font-semibold text-3xl" id="Aportes">Aportes</h1>
           <div>
-            <label for="meses" class="block text-sm font-medium text-gray-700 mb-2">Meses</label>
-            <input
-              class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              type="text" id="meses" name="meses" value="1" disabled>
+            <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2" id="button">Pagos</button>
           </div>
-
-          <% const anoActual=2050; const inicioAno=1990; %>
-
-            <div class="space-y-4">
-              <label class="block text-sm font-medium text-gray-700">Desde:</label>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <select
-                  class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  id="mesInicial" name="mesInicial">
-                  <option value="1">Enero</option>
-                  <option value="2">Febrero</option>
-                  <option value="3">Marzo</option>
-                  <option value="4">Abril</option>
-                  <option value="5">Mayo</option>
-                  <option value="6">Junio</option>
-                  <option value="7">Julio</option>
-                  <option value="8">Agosto</option>
-                  <option value="9">Septiembre</option>
-                  <option value="10">Octubre</option>
-                  <option value="11">Noviembre</option>
-                  <option value="12">Diciembre</option>
-                </select>
-                <select
-                  class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  id="anoInicial" name="anoInicial">
-                  <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
-                    <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
-                    </option>
-                    <% } %>
-                </select>
-              </div>
-            </div>
-
-            <div class="space-y-4">
-              <label class="block text-sm font-medium text-gray-700">Hasta:</label>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <select
-                  class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  id="mesFinal" name="mesFinal">
-                  <option value="1">Enero</option>
-                  <option value="2">Febrero</option>
-                  <option value="3">Marzo</option>
-                  <option value="4">Abril</option>
-                  <option value="5">Mayo</option>
-                  <option value="6">Junio</option>
-                  <option value="7">Julio</option>
-                  <option value="8">Agosto</option>
-                  <option value="9">Septiembre</option>
-                  <option value="10">Octubre</option>
-                  <option value="11">Noviembre</option>
-                  <option value="12">Diciembre</option>
-                </select>
-                <select
-                  class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  id="anoFinal" name="anoFinal">
-                  <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
-                    <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
-                    </option>
-                    <% } %>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label for="recibo" class="block text-sm font-medium text-gray-700 mb-2">Numero de recibo</label>
-              <input
-                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="recibo" type="number" name="recibo" required>
-            </div>
-
-            <div>
-              <label for="talonario" class="block text-sm font-medium text-gray-700 mb-2">Numero de talonario</label>
-              <input
-                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="talonario" type="number" name="talonario" required>
-            </div>
-
-            <div>
-              <label for="fechaDeCobro" class="block text-sm font-medium text-gray-700 mb-2">Fecha de cobro</label>
-              <input
-                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="date" id="fechaDeCobro" name="fechaDeCobro" value="<%= new Date().toISOString().split('T')[0] %>">
-            </div>
-
-            <div>
-              <label for="monto" class="block text-sm font-medium text-gray-700 mb-2">Monto</label>
-              <input
-                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="monto" type="number" name="monto" value="20">
-            </div>
-
-            <div>
-              <label for="observacion" class="block text-sm font-medium text-gray-700 mb-2">Observación</label>
-              <input
-                class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="observacion" type="text" name="observacion">
-            </div>
         </div>
 
-        <div class="flex justify-between items-center">
-          <button type="submit"
-            class="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-            Registrar
-          </button>
-          <span id="error-message" class="text-red-500 text-sm"></span>
+        <hr class="my-2">
+        <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
+          <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
+            <thead class="text-xs text-gray-200 uppercase bg-gray-300 ">
+              <tr class="text-gray-800">
+                <th class="px-4 py-3">Matricula</th>
+                <th class="px-4 py-3">Fechas</th>
+                <th class="px-4 py-3">Monto</th>
+                <th class="px-4 py-3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Aquí se llenarán las filas con los resultados -->
+            </tbody>
+          </table>
         </div>
-      </form>
-    </dialog>
-
-    <dialog id="file-upload-dialog-foto" class="bg-gray-800 bg-opacity-50 items-center justify-center">
-      <div class="bg-white rounded-lg p-6 w-full sm:w-96">
-        <form enctype="multipart/form-data" id="upload-form-foto">
-          <input type="hidden" name="foto" value="true">
-          <input type="hidden" name="ColegiadoId" value="<%=result.ColegiadoId %>">
-          <input type="hidden" name="Matricula" value="<%=result.Matricula %>">
-          <input type="hidden" name="Archivo" value="<%=result.Foto %>">
-
-          <h2 class="text-xl font-semibold text-center mb-4">Subir foto</h2>
-
-          <div class="mb-4">
-            <label for="file" class="block text-lg font-medium text-gray-700">Selecciona un archivo</label>
-            <input type="file" name="file" id="file" required class="mt-2 p-2 border border-gray-300 rounded-md w-full"
-              accept="image/*">
+        <div class="flex justify-between mt-8">
+          <h1 class="font-semibold text-3xl" id="Notas">Notas</h1>
+          <div>
+            <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
+              id="entrega-agenda">Entrega de Agenda</button>
+            <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2 disabled:bg-gray-600"
+              id="diplomado-gratuito">Diplomado Gratuito</button>
           </div>
+        </div>
+        <hr class="my-2">
+        <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
+          <table id="notas-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
+            <thead class="text-xs text-gray-200 uppercase bg-gray-300 ">
+              <tr class="text-gray-800">
+                <th class="px-4 py-3">Fecha</th>
+                <th class="px-4 py-3">Nota</th>
+                <th class="px-4 py-3">Usuario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Aquí se llenarán las filas con los resultados -->
+            </tbody>
+          </table>
+        </div>
+        <dialog id="personalDataDialog"
+          class="p-8 max-w-6xl w-full max-h-screen mx-auto bg-white rounded-lg shadow-lg overflow-y-auto">
+          <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Formulario de Registros</h2>
+          <form id="personalDataForm" class="space-y-8">
+            <section>
+              <h3 class="text-2xl font-semibold mb-4 text-gray-700">Datos personales</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="matricula">Matrícula:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="matricula" name="matricula" value="<%=result.Matricula%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="matriculaConalab">Matrícula
+                    Conalab:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="matriculaConalab" name="matriculaConalab" value="<%=result.matriculaConalab%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="nombres">Nombres:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="nombres" name="nombres" value="<%=result.Nombres%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="paterno">Apellido Paterno:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="paterno" name="paterno" value="<%=result.Paterno%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="materno">Apellido Materno:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="materno" name="materno" value="<%=result.Materno%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="telefonoOficina">Teléfono
+                    Oficina:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="tel" id="telefonoOficina" name="telefonoOficina" value="<%=result.TelefonoOficina%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="direccionOficina">Dirección
+                    Oficina:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="direccionOficina" name="direccionOficina" value="<%=result.DireccionOficina%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="correo">Correo:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="email" id="correo" name="correo" value="<%=result.Correo%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="lugarNacimiento">Lugar de Nacimiento:
+                  </label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="lugarNacimiento" name="lugarNacimiento" value="<%=result.LugarNacimiento%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaNacimiento">Fecha de
+                    Nacimiento:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="date" id="fechaNacimiento" name="fechaNacimiento"
+                    value="<%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toISOString().split('T')[0] : '' %>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="numeroCI">Número CI:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="numeroCI" name="numeroCI" value="<%=result.NumeroCI%>">
+                </div>
+                <div>
 
-          <div class="mb-4">
-            <p class="text-sm text-gray-500">Vista previa:</p>
-            <div id="image-preview"
-              class="mt-2 w-full h-48 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100">
-              <p class="text-gray-500">No hay imagen seleccionada</p>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="numeroRuc">Número RUC:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="numeroRuc" name="numeroRuc" value="<%=result.NumeroRuc%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="estadoCivil">Estado Civil:</label>
+                  <select
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="estadoCivil" name="estadoCivil" value="<%=result.EstadoCivil%>">
+                    <option value="soltero">Soltero</option>
+                    <option value="casado">Casado</option>
+                    <option value="divorciado">Divorciado</option>
+                    <option value="viudo">Viudo</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+            <section>
+              <h3 class="text-2xl font-semibold mb-4 mt-6 text-gray-700">Estudios</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="universidad">Universidad:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="universidad" name="universidad" value="<%=result.Universidad%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaTesis">Fecha Tesis:
+                    MM/DD/AAAA</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="fechaTesis" name="fechaTesis" value="<%= result.FechaTesis %>"
+                    placeholder="MM/DD/AAAA">
+                </div>
+                <div>
+
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="universidadLicenciatura">Universidad
+                    Licenciatura: MM/DD/AAAA</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="universidadLicenciatura" name="universidadLicenciatura" placeholder="MM/DD/AAAA"
+                    value="<%=result.UniversidadLicenciatura%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaLicenciatura">Fecha
+                    Licenciatura:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="fechaLicenciatura" name="fechaLicenciatura" value="<%=result.FechaLicenciatura%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaProvisionNacional">Fecha
+                    Provisión
+                    Nacional:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="date" id="fechaProvisionNacional" name="fechaProvisionNacional"
+                    value="<%=result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toISOString().split('T')[0] : ''%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="entidadProvisionNacional">Entidad
+                    Provisión
+                    Nacional:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="entidadProvisionNacional" name="entidadProvisionNacional"
+                    value="<%=result.EntidadProvisionNacional%>">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="fechaMatriculacionAlColegio">Fecha
+                    Matriculación al Colegio:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="date" id="fechaMatriculacionAlColegio" name="fechaMatriculacionAlColegio"
+                    value="<%=result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toISOString().split('T')[0] : ''%>">
+                </div>
+              </div>
+            </section>
+            <section>
+              <h3 class="text-2xl font-semibold mb-4 mt-6 text-gray-700">Cargos Desempeñados</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="cargosAdministracionPublica">Cargos
+                    Administración Pública:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="cargosAdministracionPublica" name="cargosAdministracionPublica"
+                    value="<%=result.CargosAdministracionPublica%>"></input>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="cargosEmpresaPrivada">Cargos Empresa
+                    Privada:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="cargosEmpresaPrivada" name="cargosEmpresaPrivada"
+                    value="<%=result.CargosEmpresaPrivada%>"></input>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="cargosBufete">Cargos Bufete:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="cargosBufete" name="cargosBufete" value="<%=result.CargosBufete%>"></input>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="cargoActual">Cargo Actual:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="cargoActual" name="cargoActual" value="<%=result.CargoActual%>">
+                </div>
+              </div>
+            </section>
+            <section>
+              <h3 class="text-2xl font-semibold mb-4 mt-6 text-gray-700">Especialidades y Reconocimientos</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="especialidadPrimaria">Especialidad
+                    Primaria:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="especialidadPrimaria" name="especialidadPrimaria"
+                    value="<%=result.EspecialidadPrimaria%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="especialidadSecundaria">Especialidad
+                    Secundaria:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="especialidadSecundaria" name="especialidadSecundaria"
+                    value="<%=result.EspecialidadSecundaria%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="producciones">Producciones:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="producciones" name="producciones" value="<%=result.Producciones%>"></input>
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="catedra">Cátedra:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="catedra" name="catedra" value="<%=result.Catedra%>"></input>
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="estudiosEspecializacion">Estudios de
+                    Especialización:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="estudiosEspecializacion" name="estudiosEspecializacion"
+                    value="<%=result.EstudiosEspecializacion%>"></input>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    for="reconocimientos">Reconocimientos:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="reconocimientos" name="reconocimientos" value="<%=result.Reconocimientos%>"></input>
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    for="asistenciaEventosInternacionales">Asistencia a
+                    Eventos Internacionales:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="asistenciaEventosInternacionales" name="asistenciaEventosInternacionales"
+                    value="<%=result.AsistenciaEventosInternacionales%>"></input>
+                </div>
+              </div>
+            </section>
+            <section>
+              <h3 class="text-2xl font-semibold mt-6 mb-4 text-gray-700">Otros</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="institucionAsegurado">Institución
+                    Asegurado:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="institucionAsegurado" name="institucionAsegurado"
+                    value="<%=result.InstitucionAsegurado%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="beneficiarios">Beneficiarios:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="beneficiarios" name="beneficiarios" value="<%=result.Beneficiarios%>"></input>
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="direccionDomicilio">Dirección
+                    Domicilio:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="direccionDomicilio" name="direccionDomicilio"
+                    value="<%=result.DireccionDomicilio%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="telefonoDomicilio">Teléfono
+                    Domicilio:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="tel" id="telefonoDomicilio" name="telefonoDomicilio" value="<%=result.TelefonoDomicilio%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="casilla">Casilla:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="casilla" name="casilla" value="<%=result.Casilla%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="situacion">Situación:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="situacion" name="situacion" value="<%=result.Situación%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="observacion">Observación:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="observacion" name="observacion" value="<%=result.Observacion%>"></input>
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="zona">Zona:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="zona" name="zona">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="nacionalidad">Nacionalidad:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="nacionalidad" name="nacionalidad" value="<%=result.Nacionalidad%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="celular">Celular:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="tel" id="celular" name="celular" value="<%=result.Celular%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="gradoAcademico">Grado
+                    Académico:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="gradoAcademico" name="gradoAcademico" value="<%=result.GradoAcademico%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="licenciatura">Licenciatura:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="licenciatura" name="licenciatura" value="<%=result.Licenciatura%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="zonaTrabajo">Zona de Trabajo:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="zonaTrabajo" name="zonaTrabajo" value="<%=result.ZonaTrabajoId%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="formaDePago">Forma de Pago:</label>
+                  <select
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="formaDePago" name="formaDePago" value="<%=result.FormaDePago%>">
+                    <option value="efectivo">Efectivo</option>
+                    <option value="cheque">Cheque</option>
+                    <option value="transferencia">Transferencia</option>
+                  </select>
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="boletaDepositoNumero">Boleta Depósito
+                    Número:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="boletaDepositoNumero" name="boletaDepositoNumero"
+                    value="<%=result.BoletaDepositoNumero%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="montoDeposito">Monto
+                    Depósito:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="number" id="montoDeposito" name="montoDeposito" value="<%=result.MontoDeposito%>" required
+                    step="0.01">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="formularioAdmision">Formulario de
+                    Admisión:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="formularioAdmision" name="formularioAdmision"
+                    value="<%=result.FormularioAdmision%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="fotocopiaTituloProfesional">Fotocopia
+                    Título
+                    Profesional:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="fotocopiaTituloProfesional" name="fotocopiaTituloProfesional"
+                    value="<%=result.FotocopiaTituloProfesional%>">
+                </div>
+                <div>
+
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    for="certificadoNacimientoOriginal">Certificado
+                    Nacimiento Original:</label>
+                  <input
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="certificadoNacimientoOriginal" name="certificadoNacimientoOriginal"
+                    value="<%=result.CertificadoNacimientoOriginal%>">
+                </div>
+                <div>
+                  <label for="fotocopiaCI" class="block text-sm font-medium text-gray-700 mb-1">Fotocopia C.I.:</label>
+                  <select name="fotocopiaCI" id="fotocopiaCI"
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="Si" <%=result.FotocopiaCI==='Si' ? 'selected' : '' %>>Si</option>
+                    <option value="No" <%=result.FotocopiaCI==='No' ? 'selected' : '' %>>No</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="curriculumVitae" class="block text-sm font-medium text-gray-700 mb-1">Curriculum
+                    Vitae:</label>
+                  <select name="curriculumVitae" id="curriculumVitae"
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="Si" <%=result.CurriculumVitae==='Si' ? 'selected' : '' %>>Si</option>
+                    <option value="No" <%=result.CurriculumVitae==='No' ? 'selected' : '' %>>No</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1" for="estado">Estado:</label>
+                  <select
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    name="estado" id="estado" value="<%= result.Estado ? 'Activo' : 'Inactivo' %>">
+                    <option value="Activo" <%=result.Estado==='Activo' ? 'selected' : '' %>>Activos</option>
+                    <option value="Inactivo" <%=result.Estado==='Inactivo' ? 'selected' : '' %>>Inactivos</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+            <div class="flex justify-between mt-8">
+              <button type="button" id="closeDialogButton"
+                class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50 transition-colors">Cerrar</button>
+              <button type="submit"
+                class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">Enviar</button>
             </div>
-          </div>
+          </form>
+        </dialog>
 
-          <div class="flex justify-between space-x-4">
-            <button type="button" id="close-dialog-foto"
-              class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">
-              Cerrar
-            </button>
-            <button type="submit"
-              class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              Subir archivo
-            </button>
-          </div>
-        </form>
-      </div>
-    </dialog>
-
-    <dialog id="file-upload-dialog-firma" class="bg-gray-800 bg-opacity-50 items-center justify-center">
-      <div class="bg-white rounded-lg p-6 w-full sm:w-96">
-        <form enctype="multipart/form-data" id="upload-form-firma">
-          <input type="hidden" name="firma" value="true">
-          <input type="hidden" name="ColegiadoId" value="<%=result.ColegiadoId %>">
-          <input type="hidden" name="Matricula" value="<%=result.Matricula %>">
-          <input type="hidden" name="Archivo" value="<%=result.Firma %>">
-
-          <h2 class="text-xl font-semibold text-center mb-4">Subir firma</h2>
-
-          <div class="mb-4">
-            <label for="file" class="block text-lg font-medium objecttext-gray-700">Selecciona un archivo</label>
-            <input type="file" name="file" id="fileFirma" required
-              class="mt-2 p-2 border border-gray-300 rounded-md w-full" accept="image/*">
-          </div>
-
-          <div class="mb-4">
-            <p class="text-sm text-gray-500">Vista previa:</p>
-            <div id="image-previewFirma"
-              class="mt-2 w-full h-48 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100">
-              <p class="text-gray-500">No hay imagen seleccionada</p>
+        <dialog id="dialog-aporte" class="bg-white rounded-lg p-6 w-full sm:w-96">
+          <h2 class="text-xl font-semibold text-center mb-4">Anular Aporte</h2>
+          <form id="form-aporte" action="">
+            <label for="motivo" class="block text-sm font-medium text-gray-700 mb-1">Motivo</label>
+            <input type="text" id="motivo" name="motivo" placeholder="Motivo"
+              class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="flex justify-between space-x-4 pt-4">
+              <button type="reset" id="cancelar-aporte"
+                class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">Cancelar</button>
+              <button id="button-aporte"
+                class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">Confirmar</button>
             </div>
-          </div>
+          </form>
+        </dialog>
+        <dialog id="dialog" class="bg-white rounded-lg p-6 w-full sm:w-96 shadow-lg">
+          <h3 class="text-2xl font-semibold text-center mb-6 text-gray-800">Pagos</h3>
+          <form id="form-create" method="POST" class="space-y-6">
+            <div class="space-y-4">
+              <div>
+                <label for="meses" class="block text-sm font-medium text-gray-700 mb-2">Meses</label>
+                <input
+                  class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  type="text" id="meses" name="meses" value="1" disabled>
+              </div>
 
-          <div class="flex justify-between space-x-4">
-            <button type="button" id="close-dialog-firma"
-              class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">
-              Cerrar
-            </button>
-            <button type="submit"
-              class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
-              Subir archivo
-            </button>
+              <% const anoActual=2050; const inicioAno=1990; %>
+
+                <div class="space-y-4">
+                  <label class="block text-sm font-medium text-gray-700">Desde:</label>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <select
+                      class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      id="mesInicial" name="mesInicial">
+                      <option value="1">Enero</option>
+                      <option value="2">Febrero</option>
+                      <option value="3">Marzo</option>
+                      <option value="4">Abril</option>
+                      <option value="5">Mayo</option>
+                      <option value="6">Junio</option>
+                      <option value="7">Julio</option>
+                      <option value="8">Agosto</option>
+                      <option value="9">Septiembre</option>
+                      <option value="10">Octubre</option>
+                      <option value="11">Noviembre</option>
+                      <option value="12">Diciembre</option>
+                    </select>
+                    <select
+                      class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      id="anoInicial" name="anoInicial">
+                      <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
+                        <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
+                        </option>
+                        <% } %>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <label class="block text-sm font-medium text-gray-700">Hasta:</label>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <select
+                      class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      id="mesFinal" name="mesFinal">
+                      <option value="1">Enero</option>
+                      <option value="2">Febrero</option>
+                      <option value="3">Marzo</option>
+                      <option value="4">Abril</option>
+                      <option value="5">Mayo</option>
+                      <option value="6">Junio</option>
+                      <option value="7">Julio</option>
+                      <option value="8">Agosto</option>
+                      <option value="9">Septiembre</option>
+                      <option value="10">Octubre</option>
+                      <option value="11">Noviembre</option>
+                      <option value="12">Diciembre</option>
+                    </select>
+                    <select
+                      class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      id="anoFinal" name="anoFinal">
+                      <% for (let ano=inicioAno; ano <=anoActual; ano++) { %>
+                        <option value="<%= ano %>" <%=ano===anoActual ? 'selected' : '' %>><%= ano %>
+                        </option>
+                        <% } %>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="recibo" class="block text-sm font-medium text-gray-700 mb-2">Numero de recibo</label>
+                  <input
+                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="recibo" type="number" name="recibo" required>
+                </div>
+
+                <div>
+                  <label for="talonario" class="block text-sm font-medium text-gray-700 mb-2">Numero de
+                    talonario</label>
+                  <input
+                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="talonario" type="number" name="talonario" required>
+                </div>
+
+                <div>
+                  <label for="fechaDeCobro" class="block text-sm font-medium text-gray-700 mb-2">Fecha de cobro</label>
+                  <input
+                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="date" id="fechaDeCobro" name="fechaDeCobro"
+                    value="<%= new Date().toISOString().split('T')[0] %>">
+                </div>
+
+                <div>
+                  <label for="monto" class="block text-sm font-medium text-gray-700 mb-2">Monto</label>
+                  <input
+                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="monto" type="number" name="monto" value="20">
+                </div>
+
+                <div>
+                  <label for="observacion" class="block text-sm font-medium text-gray-700 mb-2">Observación</label>
+                  <input
+                    class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    id="observacion" type="text" name="observacion">
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center">
+              <button type="submit"
+                class="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Registrar
+              </button>
+              <span id="error-message" class="text-red-500 text-sm"></span>
+            </div>
+          </form>
+        </dialog>
+
+        <dialog id="file-upload-dialog-foto" class="bg-gray-800 bg-opacity-50 items-center justify-center">
+          <div class="bg-white rounded-lg p-6 w-full sm:w-96">
+            <form enctype="multipart/form-data" id="upload-form-foto">
+              <input type="hidden" name="foto" value="true">
+              <input type="hidden" name="ColegiadoId" value="<%=result.ColegiadoId %>">
+              <input type="hidden" name="Matricula" value="<%=result.Matricula %>">
+              <input type="hidden" name="Archivo" value="<%=result.Foto %>">
+
+              <h2 class="text-xl font-semibold text-center mb-4">Subir foto</h2>
+
+              <div class="mb-4">
+                <label for="file" class="block text-lg font-medium text-gray-700">Selecciona un archivo</label>
+                <input type="file" name="file" id="file" required
+                  class="mt-2 p-2 border border-gray-300 rounded-md w-full" accept="image/*">
+              </div>
+
+              <div class="mb-4">
+                <p class="text-sm text-gray-500">Vista previa:</p>
+                <div id="image-preview"
+                  class="mt-2 w-full h-48 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100">
+                  <p class="text-gray-500">No hay imagen seleccionada</p>
+                </div>
+              </div>
+
+              <div class="flex justify-between space-x-4">
+                <button type="button" id="close-dialog-foto"
+                  class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">
+                  Cerrar
+                </button>
+                <button type="submit"
+                  class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  Subir archivo
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
-    </dialog>
+        </dialog>
+
+        <dialog id="file-upload-dialog-firma" class="bg-gray-800 bg-opacity-50 items-center justify-center">
+          <div class="bg-white rounded-lg p-6 w-full sm:w-96">
+            <form enctype="multipart/form-data" id="upload-form-firma">
+              <input type="hidden" name="firma" value="true">
+              <input type="hidden" name="ColegiadoId" value="<%=result.ColegiadoId %>">
+              <input type="hidden" name="Matricula" value="<%=result.Matricula %>">
+              <input type="hidden" name="Archivo" value="<%=result.Firma %>">
+
+              <h2 class="text-xl font-semibold text-center mb-4">Subir firma</h2>
+
+              <div class="mb-4">
+                <label for="file" class="block text-lg font-medium objecttext-gray-700">Selecciona un archivo</label>
+                <input type="file" name="file" id="fileFirma" required
+                  class="mt-2 p-2 border border-gray-300 rounded-md w-full" accept="image/*">
+              </div>
+
+              <div class="mb-4">
+                <p class="text-sm text-gray-500">Vista previa:</p>
+                <div id="image-previewFirma"
+                  class="mt-2 w-full h-48 border border-gray-300 rounded-md flex items-center justify-center bg-gray-100">
+                  <p class="text-gray-500">No hay imagen seleccionada</p>
+                </div>
+              </div>
+
+              <div class="flex justify-between space-x-4">
+                <button type="button" id="close-dialog-firma"
+                  class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">
+                  Cerrar
+                </button>
+                <button type="submit"
+                  class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  Subir archivo
+                </button>
+              </div>
+            </form>
+          </div>
+        </dialog>
 
   </div>
 
@@ -1358,9 +1386,11 @@
                 <p>${item.Monto}</p>
                 <p style='color:crimson'>${item.Faltante}</p>
               </td>
-              <td class="px-4 py-3">
-                <button class="actualizar-button px-6 py-2 bg-red-600 rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-white" data-id="${item.AporteId}">Anular</button>
-              </td>
+              <% if (user && user.roles.includes('Administrador') ){ %>
+                        <td class="px-4 py-3">
+                          <button class="actualizar-button px-6 py-2 bg-red-600 rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 text-white" data-id="${item.AporteId}">Anular</button>
+                          </td>
+              <%}%>
             `;
               resultTableBody.appendChild(row);
             });
@@ -1403,7 +1433,6 @@
         };
 
 
-        console.log(data);
         const result = await fetch('/contributions', {
           method: 'POST',
           headers: {
@@ -1498,7 +1527,6 @@
 
 
           const result = await response.json();
-          console.log('Datos actualizados correctamente:', result);
 
 
 
@@ -1561,7 +1589,6 @@
 
       agendaEntrega.addEventListener('click', async (e) => {
         e.preventDefault();
-        console.log(userId);
 
         const register = confirm('¿Estás seguro de entregar la agenda?');
         if (!register) return;

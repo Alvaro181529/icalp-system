@@ -44,7 +44,6 @@ export class PagesController {
   };
 
   optionAdd = async (req, res) => {
-    console.log("jasnhdaskbdhki");
     const result = await pages.optionAdd(req.body);
     res.json(result);
   };
@@ -61,7 +60,6 @@ export class PagesController {
   //consten
   content = async (req, res) => {
     const result = await pages.content(req.query);
-    console.log(result);
     res.json(result);
   };
   contentOne = async (req, res) => {

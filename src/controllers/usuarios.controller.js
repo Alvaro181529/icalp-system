@@ -26,7 +26,12 @@ export class UsersController {
     const result = await user.patchRols(id, rols);
     res.json(result);
   };
-  patchUsers = async (req, res) => {};
+  patchUsers = async (req, res) => {
+    console.log("object");
+    const { id } = req.params;
+    const result = await user.patchUsers(req.body, id );
+    res.json(result);
+  };
   deleteUser = async (req, res) => {
     const { id } = req.params;
     console.log(id);

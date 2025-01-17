@@ -130,7 +130,6 @@
         // Manejar el envío del formulario de actualización
         formUpdate.onsubmit = async (e) => {
           e.preventDefault();
-          console.log('Actualizar');
 
           const updatedMenuName = $("#MenuName").value;
           const updatedSortNumber = $("#SortNumber").value;
@@ -144,7 +143,6 @@
           };
 
           const MenuName = capitalizeFirstLetter(updatedMenuName);
-          console.log(MenuName)
           try {
             const response = await fetch(`/option/${PageId}`, {
               method: "PATCH",

@@ -37,94 +37,128 @@
           <h3 class="font-bold text-xl mb-4 border-b pb-2">Panel</h3>
           <div class="space-y-2">
 
-            <!-- Colegiados Section -->
-            <details class="group">
-              <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
-                <i class="fas fa-users mr-2"></i>
-                <span>Colegiados</span>
-                <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
-              </summary>
-              <ul class="pl-8 mt-2 space-y-1">
-                <li><a href="/colegiados" class="block px-4 py-2 hover:bg-blue-950 rounded">Listado de Colegiados</a>
-                </li>
-                <li><a href="/colegiado/dia" class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados al día</a>
-                </li>
-              </ul>
-            </details>
+            <% if (user && user.roles.includes('Administrador') ||user.roles.includes('Cobrador')) { %>
+              <!-- Colegiados Section -->
+              <details class="group">
+                <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                  <i class="fas fa-users mr-2"></i>
+                  <span>Colegiados</span>
+                  <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <ul class="pl-8 mt-2 space-y-1">
+                  <li><a href="/colegiados" class="block px-4 py-2 hover:bg-blue-950 rounded">Listado de Colegiados</a>
+                  </li>
+                  <li><a href="/colegiado/dia" class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados al día</a>
+                  </li>
+                </ul>
+              </details>
+              <%}%>
+                <% if (user && user.roles.includes('Administrador') || user.roles.includes('Contador') ||
+                  user.roles.includes('Cajero') ||user.roles.includes('Cobrador')) { %>
 
-            <!-- Reportes Section -->
-            <details class="group">
-              <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
-                <i class="fas fa-chart-bar mr-2"></i>
-                <span>Reportes</span>
-                <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
-              </summary>
-              <ul class="pl-8 mt-2 space-y-1">
-                <li><a href="/aportes" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de Aportes</a></li>
-                <li><a href="/aporte-cobrador" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes mensuales por
-                    cobrador</a></li>
-                <li><a href="/aporte-mensual" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes mensuales</a>
-                </li>
-                <li><a href="/aportes-anulados" class="block px-4 py-2 hover:bg-blue-950 rounded">Anulación de
-                  aportes</a></li>
-              </ul>
-            </details>
+                  <!-- Reportes Section -->
+                  <details class="group">
+                    <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                      <i class="fas fa-chart-bar mr-2"></i>
+                      <span>Reportes</span>
+                      <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <ul class="pl-8 mt-2 space-y-1">
+                      <% if (user && user.roles.includes('Administrador') || user.roles.includes('Contador') ||
+                        user.roles.includes('Cajero') ){ %>
 
-            <!-- Colegiados por Año Section -->
-            <details class="group">
-              <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
-                <i class="fas fa-calendar-alt mr-2"></i>
-                <span>Colegiados por Año</span>
-                <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
-              </summary>
-              <ul class="pl-8 mt-2 space-y-1">
-                <li><a href="/colegiado/gestion" class="block px-4 py-2 hover:bg-blue-950 rounded">Lista de Colegiados
-                    por Fecha de Inscripción</a></li>
-                <li><a href="/colegiado/provicion" class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados por
-                    Título en Provisión Nacional</a></li>
-                <li><a href="/talonario" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de Talonarios</a>
-                </li>
-              </ul>
-            </details>
+                        <li><a href="/aportes" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de Aportes</a>
+                        </li>
+                        <li><a href="/aporte-cobrador" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes
+                            mensuales
+                            por
+                            cobrador</a></li>
+                        <li><a href="/aporte-mensual" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes
+                            mensuales</a>
+                        </li>
 
-            <details class="group">
-              <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
-                <i class="fa fa-file-text mr-2  " aria-hidden="true"></i>
-                <span>Creacion de paginas</span>
-                <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
-              </summary>
-              <ul class="pl-8 mt-2 space-y-1">
-                <li><a href="/slides" class="block px-4 py-2 hover:bg-blue-950 rounded">Imagenes de Slider</a></li>
-                <li><a href="/menus" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de menu</a></li>
-                <li><a href="/opciones" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de opciones</a></li>
-                <li><a href="/contenidos" class="block px-4 py-2 hover:bg-blue-950 rounded">Contenidos</a>
-                </li>
-                <!-- <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li> -->
-              </ul>
-            </details>
-            <% if (user && user.roles.includes('Administrador')) { %>
-            <!-- Configuración Section -->
-            <details class="group">
-              <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
-                <i class="fas fa-cog mr-2"></i>
-                <span>Configuración</span>
-                <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
-              </summary>
-              <ul class="pl-8 mt-2 space-y-1">
-                <li><a href="/usuarios" class="block px-4 py-2 hover:bg-blue-950 rounded">Registro de Usuarios</a></li>
-                <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Usuarios Cobradores</a>
-                </li>
-                <li><a href="/historial" class="block px-4 py-2 hover:bg-blue-950 rounded">Historial de Cambios</a></li>
-              </ul>
-            </details>
-            <%}%>
+                        <li><a href="/aportes-anulados" class="block px-4 py-2 hover:bg-blue-950 rounded">Anulación de
+                            aportes</a></li>
+                        <%}%>
+                          <li><a href="/talonario" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de
+                              Talonarios</a>
+                          </li>
+                    </ul>
+                  </details>
+                  <%}%>
 
-            <button type="button" id="cerrar"
-              class="text-white bg-transparent text-gray-200  rounded hover:bg-blue-950  px-4 py-2 text-center">
-              <i class="fa fa-sign-out mr-1"></i>
-              <span>Cerrar sesión
-              </span>
-            </button>
+                    <% if (user && user.roles.includes('Administrador')) { %>
+
+                      <!-- Colegiados por Año Section -->
+                      <details class="group">
+                        <summary
+                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                          <i class="fas fa-calendar-alt mr-2"></i>
+                          <span>Colegiados por Año</span>
+                          <i
+                            class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <ul class="pl-8 mt-2 space-y-1">
+                          <li><a href="/colegiado/gestion" class="block px-4 py-2 hover:bg-blue-950 rounded">Lista de
+                              Colegiados
+                              por Fecha de Inscripción</a></li>
+                          <li><a href="/colegiado/provicion"
+                              class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados
+                              por
+                              Título en Provisión Nacional</a></li>
+                        </ul>
+                      </details>
+
+                      <details class="group">
+                        <summary
+                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                          <i class="fa fa-file-text mr-2  " aria-hidden="true"></i>
+                          <span>Creacion de paginas</span>
+                          <i
+                            class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <ul class="pl-8 mt-2 space-y-1">
+                          <li><a href="/slides" class="block px-4 py-2 hover:bg-blue-950 rounded">Imagenes de Slider</a>
+                          </li>
+                          <li><a href="/menus" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de menu</a>
+                          </li>
+                          <li><a href="/opciones" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de
+                              opciones</a>
+                          </li>
+                          <li><a href="/contenidos" class="block px-4 py-2 hover:bg-blue-950 rounded">Contenidos</a>
+                          </li>
+                          <!-- <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li> -->
+                        </ul>
+                      </details>
+                      <!-- Configuración Section -->
+                      <details class="group">
+                        <summary
+                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                          <i class="fas fa-cog mr-2"></i>
+                          <span>Configuración</span>
+                          <i
+                            class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <ul class="pl-8 mt-2 space-y-1">
+                          <li><a href="/usuarios" class="block px-4 py-2 hover:bg-blue-950 rounded">Registro de
+                              Usuarios</a>
+                          </li>
+                          <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Usuarios
+                              Cobradores</a>
+                          </li>
+                          <li><a href="/historial" class="block px-4 py-2 hover:bg-blue-950 rounded">Historial de
+                              Cambios</a>
+                          </li>
+                        </ul>
+                      </details>
+                      <%}%>
+
+                        <button type="button" id="cerrar"
+                          class="text-white bg-transparent text-gray-200  rounded hover:bg-blue-950  px-4 py-2 text-center">
+                          <i class="fa fa-sign-out mr-1"></i>
+                          <span>Cerrar sesión
+                          </span>
+                        </button>
           </div>
         </nav>
       </aside>
@@ -145,32 +179,36 @@
                 <a href="#" class="hover:text-gray-400 max-md:hidden">Blog</a>
                 <a href="#" class="hover:text-gray-400 max-md:hidden">Comunicados oficiales</a>
               </section>
-              <section class="flex items-center rtl:space-x-reverse">
-                <form id="search-form-header">
-                  <!-- <input id="search" type="search" placeholder="Buscar por Matricula, Carnet, Nombre o apellido" /> -->
-                  <input type="text" id="searchCol"
-                    class="bg-gray-50 border border-gray-300  text-sm rounded-lg block w-full p-2.5"
-                    placeholder="Busqueda" required />
-                  <button id="search-button" type="submit" hidden>Buscar</button>
-                </form>
+              <% if (user) { %>
+              <section>
+                <button id="imprimir" class=" bg-gray-100 py-2 px-4 text-gray-500 rounded-lg hover:bg-gray-500 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"> <i class="fa-solid fa-print"></i> Imprimir</button>
               </section>
+              <% }else{%>
+                <button id="imprimir" hidden></button>
+              <% }%>
+
             </div>
           </nav>
           <nav id="nav2"
             class="bg-blue-950 bg-opacity-50 backdrop-blur-sm  <%= user ? 'sticky top-0' : 'fixed' %> z-50 w-full transition-all">
             <div class="container mx-auto px-8 px-4 py-3 mx-auto text-white">
               <div class="flex items-center gap-4">
-                <a href="https://flowbite.com" class="flex items-center space-x-3">
-                  <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
-                  <span class="self-center text-2xl font-semibold whitespace-nowrap">Flowbite</span>
+                <a href="/" flex items-center space-x-3">
+                  <img src="/public/Logo_colegio_de_abogados_Mesa_de_trabajo.png" class="h-8" width="170"
+                    alt="Flowbite Logo" />
                 </a>
                 <ul id="lista" class="flex flex-row font-medium mt-0 space-x-8 text-sm ml-auto">
                 </ul>
 
                 <% if (user) { %>
-                  <h2 class="text-white font-bold text-sm">
-                    <%= user.correo %>
-                  </h2>
+                  <div>
+                    <h2 class="text-white font-bold text-sm">
+                      <%= user.correo %>
+                    </h2>
+                    <p class="text-sm">
+                      <%= user.roles %>
+                    </p>
+                  </div>
                   <% } else { %>
                     <a href="/login">
                       <button type="button"
@@ -182,21 +220,8 @@
               </div>
             </div>
           </nav>
-          <dialog id="dialog-search"
-            class="px-6 py-4 max-w-md w-full max-h-screen rounded-xl items-center justify-start bg-white shadow-lg border border-gray-300">
-            <div class="flex flex-col ">
-              <div class="flex  justify-between w-full mb-4">
-                <h3 class="text-2xl font-semibold text-gray-700">Resultados de Búsqueda</h3>
-                <button id="cerrar-dialog" class="text-gray-500 hover:text-gray-700 focus:outline-none">
-                  <i class="fa-solid fa-xmark fa-2x"></i>
-                </button>
-              </div>
+          <div id="print-section">
 
-              <ul id="result-list" class="flex flex-col w-full overflow-auto max-h-96 space-y-4">
-                <!-- Los resultados se insertarán aquí dinámicamente -->
-              </ul>
-            </div>
-          </dialog>
           <script defer>
             const $ = (el) => document.querySelector(el);
             function toggleSidebar() {
@@ -296,70 +321,23 @@
             };
 
             FetchData();
-            const searchUsers = $("#searchCol");
-            const searchFormHeader = $("#search-form-header");
-            const dialogSearch = $('#dialog-search')
-            const cerrarDialogSearch = $('#cerrar-dialog')
-            searchFormHeader?.addEventListener("submit", async (e) => {
-              e.preventDefault(); // Evitar el envío de formulario o recarga de la página
-              dialogSearch.showModal()
+            $('#imprimir').addEventListener('click', function imprimirPagina() {
+              var contenido = document.getElementById('print-section').innerHTML;
 
-              const searchValue = searchUsers.value.trim(); // Obtener y recortar el valor de búsqueda
+              // Crear una ventana nueva para la impresión
+              var ventanaImpresion = window.open('', '', 'width=800, height=600');
 
-              if (!searchValue) {
-                alert("Por favor, ingrese un término de búsqueda.");
-                return;
-              }
+              // Escribir el contenido en la nueva ventana
+              ventanaImpresion.document.write('<html><head><title>Imprimir Sección</title></head><body>');
+              ventanaImpresion.document.write(contenido);
+              ventanaImpresion.document.write('</body></html>');
 
-              const url = `search?search=${encodeURIComponent(searchValue)}`;
-
-              try {
-                // Hacer la solicitud fetch
-                const response = await fetch(url);
-                if (!response.ok) {
-                  throw new Error("Error en la búsqueda");
-                }
-
-                const data = await response.json(); // Asumimos que la respuesta es un JSON
-                const resultContainer = document.querySelector("#result-list");
-                resultContainer.innerHTML = ""; // Limpiar resultados previos
-                if (data.result.users.length > 0) {
-                  data.result.users.forEach((colegiado) => {
-                    const listItem = document.createElement("li");
-                    listItem.classList.add("w-full");
-                    listItem.innerHTML = `
-                      <div class="max-w-sm w-full rounded-lg overflow-hidden shadow-lg bg-white p-6">
-                          <div class="text-lg font-semibold text-gray-700 mb-3">Información del Colegiado</div>
-                          <div class="space-y-2">
-                              <div>
-                                  <strong class="text-gray-500">ID:</strong>
-                                  <span class="text-gray-800">${colegiado.Matricula}</span>
-                              </div>
-                              <div>
-                                  <strong class="text-gray-500">Nombre:</strong>
-                                  <span class="text-gray-800">${colegiado.Nombres}</span>
-                              </div>
-                              <div>
-                                  <strong class="text-gray-500">Email:</strong>
-                                  <span class="text-gray-800">${colegiado.Correo}</span>
-                              </div>
-                          </div>
-                        </div>
-      `;
-                    resultContainer.appendChild(listItem);
-                  });
-                } else {
-                  const listItem = document.createElement("li");
-                  listItem.innerHTML = `<h2 class="text-gray-500">No se encontraron resultados </h2>`
-                  resultContainer.appendChild(listItem);
-                }
-              } catch (error) {
-                console.error("Error en la búsqueda:", error);
-                alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
-              }
-            });
-            cerrarDialogSearch.addEventListener('click', () => {
-              dialogSearch.close()
+              // Esperar que el contenido se cargue antes de llamar a la impresión
+              ventanaImpresion.document.close();
+              ventanaImpresion.onload = function () {
+                ventanaImpresion.print();  // Imprimir el contenido de la ventana
+                ventanaImpresion.close();   // Cerrar la ventana de impresión después de imprimir
+              };
             })
           </script>
 </body>
