@@ -20,13 +20,13 @@ pids
 lib-cov
 backups
 src/uploads/documentos/*
-!src/uploads/documentos/.gitkeep
+!src/uploads/documentos/
 src/uploads/imagenes/*
-!src/uploads/imagenes/.gitkeep
+!src/uploads/imagenes/
 src/uploads/slides/*
-!src/uploads/slides/.gitkeep
+!src/uploads/slides/
 src/uploads/blog/*
-!src/uploads/blog/.gitkeep
+!src/uploads/blog/
 
 # Coverage directory used by tools like istanbul
 coverage
