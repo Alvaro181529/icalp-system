@@ -1,11 +1,12 @@
-import pool from "../../config/db.connect.js";
-import bcrypt from "bcrypt";
-import crypto from "crypto";
-import jwt from "jsonwebtoken";
-export class AuthModel {
+const pool = require("../../config/db.connect.js");  // Cambiar import a require
+const bcrypt = require("bcryptjs");  // Cambiar import a require
+const crypto = require("crypto");  // Cambiar import a require
+const jwt = require("jsonwebtoken");  // Cambiar import a require
+
+ class AuthModel {
   signIn = async (body) => {
     const { email, password } = body;
-  
+
     try {
       const result = await pool.query(
         `SELECT u.UserId, u.Email, u.User, u.IsApproved, 
@@ -17,29 +18,29 @@ export class AuthModel {
          GROUP BY u.Email, u.User, u.IsApproved, u.PasswordHash`,
         [email]
       );
-  
+
       if (result.length === 0) {
         return { message: "Usuario no encontrado." };
       }
-  
+
       const user = result[0];
-  
+
       if (!user.PasswordHash) {
         return {
           message: "Error interno: El usuario no tiene una contraseña válida.",
         };
       }
-  
+
       if (!password) {
         return { message: "Contraseña no proporcionada." };
       }
-  
+
       // Compara la contraseña proporcionada con la contraseña almacenada (PasswordHash)
       const isValidPassword = await bcrypt.compare(password, user.PasswordHash);
       if (!isValidPassword) {
         return { message: "Contraseña incorrecta." };
       }
-  
+
       // Si es un login exitoso, generamos el token JWT
       const token = jwt.sign(
         {
@@ -50,18 +51,18 @@ export class AuthModel {
         process.env.SECRET_KEY,
         { expiresIn: "1d" }
       );
-  
+
       return {
         message: "Inicio de sesión exitoso.",
         correo: user.Email,
         token,
       };
     } catch (error) {
-      console.error(error);
+      console.error("Error en signIn: ", error);
       return { message: "Error al intentar iniciar sesión." };
     }
   };
-  
+
   signUp = async (body) => {
     const { user, email, password, confirmedPassword } = body;
     const validationError = validate(email, password, confirmedPassword, user);
@@ -106,11 +107,12 @@ export class AuthModel {
 
       return { message: "Usuario registrado exitosamente.", correo: email };
     } catch (error) {
-      console.error(error);
+      console.error("Error en signUp: ", error);
       return { message: "Error al registrar el usuario." };
     }
   };
 }
+
 function validate(email, password, confirmedPassword, user) {
   if (!email) return { message: "El email no puede estar vacío." };
   if (!password) return { message: "La contraseña no puede estar vacía." };
@@ -121,3 +123,4 @@ function validate(email, password, confirmedPassword, user) {
   if (!user) return { message: "El usuario no puede estar vacio" };
   return null;
 }
+module.exports = AuthModel

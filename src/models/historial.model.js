@@ -1,6 +1,6 @@
-import pool from "../../config/db.connect.js";
+const pool = require("../../config/db.connect.js"); 
 
-export class HistorialModel {
+class HistorialModel {
     
     getHistorial = async (page = 1, pageSize = 10) => {
       const offset = (page - 1) * pageSize;
@@ -39,4 +39,4 @@ export class HistorialModel {
       }
     };
   }
-  
+  module.exports = HistorialModel

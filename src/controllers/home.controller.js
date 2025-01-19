@@ -1,13 +1,12 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "url";
+const fs = require("node:fs");
+const path = require("node:path");
+const { fileURLToPath } = require("url");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
-import { ColegiadoModel } from "../models/colegiado.model.js";
+const ColegiadoModel  = require("../models/colegiado.model.js");
 const colegiado = new ColegiadoModel();
-export class HomeController {
+
+class HomeController {
   home = async (req, res) => {
     const { user } = req.session;
     const slidesDir = path.join(__dirname, "../uploads/slides");
@@ -23,6 +22,7 @@ export class HomeController {
       res.render("index", { title: "ICALP", user, result });
     });
   };
+
   search = async (req, res) => {
     try {
       const result = await colegiado.getUsers(req.query);
@@ -32,3 +32,5 @@ export class HomeController {
     }
   };
 }
+
+module.exports = { HomeController }; // Exportación usando module.exports

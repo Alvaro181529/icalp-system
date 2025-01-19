@@ -1,7 +1,6 @@
-import pool from "../../config/db.connect.js";
-import bcrypt from "bcrypt";
-import crypto from "crypto";
-export class UsersModel {
+const pool = require("../../config/db.connect"); // Cambiado de import a require
+const bcrypt = require('bcryptjs');
+class UsersModel {
   getUsers = async (query) => {
     const { search, page = 1, size = 10 } = query;
     const limit = parseInt(size);
@@ -79,10 +78,11 @@ export class UsersModel {
     }
     return { result, message: "Roles actualizados" };
   };
-  patchUsers = async (body,userId) => {
-    const {  user, email, password, confirmedPassword } = body;
+  patchUsers = async (body, userId) => {
+    const { user, email, password, confirmedPassword } = body;
     console.log(body);
-    const saltRounds = 10;
+
+    // Validación de los datos de entrada
     const validationError = validate(email, password, confirmedPassword, user);
     if (validationError) {
       return validationError; // Retorna error de validación
@@ -90,21 +90,22 @@ export class UsersModel {
 
     try {
       // Si se proporcionó una nueva contraseña, validarla
-      if (password !== confirmedPassword) {
+      if (password && password !== confirmedPassword) {
         return { message: "Las contraseñas no coinciden." };
       }
 
-      let hashedPassword;
+      // Preparar la nueva contraseña (si es proporcionada)
+      let hashedPassword = null;
+      let salt = null;
+
       if (password) {
-        console.log(userId);
-        hashedPassword = await bcrypt.hash(password, saltRounds);
+        // Si se proporciona una nueva contraseña, la hasheamos
+        hashedPassword = await bcrypt.hash(password, 10);  // Salt de 10 por defecto
+        salt = bcrypt.genSaltSync(10);  // Generamos la sal para bcryptjs
       }
 
       // Fecha de actualización
-      const updateDate = new Date()
-        .toISOString()
-        .slice(0, 19)
-        .replace("T", " ");
+      const updateDate = new Date().toISOString().slice(0, 19).replace("T", " ");
 
       // Actualización de los datos del usuario
       const updateQuery = `
@@ -118,22 +119,20 @@ export class UsersModel {
           CreateDate = ?
         WHERE UserId = ?
       `;
-      const salt = bcrypt.genSaltSync(saltRounds);
 
-      // Si no se proporciona una nueva contraseña, solo actualizamos los otros campos
+      // Si no se proporciona una nueva contraseña, no actualizamos los campos relacionados con la contraseña
       if (!hashedPassword) {
         await pool.query(updateQuery, [
           user,
           email,
           email.toLowerCase(),
-          null, // Sin cambio en la contraseña
-          null, // Sin cambio en la sal de la contraseña
+          null,   // No actualizamos la contraseña
+          null,   // No actualizamos la sal
           updateDate,
           userId,
         ]);
       } else {
-        console.log(hashedPassword);
-        console.log(salt);
+        // Si se proporciona una nueva contraseña, la actualizamos junto con la sal
         await pool.query(updateQuery, [
           user,
           email,
@@ -147,10 +146,11 @@ export class UsersModel {
 
       return { message: "Usuario actualizado exitosamente.", correo: email };
     } catch (error) {
-      console.error(error);
+      console.error("Error al actualizar el usuario: ", error);
       return { message: "Error al actualizar el usuario." };
     }
   };
+
 
   removeUsers = async (query) => {
     const result = await pool.query(
@@ -181,3 +181,4 @@ function validate(email, password, confirmedPassword, user) {
   if (!user) return { message: "El usuario no puede estar vacio" };
   return null;
 }
+module.exports = UsersModel

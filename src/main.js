@@ -1,33 +1,34 @@
-// import dotenv from 'dotenv'
-// dotenv.config()
-import express from "express";
-import morgan from "morgan";
-import path from "node:path";
-import cookieParser from "cookie-parser";
-import jwt from "jsonwebtoken";
-import { fileURLToPath } from "url";
-import { router as homeRouter } from "./routes/home.route.js";
-import { router as pageRouter } from "./routes/pages.route.js";
-import { router as authRouter } from "./routes/auth.route.js";
-import { router as aportesRouter } from "./routes/aportes.route.js";
-import { router as colegiadosRouter } from "./routes/colegiados.route.js";
-import { router as configRouter } from "./routes/config.route.js";
-import { router as userRouter } from "./routes/usuarios.route.js";
-import { router as talonarioRouter } from "./routes/talonario.route.js";
-import { router as historialRouter } from "./routes/historial.route.js";
-import { router as notaRouter } from "./routes/nota.route.js";
+// Cambiar las importaciones a CommonJS
+const express = require("express");
+const morgan = require("morgan");
+const path = require("node:path");
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const { fileURLToPath } = require("url");
+const homeRouter = require("./routes/home.route.js");
+const pageRouter = require("./routes/pages.route.js");
+const authRouter = require("./routes/auth.route.js");
+const aportesRouter = require("./routes/aportes.route.js");
+const colegiadosRouter = require("./routes/colegiados.route.js");
+const configRouter = require("./routes/config.route.js");
+const userRouter = require("./routes/usuarios.route.js");
+const talonarioRouter = require("./routes/talonario.route.js");
+const historialRouter = require("./routes/historial.route.js");
+const notaRouter = require("./routes/nota.route.js");
 
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
+// Cambiar la manera de obtener __filename y __dirname
 const PORT = process.env.PORT || 3000;
 
 // template
 app.set("view engine", "ejs");
+
 // middleware
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
+
 // token
 app.use((req, res, next) => {
   const token = req.cookies.access_token;
@@ -53,11 +54,11 @@ app.use(pageRouter);
 app.use(historialRouter);
 app.use(notaRouter);
 
-//statics
+// statics
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-//not found Page
+// not found Page
 app.use((req, res) => {
   const { user } = req.session;
   res.status(404).render("404", {
@@ -66,7 +67,8 @@ app.use((req, res) => {
     user,
   }); // Render a custom 404 page
 });
-//puerto
+
+// puerto
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto http://localhost:${PORT}`);
 });

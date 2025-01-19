@@ -1,30 +1,32 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "url";
-import { PagesModel } from "../models/page.model.js";
+const fs = require("node:fs");
+const path = require("node:path");
+const { fileURLToPath } = require("url");
+const  PagesModel  = require("../models/page.model.js");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const pages = new PagesModel();
-export class PagesController {
+
+class PagesController {
   getBlogs = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("config/blog", { title: "Blog", user });
   };
+
   vistas = async (req, res) => {
     const result = await pages.vistas();
     res.json(result);
   };
+
   view = async (req, res) => {
-    const {user} = req.session;
-    const {ruta, pagina} = req.params;
+    const { user } = req.session;
+    const { ruta, pagina } = req.params;
     const result = await pages.view(ruta, pagina);
-    if (!result)return res.redirect("/");
+    if (!result) return res.redirect("/");
     const Title = result.TitleEnglish;
     res.render("paginas/vistas", { title: Title, user, result });
   };
+
   //menu
   menu = async (req, res) => {
     const result = await pages.menu();
@@ -47,35 +49,39 @@ export class PagesController {
     const result = await pages.optionAdd(req.body);
     res.json(result);
   };
+
   optionUpdate = async (req, res) => {
     const result = await pages.optionUpdate(req.body);
     res.json(result);
   };
+
   optionDelete = async (req, res) => {
     const { id } = req.params;
     const result = await pages.optionDelete(id);
     res.json(result);
   };
 
-  //consten
+  //content
   content = async (req, res) => {
     const result = await pages.content(req.query);
     res.json(result);
   };
+
   contentOne = async (req, res) => {
     res.send("¡Hola, Mundo!");
   };
+
   contentAdd = async (req, res) => {
     const { user } = req.session;
     const result = await pages.contentAdd(req.body, user.correo);
     res.json(result);
   };
-  contentUpdate = async (req, res) => {
-    const {user} = req.session;
-    const result = await pages.contentUpdate(req.body, user.correo);
-    res.json(result)
-  };
 
+  contentUpdate = async (req, res) => {
+    const { user } = req.session;
+    const result = await pages.contentUpdate(req.body, user.correo);
+    res.json(result);
+  };
 
   file = async (req, res) => {
     //api
@@ -88,6 +94,7 @@ export class PagesController {
       res.status(400).json({ message: "No se subió ningún archivo" });
     }
   };
+
   getSlide = async (req, res) => {
     const slidesDir = path.join(__dirname, "../uploads/slides");
     fs.readdir(slidesDir, (err, files) => {
@@ -107,6 +114,7 @@ export class PagesController {
       }
     });
   };
+
   deleteSlide = async (req, res) => {
     const { filename } = req.params;
     const slidesDir = path.join(__dirname, "../uploads/slides");
@@ -135,3 +143,5 @@ export class PagesController {
     });
   };
 }
+
+module.exports = { PagesController };  // Exportación usando module.exports

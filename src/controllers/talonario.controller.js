@@ -1,12 +1,14 @@
-import { TalonarioModel } from "../models/talonario.model.js";
+const  TalonarioModel  = require("../models/talonario.model.js");
 
 const talonario = new TalonarioModel();
-export class TalonarioController {
+
+class TalonarioController {
   getTalonario = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("reporte/talonario", { title: "Reporte Talonario", user });
   };
+
   getCheckbox = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 10;
@@ -27,3 +29,5 @@ export class TalonarioController {
     }
   };
 }
+
+module.exports = { TalonarioController };  // Exportación usando module.exports

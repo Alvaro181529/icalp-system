@@ -1,9 +1,10 @@
-import PDFDocument from "pdfkit-table";
-import pool from "../../config/db.connect.js";
-import path from "path";
-import fs from "fs"
-import { AporteController } from "../controllers/aporte.controller.js";
+const PDFDocument = require("pdfkit-table"); // Cambiar import a require
+const pool = require("../../config/db.connect.js"); // Cambiar import a require
+const path = require("path"); // Cambiar import a require
+const fs = require("fs"); // Cambiar import a require
+const { AporteController } = require("../controllers/aporte.controller.js"); // Cambiar import a require
 const aporte = new AporteController();
+
 const generatePdf = (data, aportes, user) => {
   const doc = new PDFDocument();
 
@@ -405,8 +406,7 @@ const generatePdf = (data, aportes, user) => {
   doc.moveDown(2);
   return doc;
 };
-
-export class PdfGenerator {
+class PdfGenerator {
   // Método para generar el PDF
   generatePdf = async (id, res, user) => {
     try {
@@ -447,3 +447,4 @@ export class PdfGenerator {
     }
   };
 }
+module.exports = PdfGenerator

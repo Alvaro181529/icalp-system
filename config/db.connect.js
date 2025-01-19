@@ -1,33 +1,37 @@
-import { promisify } from 'util'
-import dotenv from 'dotenv'
-import mysql from 'mysql'
+const mysql = require('mysql');
+const dotenv = require('dotenv');
+const { promisify } = require('util');
 
-dotenv.config()
+dotenv.config();
+
 const pool = mysql.createPool({
   host: process.env.HOST,
   user: process.env.USER_DATABASE,
   database: process.env.DATABASE,
-  password: process.env.PASSWORD
-})
+  password: process.env.PASSWORD,
+});
+
 pool.getConnection((error, connection) => {
   if (error) {
     // Manejo de errores detallado
     if (error.code === 'PROTOCOL_CONNECTION_LOST') {
-      console.error('Conexión cerrada a la base de datos')
+      console.error('Conexión cerrada a la base de datos');
     } else if (error.code === 'ER_CON_COUNT_ERROR') {
-      console.error('La base de datos ha tenido demasiadas conexiones')
+      console.error('La base de datos ha tenido demasiadas conexiones');
     } else if (error.code === 'ECONNREFUSED') {
-      console.error('La conexión a la base de datos fue rechazada')
+      console.error('La conexión a la base de datos fue rechazada');
     } else {
-      console.error(`Error al conectar con la base de datos: ${error.message}`)
+      console.error(`Error al conectar con la base de datos: ${error.message}`);
     }
   }
 
   if (connection) {
-    console.log('Conexión a la base de datos exitosa')
-    connection.release()
+    console.log('Conexión a la base de datos exitosa');
+    connection.release();
   }
-})
+});
 
-pool.query = promisify(pool.query)
-export default pool
+// Promisificar la función query
+pool.query = promisify(pool.query);
+
+module.exports = pool;

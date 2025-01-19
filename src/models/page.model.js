@@ -1,5 +1,5 @@
-import pool from "../../config/db.connect.js";
-export class PagesModel {
+const pool = require("../../config/db.connect.js"); 
+ class PagesModel {
   view = async (ruta, pagina) => {
     try {
       const result = await pool.query(`SELECT m.MenuNameEnglish, a.TitleEnglish,o.Content ,o.MenuTitle, o.Title,o.Datetime FROM posts o INNER JOIN pages a ON a.PageId = o.PageId INNER JOIN menus m ON m.MenuId = a.MenuId WHERE m.MenuNameEnglish = ? AND a.TitleEnglish = ?`, [ruta, pagina]);
@@ -237,3 +237,4 @@ LEFT JOIN posts o ON o.PageId = p.PageId
   };
 
 }
+module.exports = PagesModel

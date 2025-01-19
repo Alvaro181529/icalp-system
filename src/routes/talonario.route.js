@@ -1,10 +1,14 @@
-import { Router } from 'express'
-import { TalonarioController } from '../controllers/talonario.controller.js'
-import { checkRole } from '../utils/checkRoles.utils.js'
-export const router = Router()
-const talonario = new TalonarioController()
-// aportes pagina
-router.get('/talonario', checkRole(["Administrador","Cobrador", "Cajero"]), talonario.getTalonario)
+const express = require('express');
+const { TalonarioController } = require('../controllers/talonario.controller'); 
+const { checkRole } = require('../utils/checkRoles.utils');
 
-// aportes api
-router.get('/checkbox',checkRole(["Administrador","Cobrador", "Cajero"]), talonario.getCheckbox)
+const router = express.Router();
+const talonario = new TalonarioController();
+
+// Aportes página
+router.get('/talonario', checkRole(["Administrador","Cobrador", "Cajero"]), talonario.getTalonario);
+
+// Aportes API
+router.get('/checkbox', checkRole(["Administrador","Cobrador", "Cajero"]), talonario.getCheckbox);
+
+module.exports = router;

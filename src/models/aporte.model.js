@@ -1,6 +1,5 @@
-import pool from "../../config/db.connect.js";
-
-export class AporteModel {
+const pool = require("../../config/db.connect.js"); 
+class AporteModel {
   getAportesNull = async (param) => {
     const { page = 1, size = 10 } = param || {}; // Asignamos valores por defecto si 'param' es undefined
     const offset = (page - 1) * size; // Calculamos el offset
@@ -382,3 +381,4 @@ ORDER BY
 
   deleteAporte = () => {};
 }
+module.exports = AporteModel

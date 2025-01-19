@@ -1,5 +1,5 @@
-import pool from "../../config/db.connect.js";
-export class NotaModel {
+const pool = require("../../config/db.connect.js"); 
+ class NotaModel {
   getNota = async (page = 1, size = 5, id) => {
     const offset = (page - 1) * size;
 
@@ -65,3 +65,4 @@ export class NotaModel {
     return query;
   };
 }
+module.exports = NotaModel

@@ -1,12 +1,9 @@
-import pool from "../../config/db.connect.js";
-import path from "node:path";
-import fs from 'fs';
-import { fileURLToPath } from "url";
+const pool = require("../../config/db.connect.js");
+const path = require("path"); // Cambiar import a require
+const fs = require("fs"); // Cambiar import a require
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-export class ColegiadoModel {
+// En CommonJS, `__filename` y `__dirname` ya están disponibles
+class ColegiadoModel {
   getUsers = async (query) => {
     const { search, page = 1, size = 10 } = query;
     const limit = parseInt(size);
@@ -651,7 +648,7 @@ export class ColegiadoModel {
     }
   };
   updateFoto = async (file, id, user, archivo) => {
-    DeleteArchivo(archivo)
+    DeleteArchivo(archivo);
     const result = await pool.query(
       `  UPDATE colegiados SET
           Foto = ? , UsuarioModificacion = ?, FechaModificacion = NOW() WHERE ColegiadoId = ?`,
@@ -660,7 +657,7 @@ export class ColegiadoModel {
     return result;
   };
   updateFirma = async (file, id, user, archivo) => {
-    DeleteArchivo(archivo)
+    DeleteArchivo(archivo);
     const result = await pool.query(
       `  UPDATE colegiados SET
       Firma = ? , UsuarioModificacion = ?, FechaModificacion = NOW() WHERE ColegiadoId = ?`,
@@ -681,3 +678,4 @@ function DeleteArchivo(archivo) {
     }
   });
 }
+module.exports = ColegiadoModel;

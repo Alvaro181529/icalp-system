@@ -1,15 +1,17 @@
-import path from "node:path";
-import { fileURLToPath } from "url";
+// Cambiar las importaciones a CommonJS
+const path = require("node:path");
+const { fileURLToPath } = require("url");
+const multer = require("multer");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-import multer from "multer";
+// Cambiar la forma de obtener __filename y __dirname
+
 // Configuración de Multer para la carga de imágenes y archivos
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Determinamos el destino de los archivos basado en su tipo
     const imageTypes = /jpeg|jpg|png|gif/; // Tipos permitidos para imágenes
     const documentTypes = /pdf|docx|txt/; // Tipos permitidos para documentos
+
     // Si es una imagen
     if (
       imageTypes.test(path.extname(file.originalname).toLowerCase()) &&
@@ -20,7 +22,7 @@ const storage = multer.diskStorage({
         // Si tiene la propiedad `slide`, lo guardamos en la carpeta "slides"
         cb(null, path.join(__dirname, "../uploads/slides"));
       } else if (req.body.blog) {
-        // Si tiene la propiedad `slide`, lo guardamos en la carpeta "slides"
+        // Si tiene la propiedad `blog`, lo guardamos en la carpeta "blog"
         cb(null, path.join(__dirname, "../uploads/blog"));
       } else {
         // Si no tiene la propiedad `slide`, lo guardamos en la carpeta "imagenes"
@@ -66,8 +68,8 @@ const storage = multer.diskStorage({
   },
 });
 
-// Exportamos el middleware `upload` que usará la configuración de Multer
-export const upload = multer({
+// Exportar el middleware `upload` usando module.exports
+module.exports.upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // Limitar el tamaño a 10MB (puedes ajustar esto)
   fileFilter: (req, file, cb) => {

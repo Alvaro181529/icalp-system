@@ -1,20 +1,24 @@
-import { ColegiadoModel } from "../models/colegiado.model.js";
-import { PdfGenerator } from "../models/pdfGenerator.model.js";
-import { AporteController } from "./aporte.controller.js";
+const  ColegiadoModel  = require("../models/colegiado.model.js");
+const  PdfGenerator  = require("../models/pdfGenerator.model.js");
+const  {AporteController}  = require("./aporte.controller.js");
+
 const colegiado = new ColegiadoModel();
 const transormerData = new AporteController();
 const pdf = new PdfGenerator();
-export class ColegiadoController {
+
+class ColegiadoController {
   getColegiados = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("colegiados/colegiados", { title: "Colegiados", user });
   };
+
   getColegiadosAlDia = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("colegiados/colegiadoDia", { title: "Colegiados al día", user });
   };
+
   getColegiadosGestion = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
@@ -23,6 +27,7 @@ export class ColegiadoController {
       user,
     });
   };
+
   getColegiadosProvicion = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect("/");
@@ -31,6 +36,7 @@ export class ColegiadoController {
       user,
     });
   };
+
   getColegiado = async (req, res) => {
     const { user } = req.session;
     const { id } = req.params;
@@ -57,6 +63,7 @@ export class ColegiadoController {
       res.status(500).send("Hubo un error al procesar la solicitud");
     }
   };
+
   getCollegiatesPdf = async (req, res) => {
     const { id } = req.params;
     const { user } = req.session;
@@ -73,6 +80,7 @@ export class ColegiadoController {
       res.status(500).json({ message: "Error al obtener los usuarios", error });
     }
   };
+
   getCollegiateByDay = async (req, res) => {
     const result = await colegiado.getUsersByDay(req.query);
     const users = Array.isArray(result.users)
@@ -85,6 +93,7 @@ export class ColegiadoController {
       currentPage: result.currentPage,
     });
   };
+
   getCollegiateByYears = async (req, res) => {
     const result = await colegiado.getUsersByYears(req.query);
     const users = Array.isArray(result.users)
@@ -97,6 +106,7 @@ export class ColegiadoController {
       currentPage: result.currentPage,
     });
   };
+
   getCollegiateByProvition = async (req, res) => {
     const result = await colegiado.getUsersByProvicion(req.query);
     const users = Array.isArray(result.users)
@@ -109,26 +119,30 @@ export class ColegiadoController {
       currentPage: result.currentPage,
     });
   };
+
   getCollegiate = async (req, res) => {
     const { id } = req.params;
     const result = await colegiado.getOneUser(id);
     res.json(result);
   };
+
   postCollegiate = async (req, res) => {
     const { user } = req.session;
     const result = await colegiado.postUser(req.body, user.correo);
     res.json(result);
   };
+
   patchCollegiate = async (req, res) => {
     const { user } = req.session;
     const { id } = req.params;
     const result = await colegiado.updateUser(id, req.body, user.correo);
     res.json(result);
   };
-    patchUploads = async (req, res) => {
+
+  patchUploads = async (req, res) => {
     const { user } = req.session;
     const { id } = req.params;
-    const {Archivo}=req.body
+    const { Archivo } = req.body;
     let result;
     if (req.body.foto)
       result = await colegiado.updateFoto(req.file.filename, id, user.correo, Archivo);
@@ -136,7 +150,10 @@ export class ColegiadoController {
       result = await colegiado.updateFirma(req.file.filename, id, user.correo, Archivo);
     res.json(result);
   };
+
   deleteCollegiate = async (req, res) => {
     res.send("eliminar del colegiado");
   };
 }
+
+module.exports = { ColegiadoController }; // Exportación usando module.exports
