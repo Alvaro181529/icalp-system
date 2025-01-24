@@ -2,7 +2,7 @@ const pool = require("../../config/db.connect"); // Cambiado de import a require
 const bcrypt = require('bcryptjs');
 class UsersModel {
   getUsers = async (query) => {
-    const { search, page = 1, size = 10 } = query;
+    const { search, page = 1, size = 1000 } = query;
     const limit = parseInt(size);
     const offset = (page - 1) * size;
     let baseQuery = `
