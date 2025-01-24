@@ -182,7 +182,7 @@
 
             // Realiza la búsqueda de usuarios
             const fetchAndUpdateTable = async (searchValue) => {
-                const url = `/users?search=${encodeURIComponent(searchValue)}`;
+                const url = `/users?search=${encodeURIComponent(searchValue)}&size=1000`;
                 try {
                     const response = await fetch(url);
                     const data = await response.json();
