@@ -174,10 +174,6 @@
               </section>
               <section class="flex items-center text-white space-x-6 ">
                 <a href="/" class="hover:text-gray-400 max-md:hidden">Inicio</a>
-                <a href="#" class="hover:text-gray-400 max-md:hidden">Centro de concilicion</a>
-                <a href="#" class="hover:text-gray-400 max-md:hidden">Convocatorias</a>
-                <a href="#" class="hover:text-gray-400 max-md:hidden">Blog</a>
-                <a href="#" class="hover:text-gray-400 max-md:hidden">Comunicados oficiales</a>
               </section>
               <% if (user) { %>
               <section>
@@ -193,13 +189,21 @@
             class="bg-blue-950 bg-opacity-50 backdrop-blur-sm  <%= user ? 'sticky top-0' : 'fixed' %> z-50 w-full transition-all">
             <div class="container mx-auto px-8 px-4 py-3 mx-auto text-white">
               <div class="flex items-center gap-4">
+                <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
+                  <span class="sr-only">Open main menu</span>
+                  <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                  </svg>
+              </button>
                 <a href="/" flex items-center space-x-3">
                   <img src="/public/Logo_colegio_de_abogados_Mesa_de_trabajo.png" class="h-8" width="170"
                     alt="Flowbite Logo" />
                 </a>
-                <ul id="lista" class="flex flex-row font-medium mt-0 space-x-8 text-sm ml-auto">
-                </ul>
-
+                <div class="items-center justify-between hidden md:flex md:w-auto    ml-auto" id="navbar-sticky">
+                  <ul id="lista" class="flex flex-col md:flex-row font-medium mt-0 space-x-8 text-sm">
+                  </ul>
+                </div>
+                  
                 <% if (user) { %>
                   <div>
                     <h2 class="text-white font-bold text-sm">
@@ -219,6 +223,7 @@
                     <% } %>
               </div>
             </div>
+     
           </nav>
           <div id="print-section">
 
