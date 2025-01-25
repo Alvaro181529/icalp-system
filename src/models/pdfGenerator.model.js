@@ -23,7 +23,7 @@ const generatePdf = (data, aportes, user) => {
     const foto = fs.existsSync(fotoPath) ? fotoPath : fotoPathEmpty;
   
     // Ruta a la imagen de la foto
-    doc.image(foto, { width: 100, x: 50, y: doc.y }); // Posiciona la foto a la izquierda
+    doc.image(foto, { width: 100, x: 70, y: doc.y }); // Posiciona la foto a la izquierda
     doc.moveDown(1); // Espacio después de la imagen
   }
   
@@ -40,7 +40,7 @@ const generatePdf = (data, aportes, user) => {
     doc.image(firma, { width: 100, x: 450, y: doc.y - 15 }); // Posiciona la firma a la derecha
     doc.moveDown(1); // Espacio después de la firma
   }
-  doc.moveDown(6);
+  doc.moveDown(7);
 
   // Título "INFORMACIÓN PERSONAL" subrayado
   doc

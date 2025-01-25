@@ -7,6 +7,9 @@ const ColegiadoModel  = require("../models/colegiado.model.js");
 const colegiado = new ColegiadoModel();
 
 class HomeController {
+  index = async (req, res) => {
+    return res.redirect("/inicio");
+  };
   home = async (req, res) => {
     const { user } = req.session;
     const slidesDir = path.join(__dirname, "../uploads/slides");

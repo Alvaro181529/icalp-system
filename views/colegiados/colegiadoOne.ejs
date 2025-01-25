@@ -1050,7 +1050,7 @@
                     talonario</label>
                   <input
                     class="mt-1 p-3 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    id="talonario" type="number" name="talonario" required>
+                    id="talonario" type="number" name="talonario">
                 </div>
 
                 <div>
@@ -1644,8 +1644,8 @@
 
       mesInicial.addEventListener('change', sincronizarFechas, calcularMeses);
       anoInicial.addEventListener('change', sincronizarFechas, calcularMeses);
-      mesFinal.addEventListener('change', calcularMeses);
-      anoFinal.addEventListener('change', calcularMeses);
+      mesFinal.addEventListener('change',sincronizarFechas, calcularMeses);
+      anoFinal.addEventListener('change', sincronizarFechas,calcularMeses);
 
 
       function sincronizarFechas() {
