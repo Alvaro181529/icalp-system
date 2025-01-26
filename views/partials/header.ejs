@@ -32,7 +32,7 @@
   <% if (user) { %>
     <div class="min-h-screen flex">
       <!-- Sidebar -->
-      <aside class="bg-blue-900 text-white w-64 p-4 fixed top-0 left-0 bottom-0 z-20 overflow-y-auto">
+      <aside class="bg-gray-900 text-white w-64 p-4 fixed top-0 left-0 bottom-0 z-20 overflow-y-auto">
         <nav>
           <h3 class="font-bold text-xl mb-4 border-b pb-2">Panel</h3>
           <div class="space-y-2">
@@ -40,15 +40,15 @@
             <% if (user && user.roles.includes('Administrador') ||user.roles.includes('Cobrador')) { %>
               <!-- Colegiados Section -->
               <details class="group">
-                <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-gray-700 cursor-pointer">
                   <i class="fas fa-users mr-2"></i>
                   <span>Colegiados</span>
                   <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
                 </summary>
                 <ul class="pl-8 mt-2 space-y-1">
-                  <li><a href="/colegiados" class="block px-4 py-2 hover:bg-blue-950 rounded">Listado de Colegiados</a>
+                  <li><a href="/colegiados" class="block px-4 py-2 hover:bg-gray-700 rounded">Listado de Colegiados</a>
                   </li>
-                  <li><a href="/colegiado/dia" class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados al día</a>
+                  <li><a href="/colegiado/dia" class="block px-4 py-2 hover:bg-gray-700 rounded">Colegiados al día</a>
                   </li>
                 </ul>
               </details>
@@ -58,7 +58,7 @@
 
                   <!-- Reportes Section -->
                   <details class="group">
-                    <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                    <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-gray-700 cursor-pointer">
                       <i class="fas fa-chart-bar mr-2"></i>
                       <span>Reportes</span>
                       <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
@@ -67,20 +67,20 @@
                       <% if (user && user.roles.includes('Administrador') || user.roles.includes('Contador') ||
                         user.roles.includes('Cajero') ){ %>
 
-                        <li><a href="/aportes" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de Aportes</a>
+                        <li><a href="/aportes" class="block px-4 py-2 hover:bg-gray-700 rounded">Reporte de Aportes</a>
                         </li>
-                        <li><a href="/aporte-cobrador" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes
+                        <li><a href="/aporte-cobrador" class="block px-4 py-2 hover:bg-gray-700 rounded">Reportes
                             mensuales
                             por
                             cobrador</a></li>
-                        <li><a href="/aporte-mensual" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes
+                        <li><a href="/aporte-mensual" class="block px-4 py-2 hover:bg-gray-700 rounded">Reportes
                             mensuales</a>
                         </li>
 
-                        <li><a href="/aportes-anulados" class="block px-4 py-2 hover:bg-blue-950 rounded">Anulación de
+                        <li><a href="/aportes-anulados" class="block px-4 py-2 hover:bg-gray-700 rounded">Anulación de
                             aportes</a></li>
                         <%}%>
-                          <li><a href="/talonario" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de
+                          <li><a href="/talonario" class="block px-4 py-2 hover:bg-gray-700 rounded">Reporte de
                               Talonarios</a>
                           </li>
                     </ul>
@@ -92,18 +92,18 @@
                       <!-- Colegiados por Año Section -->
                       <details class="group">
                         <summary
-                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-gray-700 cursor-pointer">
                           <i class="fas fa-calendar-alt mr-2"></i>
                           <span>Colegiados por Año</span>
                           <i
                             class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
                         </summary>
                         <ul class="pl-8 mt-2 space-y-1">
-                          <li><a href="/colegiado/gestion" class="block px-4 py-2 hover:bg-blue-950 rounded">Lista de
+                          <li><a href="/colegiado/gestion" class="block px-4 py-2 hover:bg-gray-700 rounded">Lista de
                               Colegiados
                               por Fecha de Inscripción</a></li>
                           <li><a href="/colegiado/provicion"
-                              class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados
+                              class="block px-4 py-2 hover:bg-gray-700 rounded">Colegiados
                               por
                               Título en Provisión Nacional</a></li>
                         </ul>
@@ -111,42 +111,42 @@
 
                       <details class="group">
                         <summary
-                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-gray-700 cursor-pointer">
                           <i class="fa fa-file-text mr-2  " aria-hidden="true"></i>
                           <span>Creacion de paginas</span>
                           <i
                             class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
                         </summary>
                         <ul class="pl-8 mt-2 space-y-1">
-                          <li><a href="/slides" class="block px-4 py-2 hover:bg-blue-950 rounded">Imagenes de Slider</a>
+                          <li><a href="/slides" class="block px-4 py-2 hover:bg-gray-700 rounded">Imagenes de Slider</a>
                           </li>
-                          <li><a href="/menus" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de menu</a>
+                          <li><a href="/menus" class="block px-4 py-2 hover:bg-gray-700 rounded">Creacion de menu</a>
                           </li>
-                          <li><a href="/opciones" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de
+                          <li><a href="/opciones" class="block px-4 py-2 hover:bg-gray-700 rounded">Creacion de
                               opciones</a>
                           </li>
-                          <li><a href="/contenidos" class="block px-4 py-2 hover:bg-blue-950 rounded">Contenidos</a>
+                          <li><a href="/contenidos" class="block px-4 py-2 hover:bg-gray-700 rounded">Contenidos</a>
                           </li>
-                          <!-- <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li> -->
+                          <!-- <li><a href="/blogs" class="block px-4 py-2 hover:bg-gray-700 rounded">Creación de Blogs</a></li> -->
                         </ul>
                       </details>
                       <!-- Configuración Section -->
                       <details class="group">
                         <summary
-                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-gray-700 cursor-pointer">
                           <i class="fas fa-cog mr-2"></i>
                           <span>Configuración</span>
                           <i
                             class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
                         </summary>
                         <ul class="pl-8 mt-2 space-y-1">
-                          <li><a href="/usuarios" class="block px-4 py-2 hover:bg-blue-950 rounded">Registro de
+                          <li><a href="/usuarios" class="block px-4 py-2 hover:bg-gray-700 rounded">Registro de
                               Usuarios</a>
                           </li>
-                          <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Usuarios
+                          <li><a href="/cobradores" class="block px-4 py-2 hover:bg-gray-700 rounded">Usuarios
                               Cobradores</a>
                           </li>
-                          <li><a href="/historial" class="block px-4 py-2 hover:bg-blue-950 rounded">Historial de
+                          <li><a href="/historial" class="block px-4 py-2 hover:bg-gray-700 rounded">Historial de
                               Cambios</a>
                           </li>
                         </ul>
@@ -154,7 +154,7 @@
                       <%}%>
 
                         <button type="button" id="cerrar"
-                          class="text-white bg-transparent text-gray-200  rounded hover:bg-blue-950  px-4 py-2 text-center">
+                          class="text-white bg-transparent text-gray-200  rounded hover:bg-gray-700  px-4 py-2 text-center">
                           <i class="fa fa-sign-out mr-1"></i>
                           <span>Cerrar sesión
                           </span>
@@ -168,8 +168,8 @@
             <div
               class=" flex flex-wrap justify-between items-center mx-auto container mx-auto px-8  p-4 transition-all z-20">
               <section class="grid">
-                <a href="mailto:presidencia@icalp.org.bo"
-                  class="text-sm text-gray-300 hover:underline">presidencia@icalp.org.bo</a>
+                <a href="mailto:marketingmistico.bo@gmail.com"
+                  class="text-sm text-gray-300 hover:underline">marketingmistico.bo@gmail.com</a>
                 <a href="tel:+59122407713" class="text-sm text-gray-300 hover:underline">(591) - 22407713</a>
               </section>
               <section class="flex items-center text-white space-x-6 ">
@@ -186,7 +186,7 @@
             </div>
           </nav>
           <nav id="nav2"
-            class="bg-blue-950 bg-opacity-50 backdrop-blur-sm  <%= user ? 'sticky top-0' : 'fixed' %> z-50 w-full transition-all">
+            class="bg-yellow-950 bg-opacity-50 backdrop-blur-sm  <%= user ? 'sticky top-0' : 'fixed' %> z-50 w-full transition-all">
             <div class="container mx-auto px-8 px-4 py-3 mx-auto text-white">
               <div class="flex items-center gap-4">
                 <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
@@ -299,7 +299,7 @@
                   `;
 
                   const dropdownHTML = `
-                    <div id="dropdownNavbar-${item.MenuId}" class="z-10 hidden text-sm bg-blue-950 bg-opacity-30 backdrop-blur-md divide-y divide-gray-100 rounded-lg shadow w-44 absolute mt-2">
+                    <div id="dropdownNavbar-${item.MenuId}" class="z-10 hidden text-sm bg-gray-700 bg-opacity-30 backdrop-blur-md divide-y divide-gray-100 rounded-lg shadow w-44 absolute mt-2">
                     <ul class="py-2 text-sm text-white " aria-labelledby="dropdownLargeButton">
                       ${item.pages.map(page => `
                         <li>
