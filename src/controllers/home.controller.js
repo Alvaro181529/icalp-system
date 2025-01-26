@@ -22,7 +22,7 @@ class HomeController {
           fs.statSync(path.join(slidesDir, file)).isFile()
         );
       }
-      res.render("index", { title: "ICALP", user, result });
+      res.render("index", { title: "MISTICO", user, result });
     });
   };
 
