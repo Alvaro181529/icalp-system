@@ -34,7 +34,6 @@ class UsersController {
   };
 
   async patchUsers (req, res)  {
-    console.log("object");
     const { id } = req.params;
     const result = await user.patchUsers(req.body, id);
     res.json(result);

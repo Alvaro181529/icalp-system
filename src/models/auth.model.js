@@ -91,8 +91,6 @@ const jwt = require("jsonwebtoken");  // Cambiar import a require
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
       const userId = crypto.randomBytes(16).toString('hex');
-      console.log("userId")
-      console.log(userId)
       const salt = bcrypt.genSaltSync(saltRounds);
 
       await pool.query(createQuery, [

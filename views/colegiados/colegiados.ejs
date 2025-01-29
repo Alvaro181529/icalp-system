@@ -4,6 +4,12 @@
       <form id="search-form" method="get" class="w-full flex items-center">
         <input id="search" type="text" name="search" placeholder="Buscar por Matricula o Nombre"
           class="w-full px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <input id="searchPaterno"
+          class="py-2 px-4 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+          type="search" placeholder="Apellido paterno (opcional)" name="">
+        <input id="searchMaterno"
+          class="py-2 px-4 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+          type="search" placeholder="Apellido materno (opcional)" name="">
         <button id="search-button" type="submit"
           class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
           Buscar
@@ -52,7 +58,7 @@
           Anterior
         </button>
         <button id="next-page"
-           class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed   disabled:opacity-50 disabled:cursor-not-allowed">
+          class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed   disabled:opacity-50 disabled:cursor-not-allowed">
           Siguiente
         </button>
       </div>
@@ -387,12 +393,12 @@
             <div>
               <label htmlFor="curriculumVitae" class="block text-sm font-medium text-gray-700 mb-1">Curriculum
                 Vitae:</label>
-                <select name="curriculumVitae" id="curriculumVitae"
+              <select name="curriculumVitae" id="curriculumVitae"
                 class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="Si">Si</option>
                 <option value="No">No</option>
               </select>
-             </div>
+            </div>
             <div>
               <label htmlFor="estado" class="block text-sm font-medium text-gray-700 mb-1">Estado:</label>
               <select name="estado" id="estado"
@@ -865,10 +871,14 @@
       const formRegistro = $("#personalDataForm");
       const itemPage = $("#item-page");
       const search = $("#search");
+      const searchPaterno = $("#searchPaterno");
+      const searchMaterno = $("#searchMaterno");
       const searchForm = $("#search-form");
       const resultTableBody = $("#result-table tbody");
       let page = 1; // Página actual
       let searchValue = "";  // Guardar el valor de búsqueda actual
+      let searchValueM = "";  // Guardar el valor de búsqueda actual
+      let searchValueP = "";  // Guardar el valor de búsqueda actual
 
       const updateTable = (users, totalPages) => {
         resultTableBody.innerHTML = "";
@@ -896,8 +906,8 @@
         currentPageSpan.textContent = `página ${page}`;
         itemPage.textContent = totalPages;
       };
-      const fetchAndUpdateTable = async (searchValue) => {
-        const url = `/collegiate?search=${encodeURIComponent(searchValue || "")}&page=${page}&pageSize=10`;
+      const fetchAndUpdateTable = async (searchValue, searchValueP, searchValueM) => {
+        const url = `/collegiate?search=${encodeURIComponent(searchValue || "")}&paterno=${encodeURIComponent(searchValueP || "")}&materno=${encodeURIComponent(searchValueM || "")}&page=${page}&pageSize=10`;
 
         try {
           const response = await fetch(url);
@@ -977,9 +987,12 @@
         e.preventDefault(); // Evitar el envío de formulario o recarga de la página
 
         const searchValue = search.value.trim(); // Obtener y recortar el valor de búsqueda
+        const searchValueMat = searchMaterno.value.trim(); // Obtener y recortar el valor de búsqueda
+        const searchValuePat = searchPaterno.value.trim(); // Obtener y recortar el valor de búsqueda
+
         page = 1;
         // Ejecutar la búsqueda con el valor introducido por el usuario
-        fetchAndUpdateTable(searchValue);
+        fetchAndUpdateTable(searchValue, searchValuePat, searchValueMat);
       });
       document.getElementById("openDialogButton").addEventListener("click", function () {
         document.getElementById("personalDataDialog").showModal();

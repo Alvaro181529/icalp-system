@@ -56,9 +56,11 @@
     <div class="container mx-auto px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-16">
       <div class="text-center">
         <h2 class="text-xl uppercase mb-2">QUIERO COLEGIARME</h2>
+        <a href="view/Documentos/Nuevos Colegiados">
         <button
           class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR
           AHORA</button>
+        </a>
       </div>
       <div class="text-center">
         <h2 class="text-xl uppercase mb-2">¿CUANDO SALDRAN NUEVOS DIPLOMADOS?</h2>
@@ -80,10 +82,16 @@
     <h1 class="text-center text-3xl font-bold mb-6">
       Buscador colegiados
     </h1>
-    <form id="search-form-header" action="" class="flex items-center ">
+   <form id="search-form-header" action="" class="flex items-center ">
       <input id="searchCol"
         class="py-3 px-4 w-full rounded-l-lg bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
-        type="search" placeholder="Busca por Nombre, Carnet o Matricula, Especialidades" name="" >
+        type="search" placeholder="Nombre, Matricula, Especialidades" name="">
+      <input id="searchPaterno"
+        class="py-3 px-4 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+        type="search" placeholder="Apellido paterno (opcional)" name="">
+      <input id="searchMaterno"
+        class="py-3 px-4 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+        type="search" placeholder="Apellido materno (opcional)" name="">
       <button id="search-button" type="submit"
         class="px-8 py-3 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
         Buscar
@@ -206,7 +214,7 @@
       <div class="flex flex-col md:flex-row">
         <!-- Image Section -->
         <div class="md:w-1/3">
-          <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-tz40Py2YYaCpfbEFk6FPlZHUHMDlND.png"
+          <img src="/public/img/justice-and-law.jpg"
             alt="Martillo de juez" class="w-full h-full object-cover">
         </div>
 
@@ -269,7 +277,7 @@
       </div>
     </div>
   </div>
-  <dialog id="dialog-search" class="px-6 py-4 max-w-6xl w-full max-h-[80vh] rounded-xl bg-white shadow-lg border border-gray-300">
+  <dialog id="dialog-search" class="px-6 py-4 max-w-8xl w-full max-h-[80vh] rounded-xl bg-white shadow-lg border border-gray-300">
     <div class="flex flex-col">
       <!-- Encabezado dentro del dialog sin la clase 'fixed' -->
       <div class="flex justify-between w-full mb-4">
@@ -291,17 +299,19 @@
     const dialogSearch = $('#dialog-search')
     const cerrarDialogSearch = $('#cerrar-dialog')
     searchFormHeader?.addEventListener("submit", async (e) => {
-      e.preventDefault(); // Evitar el envío de formulario o recarga de la página
-      dialogSearch.showModal()
-
+       e.preventDefault(); // Evitar el envío de formulario o recarga de la página
+      
+      const searchValueM = searchMaterno.value.trim(); // Obtener y recortar el valor de búsqueda
+      const searchValueP = searchPaterno.value.trim(); // Obtener y recortar el valor de búsqueda
       const searchValue = searchUsers.value.trim(); // Obtener y recortar el valor de búsqueda
-
-      if (!searchValue) {
+      
+      if (!searchValue && !searchValueM && !searchValueP) {
         alert("Por favor, ingrese un término de búsqueda.");
         return;
       }
+      dialogSearch.showModal()
 
-      const url = `search?search=${encodeURIComponent(searchValue)}`;
+      const url = `search?search=${encodeURIComponent(searchValue)}&paterno=${encodeURIComponent(searchValueP)}&materno=${encodeURIComponent(searchValueM)}`;
 
       try {
         // Hacer la solicitud fetch
