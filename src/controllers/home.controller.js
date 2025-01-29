@@ -1,5 +1,5 @@
-const fs = require("node:fs");
-const path = require("node:path");
+const fs = require("fs");
+const path = require("path");
 const { fileURLToPath } = require("url");
 
 
@@ -7,10 +7,10 @@ const ColegiadoModel  = require("../models/colegiado.model.js");
 const colegiado = new ColegiadoModel();
 
 class HomeController {
-  index = async (req, res) => {
+  async index(req, res) {
     return res.redirect("/inicio");
   };
-  home = async (req, res) => {
+ async home (req, res) {
     const { user } = req.session;
     const slidesDir = path.join(__dirname, "../uploads/slides");
     fs.readdir(slidesDir, (err, files) => {
@@ -26,7 +26,7 @@ class HomeController {
     });
   };
 
-  search = async (req, res) => {
+ async search (req, res) {
     try {
       const result = await colegiado.getUsers(req.query);
       res.json({ result });

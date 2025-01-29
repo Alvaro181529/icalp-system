@@ -1,25 +1,24 @@
 const  ColegiadoModel  = require("../models/colegiado.model.js");
 const  PdfGenerator  = require("../models/pdfGenerator.model.js");
-const  {AporteController}  = require("./aporte.controller.js");
+const  { transformarJson}  = require("./aporte.controller.js");
 
 const colegiado = new ColegiadoModel();
-const transormerData = new AporteController();
 const pdf = new PdfGenerator();
 
 class ColegiadoController {
-  getColegiados = async (req, res) => {
+  getColegiados (req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("colegiados/colegiados", { title: "Colegiados", user });
   };
 
-  getColegiadosAlDia = async (req, res) => {
+  getColegiadosAlDia (req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("colegiados/colegiadoDia", { title: "Colegiados al día", user });
   };
 
-  getColegiadosGestion = async (req, res) => {
+  getColegiadosGestion (req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("colegiados/colegiadoGestion", {
@@ -28,7 +27,7 @@ class ColegiadoController {
     });
   };
 
-  getColegiadosProvicion = async (req, res) => {
+  getColegiadosProvicion (req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("colegiados/colegiadoProvicion", {
@@ -37,7 +36,7 @@ class ColegiadoController {
     });
   };
 
-  getColegiado = async (req, res) => {
+ async getColegiado (req, res){
     const { user } = req.session;
     const { id } = req.params;
 
@@ -64,13 +63,13 @@ class ColegiadoController {
     }
   };
 
-  getCollegiatesPdf = async (req, res) => {
+  async getCollegiatesPdf (req, res){
     const { id } = req.params;
     const { user } = req.session;
     const result = await pdf.generatePdf(id, res, user.correo);
   };
 
-  getCollegiates = async (req, res) => {
+  async getCollegiates (req, res) {
     const result = await colegiado.getUsers(req.query);
     const { user } = req.session;
     if (!user) return res.redirect("/");
@@ -81,11 +80,11 @@ class ColegiadoController {
     }
   };
 
-  getCollegiateByDay = async (req, res) => {
+  async getCollegiateByDay (req, res) {
     const result = await colegiado.getUsersByDay(req.query);
     const users = Array.isArray(result.users)
-      ? result.users.map((item) => transormerData.transformarJson(item)) // Si es un array
-      : [transormerData.transformarJson(result.users)];
+      ? result.users.map((item)=> transformarJson(item)) // Si es un array
+      : [transformarJson(result.users)];
     res.json({
       users,
       total: result.total,
@@ -94,11 +93,11 @@ class ColegiadoController {
     });
   };
 
-  getCollegiateByYears = async (req, res) => {
+  async getCollegiateByYears (req, res)  {
     const result = await colegiado.getUsersByYears(req.query);
     const users = Array.isArray(result.users)
-      ? result.users.map((item) => transormerData.transformarJson(item)) // Si es un array
-      : [transormerData.transformarJson(result.users)];
+      ? result.users.map((item)=> transformarJson(item)) // Si es un array
+      : [transformarJson(result.users)];
     res.json({
       users,
       total: result.total,
@@ -107,11 +106,11 @@ class ColegiadoController {
     });
   };
 
-  getCollegiateByProvition = async (req, res) => {
+  async getCollegiateByProvition (req, res) {
     const result = await colegiado.getUsersByProvicion(req.query);
     const users = Array.isArray(result.users)
-      ? result.users.map((item) => transormerData.transformarJson(item)) // Si es un array
-      : [transormerData.transformarJson(result.users)];
+      ? result.users.map((item)=> transformarJson(item)) // Si es un array
+      : [transformarJson(result.users)];
     res.json({
       users,
       total: result.total,
@@ -120,26 +119,26 @@ class ColegiadoController {
     });
   };
 
-  getCollegiate = async (req, res) => {
+  async getCollegiate (req, res) {
     const { id } = req.params;
     const result = await colegiado.getOneUser(id);
     res.json(result);
   };
 
-  postCollegiate = async (req, res) => {
+ async postCollegiate (req, res) {
     const { user } = req.session;
     const result = await colegiado.postUser(req.body, user.correo);
     res.json(result);
   };
 
-  patchCollegiate = async (req, res) => {
+ async patchCollegiate (req, res) {
     const { user } = req.session;
     const { id } = req.params;
     const result = await colegiado.updateUser(id, req.body, user.correo);
     res.json(result);
   };
 
-  patchUploads = async (req, res) => {
+  async patchUploads (req, res) {
     const { user } = req.session;
     const { id } = req.params;
     const { Archivo } = req.body;
@@ -151,7 +150,7 @@ class ColegiadoController {
     res.json(result);
   };
 
-  deleteCollegiate = async (req, res) => {
+  deleteCollegiate (req, res) {
     res.send("eliminar del colegiado");
   };
 }

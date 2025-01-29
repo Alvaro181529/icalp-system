@@ -1,38 +1,38 @@
-const AporteModel  = require("../models/aporte.model.js");
+const AporteModel = require("../models/aporte.model.js");
 
 const aporte = new AporteModel();
 
 class AporteController {
-  getAportes = async (req, res) => {
+  async getAportes(req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("aportes/aporte", { title: "Aportes", user });
-  };
+  }
 
-  getAportesNull = async (req, res) => {
+  async getAportesNull(req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("aportes/anulado", { title: "Aportes anulado", user });
-  };
+  }
 
-  getAportesMensual = async (req, res) => {
+  async getAportesMensual(req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("aportes/mensual", { title: "Aporte mensual", user });
-  };
+  }
 
-  getAportesCobrador = async (req, res) => {
+  async getAportesCobrador(req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("aportes/cobrador", { title: "Aporte por Cobrador", user });
-  };
+  }
 
-  getContribution = async (req, res) => {
+  async getContribution(req, res) {
     try {
       const result = await aporte.getAporte(req.query);
       const resultadoTransformado = Array.isArray(result.users)
-        ? result.users.map((item) => this.transformarJson(item))
-        : [this.transformarJson(result.users)];
+        ? result.users.map((item) => transformarJson(item))
+        : [transformarJson(result.users)];
       res.json({
         users: resultadoTransformado,
         totalMonto: result.totalMonto,
@@ -47,14 +47,14 @@ class AporteController {
         error: error.message || error,
       });
     }
-  };
+  }
 
-  getContributionNull = async (req, res) => {
+  async getContributionNull(req, res) {
     const result = await aporte.getAportesNull(req.query);
     res.json(result);
-  };
+  }
 
-  getContributionsMensual = async (req, res) => {
+  async getContributionsMensual(req, res) {
     try {
       const result = await aporte.getAportesMensual(req.query);
       const months = [
@@ -80,9 +80,9 @@ class AporteController {
       console.error("Error al obtener los aportes mensuales:", error);
       res.status(500).json({ error: "Error al obtener los datos" });
     }
-  };
+  }
 
-  getContributionsCobrador = async (req, res) => {
+  async getContributionsCobrador(req, res) {
     try {
       const result = await aporte.getAportesPorCobrador(req.query);
       const months = [
@@ -108,111 +108,122 @@ class AporteController {
       console.error("Error al obtener los aportes mensuales:", error);
       res.status(500).json({ error: "Error al obtener los datos" });
     }
-  };
+  }
 
-  getContributions = async (req, res) => {
+  async getContributions(req, res) {
     const { id } = req.params;
     try {
       const result = await aporte.getAporteByOne(id);
       const resultadoTransformado = Array.isArray(result)
-        ? result.map((item) => this.transformarJson(item))
-        : this.transformarJson(result);
+        ? result.map(function(item) {return transformarJson(item)})
+        : transformarJson(result);
+        console.log(resultadoTransformado);
       res.json(resultadoTransformado);
     } catch (e) {
       console.error(e);
       res.status(500).json({ message: "Hubo un error al obtener los datos" });
     }
-  };
+  }
 
-  patchNullContributions = async (req, res) => {
+  async patchNullContributions(req, res) {
     const { id } = req.params;
     const { motivo } = req.body;
     const { user } = req.session;
     const result = await aporte.patchAporteNull(id, user.correo, motivo);
     res.json(result);
-  };
+  }
 
-  postContributions = async (req, res) => {
+  async postContributions(req, res) {
     const { user } = req.session;
     const result = await aporte.postAporte(req.body, user.correo);
     res.json(result);
-  };
+  }
 
-  patchContributions = async (req, res) => {
+  async patchContributions(req, res) {
     res.json({ message: "Aporte actualizado" });
-  };
+  }
 
-  deleteContributions = async (req, res) => {};
+  deleteContributions(req, res) {}
 
-  transformarJson = (data) => {
-    const months = [
-      "Enero",
-      "Febrero",
-      "Marzo",
-      "Abril",
-      "Mayo",
-      "Junio",
-      "Julio",
-      "Agosto",
-      "Septiembre",
-      "Octubre",
-      "Noviembre",
-      "Diciembre",
-    ];
 
-    if (
-      !data.AnoInicial ||
-      !data.MesInicial ||
-      !data.AnoFinal ||
-      !data.MesFinal
-    ) {
-      return {
-        ...data,
-        FechaInicial: "Fecha no válida",
-        FechaFinal: "Fecha no válida",
-        Meses: 0,
-        Faltante: 0,
-      };
+}
+const months = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
+function transformarJson(data) {
+  if(!data.MesInicial ){
+    data.MesInicial = 1
+  }
+  if (!data.MesFinal) {
+    if (data.Monto == 220 || data.Monto == 240) {
+      data.MesFinal = 12; // Asigna 12 si Monto es 220
+    } else {
+      data.MesFinal = 1;  // Asigna 1 en otros casos
     }
-
-    const convertirFechaTexto = (ano, mes) => {
-      if (ano && mes) {
-        return `${months[mes - 1]} ${ano}`;
-      }
-      return "Fecha no válida";
-    };
-
-    const calcularCantidadMeses = (anoInicial, mesInicial, anoFinal, mesFinal) => {
-      const fechaInicial = new Date(anoInicial, mesInicial - 1);
-      const fechaFinal = new Date(anoFinal, mesFinal - 1);
-      const diferenciaEnMeses =
-        (fechaFinal.getFullYear() - fechaInicial.getFullYear()) * 12 +
-        (fechaFinal.getMonth() - fechaInicial.getMonth());
-      return diferenciaEnMeses + 1;
-    };
-
-    const anoInicial = data.AnoInicial;
-    const mesInicial = data.MesInicial;
-    const anoFinal = data.AnoFinal;
-    const mesFinal = data.MesFinal;
-
-    const fechaInicialTexto = convertirFechaTexto(anoInicial, mesInicial);
-    const fechaFinalTexto = convertirFechaTexto(anoFinal, mesFinal);
-    const cantidadMeses = calcularCantidadMeses(anoInicial, mesInicial, anoFinal, mesFinal);
-    const montoFaltante = cantidadMeses * 20 - data.Monto;
-    const mesesDeuda = calcularMeses(data.MesFinal, data.AnoFinal);
-
+  }
+  
+  // Validación de los datos de entrada
+  if (!data.AnoInicial || !data.MesInicial || !data.AnoFinal || !data.MesFinal) {
     return {
       ...data,
-      FechaInicial: fechaInicialTexto,
-      FechaFinal: fechaFinalTexto,
-      MesesDeuda: mesesDeuda,
-      MesesPagados: cantidadMeses,
-      Faltante: montoFaltante >= 0 ? montoFaltante : 0,
+      FechaInicial: "Fecha no válida",
+      FechaFinal: "Fecha no válida",
+      Meses: 0,
+      Faltante: 0
     };
+  }
+
+  // Convertir la fecha de texto
+  const convertirFechaTexto = (ano, mes) => {
+    if (ano && mes) {
+      return `${months[mes - 1]} ${ano}`;
+    }
+    return "Fecha no válida";
+  };
+
+  // Calcular la cantidad de meses entre dos fechas
+  const calcularCantidadMeses = (anoInicial, mesInicial, anoFinal, mesFinal) => {
+    const fechaInicial = new Date(anoInicial, mesInicial - 1);
+    const fechaFinal = new Date(anoFinal, mesFinal - 1);
+    const diferenciaEnMeses =
+      (fechaFinal.getFullYear() - fechaInicial.getFullYear()) * 12 +
+      (fechaFinal.getMonth() - fechaInicial.getMonth());
+    return diferenciaEnMeses + 1; // Agregamos 1 porque el cálculo no cuenta el mes inicial
+  };
+
+  // Obtener los valores de las fechas y calcular los resultados
+  const anoInicial = data.AnoInicial;
+  const mesInicial = data.MesInicial;
+  const anoFinal = data.AnoFinal;
+  const mesFinal = data.MesFinal;
+
+  const fechaInicialTexto = convertirFechaTexto(anoInicial, mesInicial);
+  const fechaFinalTexto = convertirFechaTexto(anoFinal, mesFinal);
+  const cantidadMeses = calcularCantidadMeses(anoInicial, mesInicial, anoFinal, mesFinal);
+  const montoFaltante = cantidadMeses * 20 - data.Monto; // Suponiendo que el monto de cada mes es 20
+  const mesesDeuda = calcularMeses(mesFinal, anoFinal);
+
+  // Devolver los datos transformados
+  return {
+    ...data,
+    FechaInicial: fechaInicialTexto,
+    FechaFinal: fechaFinalTexto,
+    MesesDeuda: mesesDeuda,
+    MesesPagados: cantidadMeses,
+    Faltante: montoFaltante >= 0 ? montoFaltante : 0, // Si el monto faltante es negativo, ponerlo a 0
   };
 }
-
 function calcularMeses(mes, año) {
   const fechaUltimoPago = new Date(año, mes - 1);
   const fechaActual = new Date();
@@ -223,4 +234,4 @@ function calcularMeses(mes, año) {
   return mesesTotales >= 0 ? mesesTotales : 0;
 }
 
-module.exports = { AporteController }; // Exportar usando CommonJS
+module.exports = { AporteController, transformarJson }; // Exportar usando CommonJS

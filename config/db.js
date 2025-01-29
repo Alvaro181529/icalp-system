@@ -23,7 +23,7 @@ const settingsUser = {
     }
 }
 
-export const conexionData = async () => {
+export const conexionData () => {
     try {
         const db = await sql.connect(settingsData)
         return db
@@ -31,7 +31,7 @@ export const conexionData = async () => {
         console.error("No se conecto a la base de datos: " + error)
     }
 }
-export const conexionUser = async () => {
+export const conexionUser () => {
     try {
         const db = await sql.connect(settingsUser)
         return db

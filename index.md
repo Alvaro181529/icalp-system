@@ -130,7 +130,7 @@ Los controladores contienen la lógica para manejar las solicitudes HTTP.
 const Aportes = require('../models/aportesModel')
 
 // Crear un nuevo Aporte
-exports.createAporte = async (req, res) => {
+exports.createAporte (req, res) => {
   try {
     const newAporte = await Aportes.create(req.body) // Utiliza req.body para obtener los datos del nuevo aporte
     res.status(201).json(newAporte)
@@ -140,7 +140,7 @@ exports.createAporte = async (req, res) => {
 }
 
 // Obtener todos los Aportes
-exports.getAportes = async (req, res) => {
+exports.getAportes (req, res) => {
   try {
     const aportes = await Aportes.findAll()
     res.status(200).json(aportes)
@@ -150,7 +150,7 @@ exports.getAportes = async (req, res) => {
 }
 
 // Obtener un Aporte por su ID
-exports.getAporteById = async (req, res) => {
+exports.getAporteById (req, res) => {
   try {
     const aporte = await Aportes.findByPk(req.params.id)
     if (!aporte) {
@@ -163,7 +163,7 @@ exports.getAporteById = async (req, res) => {
 }
 
 // Eliminar un Aporte
-exports.deleteAporte = async (req, res) => {
+exports.deleteAporte (req, res) => {
   try {
     const result = await Aportes.destroy({
       where: { AporteId: req.params.id }
@@ -375,7 +375,7 @@ Ahora, debes crear un controlador que maneje la lógica para **crear una nueva p
 const Pages = require('../models/pagesModel')
 
 // Crear una nueva página
-exports.createPage = async (req, res) => {
+exports.createPage (req, res) => {
   try {
     const { MenuId, Title, Content } = req.body // Se esperan estos campos en el cuerpo de la solicitud
 

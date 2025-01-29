@@ -1,7 +1,7 @@
 // Cambiar las importaciones a CommonJS
 const express = require("express");
 const morgan = require("morgan");
-const path = require("node:path");
+const path = require("path");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const { fileURLToPath } = require("url");

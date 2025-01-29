@@ -1,6 +1,6 @@
 const pool = require("../../config/db.connect.js"); 
 class AporteModel {
-  getAportesNull = async (param) => {
+  async getAportesNull (param) {
     const { page = 1, size = 10 } = param || {}; // Asignamos valores por defecto si 'param' es undefined
     const offset = (page - 1) * size; // Calculamos el offset
 
@@ -54,7 +54,7 @@ class AporteModel {
     }
   };
 
-  getAportesMensual = async (query) => {
+  async getAportesMensual (query)  {
     const { year = new Date().getFullYear() } = query;
     const result = await pool.query(
       `SELECT 
@@ -77,7 +77,7 @@ ORDER BY
     );
     return result;
   };
-  getAportesPorCobrador = async (query) => {
+  async getAportesPorCobrador (query)  {
     const { year } = query;
     const result = await pool.query(
       `SELECT DISTINCT 
@@ -100,7 +100,7 @@ ORDER BY
     );
     return result;
   };
-  getAporte = async (query) => {
+  async getAporte (query)  {
     const {
       search,
       inicio = new Date(new Date().setDate(1)),
@@ -256,14 +256,14 @@ ORDER BY
     }
   };
   
-  getAporteByOne = async (id) => {
+  async getAporteByOne (id) {
     const result = await pool.query(
       "SELECT * FROM aportes WHERE ColegiadoId = ?",
       [id]
     );
     return result;
   };
-  postAporte = async (body, user) => {
+  async postAporte (body, user)  {
     const {
       colegiadoId,
       mesInicial, // Asegúrate de corregir "mesInical" por "mesInicial"
@@ -327,7 +327,7 @@ ORDER BY
   };
 
   // Anular aporte
-  patchAporteNull = async (query, user, Motivo) => {
+  async patchAporteNull (query, user, Motivo)  {
     const motivo = Motivo || "Sin motivo";
     // Primero, obtenemos los datos necesarios para la inserción en 'reciboanulados'
     const aporteResult = await pool.query(
@@ -379,6 +379,6 @@ ORDER BY
     return result;
   };
 
-  deleteAporte = () => {};
+  async deleteAporte () {};
 }
 module.exports = AporteModel

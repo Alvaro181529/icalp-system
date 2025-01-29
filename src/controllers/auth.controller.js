@@ -3,7 +3,7 @@ const  AuthModel  = require("../models/auth.model.js");
 const auth = new AuthModel();
 
 class AuthController {
-    login = async (req, res) => {
+    login (req, res) {
         const { user } = req.session;
         if (user) {
             res.render('index', { title: "Icalp", user });
@@ -12,12 +12,12 @@ class AuthController {
         res.render('auth/login', { title: "Login", user });
     }
 
-    register = async (req, res) => {
+    register (req, res) {
         const { user } = req.session;
         res.render('auth/register', { title: "Register", user });
     }
 
-    signIn = async (req, res) => {
+   async signIn (req, res) {
         const { email, password } = req.body;
         if (!email || !password) {
             return res.status(400).send({ message: 'El correo y la contraseña son requeridos.' });
@@ -38,7 +38,7 @@ class AuthController {
         res.send(result);
     }
 
-    signUp = async (req, res) => {
+   async signUp (req, res)  {
         const result = await auth.signUp(req.body);
         if (!result.correo) {
             return res.status(400).send({ message: result.message });
@@ -46,7 +46,7 @@ class AuthController {
         res.send(result);
     }
 
-    logout = (req, res) => {
+    logout (req, res) {
         res.clearCookie('access_token').json({ message: 'Sesion cerrada' });
     }
 }

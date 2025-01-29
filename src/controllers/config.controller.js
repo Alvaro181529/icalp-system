@@ -3,25 +3,25 @@ const PagesModel  = require("../models/page.model.js");
 const pages = new PagesModel();
 
 class ConfigController {
-  getMenu = async (req, res) => {
+  getMenu (req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("paginas/menu", { title: "Menu", user });
   };
 
-  getOpciones = async (req, res) => {
+  getOpciones (req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("paginas/opciones", { title: "Opciones", user });
   };
 
-  getContenido = async (req, res) => {
+  getContenido (req, res)  {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("paginas/contenido", { title: "Contenido", user });
   };
 
-  getContenidoOpcion = async (req, res) => {
+  async getContenidoOpcion (req, res) {
     const { id } = req.params;
     const { user } = req.session;
     if (!user) return res.redirect("/");
@@ -29,19 +29,19 @@ class ConfigController {
     res.render("paginas/contenidoOpcion", { title: "Contenido", user, content });
   };
 
-  getSlides = async (req, res) => {
+  async getSlides (req, res)  {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("config/slides", { title: "Slides", user });
   };
 
-  getUsuarios = async (req, res) => {
+  getUsuarios (req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("config/usuarios", { title: "Usuarios", user });
   };
 
-  getCobradores = async (req, res) => {
+  getCobradores (req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("config/cobradores", { title: "Cobradores", user });

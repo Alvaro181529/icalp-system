@@ -1,6 +1,6 @@
 const pool = require("../../config/db.connect.js"); 
  class NotaModel {
-  getNota = async (page = 1, size = 5, id) => {
+  async getNota (page = 1, size = 5, id)  {
     const offset = (page - 1) * size;
 
     const query = `
@@ -32,7 +32,7 @@ const pool = require("../../config/db.connect.js");
       throw error;
     }
   };
-  postAgenda = async (id, user) => {
+  async postAgenda (id, user)  {
     const fecha = new Date();
     const query = await pool.query(
       `
@@ -48,7 +48,7 @@ const pool = require("../../config/db.connect.js");
     );
     return query;
   };
-  postDiplomado = async (id, user) => {
+  async postDiplomado (id, user)  {
     const fecha = new Date();
     const query = await pool.query(
       `

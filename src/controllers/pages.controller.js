@@ -1,5 +1,5 @@
-const fs = require("node:fs");
-const path = require("node:path");
+const fs = require("fs");
+const path = require("path");
 const { fileURLToPath } = require("url");
 const  PagesModel  = require("../models/page.model.js");
 
@@ -7,18 +7,18 @@ const  PagesModel  = require("../models/page.model.js");
 const pages = new PagesModel();
 
 class PagesController {
-  getBlogs = async (req, res) => {
+  getBlogs (req, res) {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("config/blog", { title: "Blog", user });
   };
 
-  vistas = async (req, res) => {
+  async vistas (req, res) {
     const result = await pages.vistas();
     res.json(result);
   };
 
-  view = async (req, res) => {
+  async view (req, res)  {
     const { user } = req.session;
     const { ruta, pagina } = req.params;
     const result = await pages.view(ruta, pagina);
@@ -28,62 +28,62 @@ class PagesController {
   };
 
   //menu
-  menu = async (req, res) => {
+  async menu (req, res)  {
     const result = await pages.menu();
     res.json(result);
   };
 
-  menuUpdate = async (req, res) => {
+  async menuUpdate (req, res){
     const { id, MenuName } = req.body;
     const result = await pages.menuUpdate(id, MenuName);
     res.json(result);
   };
 
   //page
-  option = async (req, res) => {
+  async option (req, res)  {
     const result = await pages.option(req.query);
     res.json(result);
   };
 
-  optionAdd = async (req, res) => {
+  async optionAdd (req, res) {
     const result = await pages.optionAdd(req.body);
     res.json(result);
   };
 
-  optionUpdate = async (req, res) => {
+  async optionUpdate (req, res) {
     const result = await pages.optionUpdate(req.body);
     res.json(result);
   };
 
-  optionDelete = async (req, res) => {
+  async optionDelete (req, res)  {
     const { id } = req.params;
     const result = await pages.optionDelete(id);
     res.json(result);
   };
 
   //content
-  content = async (req, res) => {
+  async content (req, res) {
     const result = await pages.content(req.query);
     res.json(result);
   };
 
-  contentOne = async (req, res) => {
+  async contentOne (req, res) {
     res.send("¡Hola, Mundo!");
   };
 
-  contentAdd = async (req, res) => {
+  async contentAdd (req, res) {
     const { user } = req.session;
     const result = await pages.contentAdd(req.body, user.correo);
     res.json(result);
   };
 
-  contentUpdate = async (req, res) => {
+  async contentUpdate (req, res) {
     const { user } = req.session;
     const result = await pages.contentUpdate(req.body, user.correo);
     res.json(result);
   };
 
-  file = async (req, res) => {
+  async file (req, res)  {
     //api
     if (req.file) {
       res.json({
@@ -95,7 +95,7 @@ class PagesController {
     }
   };
 
-  getSlide = async (req, res) => {
+  async getSlide (req, res) {
     const slidesDir = path.join(__dirname, "../uploads/slides");
     fs.readdir(slidesDir, (err, files) => {
       let fileNames;
@@ -115,7 +115,7 @@ class PagesController {
     });
   };
 
-  deleteSlide = async (req, res) => {
+  async deleteSlide (req, res){
     const { filename } = req.params;
     const slidesDir = path.join(__dirname, "../uploads/slides");
     const filePath = path.join(slidesDir, filename);

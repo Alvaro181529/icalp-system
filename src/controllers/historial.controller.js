@@ -2,13 +2,13 @@ const HistorialModel  = require("../models/historial.model.js");
 const historial = new HistorialModel();
 
 class HistorialController {
-  getPageHistorial = async (req, res) => {
+  getPageHistorial (req, res){
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("config/historial", { title: "Historial", user });
   };
 
-  getHistorial = async (req, res) => {
+  async getHistorial (req, res) {
     const page = parseInt(req.query.page) || 1; // Página actual
     const pageSize = parseInt(req.query.pageSize) || 10; // Tamaño de la página
     const result = await historial.getHistorial(page, pageSize);

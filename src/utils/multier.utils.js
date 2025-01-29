@@ -1,5 +1,5 @@
 // Cambiar las importaciones a CommonJS
-const path = require("node:path");
+const path = require("path");
 const { fileURLToPath } = require("url");
 const multer = require("multer");
 

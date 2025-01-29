@@ -129,6 +129,13 @@
                   <%= result.MatriculaConalab || "No disponible" %>
                 </p>
               </div>
+              <div class="mb-4">
+                <p class="text-gray-300">Fecha matriculacion del colegio</p>
+                <p>
+                  <%= result.FechaMatriculacionAlColegio ? new
+                    Date(result.FechaMatriculacionAlColegio).toLocaleDateString() : "No disponible" %>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -1076,7 +1083,9 @@
                 </div>
             </div>
 
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between">
+              <button type="button" id="closeDialogPagos"
+                class="py-2 px-4  mt-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-colors">Cerrar</button>
               <button type="submit"
                 class="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 Registrar
@@ -1351,6 +1360,24 @@
             throw new Error("Error al obtener los datos");
           }
           const res = await response.json();
+          
+          let select = document.getElementById("mesInicial");
+          let selectAno = document.getElementById("anoInicial");
+
+          let mesSeleccionado = res[res.length - 1].MesFinal;
+          let anoSeleccionado = res[res.length - 1].AnoFinal;
+
+          let mesPago = mesSeleccionado + 1;
+          let anoPago = anoSeleccionado ;
+
+          if (mesPago >= 13) {
+            mesPago = 1;
+            anoPago = anoSeleccionado +1;
+          }
+          
+          select.value = mesPago;
+          selectAno.value = anoPago;
+
           resultTableBody.innerHTML = '';
           if (Array.isArray(res) && res.length > 0) {
             res.forEach(item => {
@@ -1528,8 +1555,6 @@
 
           const result = await response.json();
 
-
-
         } catch (error) {
           console.error('Error en la solicitud:', error);
         }
@@ -1610,6 +1635,9 @@
       $("#closeDialogButton").addEventListener("click", function () {
         $("#personalDataDialog").close();
       });
+      $("#closeDialogPagos").addEventListener("click", function () {
+        $("#dialog").close();
+      });
       cancelarAporte.addEventListener('click', () => dialogAportes.close());
       button.addEventListener('click', () => dialog.showModal());
       function closeModal() {
@@ -1618,6 +1646,7 @@
       function closeDialog() {
         dialog.close();
       }
+
 
       function calcularMeses() {
         const mesIni = parseInt(mesInicial.value);
@@ -1644,8 +1673,8 @@
 
       mesInicial.addEventListener('change', sincronizarFechas, calcularMeses);
       anoInicial.addEventListener('change', sincronizarFechas, calcularMeses);
-      mesFinal.addEventListener('change',sincronizarFechas, calcularMeses);
-      anoFinal.addEventListener('change', sincronizarFechas,calcularMeses);
+      mesFinal.addEventListener('change', sincronizarFechas, calcularMeses);
+      anoFinal.addEventListener('change', sincronizarFechas, calcularMeses);
 
 
       function sincronizarFechas() {

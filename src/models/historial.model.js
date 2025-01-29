@@ -2,7 +2,7 @@ const pool = require("../../config/db.connect.js");
 
 class HistorialModel {
     
-    getHistorial = async (page = 1, pageSize = 10) => {
+    async getHistorial (page = 1, pageSize = 10)  {
       const offset = (page - 1) * pageSize;
   
       const query = `

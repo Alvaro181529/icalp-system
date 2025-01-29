@@ -1,8 +1,8 @@
-const pool = require("../../config/db.connect"); // Cambiado de import a require
+const pool = require("../../config/db.connect.js"); // Cambiado de import a require
 
 class TalonarioModel {
   // Obtiene los talonarios con paginación y el total de talonarios
-  getTalonario = async (page = 1, pageSize = 10) => {
+  async getTalonario (page = 1, pageSize = 10) {
     const offset = (page - 1) * pageSize;
 
     const query = `

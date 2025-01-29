@@ -1,6 +1,6 @@
 const pool = require("../../config/db.connect.js"); 
  class PagesModel {
-  view = async (ruta, pagina) => {
+  async view (ruta, pagina) {
     try {
       const result = await pool.query(`SELECT m.MenuNameEnglish, a.TitleEnglish,o.Content ,o.MenuTitle, o.Title,o.Datetime FROM posts o INNER JOIN pages a ON a.PageId = o.PageId INNER JOIN menus m ON m.MenuId = a.MenuId WHERE m.MenuNameEnglish = ? AND a.TitleEnglish = ?`, [ruta, pagina]);
       return result[0];
@@ -8,7 +8,7 @@ const pool = require("../../config/db.connect.js");
       return[]
     }
   }
-  vistas = async () => {
+  async vistas ()  {
     const groupedResult = [];
     let currentMenu = null;
     const result = await pool.query(
@@ -43,11 +43,11 @@ const pool = require("../../config/db.connect.js");
     return groupedResult;
   };
 
-  menu = async () => {
+  async menu ()  {
     return await pool.query(`SELECT * FROM menus ORDER BY SortNumber`);
   };
 
-  menuUpdate = async (id, menuName) => {
+  async menuUpdate (id, menuName)  {
     try {
       // Realizar la actualización de `MenuNameEnglish` para el `MenuId` proporcionado
       const result = await pool.query(
@@ -71,7 +71,7 @@ const pool = require("../../config/db.connect.js");
       throw error;
     }
   };
-  option = async (query) => {
+  async option (query)  {
     const { search, page = 1, size = 10 } = query;
     const limit = parseInt(size);
     const offset = (page - 1) * size;
@@ -123,7 +123,7 @@ LEFT JOIN posts o ON o.PageId = p.PageId
       throw new Error("Error al obtener los usuarios");
     }
   };
-  optionAdd = async (body) => {
+  async optionAdd (body){
     const { MenuId, SortNumber, TitleEnglish } = body;
     try {
       const result = await pool.query(
@@ -136,7 +136,7 @@ LEFT JOIN posts o ON o.PageId = p.PageId
       console.log("error en la consulta base de datos " + error);
     }
   };
-  optionUpdate = async (body) => {
+  async optionUpdate (body) {
     const { menu, id, SortNumber, updatedMenuName } = body;
     try {
       const result = await pool.query(
@@ -148,7 +148,7 @@ LEFT JOIN posts o ON o.PageId = p.PageId
       console.log("error en la consulta base de datos " + error);
     }
   };
-  optionDelete = async (id) => {
+  async optionDelete (id) {
     try {
       await pool.query(`DELETE FROM posts WHERE PageId = ?`, [id]);
       await pool.query(`DELETE FROM pages WHERE PageId = ?`, [id]);
@@ -159,7 +159,7 @@ LEFT JOIN posts o ON o.PageId = p.PageId
     }
   };
 
-  content = async (query) => {
+  async content (query) {
     const { page = 1, size = 10 } = query;
     const limit = parseInt(size, 10); // aseguramos que size sea un número
     const offset = (page - 1) * limit;
@@ -199,14 +199,14 @@ LEFT JOIN posts o ON o.PageId = p.PageId
     }
   };
 
-  contentId = async (id) => {
+  async contentId (id)  {
     const result = await pool.query(
       `SELECT a.*, o.* FROM pages a LEFT JOIN posts o ON o.PageId = a.PageId WHERE a.PageId = ?`,
       [id]
     );
     return result[0];
   };
-  contentAdd = async (body, user) => {
+  async contentAdd (body, user) {
     const {
       menu,
       title,
@@ -218,7 +218,7 @@ LEFT JOIN posts o ON o.PageId = p.PageId
       [pageId, menu, title, content, user])
     return result;
   };
-  contentUpdate = async (body, user) => {
+  async contentUpdate (body, user)  {
     const { menu, title, content, pageId } = body;
 
     const result = await pool.query(`

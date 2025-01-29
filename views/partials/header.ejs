@@ -86,9 +86,7 @@
                     </ul>
                   </details>
                   <%}%>
-
-                    <% if (user && user.roles.includes('Administrador')) { %>
-
+                    <% if (user && user.roles.includes('Contador')|| user.roles.includes('Cobrador') ) { %>
                       <!-- Colegiados por Año Section -->
                       <details class="group">
                         <summary
@@ -108,57 +106,83 @@
                               Título en Provisión Nacional</a></li>
                         </ul>
                       </details>
-
-                      <details class="group">
-                        <summary
-                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
-                          <i class="fa fa-file-text mr-2  " aria-hidden="true"></i>
-                          <span>Creacion de paginas</span>
-                          <i
-                            class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
-                        </summary>
-                        <ul class="pl-8 mt-2 space-y-1">
-                          <li><a href="/slides" class="block px-4 py-2 hover:bg-blue-950 rounded">Imagenes de Slider</a>
-                          </li>
-                          <li><a href="/menus" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de menu</a>
-                          </li>
-                          <li><a href="/opciones" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de
-                              opciones</a>
-                          </li>
-                          <li><a href="/contenidos" class="block px-4 py-2 hover:bg-blue-950 rounded">Contenidos</a>
-                          </li>
-                          <!-- <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li> -->
-                        </ul>
-                      </details>
-                      <!-- Configuración Section -->
-                      <details class="group">
-                        <summary
-                          class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
-                          <i class="fas fa-cog mr-2"></i>
-                          <span>Configuración</span>
-                          <i
-                            class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
-                        </summary>
-                        <ul class="pl-8 mt-2 space-y-1">
-                          <li><a href="/usuarios" class="block px-4 py-2 hover:bg-blue-950 rounded">Registro de
-                              Usuarios</a>
-                          </li>
-                          <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Usuarios
-                              Cobradores</a>
-                          </li>
-                          <li><a href="/historial" class="block px-4 py-2 hover:bg-blue-950 rounded">Historial de
-                              Cambios</a>
-                          </li>
-                        </ul>
-                      </details>
                       <%}%>
 
-                        <button type="button" id="cerrar"
-                          class="text-white bg-transparent text-gray-200  rounded hover:bg-blue-950  px-4 py-2 text-center">
-                          <i class="fa fa-sign-out mr-1"></i>
-                          <span>Cerrar sesión
-                          </span>
-                        </button>
+                        <% if (user && user.roles.includes('Administrador')) { %>
+
+                          <!-- Colegiados por Año Section -->
+                          <details class="group">
+                            <summary
+                              class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                              <i class="fas fa-calendar-alt mr-2"></i>
+                              <span>Colegiados por Año</span>
+                              <i
+                                class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                            </summary>
+                            <ul class="pl-8 mt-2 space-y-1">
+                              <li><a href="/colegiado/gestion" class="block px-4 py-2 hover:bg-blue-950 rounded">Lista
+                                  de
+                                  Colegiados
+                                  por Fecha de Inscripción</a></li>
+                              <li><a href="/colegiado/provicion"
+                                  class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados
+                                  por
+                                  Título en Provisión Nacional</a></li>
+                            </ul>
+                          </details>
+
+                          <details class="group">
+                            <summary
+                              class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                              <i class="fa fa-file-text mr-2  " aria-hidden="true"></i>
+                              <span>Creacion de paginas</span>
+                              <i
+                                class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                            </summary>
+                            <ul class="pl-8 mt-2 space-y-1">
+                              <li><a href="/slides" class="block px-4 py-2 hover:bg-blue-950 rounded">Imagenes de
+                                  Slider</a>
+                              </li>
+                              <li><a href="/menus" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de
+                                  menu</a>
+                              </li>
+                              <li><a href="/opciones" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de
+                                  opciones</a>
+                              </li>
+                              <li><a href="/contenidos" class="block px-4 py-2 hover:bg-blue-950 rounded">Contenidos</a>
+                              </li>
+                              <!-- <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li> -->
+                            </ul>
+                          </details>
+                          <!-- Configuración Section -->
+                          <details class="group">
+                            <summary
+                              class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                              <i class="fas fa-cog mr-2"></i>
+                              <span>Configuración</span>
+                              <i
+                                class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                            </summary>
+                            <ul class="pl-8 mt-2 space-y-1">
+                              <li><a href="/usuarios" class="block px-4 py-2 hover:bg-blue-950 rounded">Registro de
+                                  Usuarios</a>
+                              </li>
+                              <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Usuarios
+                                  Cobradores</a>
+                              </li>
+                              <li><a href="/historial" class="block px-4 py-2 hover:bg-blue-950 rounded">Historial de
+                                  Cambios</a>
+                              </li>
+                            </ul>
+                          </details>
+                          <%}%>
+
+                            <button type="button" id="cerrar"
+                              class="text-white bg-transparent text-gray-200  rounded hover:bg-blue-950  px-4 py-2 text-center">
+                              <i class="fa fa-sign-out mr-1"></i>
+                              <span>Cerrar sesión
+                              </span>
+                            </button>
           </div>
         </nav>
       </aside>
@@ -176,12 +200,14 @@
                 <a href="/inicio" class="hover:text-gray-400 max-md:hidden">Inicio</a>
               </section>
               <% if (user) { %>
-              <section>
-                <button id="imprimir" class=" bg-gray-100 py-2 px-4 text-gray-500 rounded-lg hover:bg-gray-500 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"> <i class="fa-solid fa-print"></i> Imprimir</button>
-              </section>
-              <% }else{%>
-                <button id="imprimir" hidden></button>
-              <% }%>
+                <section>
+                  <button id="imprimir"
+                    class=" bg-gray-100 py-2 px-4 text-gray-500 rounded-lg hover:bg-gray-500 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                    <i class="fa-solid fa-print"></i> Imprimir</button>
+                </section>
+                <% }else{%>
+                  <button id="imprimir" hidden></button>
+                  <% }%>
 
             </div>
           </nav>
@@ -189,12 +215,16 @@
             class="bg-blue-950 bg-opacity-50 backdrop-blur-sm  <%= user ? 'sticky top-0' : 'fixed' %> z-50 w-full transition-all">
             <div class="container mx-auto px-8 px-4 py-3 mx-auto text-white">
               <div class="flex items-center gap-4">
-                <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
+                <button data-collapse-toggle="navbar-sticky" type="button"
+                  class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                  aria-controls="navbar-sticky" aria-expanded="false">
                   <span class="sr-only">Open main menu</span>
-                  <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                  <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M1 1h15M1 7h15M1 13h15" />
                   </svg>
-              </button>
+                </button>
                 <a href="/" flex items-center space-x-3">
                   <img src="/public/Logo_colegio_de_abogados_Mesa_de_trabajo.png" class="h-8" width="170"
                     alt="Flowbite Logo" />
@@ -203,7 +233,7 @@
                   <ul id="lista" class="flex flex-col md:flex-row font-medium mt-0 space-x-8 text-sm">
                   </ul>
                 </div>
-                  
+
                 <% if (user) { %>
                   <div>
                     <h2 class="text-white font-bold text-sm">
@@ -223,72 +253,72 @@
                     <% } %>
               </div>
             </div>
-     
+
           </nav>
           <div id="print-section">
 
-          <script defer>
-            const $ = (el) => document.querySelector(el);
-            function toggleSidebar() {
-              const sidebar = document.querySelector('aside');
-              sidebar.classList.toggle('hidden');
-            }
-            // Obtener los elementos
-            const nav1 = document.getElementById('nav1');
-            const nav2 = document.getElementById('nav2');
-
-            let lastScrollTop = 0;
-
-            window.addEventListener('scroll', function () {
-              const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-              if (currentScroll > lastScrollTop) {
-                nav1.style.transform = 'translateY(0%)'; // Esconde el primer nav
-                nav2.style.transform = 'translateY(-120%)'; // Mueve el segundo nav hacia abajo (fuera de vista)
-              } else {
-                nav1.style.transform = 'translateY(0)'; // Vuelve a mostrar el primer nav
-                nav2.style.transform = 'translateY(0)'; // El segundo nav se queda en la parte superior
+            <script defer>
+              const $ = (el) => document.querySelector(el);
+              function toggleSidebar() {
+                const sidebar = document.querySelector('aside');
+                sidebar.classList.toggle('hidden');
               }
+              // Obtener los elementos
+              const nav1 = document.getElementById('nav1');
+              const nav2 = document.getElementById('nav2');
 
-              // Actualizar la última posición del scroll
-              lastScrollTop = currentScroll >= 0 ? 0 : currentScroll; // Evita valores negativos
-            });
-            const cerrarButton = document.getElementById("cerrar");
-            if (cerrarButton) {
-              cerrarButton.addEventListener("click", () => {
-                fetch("/logout", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                })
-                  .then((response) => {
-                    if (response.ok) {
-                      window.location.href = "/"; // Redirige a la página principal o a la página de inicio de sesión
-                    } else {
-                      alert("Error al cerrar sesión");
-                    }
-                  })
-                  .catch((error) => {
-                    console.error("Error:", error);
-                    alert("Ocurrió un error al intentar cerrar sesión");
-                  });
+              let lastScrollTop = 0;
+
+              window.addEventListener('scroll', function () {
+                const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                if (currentScroll > lastScrollTop) {
+                  nav1.style.transform = 'translateY(0%)'; // Esconde el primer nav
+                  nav2.style.transform = 'translateY(-120%)'; // Mueve el segundo nav hacia abajo (fuera de vista)
+                } else {
+                  nav1.style.transform = 'translateY(0)'; // Vuelve a mostrar el primer nav
+                  nav2.style.transform = 'translateY(0)'; // El segundo nav se queda en la parte superior
+                }
+
+                // Actualizar la última posición del scroll
+                lastScrollTop = currentScroll >= 0 ? 0 : currentScroll; // Evita valores negativos
               });
-            }
-            const FetchData = async () => {
-              try {
-                // Solicitar los datos del backend
-                const result = await fetch('/view');
-                const res = await result.json();
-                // Obtener la lista donde se agregarán los elementos
-                const lista = document.getElementById('lista');
-                lista.innerHTML = '';  // Limpiar la lista antes de llenarla
+              const cerrarButton = document.getElementById("cerrar");
+              if (cerrarButton) {
+                cerrarButton.addEventListener("click", () => {
+                  fetch("/logout", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  })
+                    .then((response) => {
+                      if (response.ok) {
+                        window.location.href = "/"; // Redirige a la página principal o a la página de inicio de sesión
+                      } else {
+                        alert("Error al cerrar sesión");
+                      }
+                    })
+                    .catch((error) => {
+                      console.error("Error:", error);
+                      alert("Ocurrió un error al intentar cerrar sesión");
+                    });
+                });
+              }
+              async function FetchData() {
+                try {
+                  // Solicitar los datos del backend
+                  const result = await fetch('/view');
+                  const res = await result.json();
+                  // Obtener la lista donde se agregarán los elementos
+                  const lista = document.getElementById('lista');
+                  lista.innerHTML = '';  // Limpiar la lista antes de llenarla
 
-                // Iterar sobre los datos recibidos
-                res.forEach(item => {
-                  // Crear el <li> para cada menú
-                  const li = document.createElement('li');
-                  // Crear el botón de menú
-                  const buttonHTML = `
+                  // Iterar sobre los datos recibidos
+                  res.forEach(item => {
+                    // Crear el <li> para cada menú
+                    const li = document.createElement('li');
+                    // Crear el botón de menú
+                    const buttonHTML = `
                     <button id="dropdownNavbarLink-${item.MenuId}" data-dropdown-toggle="${item.MenuId}" 
                            class="flex items-center justify-between w-full py-2 px-3 text-white text-sm rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-gray-200  md:p-0 md:w-auto ">
                       ${item.MenuNameEnglish}
@@ -298,7 +328,7 @@
                     </button>
                   `;
 
-                  const dropdownHTML = `
+                    const dropdownHTML = `
                     <div id="dropdownNavbar-${item.MenuId}" class="z-10 hidden text-sm bg-blue-950 bg-opacity-30 backdrop-blur-md divide-y divide-gray-100 rounded-lg shadow w-44 absolute mt-2">
                     <ul class="py-2 text-sm text-white " aria-labelledby="dropdownLargeButton">
                       ${item.pages.map(page => `
@@ -311,40 +341,31 @@
                     </ul>
                   </div>
                   `;
-                  li.innerHTML = buttonHTML + dropdownHTML;
-                  lista.appendChild(li);
-                  const button = li.querySelector(`#dropdownNavbarLink-${item.MenuId}`);
-                  const dropdownMenu = li.querySelector(`#dropdownNavbar-${item.MenuId}`);
+                    li.innerHTML = buttonHTML + dropdownHTML;
+                    lista.appendChild(li);
+                    const button = li.querySelector(`#dropdownNavbarLink-${item.MenuId}`);
+                    const dropdownMenu = li.querySelector(`#dropdownNavbar-${item.MenuId}`);
 
-                  button.addEventListener('click', () => {
-                    dropdownMenu.classList.toggle('hidden');
+                    button.addEventListener('click', () => {
+                      dropdownMenu.classList.toggle('hidden');
+                    });
                   });
-                });
-              } catch (error) {
-                console.error('Error al obtener los datos:', error);
-              }
-            };
-
-            FetchData();
-            $('#imprimir').addEventListener('click', function imprimirPagina() {
-              var contenido = document.getElementById('print-section').innerHTML;
-
-              // Crear una ventana nueva para la impresión
-              var ventanaImpresion = window.open('', '', 'width=800, height=600');
-
-              // Escribir el contenido en la nueva ventana
-              ventanaImpresion.document.write('<html><head><title>Imprimir Sección</title></head><body>');
-              ventanaImpresion.document.write(contenido);
-              ventanaImpresion.document.write('</body></html>');
-
-              // Esperar que el contenido se cargue antes de llamar a la impresión
-              ventanaImpresion.document.close();
-              ventanaImpresion.onload = function () {
-                ventanaImpresion.print();  // Imprimir el contenido de la ventana
-                ventanaImpresion.close();   // Cerrar la ventana de impresión después de imprimir
+                } catch (error) {
+                  console.error('Error al obtener los datos:', error);
+                }
               };
-            })
-          </script>
+
+              FetchData();
+              $('#imprimir').addEventListener('click', function imprimirPagina() {
+                var printSection = document.getElementById('print-section');
+                var printWindow = window.open('', '', 'height=600,width=800');
+                printWindow.document.write('<html><head><title>Imprimir</title></head><body>');
+                printWindow.document.write(printSection.innerHTML);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+              })
+            </script>
 </body>
 
 </html>

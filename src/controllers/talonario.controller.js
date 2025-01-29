@@ -3,13 +3,13 @@ const  TalonarioModel  = require("../models/talonario.model.js");
 const talonario = new TalonarioModel();
 
 class TalonarioController {
-  getTalonario = async (req, res) => {
+  getTalonario (req, res)  {
     const { user } = req.session;
     if (!user) return res.redirect("/");
     res.render("reporte/talonario", { title: "Reporte Talonario", user });
   };
 
-  getCheckbox = async (req, res) => {
+  async getCheckbox (req, res) {
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 10;
 

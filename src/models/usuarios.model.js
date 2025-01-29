@@ -1,7 +1,7 @@
 const pool = require("../../config/db.connect"); // Cambiado de import a require
 const bcrypt = require('bcryptjs');
 class UsersModel {
-  getUsers = async (query) => {
+  async getUsers (query){
     const { search, page = 1, size = 1000 } = query;
     const limit = parseInt(size);
     const offset = (page - 1) * size;
@@ -54,18 +54,18 @@ class UsersModel {
       throw new Error("Error al obtener los usuarios");
     }
   };
-  getUserCobradores = async (query) => {
+  async getUserCobradores (query)  {
     const result = pool.query(
       `SELECT u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles FROM aspnetusers u LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId WHERE r.RoleId = 'c1103424-be2e-11ef-828b-f80dacf23b8a' GROUP BY u.Email, u.User, u.IsApproved`
     );
     return result;
   };
-  getRols = async (query) => {
+  async getRols (query) {
     const result = await pool.query(`SELECT * FROM aspnetroles`);
     return result;
   };
-  postUsers = async (query) => {};
-  patchRols = async (id, rols) => {
+  postUsers (query) {};
+  async patchRols (id, rols) {
     const result = await pool.query(
       `DELETE FROM aspnetuserroles WHERE UserId = ?`,
       [id]
@@ -78,7 +78,7 @@ class UsersModel {
     }
     return { result, message: "Roles actualizados" };
   };
-  patchUsers = async (body, userId) => {
+  async patchUsers (body, userId) {
     const { user, email, password, confirmedPassword } = body;
     console.log(body);
 
@@ -152,21 +152,21 @@ class UsersModel {
   };
 
 
-  removeUsers = async (query) => {
+  async removeUsers (query)  {
     const result = await pool.query(
       `DELETE FROM aspnetusers WHERE UserId = ?`,
       [query]
     );
     return { result, message: "Usuario eliminado" };
   };
-  deleteUsers = async (query) => {
+  async deleteUsers (query) {
     const result = await pool.query(
       `UPDATE aspnetusers SET IsLockedOut = 1 WHERE Id = ?`,
       [query]
     );
     return result;
   };
-  getConsulta = async () => {
+  async getConsulta () {
     const query = await pool.query();
     return query;
   };

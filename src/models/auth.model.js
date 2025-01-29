@@ -4,7 +4,7 @@ const crypto = require("crypto");  // Cambiar import a require
 const jwt = require("jsonwebtoken");  // Cambiar import a require
 
  class AuthModel {
-  signIn = async (body) => {
+  async signIn (body)  {
     const { email, password } = body;
 
     try {
@@ -63,7 +63,7 @@ const jwt = require("jsonwebtoken");  // Cambiar import a require
     }
   };
 
-  signUp = async (body) => {
+  async signUp (body){
     const { user, email, password, confirmedPassword } = body;
     const validationError = validate(email, password, confirmedPassword, user);
     if (validationError) {
@@ -90,7 +90,9 @@ const jwt = require("jsonwebtoken");  // Cambiar import a require
                 INSERT INTO aspnetusers (UserId, PasswordHash, PasswordSalt, Email, LoweredEmail, IsApproved, IsLockedOut, CreateDate, User)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
-      const userId = crypto.randomUUID();
+      const userId = crypto.randomBytes(16).toString('hex');
+      console.log("userId")
+      console.log(userId)
       const salt = bcrypt.genSaltSync(saltRounds);
 
       await pool.query(createQuery, [

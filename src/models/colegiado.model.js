@@ -4,8 +4,9 @@ const fs = require("fs"); // Cambiar import a require
 
 // En CommonJS, `__filename` y `__dirname` ya están disponibles
 class ColegiadoModel {
-  getUsers = async (query) => {
+  async getUsers (query) {
     const { search, page = 1, size = 10 } = query;
+    console.log(search);
     const limit = parseInt(size);
     const offset = (page - 1) * size;
     let baseQuery = `
@@ -16,20 +17,19 @@ class ColegiadoModel {
 
     if (search) {
       baseQuery += `
-                AND (Nombres LIKE ? 
-                OR UsuarioRegistro LIKE ? 
-                OR Matricula LIKE ? 
-                OR Correo LIKE ?
-                OR NumeroCI LIKE ?)
-            `;
-      queryParams.push(
-        `%${search}%`,
-        `%${search}%`,
-        `%${search}%`,
-        `%${search}%`,
-        `%${search}%`
-      );
-    }
+          AND (
+    CONCAT(Nombres, ' ', Paterno, ' ', Materno) LIKE ? 
+    OR UsuarioRegistro LIKE ? 
+    OR Matricula LIKE ? 
+    OR Correo LIKE ? 
+    OR NumeroCI LIKE ?
+)
+      `;
+      
+      // Añadir el parámetro de búsqueda para las columnas.
+      // Asumiendo que `search` es el valor de búsqueda.
+      queryParams.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
+  }
     let countQuery = `
         SELECT COUNT(*) as total FROM colegiados
         WHERE 1 = 1
@@ -37,11 +37,14 @@ class ColegiadoModel {
     let countParams = [...queryParams];
     if (search) {
       countQuery += `
-                AND (Nombres LIKE ? 
-                OR UsuarioRegistro LIKE ? 
-                OR Matricula LIKE ? 
-                OR Correo LIKE ?
-                OR NumeroCI LIKE ?)
+             AND (
+    CONCAT(Nombres, ' ', Paterno, ' ', Materno) LIKE  ? 
+    OR UsuarioRegistro LIKE ? 
+    OR Matricula LIKE ? 
+    OR Correo LIKE ? 
+    OR NumeroCI LIKE ?
+)
+
             `;
     }
     baseQuery += ` LIMIT ? OFFSET ?`;
@@ -53,6 +56,7 @@ class ColegiadoModel {
         pool.query(countQuery, countParams),
       ]);
       const total = countResult[0].total;
+      console.log(rows);
       return {
         users: rows,
         total,
@@ -64,7 +68,7 @@ class ColegiadoModel {
       throw new Error("Error al obtener los usuarios");
     }
   };
-  getOneUser = async (query) => {
+  async getOneUser (query)  {
     try {
       const result = await pool.query(
         "SELECT * FROM colegiados WHERE ColegiadoId= ?",
@@ -76,7 +80,7 @@ class ColegiadoModel {
       throw error;
     }
   };
-  getUsersByDay = async (query) => {
+  async getUsersByDay (query) {
     const { search, page = 1, size = 10 } = query;
     const limit = parseInt(size);
     const offset = (page - 1) * size;
@@ -156,7 +160,7 @@ class ColegiadoModel {
     }
   };
 
-  getUsersByYears = async (query) => {
+  async getUsersByYears (query)  {
     const { year, page = 1, size = 10 } = query;
     const limit = parseInt(size);
     const offset = (page - 1) * size;
@@ -214,7 +218,7 @@ class ColegiadoModel {
     }
   };
 
-  getUsersByProvicion = async (query) => {
+  async getUsersByProvicion (query) {
     const { year, page = 1, size = 10 } = query;
     const limit = parseInt(size);
     const offset = (page - 1) * size;
@@ -273,7 +277,7 @@ class ColegiadoModel {
       throw new Error("Error al obtener los aportes");
     }
   };
-  updateUser = async (id, query, user) => {
+  async updateUser (id, query, user) {
     const {
       matricula,
       matriculaConalab,
@@ -505,7 +509,7 @@ class ColegiadoModel {
     }
   };
 
-  postUser = async (query, user) => {
+  async postUser (query, user) {
     const {
       matricula,
       matriculaConalab,
@@ -647,7 +651,7 @@ class ColegiadoModel {
       throw error;
     }
   };
-  updateFoto = async (file, id, user, archivo) => {
+  async updateFoto (file, id, user, archivo) {
     DeleteArchivo(archivo);
     const result = await pool.query(
       `  UPDATE colegiados SET
@@ -656,7 +660,7 @@ class ColegiadoModel {
     );
     return result;
   };
-  updateFirma = async (file, id, user, archivo) => {
+  async updateFirma (file, id, user, archivo)  {
     DeleteArchivo(archivo);
     const result = await pool.query(
       `  UPDATE colegiados SET
@@ -665,7 +669,7 @@ class ColegiadoModel {
     );
     return result;
   };
-  deleteUser = async (query) => {};
+  deleteUser (query) {};
 }
 function DeleteArchivo(archivo) {
   const filePath = path.join(__dirname, "../uploads", "imagenes", archivo);
