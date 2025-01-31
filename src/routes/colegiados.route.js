@@ -7,14 +7,14 @@ const router = express.Router();
 const colegiado = new ColegiadoController();
 
 // Rutas para la página de colegiado
-router.get("/colegiados", checkRole(["Administrador", "Cobrador"]), colegiado.getColegiados);
+router.get("/colegiados", checkRole(["Administrador", "Cobrador","Colegiados"]), colegiado.getColegiados);
 router.get("/colegiado/dia", checkRole(["Administrador", "Cobrador"]), colegiado.getColegiadosAlDia);
 router.get("/colegiado/gestion", checkRole(["Administrador","Cobrador"]), colegiado.getColegiadosGestion);
 router.get("/colegiado/provicion", checkRole(["Administrador","Cobrador"]), colegiado.getColegiadosProvicion);
-router.get("/colegiado/:id", checkRole(["Administrador", "Cobrador"]), colegiado.getColegiado);
+router.get("/colegiado/:id", checkRole(["Administrador", "Cobrador","Colegiados"]), colegiado.getColegiado);
 
 // Rutas para la API de colegiado
-router.get("/collegiate", checkRole(["Administrador", "Cobrador"]), colegiado.getCollegiates);
+router.get("/collegiate", checkRole(["Administrador", "Cobrador","Colegiados"]), colegiado.getCollegiates);
 router.get("/collegiate/:id/pdf", checkRole(["Administrador", "Cobrador"]), colegiado.getCollegiatesPdf);
 router.get("/collegiate/day", checkRole(["Administrador", "Cobrador"]), colegiado.getCollegiateByDay);
 router.get("/collegiate/years", checkRole(["Administrador","Cobrador"]), colegiado.getCollegiateByYears);

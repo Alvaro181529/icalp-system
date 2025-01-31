@@ -26,8 +26,8 @@
       data-carousel-prev aria-label="Previous Slide">
       <span
         class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 group-hover:bg-black/50 max-2xl:bg-black/30 max-2xl:hover:bg-black/50 group-focus:ring-white">
-        <svg class="w-4 h-4  max-sm:text-white text-white max-2xl:text-black rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
-          viewBox="0 0 6 10">
+        <svg class="w-4 h-4  max-sm:text-white text-white max-2xl:text-black rtl:rotate-180"
+          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M5 1 1 5l4 4" />
         </svg>
@@ -40,8 +40,8 @@
       data-carousel-next aria-label="Next Slide">
       <span
         class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 group-hover:bg-black/50 max-2xl:bg-black/30 max-2xl:hover:bg-black/50 group-focus:ring-white">
-        <svg class="w-4 h-4 max-sm:text-white text-white max-2xl:text-black rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
-          viewBox="0 0 6 10">
+        <svg class="w-4 h-4 max-sm:text-white text-white max-2xl:text-black rtl:rotate-180"
+          xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="m1 9 4-4-4-4" />
         </svg>
@@ -57,9 +57,9 @@
       <div class="text-center">
         <h2 class="text-xl uppercase mb-2">QUIERO COLEGIARME</h2>
         <a href="view/Documentos/Nuevos Colegiados">
-        <button
-          class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR
-          AHORA</button>
+          <button
+            class="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg hover:bg-white hover:text-[#2C3E8C]">APLICAR
+            AHORA</button>
         </a>
       </div>
       <div class="text-center">
@@ -78,26 +78,30 @@
   </header>
 
   <!-- Section Search -->
-  <section class="container mx-auto md:px-32 px-2 py-8 uppercase">
-    <h1 class="text-center text-3xl font-bold mb-6">
+  <section class="container mx-auto px-4 py-8 uppercase">
+    <h1 class="text-center text-2xl font-bold mb-6">
       Buscador colegiados
     </h1>
-   <form id="search-form-header" action="" class="flex items-center ">
+    <form id="search-form-header" action="" class="flex max-sm:flex-col gap-y-2">
+      <input id="searchMat"
+        class="py-3 px-2 w-full md:rounded-l-lg bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+        type="search" placeholder="Matricula, Especialidades" name="">
       <input id="searchCol"
-        class="py-3 px-4 w-full rounded-l-lg bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
-        type="search" placeholder="Nombre, Matricula, Especialidades" name="">
+        class="py-3 px-2 w-full  bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+        type="search" placeholder="Nombres (opcional)" name="">
       <input id="searchPaterno"
-        class="py-3 px-4 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+        class="py-3 px-2 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
         type="search" placeholder="Apellido paterno (opcional)" name="">
       <input id="searchMaterno"
-        class="py-3 px-4 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+        class="py-3 px-2 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
         type="search" placeholder="Apellido materno (opcional)" name="">
       <button id="search-button" type="submit"
-        class="px-8 py-3 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
         Buscar
       </button>
     </form>
   </section>
+
 
   <!-- Welcome Section -->
   <section class="container mx-auto px-4 py-12">
@@ -134,13 +138,7 @@
               parte de una comunidad comprometida con la justicia y el desarrollo social.
             </p>
           </div>
-          <div>
-            <h3 class="text-xl font-bold mb-3">Vida Universitaria</h3>
-            <p class="text-sm">
-              En el ICALP fomentamos el crecimiento integral de nuestros futuros colegiados, porque más que colegas,
-              somos una comunidad comprometida con la justicia y el desarrollo social.
-            </p>
-          </div>
+         
           <div>
             <h3 class="text-xl font-bold mb-3">Requisitos de Admisión</h3>
             <p class="text-sm">Estos son los requisitos para colegiarte en el ICALP.</p>
@@ -214,8 +212,7 @@
       <div class="flex flex-col md:flex-row">
         <!-- Image Section -->
         <div class="md:w-1/3">
-          <img src="/public/img/justice-and-law.jpg"
-            alt="Martillo de juez" class="w-full h-full object-cover">
+          <img src="/public/img/justice-and-law.jpg" alt="Martillo de juez" class="w-full h-full object-cover">
         </div>
 
         <!-- Form Section -->
@@ -277,35 +274,56 @@
       </div>
     </div>
   </div>
-  <dialog id="dialog-search" class="px-6 py-4 max-w-8xl w-full max-h-[80vh] rounded-xl bg-white shadow-lg border border-gray-300">
+  <dialog id="dialog-search"
+    class="px-6 py-4 max-w-8xl w-full max-h-[80vh] rounded-xl bg-white shadow-lg border border-gray-300">
     <div class="flex flex-col">
       <!-- Encabezado dentro del dialog sin la clase 'fixed' -->
       <div class="flex justify-between w-full mb-4">
         <h3 class="text-2xl font-semibold text-gray-700">Resultados de Búsqueda</h3>
-        <button id="cerrar-dialog" class="text-gray-500 hover:text-gray-700 focus:outline-none" aria-label="Cerrar resultados de búsqueda">
+        <button id="cerrar-dialog" class="text-gray-500 hover:text-gray-700 focus:outline-none"
+          aria-label="Cerrar resultados de búsqueda">
           <i class="fa-solid fa-xmark fa-2x"></i>
         </button>
       </div>
-        <!-- Lista de resultados -->
-        <ul id="result-list" class="grid  items-center justify-center md:grid-cols-2 xl:grid-cols-3 overflow-auto max-h-[60vh] space-y-2 gap-1">
-          <!-- Los resultados se insertarán aquí dinámicamente -->
-        </ul>
+      <!-- Lista de resultados -->
+      <ul id="result-list"
+        class="grid  items-center justify-center md:grid-cols-2 xl:grid-cols-3 overflow-auto max-h-[60vh] space-y-2 gap-1">
+        <!-- Los resultados se insertarán aquí dinámicamente -->
+      </ul>
     </div>
   </dialog>
-  
+
   <script defer>
+    const searchMat = $("#searchMat");
     const searchUsers = $("#searchCol");
     const searchFormHeader = $("#search-form-header");
     const dialogSearch = $('#dialog-search')
     const cerrarDialogSearch = $('#cerrar-dialog')
+
+
     searchFormHeader?.addEventListener("submit", async (e) => {
-       e.preventDefault(); // Evitar el envío de formulario o recarga de la página
-      
-      const searchValueM = searchMaterno.value.trim(); // Obtener y recortar el valor de búsqueda
-      const searchValueP = searchPaterno.value.trim(); // Obtener y recortar el valor de búsqueda
-      const searchValue = searchUsers.value.trim(); // Obtener y recortar el valor de búsqueda
-      
-      if (!searchValue && !searchValueM && !searchValueP) {
+      e.preventDefault(); // Evitar el envío de formulario o recarga de la página
+
+      // Obtener y recortar los valores de búsqueda
+      const searchValueMat = searchMat.value.trim();
+      const searchValueM = searchMaterno.value.trim();
+      const searchValueP = searchPaterno.value.trim();
+      let searchValue = searchCol.value.trim(); // Asegúrate de que esta variable esté bien referenciada
+
+      console.log(searchValueMat);
+      // Verificar que ambos campos de búsqueda no estén vacíos
+      if (searchValueMat && searchValue) {
+        searchMat.value = '';  // Limpiar el valor de searchMat si searchUsers existe
+      }
+
+      // Si searchMat tiene valor pero searchValue está vacío, asigna el valor de searchMat a searchValue
+      if (searchValueMat && !searchValue) {
+        // Aquí asignas a la variable de búsqueda principal (searchValue) el valor de searchMat
+        searchValue = searchValueMat;
+      }
+
+    
+      if (!searchValue && !searchValueM && !searchValueP && !searchMat) {
         alert("Por favor, ingrese un término de búsqueda.");
         return;
       }
@@ -337,7 +355,7 @@
 
       <div class="p-4 flex justify-center border-b">
         <img
-          src="${colegiado.Foto ?'/uploads/imagenes/'+colegiado.Foto: '/public/img/imageDefault.png'}"
+          src="${colegiado.Foto ? '/uploads/imagenes/' + colegiado.Foto : '/public/img/imageDefault.png'}"
           alt="FOTO DE: ${colegiado.Nombres} ${colegiado.Paterno} ${colegiado.Materno}"
           class="w-32 h-32 object-cover"
         />
@@ -346,11 +364,11 @@
       <div class="p-4 space-y-3 border-b">
         <div class="grid grid-cols-2 gap-2">
           <div class="text-gray-600 text-sm">MATRÍCULA:</div>
-          <div class="text-gray-900 font-medium text-sm">${colegiado.Matricula.toString().padStart(5,'0')}</div>
+          <div class="text-gray-900 font-medium text-sm">${colegiado.Matricula.toString().padStart(5, '0')}</div>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div class="text-gray-600 text-sm">CONALAB:</div>
-          <div class="text-gray-900 font-medium text-sm">${colegiado.MatriculaConalab|| 'S/N'}</div>
+          <div class="text-gray-900 font-medium text-sm">${colegiado.MatriculaConalab || 'S/N'}</div>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div class="text-gray-600 text-sm">FECHA REGISTRO:</div>
@@ -372,14 +390,17 @@
         </div>
       </div>
 
-      <div class="p-4 flex justify-center">
+      <div class="p-4 flex flex-col justify-center items-center">
         <span
           class='bg-green-100 text-green-800 px-4 py-2 rounded-xl'
               
         >
           ${colegiado.Estado}
         </span>
-      </div>
+        <% if (user) { %>
+    <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" href="colegiado/${colegiado.ColegiadoId}">Ir al colegiado</a>
+        <% }%>
+        </div>
     </div>
       `;
             resultContainer.appendChild(listItem);

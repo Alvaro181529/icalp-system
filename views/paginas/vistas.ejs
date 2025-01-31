@@ -1,7 +1,7 @@
 <%- include('../partials/header', {title, user}) %>
 <div class="pt-10">
     <%if(result.Title || result.MenuTitle)  {%>
-        <div class="max-w-2xl mx-auto my-8">
+        <div class="max-w-2xl mx-auto my-8 max-sm:px-8">
             <div class="my-8">
                 <h1 class="text-5xl font-bold m-0"><%=result.MenuTitle%></h1>
                 <h5 class="text-lg mt-2 font-semibold text-gray-600"><%= result.Title%></h5>
