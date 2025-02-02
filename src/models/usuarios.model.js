@@ -56,7 +56,7 @@ class UsersModel {
   };
   async getUserCobradores (query)  {
     const result = pool.query(
-      `SELECT u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles FROM aspnetusers u LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId WHERE r.RoleId = 'c1103424-be2e-11ef-828b-f80dacf23b8a' GROUP BY u.Email, u.User, u.IsApproved`
+      `SELECT u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles FROM aspnetusers u LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId WHERE r.RoleId = '4FE4C8D0-AA50-49D9-A75C-9D731711B9F4' GROUP BY u.Email, u.User, u.IsApproved`
     );
     return result;
   };

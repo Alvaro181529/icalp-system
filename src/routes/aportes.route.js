@@ -6,13 +6,15 @@ const router = express.Router();
 const aporte = new AporteController();
 
 // Aportes página
-router.get('/aportes', checkRole(["Administrador", "Cajero", "Contador","Colegiados"]), aporte.getAportes);
+router.get('/aportes', checkRole(["Administrador", "Cajero", "Contador",]), aporte.getAportes);
+router.get('/aportes-por-cobrador', checkRole(["Administrador","Gerencia"]), aporte.getAportesPorCobrador);
 router.get('/aportes-anulados', checkRole(["Administrador", "Cajero", "Contador"]), aporte.getAportesNull);
 router.get('/aporte-mensual', checkRole(["Administrador", "Cajero", "Contador"]), aporte.getAportesMensual);
 router.get('/aporte-cobrador', checkRole(["Administrador", "Cajero", "Contador"]), aporte.getAportesCobrador);
 
 // Aportes API
-router.get('/contribution', aporte.getContribution);
+router.get('/contributionPorCobrador', checkRole(["Administrador","Gerencia"]),  aporte.getContributionPorCobrador);
+router.get('/contribution', checkRole(["Administrador", "Cajero",  "Cobrador","Contador"]),  aporte.getContribution);
 router.get('/contributions', checkRole(["Administrador", "Cajero", "Contador","Colegiados"]), aporte.getContributionsMensual);
 router.get('/contributionsCobrador', checkRole(["Administrador", "Cajero", "Contador"]), aporte.getContributionsCobrador);
 router.get('/contribution/voiding', checkRole(["Administrador", "Cajero", "Contador"]), aporte.getContributionNull);

@@ -1,6 +1,6 @@
-const pool = require("../../config/db.connect.js"); 
+const pool = require("../../config/db.connect.js");
 class AporteModel {
-  async getAportesNull (param) {
+  async getAportesNull(param) {
     const { page = 1, size = 10 } = param || {}; // Asignamos valores por defecto si 'param' es undefined
     const offset = (page - 1) * size; // Calculamos el offset
 
@@ -52,9 +52,9 @@ class AporteModel {
       console.error("Error en la consulta de historial:", error);
       throw error; // Lanzamos el error para ser manejado por el llamador
     }
-  };
+  }
 
-  async getAportesMensual (query)  {
+  async getAportesMensual(query) {
     const { year = new Date().getFullYear() } = query;
     const result = await pool.query(
       `SELECT 
@@ -76,8 +76,8 @@ ORDER BY
       [year]
     );
     return result;
-  };
-  async getAportesPorCobrador (query)  {
+  }
+  async getAportesPorCobrador(query) {
     const { year } = query;
     const result = await pool.query(
       `SELECT DISTINCT 
@@ -99,19 +99,23 @@ ORDER BY
       [year]
     );
     return result;
-  };
-  async getAporte (query)  {
+  }
+  async getAporte(query, usuario) {
+    console.log("usuario");
+    console.log(usuario);
+    // Desestructuramos y procesamos los valores de query
     const {
       search,
-      inicio = new Date(new Date().setDate(1)),
-      fin = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+      inicio = new Date(new Date().setDate(1)).toISOString().split("T")[0], // Primer día del mes
+      fin = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
+        .toISOString()
+        .split("T")[0], // Último día del mes
       page = 1,
       size = 10,
     } = query;
-  
     const limit = parseInt(size);
     const offset = (page - 1) * size;
-  
+
     // Base query para obtener los aportes con concatenación de fechas
     let baseQuery = `
       SELECT a.*, 
@@ -126,9 +130,12 @@ ORDER BY
       INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
       WHERE 1=1
     `;
-  
     let queryParams = [];
-  
+    if (usuario) {
+      baseQuery += `AND a.Cobrador = ?`;
+      queryParams.push(`${usuario}`);
+    }
+
     // Filtro de búsqueda por Matricula, Talonario
     if (search) {
       baseQuery += `
@@ -139,7 +146,7 @@ ORDER BY
       `;
       queryParams.push(`%${search}%`, `%${search}%`);
     }
-  
+
     // Filtro por fecha de inicio (FechaAporte)
     if (inicio) {
       baseQuery += `
@@ -147,15 +154,15 @@ ORDER BY
       `;
       queryParams.push(`${inicio}`);
     }
-  
+
     // Filtro por fecha de fin (FechaAporte)
     if (fin) {
       baseQuery += `
         AND a.FechaAporte <= ?
       `;
-      queryParams.push(`${fin}`);
+      queryParams.push(`${fin + " 23:59:59"}`);
     }
-  
+
     // Consulta para obtener el total de Monto
     let totalMontoQuery = `
     SELECT 
@@ -164,9 +171,14 @@ ORDER BY
     INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
     WHERE 1=1
     `;
-    
+
     let totalMontoParams = [...queryParams];
-    
+
+    if (usuario) {
+      totalMontoQuery += `AND a.Cobrador = ?`;
+      totalMontoParams.push(`${usuario}`);
+    }
+
     // Repetir filtros de búsqueda y fechas para la consulta de totalMonto
     if (search) {
       totalMontoQuery += `
@@ -177,21 +189,21 @@ ORDER BY
       `;
       totalMontoParams.push(`%${search}%`, `%${search}%`);
     }
-  
+
     if (inicio) {
       totalMontoQuery += `
         AND a.FechaAporte >= ?
       `;
       totalMontoParams.push(`${inicio}`);
     }
-  
+
     if (fin) {
       totalMontoQuery += `
         AND a.FechaAporte <= ?
       `;
-      totalMontoParams.push(`${fin}`);
+      totalMontoParams.push(`${fin + " 23:59:59"}`);
     }
-  
+
     // Consulta para contar el total de registros (sin LIMIT)
     let countQuery = `
       SELECT COUNT(*) AS total
@@ -199,9 +211,13 @@ ORDER BY
       INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
       WHERE 1=1
     `;
-  
+
     let countParams = [...queryParams]; // Parámetros para el conteo
-  
+
+    if (usuario) {
+      countQuery += `AND a.Cobrador = ?`;
+      countParams.push(`${usuario}`);
+    }
     // Repetir filtros de búsqueda y fechas para el conteo
     if (search) {
       countQuery += `
@@ -212,25 +228,25 @@ ORDER BY
       `;
       countParams.push(`%${search}%`, `%${search}%`);
     }
-  
+
     if (inicio) {
       countQuery += `
         AND a.FechaAporte >= ?
       `;
       countParams.push(`${inicio}`);
     }
-  
+
     if (fin) {
       countQuery += `
         AND a.FechaAporte <= ?
       `;
       countParams.push(`${fin}`);
     }
-  
+
     // Agregar LIMIT y OFFSET a la consulta principal
-    baseQuery += ` LIMIT ? OFFSET ?`;
+    baseQuery += `ORDER BY a.FechaAporte DESC LIMIT ? OFFSET ?`;
     queryParams.push(limit, offset);
-  
+
     try {
       // Ejecutar ambas consultas en paralelo
       const [rows, countResult, totalMontoResult] = await Promise.all([
@@ -238,10 +254,10 @@ ORDER BY
         pool.query(countQuery, countParams),
         pool.query(totalMontoQuery, totalMontoParams),
       ]);
-  
+
       const total = countResult[0].total; // Obtener el total de registros
       const totalMonto = totalMontoResult[0].TotalMonto || 0; // Obtener el total de monto, con valor 0 si es nulo
-  
+
       // Retornar los resultados con paginación
       return {
         users: rows,
@@ -254,16 +270,16 @@ ORDER BY
       console.error("Error al obtener los aportes: ", error);
       throw new Error("Error al obtener los aportes");
     }
-  };
-  
-  async getAporteByOne (id) {
+  }
+
+  async getAporteByOne(id) {
     const result = await pool.query(
       "SELECT * FROM aportes WHERE ColegiadoId = ?",
       [id]
     );
     return result;
-  };
-  async postAporte (body, user)  {
+  }
+  async postAporte(body, user) {
     const {
       colegiadoId,
       mesInicial, // Asegúrate de corregir "mesInical" por "mesInicial"
@@ -324,10 +340,10 @@ ORDER BY
       console.error("Error al insertar el aporte:", error);
       throw error; // Lanza el error para que el controlador lo pueda manejar
     }
-  };
+  }
 
   // Anular aporte
-  async patchAporteNull (query, user, Motivo)  {
+  async patchAporteNull(query, user, Motivo) {
     const motivo = Motivo || "Sin motivo";
     // Primero, obtenemos los datos necesarios para la inserción en 'reciboanulados'
     const aporteResult = await pool.query(
@@ -377,8 +393,8 @@ ORDER BY
     );
 
     return result;
-  };
+  }
 
-  async deleteAporte () {};
+  async deleteAporte() {}
 }
-module.exports = AporteModel
+module.exports = AporteModel;

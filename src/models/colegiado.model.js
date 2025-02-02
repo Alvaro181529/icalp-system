@@ -176,7 +176,7 @@ class ColegiadoModel {
     const offset = (page - 1) * size;
 
     let baseQuery = `
-      SELECT a.MesInicial, a.MesFinal, a.AnoInicial, a.AnoFinal, c.FechaMatriculacionAlColegio, c.Matricula, CONCAT(c.Nombres, ' ', c.Paterno, ' ', c.Materno) AS Nombre, c.DireccionOficina, c.Correo, c.FechaNacimiento, c.NumeroCI, c.DireccionDomicilio, c.Observacion, c.CargoActual, c.EspecialidadPrimaria, c.Situacion, c.Celular, c.Nacionalidad FROM colegiados c LEFT JOIN aportes a ON c.ColegiadoId = a.ColegiadoId
+      SELECT a.MesInicial, a.MesFinal, a.AnoInicial, a.AnoFinal, c.FechaMatriculacionAlColegio,c.ColegiadoId, c.Matricula, CONCAT(c.Nombres, ' ', c.Paterno, ' ', c.Materno) AS Nombre, c.DireccionOficina, c.Correo, c.FechaNacimiento, c.NumeroCI, c.DireccionDomicilio, c.Observacion, c.CargoActual, c.EspecialidadPrimaria, c.Situacion, c.Celular,c.TelefonoDomicilio,c.TelefonoOficina, c.Nacionalidad FROM colegiados c LEFT JOIN aportes a ON c.ColegiadoId = a.ColegiadoId
         WHERE 1=1
       `;
 

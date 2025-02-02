@@ -31,13 +31,23 @@
 
   <% if (user) { %>
     <div class="min-h-screen flex">
+      <button id="toggle-sidebar-open" class="fixed top-4 left-4 z-30 p-2 text-white rounded-full hidden">
+        <i class="fa-regular fa-circle-right text-xl"></i>
+      </button>
+
       <!-- Sidebar -->
-      <aside class="bg-blue-900 text-white w-64 p-4 fixed top-0 left-0 bottom-0 z-20 overflow-y-auto sm:block hidden">
+      <aside id="sidebar-nav" class="bg-blue-900 text-white w-64 p-4 fixed top-0 left-0 bottom-0 z-50 overflow-y-auto">
         <nav>
-          <h3 class="font-bold text-xl mb-4 border-b pb-2">Panel</h3>
+          <div class="flex justify-between border-b pb-2 mb-4 ">
+            <h3 class="font-bold text-xl">Panel</h3>
+            <button id="toggle-sidebar-close">
+              <i class="fa-regular fa-circle-left text-xl"></i>
+            </button>
+          </div>
           <div class="space-y-2">
 
-            <% if (user && user.roles.includes('Administrador') ||user.roles.includes('Cobrador')||user.roles.includes('Colegiados')) { %>
+            <% if (user && user.roles.includes('Administrador')
+              ||user.roles.includes('Cobrador')||user.roles.includes('Colegiados')|| user.roles.includes('Gerencia')) { %>
               <!-- Colegiados Section -->
               <details class="group">
                 <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
@@ -54,7 +64,7 @@
               </details>
               <%}%>
                 <% if (user && user.roles.includes('Administrador') || user.roles.includes('Contador') ||
-                  user.roles.includes('Cajero') ||user.roles.includes('Cobrador')) { %>
+                  user.roles.includes('Cajero') ||user.roles.includes('Cobrador')|| user.roles.includes('Gerencia')) { %>
 
                   <!-- Reportes Section -->
                   <details class="group">
@@ -64,29 +74,38 @@
                       <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
                     </summary>
                     <ul class="pl-8 mt-2 space-y-1">
-                      <% if (user && user.roles.includes('Administrador') || user.roles.includes('Contador') ||
-                        user.roles.includes('Cajero') ){ %>
-
-                        <li><a href="/aportes" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de Aportes</a>
-                        </li>
-                        <li><a href="/aporte-cobrador" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes
-                            mensuales
-                            por
-                            cobrador</a></li>
-                        <li><a href="/aporte-mensual" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes
-                            mensuales</a>
+                      <% if (user && user.roles.includes('Administrador') || user.roles.includes('Gerencia') ){ %>
+                        <li><a href="/aportes-por-cobrador" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de
+                            Aportes por Cobrador</a>
                         </li>
 
-                        <li><a href="/aportes-anulados" class="block px-4 py-2 hover:bg-blue-950 rounded">Anulación de
-                            aportes</a></li>
                         <%}%>
-                          <li><a href="/talonario" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de
-                              Talonarios</a>
-                          </li>
+                          <% if (user && user.roles.includes('Administrador') || user.roles.includes('Contador') ||
+                            user.roles.includes('Cajero') || user.roles.includes('Gerencia')  || user.roles.includes('Cobrador') ){ %>
+                            <li><a href="/aportes" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de Aportes
+                              </a>
+                            </li>
+                            <li><a href="/aporte-cobrador" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes
+                                mensuales
+                                por
+                                cobrador</a></li>
+                            <li><a href="/aporte-mensual" class="block px-4 py-2 hover:bg-blue-950 rounded">Reportes
+                                mensuales</a>
+                            </li>
+
+                            <li><a href="/aportes-anulados" class="block px-4 py-2 hover:bg-blue-950 rounded">Anulación
+                                de
+                                aportes</a></li>
+                            <%}%>
+
+                              <li><a href="/talonario" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de
+                                  Talonarios</a>
+                              </li>
                     </ul>
                   </details>
                   <%}%>
-                    <% if (user && user.roles.includes('Contador')|| user.roles.includes('Cobrador')||user.roles.includes('Administrador') ) { %>
+                    <% if (user && user.roles.includes('Contador')||
+                      user.roles.includes('Cobrador')||user.roles.includes('Administrador') || user.roles.includes('Gerencia')) { %>
                       <!-- Colegiados por Año Section -->
                       <details class="group">
                         <summary
@@ -165,11 +184,11 @@
           </div>
         </nav>
       </aside>
-      <main class="sm:ml-64 w-full overflow-y-auto">
+      <main id="main-page" class="sm:ml-64 w-full overflow-y-auto">
         <% } %>
           <nav id="nav1" class="bg-black">
             <div
-              class=" flex flex-wrap justify-between items-center mx-auto container mx-auto px-8  p-4 transition-all z-20">
+              class=" flex flex-wrap  <%= user ? ' max-sm:ml-8' : '' %>  justify-between items-center mx-auto container mx-auto px-8  p-4 transition-all z-50">
               <section class="grid">
                 <a href="mailto:presidencia@icalp.org.bo"
                   class="text-sm text-gray-300 hover:underline">presidencia@icalp.org.bo</a>
@@ -190,35 +209,68 @@
 
             </div>
           </nav>
-          <nav id="nav2"
-            class="bg-blue-950 bg-opacity-50 backdrop-blur-sm  <%= user ? 'sticky top-0' : 'fixed' %> z-50 w-full transition-all">
+          <!-- <nav id="nav2"
+            class="bg-blue-950 bg-opacity-50 backdrop-blur-sm  <%= user ? ' sticky top-0' : 'fixed' %> z-50 w-full transition-all">
             <div class="container mx-auto px-8 px-4 py-3 mx-auto text-white">
               <div class="flex items-center gap-4">
-                <button data-collapse-toggle="navbar-sticky" type="button"
-                  class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                  aria-controls="navbar-sticky" aria-expanded="false">
-                  <span class="sr-only">Open main menu</span>
-                  <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M1 1h15M1 7h15M1 13h15" />
-                  </svg>
-                </button>
+
                 <a href="/" flex items-center space-x-3">
                   <img src="/public/Logo_colegio_de_abogados_Mesa_de_trabajo.png" class="h-8" width="170"
-                    alt="Flowbite Logo" />
+                    alt="Icalp Logo" />
                 </a>
-                <div class="items-center justify-between hidden md:flex md:w-auto    ml-auto" id="navbar-sticky">
-                  <ul id="lista" class="flex flex-col md:flex-row font-medium mt-0 space-x-8 text-sm">
-                  </ul>
-                </div>
+                <div class="flex flex-row w-full justify-end gap-2">
+                  <div class="items-center justify-between hidden md:flex md:w-auto ml-auto" id="navbar-sticky">
+                    <ul id="lista" class="flex flex-col md:flex-row font-medium mt-0 space-x-8 text-sm">
+                    </ul>
+                  </div>
 
+                  <% if (user) { %>
+                    <div>
+                      <h2 class="text-white font-bold text-sm">
+                        <%= user.correo %>
+                      </h2>
+                      <p class="text-sm text-wrap">
+                        <%= user.roles %>
+                      </p>
+                    </div>
+                    <% } else { %>
+                      <a href="/login">
+                        <button type="button"
+                          class="text-white bg-transparent border-2 border-white hover:text-black hover:bg-white active:ring active:ring-gray-300 font-medium rounded-3xl text-sm px-4 py-2 text-center">
+                          Iniciar sesión
+                        </button>
+                      </a>
+                      <% } %>
+                        <button data-collapse-toggle="navbar-sticky" type="button"
+                          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                          aria-controls="navbar-sticky" aria-expanded="false">
+                          <span class="sr-only">Open main menu</span>
+                          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 17 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M1 1h15M1 7h15M1 13h15" />
+                          </svg>
+                        </button>
+                </div>
+              </div>
+            </div>
+
+          </nav> -->
+          <nav id="nav2"
+            class="bg-blue-950 bg-opacity-50 backdrop-blur-sm <%= user ? 'sticky top-0' : 'md:fixed' %> z-40 w-full transition-all gap-2">
+
+            <div class="container flex flex-wrap items-center justify-between mx-auto p-4">
+              <a href="/" class=" flex items-center space-x-3">
+                <img src="/public/Logo_colegio_de_abogados_Mesa_de_trabajo.png" class="h-8" width="170"
+                  alt="Icalp Logo" />
+              </a>
+              <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
                 <% if (user) { %>
                   <div>
                     <h2 class="text-white font-bold text-sm">
                       <%= user.correo %>
                     </h2>
-                    <p class="text-sm">
+                    <p class="text-sm text-wrap text-white">
                       <%= user.roles %>
                     </p>
                   </div>
@@ -230,10 +282,25 @@
                       </button>
                     </a>
                     <% } %>
+
+                      <button data-collapse-toggle="navbar-sticky" type="button"
+                        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        aria-controls="navbar-sticky" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                          viewBox="0 0 17 14">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                        </svg>
+                      </button>
+              </div>
+              <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+                <ul id="lista" class="flex flex-col md:flex-row font-medium mt-0 space-x-8 text-sm">
+                </ul>
               </div>
             </div>
-
           </nav>
+
           <div id="print-section">
 
             <script defer>
@@ -294,62 +361,61 @@
 
                   // Iterar sobre los datos recibidos
                   res.forEach(item => {
-    // Crear el <li> para cada menú
-    const li = document.createElement('li');
-    // Crear el botón de menú
-    const buttonHTML = `
-    <button id="dropdownNavbarLink-${item.MenuId}" data-dropdown-toggle="${item.MenuId}" 
-           class="flex items-center justify-between w-full py-2 px-3 text-white text-sm rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-gray-200  md:p-0 md:w-auto ">
-      ${item.MenuNameEnglish}
-      <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-      </svg>
-    </button>
+                    // Crear el <li> para cada menú
+                    const li = document.createElement('li');
+                    // Crear el botón de menú
+                    const buttonHTML = `
+ <button id="dropdownNavbarLink-${item.MenuId}" data-dropdown-toggle="${item.MenuId}" 
+                           class="flex items-center justify-between w-full py-2 px-3 text-white text-sm rounded hover:bg-blue-800 md:hover:bg-transparent md:border-0 md:hover:text-gray-200  md:p-0 md:w-auto ">
+                      ${item.MenuNameEnglish}
+                      <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                      </svg>
+                    </button>
     `;
+                    const dropdownHTML = `
+                    <div id="dropdownNavbar-${item.MenuId}" class="z-10 hidden text-sm bg-gray-700 bg-opacity-30 backdrop-blur-md divide-y divide-gray-100 rounded-lg shadow w-44 absolute mt-2">
+                    <ul class="py-2 text-sm text-white " aria-labelledby="dropdownLargeButton">
+                      ${item.pages.map(page => `
+                        <li>
+                          <a href="/view/${item.MenuNameEnglish}/${page.PageTitle}" class="block px-4 py-2 hover:bg-blue-700 hover:bg-opacity-30 hover:backdrop-blur-sm ">
+                            ${page.PageTitle}
+                          </a>
+                        </li>
+                      `).join('')}
+                    </ul>
+                  </div>
+                  `;
+                    li.innerHTML = buttonHTML + dropdownHTML;
+                    lista.appendChild(li);
 
-    const dropdownHTML = `
-    <div id="dropdownNavbar-${item.MenuId}" class="z-10 hidden text-sm bg-blue-950 bg-opacity-30 backdrop-blur-md divide-y divide-gray-100 rounded-lg shadow w-44 absolute mt-2">
-    <ul class="py-2 text-sm text-white " aria-labelledby="dropdownLargeButton">
-      ${item.pages.map(page => `
-        <li>
-          <a href="/view/${item.MenuNameEnglish}/${page.PageTitle}" class="block px-4 py-2 hover:bg-blue-700 hover:bg-opacity-30 hover:backdrop-blur-sm ">
-            ${page.PageTitle}
-          </a>
-        </li>
-      `).join('')}
-    </ul>
-    </div>
-    `;
-    li.innerHTML = buttonHTML + dropdownHTML;
-    lista.appendChild(li);
+                    const button = li.querySelector(`#dropdownNavbarLink-${item.MenuId}`);
+                    const dropdownMenu = li.querySelector(`#dropdownNavbar-${item.MenuId}`);
 
-    const button = li.querySelector(`#dropdownNavbarLink-${item.MenuId}`);
-    const dropdownMenu = li.querySelector(`#dropdownNavbar-${item.MenuId}`);
+                    button.addEventListener('click', (e) => {
+                      // Prevenir el cierre accidental del menú al hacer clic en el mismo botón
+                      e.stopPropagation();
 
-    button.addEventListener('click', (e) => {
-        // Prevenir el cierre accidental del menú al hacer clic en el mismo botón
-        e.stopPropagation();
+                      // Cerrar todos los menús desplegables
+                      const allDropdowns = document.querySelectorAll('.backdrop-blur-md');
+                      allDropdowns.forEach(menu => {
+                        if (menu !== dropdownMenu) {
+                          menu.classList.add('hidden');
+                        }
+                      });
 
-        // Cerrar todos los menús desplegables
-        const allDropdowns = document.querySelectorAll('.z-10');
-        allDropdowns.forEach(menu => {
-            if (menu !== dropdownMenu) {
-                menu.classList.add('hidden');
-            }
-        });
+                      // Alternar la visibilidad del menú actual
+                      dropdownMenu.classList.toggle('hidden');
+                    });
+                  });
 
-        // Alternar la visibilidad del menú actual
-        dropdownMenu.classList.toggle('hidden');
-    });
-});
-
-// Cerrar los menús si se hace clic fuera de un menú desplegable
-document.addEventListener('click', () => {
-    const allDropdowns = document.querySelectorAll('.z-10');
-    allDropdowns.forEach(menu => {
-        menu.classList.add('hidden');
-    });
-});
+                  // Cerrar los menús si se hace clic fuera de un menú desplegable
+                  document.addEventListener('click', () => {
+                    const allDropdowns = document.querySelectorAll('.backdrop-blur-md');
+                    allDropdowns.forEach(menu => {
+                      menu.classList.add('hidden');
+                    });
+                  });
                 } catch (error) {
                   console.error('Error al obtener los datos:', error);
                 }
@@ -357,19 +423,34 @@ document.addEventListener('click', () => {
 
               FetchData();
               $('#imprimir').addEventListener('click', function imprimirPagina() {
-            var contenido = document.getElementById('print-section').innerHTML;
-            var ventanaImpresion = window.open('', '', 'width=800,height=600');
-            
-            // Escribimos la estructura inicial del documento
-            ventanaImpresion.document.open();
-            ventanaImpresion.document.write('<html><head><title>Impresión</title></head><body>');
-            
-            // Ahora insertamos el contenido del div
-            ventanaImpresion.document.body.innerHTML = contenido;
+                var contenido = document.getElementById('print-section').innerHTML;
+                var ventanaImpresion = window.open('', '', 'width=800,height=600');
 
-            ventanaImpresion.document.close();
-            ventanaImpresion.print();
-            })
+                // Escribimos la estructura inicial del documento
+                ventanaImpresion.document.open();
+                ventanaImpresion.document.write('<html><head><title>Impresión</title></head><body>');
+
+                // Ahora insertamos el contenido del div
+                ventanaImpresion.document.body.innerHTML = contenido;
+
+                ventanaImpresion.document.close();
+                ventanaImpresion.print();
+              })
+
+
+              $('#toggle-sidebar-close').addEventListener('click', () => {
+                $('#sidebar-nav').classList.add('hidden');
+                $('#sidebar-nav').classList.remove('block');
+                $('#main-page').classList.remove('sm:ml-64')
+                $('#toggle-sidebar-open').classList.remove('hidden')
+              });
+              $('#toggle-sidebar-open').addEventListener('click', () => {
+                $('#sidebar-nav').classList.add('block');
+                $('#sidebar-nav').classList.remove('hidden');
+                $('#main-page').classList.add('sm:ml-64')
+                $('#toggle-sidebar-open').classList.add('hidden')
+              });
+
             </script>
 </body>
 

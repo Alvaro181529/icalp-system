@@ -8,6 +8,11 @@ class AporteController {
     if (!user) return res.redirect("/");
     res.render("aportes/aporte", { title: "Aportes", user });
   }
+  async getAportesPorCobrador(req, res) {
+    const { user } = req.session;
+    if (!user) return res.redirect("/");
+    res.render("aportes/aportePorCobrador", { title: "Aportes por Cobrador", user });
+  }
 
   async getAportesNull(req, res) {
     const { user } = req.session;
@@ -27,9 +32,34 @@ class AporteController {
     res.render("aportes/cobrador", { title: "Aporte por Cobrador", user });
   }
 
-  async getContribution(req, res) {
+  async getContributionPorCobrador(req, res) {
+    const { cobrador } = req.query;
+    console.log(cobrador);
     try {
-      const result = await aporte.getAporte(req.query);
+      const result = await aporte.getAporte(req.query, cobrador || "");
+      const resultadoTransformado = Array.isArray(result.users)
+        ? result.users.map((item) => transformarJson(item))
+        : [transformarJson(result.users)];
+      res.json({
+        users: resultadoTransformado,
+        totalMonto: result.totalMonto,
+        total: result.total,
+        pages: result.totalPages,
+        currentPage: result.currentPage,
+      });
+    } catch (error) {
+      console.error("Error al obtener la contribución:", error);
+      res.status(500).json({
+        message: "Hubo un problema al obtener los datos.",
+        error: error.message || error,
+      });
+    }
+  }
+
+  async getContribution(req, res) {
+    const { user } = req.session;
+    try {
+      const result = await aporte.getAporte(req.query, user.correo);
       const resultadoTransformado = Array.isArray(result.users)
         ? result.users.map((item) => transformarJson(item))
         : [transformarJson(result.users)];
@@ -115,9 +145,11 @@ class AporteController {
     try {
       const result = await aporte.getAporteByOne(id);
       const resultadoTransformado = Array.isArray(result)
-        ? result.map(function(item) {return transformarJson(item)})
+        ? result.map(function (item) {
+            return transformarJson(item);
+          })
         : transformarJson(result);
-        console.log(resultadoTransformado);
+      console.log(resultadoTransformado);
       res.json(resultadoTransformado);
     } catch (e) {
       console.error(e);
@@ -144,8 +176,6 @@ class AporteController {
   }
 
   deleteContributions(req, res) {}
-
-
 }
 const months = [
   "Enero",
@@ -162,25 +192,30 @@ const months = [
   "Diciembre",
 ];
 function transformarJson(data) {
-  if(!data.MesInicial ){
-    data.MesInicial = 1
+  if (!data.MesInicial) {
+    data.MesInicial = 1;
   }
   if (!data.MesFinal) {
     if (data.Monto == 220 || data.Monto == 240) {
       data.MesFinal = 12; // Asigna 12 si Monto es 220
     } else {
-      data.MesFinal = 1;  // Asigna 1 en otros casos
+      data.MesFinal = 1; // Asigna 1 en otros casos
     }
   }
-  
+
   // Validación de los datos de entrada
-  if (!data.AnoInicial || !data.MesInicial || !data.AnoFinal || !data.MesFinal) {
+  if (
+    !data.AnoInicial ||
+    !data.MesInicial ||
+    !data.AnoFinal ||
+    !data.MesFinal
+  ) {
     return {
       ...data,
       FechaInicial: "Fecha no válida",
       FechaFinal: "Fecha no válida",
       Meses: 0,
-      Faltante: 0
+      Faltante: 0,
     };
   }
 
@@ -193,7 +228,12 @@ function transformarJson(data) {
   };
 
   // Calcular la cantidad de meses entre dos fechas
-  const calcularCantidadMeses = (anoInicial, mesInicial, anoFinal, mesFinal) => {
+  const calcularCantidadMeses = (
+    anoInicial,
+    mesInicial,
+    anoFinal,
+    mesFinal
+  ) => {
     const fechaInicial = new Date(anoInicial, mesInicial - 1);
     const fechaFinal = new Date(anoFinal, mesFinal - 1);
     const diferenciaEnMeses =
@@ -210,7 +250,12 @@ function transformarJson(data) {
 
   const fechaInicialTexto = convertirFechaTexto(anoInicial, mesInicial);
   const fechaFinalTexto = convertirFechaTexto(anoFinal, mesFinal);
-  const cantidadMeses = calcularCantidadMeses(anoInicial, mesInicial, anoFinal, mesFinal);
+  const cantidadMeses = calcularCantidadMeses(
+    anoInicial,
+    mesInicial,
+    anoFinal,
+    mesFinal
+  );
   const montoFaltante = cantidadMeses * 20 - data.Monto; // Suponiendo que el monto de cada mes es 20
   const mesesDeuda = calcularMeses(mesFinal, anoFinal);
 

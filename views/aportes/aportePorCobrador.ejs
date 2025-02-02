@@ -1,34 +1,53 @@
 <%- include('../partials/header', {title, user}) %>
   <div class="px-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col lg:flex-row justify-between items-start gap-6 py-8">
+        <!-- Formulario de búsqueda por texto -->
+        <div class="w-full space-y-4">
+          <form id="form-search" method="get" class="flex w-full max-w-md">
+            <input id="search" type="text" name="search" placeholder="Buscar por Matricula o Nombre"
+              class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button id="search-button" type="submit"
+              class="px-6 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+              Buscar
+            </button>
+          </form>
 
-    <div class="flex flex-col md:flex-row items-center w-full py-4 gap-4">
-      <!-- Formulario de búsqueda por texto -->
-      <form id="form-search" method="get" class="flex items-center w-full md:w-auto ">
-        <input id="search" type="text" name="search" placeholder="Buscar por Matricula o Nombre"
-          class="px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-80" />
-        <button id="search-button" type="submit"
-          class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          Buscar
-        </button>
-      </form>
+          <form id="form-cobrador" method="get" class="flex w-full max-w-md">
+            <select name="cobradores" id="cobradores"
+              class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
+            </select>
+            <button id="search-button" type="submit"
+              class="px-6 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+              Buscar
+            </button>
+          </form>
+        </div>
 
-      <!-- Formulario de búsqueda por fechas -->
-      <form id="form-search-date" method="get" class="flex items-center w-full md:w-auto gap-2">
-        <div class="flex flex-col md:flex-row items-start md:items-center gap-2">
-          <label for="search-date-inicio" class="text-gray-700">Fecha de inicio</label>
-          <input id="search-date-inicio" type="date" name="inicio"
-            class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-40" />
-        </div>
-        <div class="flex flex-col md:flex-row items-start md:items-center gap-2">
-          <label for="search-date-fin" class="text-gray-700">Fecha de fin</label>
-          <input id="search-date-fin" type="date" name="fin"
-            class="px-4 py-2 border border-gray-300 text-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full md:w-40" />
-        </div>
-        <button id="search-button" type="submit"
-          class="px-8 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 max-sm:mt-8">
-          Buscar
-        </button>
-      </form>
+        <!-- Formulario de búsqueda por fechas -->
+        <form id="form-search-date" method="get" class="w-full lg:w-auto">
+          <div class="flex flex-col sm:flex-row items-end gap-4">
+            <div class="w-full sm:w-auto">
+              <label for="search-date-inicio" class="block text-sm font-medium text-gray-700 mb-1">
+                Fecha de inicio
+              </label>
+              <input id="search-date-inicio" type="date" name="inicio"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div class="w-full sm:w-auto">
+              <label for="search-date-fin" class="block text-sm font-medium text-gray-700 mb-1">
+                Fecha de fin
+              </label>
+              <input id="search-date-fin" type="date" name="fin"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <button id="search-button" type="submit"
+              class="w-full sm:w-auto px-6 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+              Buscar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
     <div>
       <h1 class="py-2 text-gray-500 font-bold"> Total recaudado entre fechas:
@@ -81,7 +100,7 @@
   </div>
 
   <script defer>
-    // Script modificado
+   
     document.addEventListener("DOMContentLoaded", function () {
 
       const prevPageButton = $("#prev-page");
@@ -94,14 +113,52 @@
       const searchInicio = $('#search-date-inicio');
       const searchFin = $('#search-date-fin');
       const formDate = $('#form-search-date')
-      let page = 1;  // Página actual
+
+      let cobrador
+      let page = 1; 
       let dateInicio
       let dateFin
-      let searchValue = "";  // Guardar el valor de búsqueda actual
+      let searchValue = ""; 
 
-      // Actualiza la tabla con los datos
+      const fetchCobradores = async () => {
+        try {
+          const result = await fetch('/users/cobrador'); 
+          const res = await result.json(); 
+
+         
+          const cobradoresSelect = $('#cobradores');
+
+         
+          cobradoresSelect.innerHTML = '';
+
+
+          const todoOption = document.createElement('option');
+          todoOption.value = ""; 
+          todoOption.textContent = "Todo"; 
+          cobradoresSelect.appendChild(todoOption); 
+         
+          res.forEach(cobrador => {
+            const option = document.createElement('option');
+            if (cobrador.IsApproved === 1) { 
+              option.value = cobrador.Email; 
+              option.textContent = cobrador.Email; 
+              cobradoresSelect.appendChild(option); 
+            }
+          });
+
+
+        } catch (error) {
+          console.error("Error al obtener los cobradores:", error); 
+        }
+      };
+
+     
+      fetchCobradores();
+
+
+     
       const updateTable = (data, totalPages, totalMonto) => {
-        resultTableBody.innerHTML = ""; // Limpiar tabla antes de llenarla
+        resultTableBody.innerHTML = "";
         console.log(totalMonto);
         $('#TotalMonto').textContent = totalMonto
         if (data.length > 0) {
@@ -119,7 +176,7 @@
               minute: '2-digit',
               hour12: true
             });
-            // Construir la fila
+           
             row.innerHTML = `
           <td class="px-6 py-3 text-wrap" ><p>
             ${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}
@@ -146,16 +203,16 @@
           resultTableBody.appendChild(row);
         }
 
-        // Actualizar el estado de los botones de paginación
+       
         prevPageButton.disabled = page === 1;
         nextPageButton.disabled = page === totalPages;
         currentPageSpan.textContent = `Página ${page}`;
         itemPage.textContent = totalPages;
       };
 
-      // Función para obtener los datos desde el servidor y actualizar la tabla
+     
       const fetchAndUpdateTable = async () => {
-        const url = `/contribution?search=${searchValue || ""}&page=${page}&inicio=${dateInicio || ""}&fin=${dateFin || ""}&pageSize=10`;
+        const url = `/contributionPorCobrador?search=${searchValue || ""}&page=${page}&inicio=${dateInicio || ""}&fin=${dateFin || ""}&pageSize=10&cobrador=${cobrador || ''}`;
         try {
           const response = await fetch(url);
           if (!response.ok) {
@@ -165,8 +222,8 @@
           const data = await response.json();
           if (Array.isArray(data.users)) {
             console.log(data);
-            totalPages = data.pages; // Actualizar el total de páginas
-            totalMonto = data.totalMonto; // Actualizar el total de páginas
+            totalPages = data.pages;
+            totalMonto = data.totalMonto;
             updateTable(data.users, totalPages, totalMonto);
           } else {
             console.error("La estructura de la respuesta no es válida");
@@ -176,14 +233,23 @@
         }
       };
 
-      // Llamada inicial para cargar los datos
+     
       fetchAndUpdateTable();
 
-      // Evento de búsqueda
+     
       searchForm.addEventListener("submit", function (event) {
         event.preventDefault();
+        cobrador = $('#cobradores').value;
+        console.log(cobrador);
         searchValue = searchInput.value.trim();
-        page = 1; // Volver a la primera página al realizar una nueva búsqueda
+        page = 1;
+        fetchAndUpdateTable();
+      });
+     
+      $('#form-cobrador').addEventListener("submit", function (event) {
+        event.preventDefault();
+        cobrador = $('#cobradores').value;
+        page = 1;
         fetchAndUpdateTable();
       });
 
@@ -191,13 +257,14 @@
         event.preventDefault();
         dateFin = searchFin.value.trim() || "";
         dateInicio = searchInicio.value.trim() || "";
-        page = 1; // Volver a la primera página al realizar una nueva búsqueda
+        page = 1;
         fetchAndUpdateTable();
       });
 
-      // Evento para cambiar a la página anterior
+     
       prevPageButton.addEventListener("click", function () {
         if (page > 1) {
+          cobrador = $('#cobradores').value;
           searchValue = searchInput.value.trim();
           dateFin = searchFin.value.trim() || "";
           dateInicio = searchInicio.value.trim() || "";
@@ -206,9 +273,10 @@
         }
       });
 
-      // Evento para cambiar a la página siguiente
+     
       nextPageButton.addEventListener("click", function () {
         if (page < totalPages) {
+          cobrador = $('#cobradores').value;
           searchValue = searchInput.value.trim();
           dateFin = searchFin.value.trim() || "";
           dateInicio = searchInicio.value.trim() || "";

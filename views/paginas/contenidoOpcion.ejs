@@ -83,11 +83,39 @@
                         </div>
                         <h5 class="text-xs text-gray-600 text-muted-foreground">Publicado el <%= new Date(content.Datetime).toLocaleString('es-VE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false }) %></h5>
                         <hr class="mx-3 my-4 border-t border-gray-400">
-                        <%- content.Content %>
+                        <div id="editor">
+                            <%- content.Content %>
+                        </div>
                     </div>
                 <%}%>
     </div>
-    <script>
+    <style>
+        #editor {
+            border: none !important;
+            /* Elimina el borde */
+            padding: 0;
+            /* Elimina cualquier relleno que pueda tener */
+            background-color: transparent;
+            /* Si quieres que el fondo sea transparente */
+        }
+
+        /* Opcional: Si quieres también eliminar el borde del contenedor principal del Quill */
+        .ql-container {
+            border: none !important;
+            /* Elimina el borde del contenedor */
+            box-shadow: none !important;
+            /* Elimina la sombra si está presente */
+        }
+
+        /* Opcional: Si no quieres que el área de texto tenga el borde de Quill en el editor */
+        .ql-editor {
+            border: none !important;
+            /* Elimina el borde del área de texto */
+            outline: none !important;
+            /* Elimina cualquier borde cuando el área de texto esté en foco */
+        }
+    </style>
+    <script defer>
         
         const formCreate = $("#editorForm");
         const formUpdate = $("#editorFormUpdate");
@@ -169,6 +197,16 @@
             })
             window.location.reload();
         });
+        var quillview = new Quill('#editor', {
+            theme: 'snow', // El tema que prefieras
+            readOnly: true, // Hace que el editor sea solo lectura
+            modules: {
+                toolbar: false // Desactiva la barra de herramientas
+            }
+        });
+
+        // Obtener el contenido como HTML (si es necesario)
+        var contentHTML = quillview.root.innerHTML || "";
     </script>
 
     </html>

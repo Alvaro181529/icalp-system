@@ -151,6 +151,7 @@ LEFT JOIN posts o ON o.PageId = p.PageId
   async optionDelete (id) {
     try {
       await pool.query(`DELETE FROM posts WHERE PageId = ?`, [id]);
+      await pool.query(`DELETE FROM pageslanguages WHERE PageId = ?`, [id]);
       await pool.query(`DELETE FROM pages WHERE PageId = ?`, [id]);
       return { message: "Se elimino el contenido de la pagina y la opcion" };
     } catch (error) {

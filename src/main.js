@@ -19,16 +19,16 @@ const notaRouter = require("./routes/nota.route.js");
 const app = express();
 
 // Cambiar la manera de obtener __filename y __dirname
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // template
 app.set("view engine", "ejs");
 
 // middleware
 app.use(morgan("dev"));
-app.use(express.json());
+app.use(express.json({ limit: '1000mb' }));
 app.use(cookieParser());
-
+app.use(express.urlencoded({ extended: true, limit: '1000mb' }));
 // token
 app.use((req, res, next) => {
   const token = req.cookies.access_token;

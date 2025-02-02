@@ -75,14 +75,14 @@
               <div class="mb-4">
                 <p class="text-gray-300">Dirección de oficina:</p>
                 <p>
-                  <%= result.DireccionOficina %>
+                  <%= result.DireccionOficina || 'No registrado' %>
                 </p>
               </div>
 
               <div class="mb-4">
-                <p class="text-gray-300">Fecha de nacimiento:</p>
+                <p class="text-gray-300">Fecha de nacimiento:  (mm/dd/aaaa)</p>
                 <p>
-                  <%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toLocaleDateString() : "No disponible"
+                  <%= result.FechaNacimiento ? new Date(result.FechaNacimiento).toLocaleDateString() : "No registrado"
                     %>
                 </p>
               </div>
@@ -94,46 +94,51 @@
                 </p>
               </div>
             </div>
-
             <div>
+              <div class="mb-4">
+                <p class="text-gray-300">Celular</p>
+                <p>
+                  <%= result.Celular || "No registrado" %>
+                </p>
+              </div>
               <div class="mb-4">
                 <p class="text-gray-300">Numero de telefono:</p>
                 <p>
-                  <%= result.TelefonoDomicilio %>
+                  <%= result.TelefonoDomicilio || 'No registrado' %>
                 </p>
               </div>
 
               <div class="mb-4">
                 <p class="text-gray-300">Telefono de oficina:</p>
                 <p>
-                  <%= result.TelefonoOficina%>
+                  <%= result.TelefonoOficina|| 'No registrado' %>
                 </p>
               </div>
 
               <div class="mb-4">
                 <p class="text-gray-300">Lugar de nacimiento:</p>
                 <p>
-                  <%= result.LugarNacimiento %>
+                  <%= result.LugarNacimiento || 'No registrado' %>
                 </p>
               </div>
 
               <div class="mb-4">
                 <p class="text-gray-300">Numero de C.I.:</p>
                 <p>
-                  <%= result.NumeroCI %>
+                  <%= result.NumeroCI || 'No registrado'%>
                 </p>
               </div>
               <div class="mb-4">
                 <p class="text-gray-300">Matricula Conalab</p>
                 <p>
-                  <%= result.MatriculaConalab || "No disponible" %>
+                  <%= result.MatriculaConalab || "No registrado" %>
                 </p>
               </div>
               <div class="mb-4">
-                <p class="text-gray-300">Fecha matriculacion del colegio</p>
+                <p class="text-gray-300">Fecha matriculacion del colegio (mm/dd/aaaa)</p>
                 <p>
                   <%= result.FechaMatriculacionAlColegio ? new
-                    Date(result.FechaMatriculacionAlColegio).toLocaleDateString() : "No disponible" %>
+                    Date(result.FechaMatriculacionAlColegio).toLocaleDateString() : "No registrado" %>
                 </p>
               </div>
             </div>
@@ -145,63 +150,63 @@
 
       <h1 class="font-semibold text-3xl mt-8 mb-4">Information adicional</h1>
       <hr>
-      <div class="ml-12">
+      <div class="ml-12 max-sm:ml-0">
         <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="mb-4">
             <p class="text-gray-300">Numero Ruc</p>
             <p>
-              <%= result.NumeroRuc || 'No disponible' %>
+              <%= result.NumeroRuc || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Estado Civil</p>
             <p>
-              <%= result.EstadoCivil || 'No disponible' %>
+              <%= result.EstadoCivil || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Universidad</p>
             <p>
-              <%= result.Universidad || 'No disponible' %>
+              <%= result.Universidad || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
-            <p class="text-gray-300">Fecha tesis</p>
+            <p class="text-gray-300">Fecha tesis  (mm/dd/aaaa)</p>
             <p>
-              <%= result.FechaTesis || "No disponible" %>
+              <%= result.FechaTesis || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Universidad licenciatura</p>
             <p>
-              <%= result.UniversidadLicenciatura || 'No disponible' %>
+              <%= result.UniversidadLicenciatura || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
-            <p class="text-gray-300">Fecha licenciatura</p>
+            <p class="text-gray-300">Fecha licenciatura  (mm/dd/aaaa)</p>
             <p>
-              <%= result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toLocaleDateString() : "No disponible"
+              <%= result.FechaLicenciatura ? new Date(result.FechaLicenciatura).toLocaleDateString() : "No registrado"
                 %>
             </p>
           </div>
           <div class="mb-4">
-            <p class="text-gray-300">Fecha Provicion nacional</p>
+            <p class="text-gray-300">Fecha Provicion nacional  (mm/dd/aaaa)</p>
             <p>
               <%= result.FechaProvisionNacional ? new Date(result.FechaProvisionNacional).toLocaleDateString()
-                : "No disponible" %>
+                : "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Entidad Provicion nacional</p>
             <p>
-              <%= result.EntidadProvisionNacional || 'No disponible' %>
+              <%= result.EntidadProvisionNacional || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
-            <p class="text-gray-300">Fecha matriculacion del colegio</p>
+            <p class="text-gray-300">Fecha matriculacion del colegio  (mm/dd/aaaa)</p>
             <p>
               <%= result.FechaMatriculacionAlColegio ? new Date(result.FechaMatriculacionAlColegio).toLocaleDateString()
-                : "No disponible" %>
+                : "No registrado" %>
             </p>
           </div>
         </div>
@@ -209,25 +214,25 @@
           <div class="mb-4">
             <p class="text-gray-300">Cargos administracion publica</p>
             <p>
-              <%= result.CargosAdministracionPublica || 'No disponible' %>
+              <%= result.CargosAdministracionPublica || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Cargos administracion publica</p>
             <p>
-              <%= result.CargosEmpresaPrivada || 'No disponible' %>
+              <%= result.CargosEmpresaPrivada || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Cargos Buffete</p>
             <p>
-              <%= result.CargosBufete || "No disponible" %>
+              <%= result.CargosBufete || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Cargo actual</p>
             <p>
-              <%= result.CargoActual || 'No disponible' %>
+              <%= result.CargoActual || 'No registrado' %>
             </p>
           </div>
         </div>
@@ -235,43 +240,43 @@
           <div class="mb-4">
             <p class="text-gray-300">Especialidad primaria</p>
             <p>
-              <%= result.EspecialidadPrimaria || "No disponible" %>
+              <%= result.EspecialidadPrimaria || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Especialidad secundaria</p>
             <p>
-              <%= result.EspecialidadSecundaria || 'No disponible' %>
+              <%= result.EspecialidadSecundaria || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Producciones</p>
             <p>
-              <%= result.Producciones || "No disponible" %>
+              <%= result.Producciones || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Catedra</p>
             <p>
-              <%= result.Catedra || 'No disponible' %>
+              <%= result.Catedra || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Estudios especializacion</p>
             <p>
-              <%= result.EstudiosEspecializacion || "No disponible" %>
+              <%= result.EstudiosEspecializacion || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Reconocimientos</p>
             <p>
-              <%= result.Reconocimientos || "No disponible" %>
+              <%= result.Reconocimientos || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Asistencia a eventos internacionales</p>
             <p>
-              <%= result.AsistenciaEventosInternacionales || 'No disponible' %>
+              <%= result.AsistenciaEventosInternacionales || 'No registrado' %>
             </p>
           </div>
         </div>
@@ -279,152 +284,145 @@
           <div class="mb-4">
             <p class="text-gray-300">Institucion asegurado</p>
             <p>
-              <%= result.InstitucionAsegurado || 'No disponible' %>
+              <%= result.InstitucionAsegurado || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Institucion asegurado</p>
             <p>
-              <%= result.InstitucionAsegurado || 'No disponible' %>
+              <%= result.InstitucionAsegurado || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Beneficiarios</p>
             <p>
-              <%= result.Beneficiarios || "No disponible" %>
+              <%= result.Beneficiarios || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Direccion domicilio</p>
             <p>
-              <%= result.DireccionDomicilio || 'No disponible' %>
+              <%= result.DireccionDomicilio || 'No registrado' %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Casilla</p>
             <p>
-              <%= result.Casilla || "No disponible" %>
+              <%= result.Casilla || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Situacion</p>
             <p>
-              <%= result.Situacion || "No disponible" %>
+              <%= result.Situacion || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Observacion</p>
             <p>
-              <%= result.Observacion || "No disponible" %>
+              <%= result.Observacion || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Zona</p>
             <p>
-              <%= result.ZonaId || "No disponible" %>
+              <%= result.ZonaId || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Nacionalidad</p>
             <p>
-              <%= result.Nacionalidad || "No disponible" %>
-            </p>
-          </div>
-
-          <div class="mb-4">
-            <p class="text-gray-300">Celular</p>
-            <p>
-              <%= result.Celular || "No disponible" %>
+              <%= result.Nacionalidad || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Grado academico</p>
             <p>
-              <%= result.GradoAcademico || "No disponible" %>
+              <%= result.GradoAcademico || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Licenciatura</p>
             <p>
-              <%= result.Licenciatura || "No disponible" %>
+              <%= result.Licenciatura || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">ZonaTrabajoId</p>
             <p>
-              <%= result.ZonaTrabajoId || "No disponible" %>
+              <%= result.ZonaTrabajoId || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Forma de pago</p>
             <p>
-              <%= result.FormaDePago || "No disponible" %>
+              <%= result.FormaDePago || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Numero de boleta de deposito</p>
             <p>
-              <%= result.BoletaDepositoNumero || "No disponible" %>
+              <%= result.BoletaDepositoNumero || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Monto deposito</p>
             <p>
-              <%= result.MontoDeposito || "No disponible" %>
+              <%= result.MontoDeposito || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Formulario de admisión</p>
             <p>
-              <%= result.FormularioDeAdmision || "No disponible" %>
+              <%= result.FormularioDeAdmision || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Fotocopia titulo profecional</p>
             <p>
-              <%= result.FotocopiaTituloProfesional || "No disponible" %>
+              <%= result.FotocopiaTituloProfesional || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Certificado de nacimiento original</p>
             <p>
-              <%= result.CertificadoNacimientoOriginal || "No disponible" %>
+              <%= result.CertificadoNacimientoOriginal || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Fotocopia C.I.</p>
             <p>
-              <%= result.FotocopiaCI || "No disponible" %>
+              <%= result.FotocopiaCI || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Curriculum vitae</p>
             <p>
-              <%= result.CurriculumVitae || "No disponible" %>
+              <%= result.CurriculumVitae || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Usuario quien registro</p>
             <p>
-              <%= result.UsuarioRegistro || "No disponible" %>
+              <%= result.UsuarioRegistro || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
-            <p class="text-gray-300">Fecha registro</p>
+            <p class="text-gray-300">Fecha registro  (mm/dd/aaaa)</p>
             <p>
-              <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No disponible" %>
+              <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
             <p class="text-gray-300">Usuario modificación</p>
             <p>
-              <%= result.UsuarioModificacion || "No disponible" %>
+              <%= result.UsuarioModificacion || "No registrado" %>
             </p>
           </div>
           <div class="mb-4">
-            <p class="text-gray-300">Fecha modificación</p>
+            <p class="text-gray-300">Fecha modificación  (mm/dd/aaaa)</p>
             <p>
-              <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No disponible"
+              <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No registrado"
                 %>
             </p>
           </div>
@@ -461,7 +459,7 @@
         </div>
 
         <hr class="my-2">
-        <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
+        <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8 max-sm:ml-0"">
           <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
             <thead class="text-xs text-gray-200 uppercase bg-gray-300 ">
               <tr class="text-gray-800">
@@ -486,7 +484,7 @@
           </div>
         </div>
         <hr class="my-2">
-        <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8">
+        <div class="overflow-x-auto shadow-md sm:rounded-lg bg-gray-100 ml-8 max-sm:ml-0"">
           <table id="notas-table" class="w-full text-sm text-left rtl:text-right text-gray-800 ">
             <thead class="text-xs text-gray-200 uppercase bg-gray-300 ">
               <tr class="text-gray-800">
@@ -1364,8 +1362,8 @@
           let select = document.getElementById("mesInicial");
           let selectAno = document.getElementById("anoInicial");
 
-          let mesSeleccionado = res[res.length - 1].MesFinal;
-          let anoSeleccionado = res[res.length - 1].AnoFinal;
+          let mesSeleccionado = res.length ? res[res.length - 1].MesFinal:"";
+          let anoSeleccionado = res.length ? res[res.length - 1].AnoFinal:"";
 
           let mesPago = mesSeleccionado + 1;
           let anoPago = anoSeleccionado ;

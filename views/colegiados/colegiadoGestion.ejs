@@ -16,15 +16,14 @@
             <th class="px-4 py-3">Nombre</th>
             <th class="px-4 py-3">Oficina</th>
             <th class="px-4 py-3">Correo</th>
-            <th class="px-4 py-3">Nacimiento</th>
             <th class="px-4 py-3">Numero CI</th>
             <th class="px-4 py-3">Domicilio</th>
-            <th class="px-4 py-3">Observacion</th>
             <th class="px-4 py-3">Cargo Actual</th>
             <th class="px-4 py-3">Especialidad Primaria</th>
             <th class="px-4 py-3">Situacion</th>
             <th class="px-4 py-3">Celular</th>
-            <th class="px-4 py-3">Nacionalidad</th>
+            <th class="px-4 py-3">Telefono Domicilio</th>
+            <th class="px-4 py-3">Telefono Oficina</th>
             <th class="px-4 py-3">Meses que debe</th>
           </tr>
         </thead>
@@ -107,20 +106,19 @@
       });
       row.innerHTML = `
       <td class="px-6 py-3 text-wrap"><p>${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}</p></td>
-      <td class="px-6 py-3 text-wrap">${item.Matricula.toString().padStart(5, "0") || 'No disponible'}</td>
+      <td class="px-6 py-3 text-wrap font-medium text-blue-600 dark:text-blue-500 hover:underline text-center"><a href="/colegiado/${item.ColegiadoId}">${item.Matricula.toString().padStart(5, "0") || 'No disponible'}</a></td>
       <td class="px-6 py-3 text-wrap">${item.Nombre || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.DireccionOficina || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.Correo || 'No disponible'}</td>
-      <td class="px-6 py-3 text-wrap">${fechaNacimiento || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.NumeroCI || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.DireccionDomicilio || 'No disponible'}</td>
-      <td class="px-6 py-3 text-wrap">${item.Observacion || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.CargoActual || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.EspecialidadPrimaria || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.Situacion || 'No disponible'}</td>
       <td class="px-6 py-3 text-wrap">${item.Celular || 'No disponible'}</td>
-      <td class="px-6 py-3 text-wrap">${item.Nacionalidad || 'No disponible'}</td>
-      <td class="px-6 py-3 text-wrap" style="color: ${item.MesesDeuda > 0 ? 'crimson' : 'inherit'}">${item.MesesDeuda ?? "Registrado"}</td>
+      <td class="px-6 py-3 text-wrap">${item.TelefonoDomicilio || 'No disponible'}</td>
+      <td class="px-6 py-3 text-wrap">${item.TelefonoOficina || 'No disponible'}</td>
+      <td class="px-6 py-3 text-wrap " style="color: ${item.MesesDeuda > 0 ? 'crimson' : 'inherit'}">${item.MesesDeuda ?? "Nuevo Colegiado"}</td>
     `;
       return row;
     };
