@@ -26,9 +26,9 @@ app.set("view engine", "ejs");
 
 // middleware
 app.use(morgan("dev"));
-app.use(express.json({ limit: '1000mb' }));
+app.use(express.json({ limit: '3000mb' }));
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true, limit: '1000mb' }));
+app.use(express.urlencoded({ extended: true, limit: '3000mb' }));
 // token
 app.use((req, res, next) => {
   const token = req.cookies.access_token;
