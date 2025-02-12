@@ -15,11 +15,12 @@ const userRouter = require("./routes/usuarios.route.js");
 const talonarioRouter = require("./routes/talonario.route.js");
 const historialRouter = require("./routes/historial.route.js");
 const notaRouter = require("./routes/nota.route.js");
+const denunciaRouter = require("./routes/denuncia.route.js");
 
 const app = express();
 
 // Cambiar la manera de obtener __filename y __dirname
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // template
 app.set("view engine", "ejs");
@@ -53,6 +54,7 @@ app.use(homeRouter);
 app.use(pageRouter);
 app.use(historialRouter);
 app.use(notaRouter);
+app.use(denunciaRouter);
 
 // statics
 app.use("/public", express.static(path.join(__dirname, "public")));

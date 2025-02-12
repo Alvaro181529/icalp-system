@@ -138,7 +138,7 @@
               parte de una comunidad comprometida con la justicia y el desarrollo social.
             </p>
           </div>
-         
+
           <div>
             <h3 class="text-xl font-bold mb-3">Requisitos de Admisión</h3>
             <p class="text-sm">Estos son los requisitos para colegiarte en el ICALP.</p>
@@ -166,7 +166,7 @@
   </section>
 
   <!-- Blog Section -->
-  <div class="bg-[#2C3E8C] p-8">
+  <div class="bg-[#2C3E8C] p-8 hidden">
     <div class="container mx-auto px-8 py-8">
       <div class="flex justify-between items-center mb-8 max-sm:flex-col">
         <h1 class="text-white text-4xl font-bold max-sm:my-4">BLOG ICALP</h1>
@@ -217,24 +217,24 @@
 
         <!-- Form Section -->
         <div class="md:w-2/3 p-6">
-          <form class="space-y-4">
+          <form class="space-y-4" id="form-denuncia">
             <!-- Form Fields -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-white mb-2">Nombre <span class="text-red-500">*</span></label>
-                <input type="text" required
+                <label class="block text-white mb-2">Nombres <span class="text-red-500">*</span></label>
+                <input type="text" required name="nombres"
                   class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
               <div>
                 <label class="block text-white mb-2">Apellidos <span class="text-red-500">*</span></label>
-                <input type="text" required
+                <input type="text" required name="apellidos"
                   class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
             </div>
 
             <div>
               <label class="block text-white mb-2">Correo <span class="text-red-500">*</span></label>
-              <input type="email" required
+              <input type="email" required name="correo"
                 class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
@@ -248,7 +248,7 @@
                 <div class="flex w-full gap-2">
                   <input type="text" value="+591" readonly
                     class="w-20 px-3 py-2 bg-gray-100 rounded border border-gray-300">
-                  <input type="tel" required
+                  <input type="tel" required name="celular" maxlength="8"
                     class="w-full sm:flex-1 px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
               </div>
@@ -256,7 +256,7 @@
 
             <!-- Description -->
             <div>
-              <textarea placeholder="Descripción de la denuncia..." rows="4"
+              <textarea placeholder="Descripción de la denuncia..." rows="4" name="descripcion"
                 class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             </div>
 
@@ -299,30 +299,56 @@
     const searchFormHeader = $("#search-form-header");
     const dialogSearch = $('#dialog-search')
     const cerrarDialogSearch = $('#cerrar-dialog')
+    const formDenuncia = $('#form-denuncia')
 
+    formDenuncia?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const data = {
+        nombres: document.querySelector('[name="nombres"]')?.value,
+        apellidos: document.querySelector('[name="apellidos"]')?.value,
+        correo: document.querySelector('[name="correo"]')?.value,
+        celular: document.querySelector('[name="celular"]')?.value,
+        descripcion: document.querySelector('[name="descripcion"]')?.value,
+      };
+      try {
+        const response = await fetch('/denuncia', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        const responseData = await response.json();
+        alert('Denuncia enviada')
+      } catch (error) {
+        alert('No se envio la denuncia')
+      }
+    });
 
     searchFormHeader?.addEventListener("submit", async (e) => {
-      e.preventDefault(); // Evitar el envío de formulario o recarga de la página
+      e.preventDefault();
 
-      // Obtener y recortar los valores de búsqueda
+
       const searchValueMat = searchMat.value.trim();
       const searchValueM = searchMaterno.value.trim();
       const searchValueP = searchPaterno.value.trim();
-      let searchValue = searchCol.value.trim(); // Asegúrate de que esta variable esté bien referenciada
+      let searchValue = searchCol.value.trim();
 
       console.log(searchValueMat);
-      // Verificar que ambos campos de búsqueda no estén vacíos
+
       if (searchValueMat && searchValue) {
-        searchMat.value = '';  // Limpiar el valor de searchMat si searchUsers existe
+        searchMat.value = '';
       }
 
-      // Si searchMat tiene valor pero searchValue está vacío, asigna el valor de searchMat a searchValue
+
       if (searchValueMat && !searchValue) {
-        // Aquí asignas a la variable de búsqueda principal (searchValue) el valor de searchMat
+
         searchValue = searchValueMat;
       }
 
-    
+
       if (!searchValue && !searchValueM && !searchValueP && !searchMat) {
         alert("Por favor, ingrese un término de búsqueda.");
         return;
@@ -332,15 +358,15 @@
       const url = `search?search=${encodeURIComponent(searchValue)}&paterno=${encodeURIComponent(searchValueP)}&materno=${encodeURIComponent(searchValueM)}`;
 
       try {
-        // Hacer la solicitud fetch
+
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Error en la búsqueda");
         }
 
-        const data = await response.json(); // Asumimos que la respuesta es un JSON
+        const data = await response.json();
         const resultContainer = document.querySelector("#result-list");
-        resultContainer.innerHTML = ""; // Limpiar resultados previos
+        resultContainer.innerHTML = "";
         if (data.result.users.length > 0) {
           data.result.users.forEach((colegiado) => {
             const listItem = document.createElement("li");

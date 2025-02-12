@@ -1,0 +1,148 @@
+<%- include('../partials/header', {title, user}) %>
+
+    <div class="px-8 py-2">
+
+        <div class="overflow-x-auto shadow-md sm:rounded-lg">
+            <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+                <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+                    <tr>
+                        <th class="px-6 py-3">Nombres</th>
+                        <th class="px-6 py-3">Apellidos</th>
+                        <th class="px-6 py-3">Correo</th>
+                        <th class="px-6 py-3">Celular</th>
+                        <th class="px-6 py-3">Descripcion</th>
+                        <th class="px-6 py-3">Documento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se llenarán las filas con los resultados -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+            <div>
+                <span class="text-sm text-gray-700">
+                    Mostrando
+                    <span id="start-item" class="font-semibold text-gray-900">
+                        <span id="current-page">Página 1</span> de
+                    </span>
+                    <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"> </span>
+
+                </span>
+            </div>
+            <div class="inline-flex mt-2 xs:mt-0">
+                <button id="prev-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800  rounded-s hover:bg-blue-900  disabled:opacity-50 disabled:cursor-not-allowed">
+                    Anterior
+                </button>
+                <button id="next-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Siguiente
+                </button>
+            </div>
+        </div>
+    </div>
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function () {
+
+
+            const resultTableBody = $("#result-table tbody");
+            const prevPageButton = $("#prev-page");
+            const nextPageButton = $("#next-page");
+            const currentPageSpan = $("#current-page");
+            const itemPage = $("#item-page");
+
+
+            let page = 1;  // Página actual
+            let totalPages;  // Número total de páginas
+
+            // Función para actualizar la tabla con los resultados
+            const updateTable = (data, totalPages) => {
+                resultTableBody.innerHTML = "";  // Limpiar la tabla
+
+                if (data.length > 0) {
+                    data.forEach((item) => {
+                        const row = document.createElement("tr");
+                        const fecha = new Date(item.Fecha);
+
+                        const fechaFormateada = fecha.toLocaleDateString("es-ES", {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        const horaFormateada = fecha.toLocaleTimeString("es-ES", {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true
+                        });
+                        row.innerHTML = `
+                        <td class="px-6 py-3">${item.nombres}</td>
+                        <td class="px-6 py-3">${item.apellidos}</td>
+                        <td class="px-6 py-3">${item.correo}</td>
+                        <td class="px-6 py-3">${item.celular}</td>
+                        <td class="px-6 py-3">${item.descripcion}</td>
+                        <td class="px-6 py-3">${item.documento || "No encontrado"}</td>
+                    `;
+                        resultTableBody.appendChild(row);
+                    });
+                } else {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td class="px-6 py-3" colspan="4">No se encontraron resultados</td>`;
+                    resultTableBody.appendChild(row);
+                }
+                // Actualizar el estado de los botones de paginación
+                prevPageButton.disabled = page === 1;
+                nextPageButton.disabled = page === totalPages;
+                currentPageSpan.textContent = `Página ${page}`;
+                itemPage.textContent = totalPages;
+
+            };
+
+            // Función para realizar la búsqueda y actualizar la tabla
+            const fetchAndUpdateTable = async () => {
+                const url = `/denuncia?page=${page}&size=10`;
+
+                try {
+                    const response = await fetch(url);
+
+                    if (!response.ok) {
+                        throw new Error("Error en la solicitud");
+                    }
+
+                    const data = await response.json(); // Suponemos que la respuesta es un JSON
+
+                    if (data && data.data) {
+                        updateTable(data.data, data.totalPages);
+
+                    } else {
+                        console.error("La estructura de la respuesta no es válida");
+                        alert("Hubo un problema con los resultados. Intenta nuevamente.");
+                    }
+                } catch (error) {
+                    console.error("Error al realizar la solicitud:", error);
+                    alert("Hubo un problema al obtener los datos. Intenta nuevamente.");
+                }
+            };
+
+            // Ejecutar la búsqueda cuando se carga la página por primera vez
+            fetchAndUpdateTable();
+
+            // Evento para cambiar a la página anterior
+            prevPageButton.addEventListener("click", function () {
+                if (page > 1) {
+                    page--;
+                    fetchAndUpdateTable();
+                }
+            });
+
+            // Evento para cambiar a la página siguiente
+            nextPageButton.addEventListener("click", function () {
+                page++;
+                fetchAndUpdateTable();
+            });
+        });
+    </script>
+
+    <%- include('../partials/footer',{user}) %>
