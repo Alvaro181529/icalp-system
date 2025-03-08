@@ -20,7 +20,7 @@ const denunciaRouter = require("./routes/denuncia.route.js");
 const app = express();
 
 // Cambiar la manera de obtener __filename y __dirname
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 // template
 app.set("view engine", "ejs");

@@ -31,7 +31,7 @@
 
   <% if (user) { %>
     <div class="min-h-screen flex">
-      <button id="toggle-sidebar-open" class="fixed top-4 left-4 z-30 p-2 text-white rounded-full hidden">
+      <button id="toggle-sidebar-open" class="fixed top-4 left-4 z-30 p-2 text-white rounded-md hidden bg-black">
         <i class="fa-regular fa-circle-right text-xl"></i>
       </button>
 
@@ -207,11 +207,13 @@
           <nav id="nav1" class="bg-black">
             <div
               class=" flex flex-wrap  <%= user ? ' max-sm:ml-8' : '' %>  justify-between items-center mx-auto container mx-auto px-8  p-4 transition-all z-50">
-              <section class="grid">
-                <a href="mailto:presidencia@icalp.org.bo"
-                  class="text-sm text-gray-300 hover:underline">presidencia@icalp.org.bo</a>
-                <a href="tel:+59122407713" class="text-sm text-gray-300 hover:underline">(591) - 22407713</a>
-              </section>
+              <div class="<%= user ? ' max-md:ml-2 ml-12' : '' %>">
+                <section class="grid">
+                  <a href="mailto:presidencia@icalp.org.bo"
+                  class="text-sm text-gray-300 hover:underline ">presidencia@icalp.org.bo</a>
+                  <a href="tel:+59122407713" class="text-sm text-gray-300 hover:underline">(591) - 22407713</a>
+                </section>
+              </div>
               <section class="flex items-center text-white space-x-6 ">
                 <a href="/inicio" class="hover:text-gray-400">Inicio</a>
               </section>

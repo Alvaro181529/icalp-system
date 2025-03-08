@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `denuncias` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL PRIMARY,
   `nombres` varchar(250) DEFAULT NULL,
   `apellidos` varchar(250) DEFAULT NULL,
   `correo` varchar(250) DEFAULT NULL,

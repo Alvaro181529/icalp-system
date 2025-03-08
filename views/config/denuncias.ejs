@@ -83,7 +83,7 @@
                         <td class="px-6 py-3">${item.correo}</td>
                         <td class="px-6 py-3">${item.celular}</td>
                         <td class="px-6 py-3">${item.descripcion}</td>
-                        <td class="px-6 py-3">${item.documento || "No encontrado"}</td>
+                        <td class="px-6 py-3">${item.documento ? `<a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" target="_blank" href='/uploads/denuncias/${item.documento}'>${item.documento}</a>`:'Sin documento'}</td>
                     `;
                         resultTableBody.appendChild(row);
                     });

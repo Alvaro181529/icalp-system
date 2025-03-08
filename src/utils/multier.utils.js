@@ -35,7 +35,11 @@ const storage = multer.diskStorage({
       documentTypes.test(file.mimetype)
     ) {
       // Si es un documento, lo guardamos en la carpeta "documentos"
-      cb(null, path.join(__dirname, "../uploads/documentos"));
+      if(req.body.correo){
+        cb(null, path.join(__dirname, "../uploads/denuncias"));
+      }else {
+        cb(null, path.join(__dirname, "../uploads/documentos"));
+      }
     } else {
       // Si no es un archivo válido, mostramos un error
       return cb(

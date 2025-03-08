@@ -9,18 +9,19 @@ class ColegiadoModel {
     const limit = parseInt(size);
     const offset = (page - 1) * size;
     let baseQuery = `
-            SELECT * FROM colegiados
-            WHERE 1 = 1
+      SELECT *
+      FROM aportes a
+      INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId WHERE 1 = 1
         `;
     let queryParams = [];
 
     if (search) {
       baseQuery += `
-                AND (Nombres LIKE ? 
-                OR UsuarioRegistro LIKE ? 
-                OR Matricula LIKE ? 
-                OR Correo LIKE ?
-                OR NumeroCI LIKE ?)
+                AND (c.Nombres LIKE ? 
+                OR c.UsuarioRegistro LIKE ? 
+                OR c.Matricula LIKE ? 
+                OR c.Correo LIKE ?
+                OR c.NumeroCI LIKE ?)
             `;
       queryParams.push(
         `%${search}%`,
@@ -34,28 +35,29 @@ class ColegiadoModel {
       baseQuery += ` AND Paterno LIKE ? `;
       queryParams.push(`%${paterno}%`);
     }
-    if(materno){
+    if (materno) {
       baseQuery += ` AND Materno LIKE ? `;
       queryParams.push(`%${materno}%`);
     }
     let countQuery = `
-        SELECT COUNT(*) as total FROM colegiados
+        SELECT COUNT(*) as total FROM aportes a
+      INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
         WHERE 1 = 1
     `;
     let countParams = [...queryParams];
     if (search) {
       countQuery += `
-                AND (Nombres LIKE ? 
-                OR UsuarioRegistro LIKE ? 
-                OR Matricula LIKE ? 
-                OR Correo LIKE ?
-                OR NumeroCI LIKE ?)
+                AND (c.Nombres LIKE ? 
+                OR c.UsuarioRegistro LIKE ? 
+                OR c.Matricula LIKE ? 
+                OR c.Correo LIKE ?
+                OR c.NumeroCI LIKE ?)
             `;
     }
     if (paterno) {
       countQuery += ` AND Paterno LIKE ? `;
     }
-    if(materno){
+    if (materno) {
       countQuery += ` AND Materno LIKE ? `;
     }
     baseQuery += ` LIMIT ? OFFSET ?`;
@@ -289,6 +291,7 @@ class ColegiadoModel {
   }
   async updateUser(id, query, user) {
     const {
+      fechaMatriculacionAlColegio,
       matricula,
       matriculaConalab,
       nombres,
@@ -343,6 +346,7 @@ class ColegiadoModel {
     } = query;
 
     const updateData = {
+      FechaMatriculacionAlColegio: fechaMatriculacionAlColegio,
       Matricula: matricula,
       MatriculaConalab: matriculaConalab,
       Nombres: nombres,
@@ -402,6 +406,7 @@ class ColegiadoModel {
       const result = await pool.query(
         `
         UPDATE colegiados SET
+        FechaMatriculacionAlColegio =?,
           Matricula = ?, 
           MatriculaConalab = ?, 
           Nombres = ?, 
@@ -458,6 +463,7 @@ class ColegiadoModel {
         WHERE ColegiadoId = ?
         `,
         [
+          updateData.FechaMatriculacionAlColegio,
           updateData.Matricula,
           updateData.MatriculaConalab,
           updateData.Nombres,

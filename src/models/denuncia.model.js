@@ -38,14 +38,13 @@ class DenunciaModel {
       }
       
 
-  async postDenuncia(body) {
-    const { nombres, apellidos, correo, celular, documento, descripcion } = body;
-    const fecha = new Date();
+  async postDenuncia(body, file) {
+    const { nombres, apellidos, correo, celular, descripcion } = body;
     const query = await pool.query(
       `
         INSERT INTO denuncias ( nombres, apellidos, correo, celular,descripcion,documento) VALUES (?, ?, ?, ?,?, ?);
         `,
-      [nombres, apellidos, correo, celular, descripcion, documento]
+      [nombres, apellidos, correo, celular, descripcion, file]
     );
     return query;
   }

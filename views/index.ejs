@@ -262,14 +262,18 @@
 
             <!-- Buttons -->
             <div class="flex flex-wrap gap-4">
-              <button type="button"
-                class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Subir
-                archivo pdf</button>
+              <label for="file"
+                class="px-6 py-3 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out">
+                Subir archivo PDF
+              </label>
+              <input type="file" id="file" accept=".pdf" class="hidden">
+
               <button type="submit"
                 class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Enviar
                 denuncia</button>
             </div>
           </form>
+
         </div>
       </div>
     </div>
@@ -300,33 +304,37 @@
     const dialogSearch = $('#dialog-search')
     const cerrarDialogSearch = $('#cerrar-dialog')
     const formDenuncia = $('#form-denuncia')
-
     formDenuncia?.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const data = {
-        nombres: document.querySelector('[name="nombres"]')?.value,
-        apellidos: document.querySelector('[name="apellidos"]')?.value,
-        correo: document.querySelector('[name="correo"]')?.value,
-        celular: document.querySelector('[name="celular"]')?.value,
-        descripcion: document.querySelector('[name="descripcion"]')?.value,
-      };
+      // Crear un objeto FormData para enviar el formulario con el archivo
+      const formData = new FormData(formDenuncia);
+
+      // Obtener el archivo del input
+      const fileInput = $('#file');
+      const file = fileInput.files[0];
+
+      if (file) {
+        formData.append('file', file);
+      }
+      console.log(formData);
       try {
         const response = await fetch('/denuncia', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
+          body: formData, // Enviar los datos como FormData
         });
 
         const responseData = await response.json();
-        alert('Denuncia enviada')
+
+        if (response.ok) {
+          alert('Denuncia enviada');
+        } else {
+          alert('Error al enviar la denuncia');
+        }
       } catch (error) {
-        alert('No se envio la denuncia')
+        alert('No se envió la denuncia. Error en la conexión');
       }
     });
-
     searchFormHeader?.addEventListener("submit", async (e) => {
       e.preventDefault();
 
