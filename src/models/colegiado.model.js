@@ -80,6 +80,187 @@ class ColegiadoModel {
       throw new Error("Error al obtener los usuarios");
     }
   }
+  async getUsersAdmin(query) {
+    const { search, paterno, materno, page = 1, size = 10 } = query;
+    const limit = parseInt(size);
+    const offset = (page - 1) * size;
+    let baseQuery = `
+      SELECT * FROM
+      colegiados  WHERE 1 = 1
+        `;
+    let queryParams = [];
+
+    if (search) {
+      baseQuery += `
+                AND (Nombres LIKE ? 
+                OR UsuarioRegistro LIKE ? 
+                OR Matricula LIKE ? 
+                OR Correo LIKE ?
+                OR NumeroCI LIKE ?)
+            `;
+      queryParams.push(
+        `%${search}%`,
+        `%${search}%`,
+        `%${search}%`,
+        `%${search}%`,
+        `%${search}%`
+      );
+    }
+    if (paterno) {
+      baseQuery += ` AND Paterno LIKE ? `;
+      queryParams.push(`%${paterno}%`);
+    }
+    if (materno) {
+      baseQuery += ` AND Materno LIKE ? `;
+      queryParams.push(`%${materno}%`);
+    }
+    let countQuery = `
+        SELECT COUNT(*) FROM 
+      colegiados WHERE 1 = 1
+    `;
+    let countParams = [...queryParams];
+    if (search) {
+      countQuery += `
+                AND (Nombres LIKE ? 
+                OR UsuarioRegistro LIKE ? 
+                OR Matricula LIKE ? 
+                OR Correo LIKE ?
+                OR NumeroCI LIKE ?)
+            `;
+    }
+    if (paterno) {
+      countQuery += ` AND Paterno LIKE ? `;
+    }
+    if (materno) {
+      countQuery += ` AND Materno LIKE ? `;
+    }
+    baseQuery += ` LIMIT ? OFFSET ?`;
+    queryParams.push(limit, offset);
+
+    try {
+      const [rows, countResult] = await Promise.all([
+        pool.query(baseQuery, queryParams),
+        pool.query(countQuery, countParams),
+      ]);
+      const total = countResult[0].total;
+      return {
+        users: rows,
+        total,
+        pages: Math.ceil(total / limit),
+        currentPage: page,
+      };
+    } catch (error) {
+      console.error(error);
+      throw new Error("Error al obtener los usuarios");
+    }
+  }
+  async ObtenerColegiadosPorFecha(query) {
+    let baseQuery = `SELECT * FROM colegiados WHERE 1=1`;
+    const { fechaInicio, fechaFin, page = 1, size = 100000 } = query;
+
+    // Asegurarse de que los valores de page y size son números válidos
+    const limit = parseInt(size) || 10;
+    const offset = (parseInt(page) - 1) * limit || 0;
+
+    let queryParams = [];
+
+    // Agregar condiciones de fecha si existen
+    if (fechaInicio && fechaFin) {
+      baseQuery += ` AND FechaMatriculacionAlColegio BETWEEN ? AND ?`;
+      queryParams.push(fechaInicio, fechaFin);
+    } else {
+      if (fechaInicio) {
+        baseQuery += ` AND FechaMatriculacionAlColegio >= ?`;
+        queryParams.push(fechaInicio);
+      }
+      if (fechaFin) {
+        baseQuery += ` AND FechaMatriculacionAlColegio <= ?`;
+        queryParams.push(fechaFin);
+      }
+    }
+
+    // Consulta para contar el total de registros
+    let countQuery = `
+      SELECT COUNT(*) AS total
+      FROM colegiados WHERE 1=1
+    `;
+    let countParams = [...queryParams]; // Usamos los mismos parámetros para contar
+
+    // Si se agregaron filtros de fecha, también los aplicamos a la consulta de count
+    if (fechaInicio || fechaFin) {
+      countQuery += ` AND FechaMatriculacionAlColegio ${
+        fechaInicio && fechaFin
+          ? "BETWEEN ? AND ?"
+          : fechaInicio
+          ? ">= ?"
+          : "<= ?"
+      }`;
+    }
+
+    // Limitar resultados en la consulta principal
+    baseQuery += ` ORDER BY FechaMatriculacionAlColegio DESC LIMIT ? OFFSET ?  `;
+    queryParams.push(limit, offset);
+
+    try {
+      const [rows, countResult] = await Promise.all([
+        pool.query(baseQuery, queryParams),
+        pool.query(countQuery, countParams),
+      ]);
+
+      const total = countResult[0].total;
+
+      return {
+        users: rows,
+        total,
+        totalPages: Math.ceil(total / limit),
+        currentPage: page,
+      };
+    } catch (error) {
+      console.error("Error al obtener los colegiados: ", error);
+      throw new Error("Error al obtener los colegiados");
+    }
+  }
+
+  // async ObtenerColegiadosPorFecha(query) {
+  //   let baseQuery = `SELECT * FROM colegiados WHERE 1=1`;
+  //   const { fechaInicio, fechaFin, page = 1, size = 10 } = query;
+  //   const limit = parseInt(size);
+  //   const offset = (page - 1) * size;
+  //   let queryParams = [];
+  //   if (fechaInicio && fechaFin) {
+  //     baseQuery += ` AND FechaMatriculacionAlColegio BETWEEN ? AND ?`;
+  //     queryParams.push(fechaInicio, fechaFin);
+  //   }
+  //   let countQuery = `
+  //   SELECT COUNT(*) AS total
+  //   FROM colegiados WHERE 1=1
+  // `;
+  //   let countParams = [...queryParams];
+  //   if (fechaInicio && fechaFin) {
+  //     baseQuery += ` AND FechaMatriculacionAlColegio BETWEEN ? AND ?`;
+  //     countParams.push(fechaInicio, fechaFin);
+  //   }
+  //   baseQuery += ` LIMIT ? OFFSET ?`;
+  //   queryParams.push(limit, offset);
+  //   try {
+  //     const [rows, countResult] = await Promise.all([
+  //       pool.query(baseQuery, queryParams),
+  //       pool.query(countQuery, countParams),
+  //     ]);
+
+  //     const total = countResult[0].total;
+
+  //     return {
+  //       users: rows,
+  //       total,
+  //       totalPages: Math.ceil(total / limit),
+  //       currentPage: page,
+  //     };
+  //   } catch (error) {
+  //     console.error("Error al obtener los aportes: ", error);
+  //     throw new Error("Error al obtener los aportes");
+  //   }
+  // }
   async getOneUser(query) {
     try {
       const result = await pool.query(
@@ -356,7 +537,7 @@ class ColegiadoModel {
       DireccionOficina: direccionOficina,
       Correo: correo,
       LugarNacimiento: lugarNacimiento,
-      FechaNacimiento: fechaNacimiento,
+      FechaNacimiento: fechaNacimiento ? fechaNacimiento : null,
       NumeroCI: numeroCI,
       NumeroRuc: numeroRuc,
       EstadoCivil: estadoCivil,
@@ -578,7 +759,12 @@ class ColegiadoModel {
       curriculumVitae,
       estado,
     } = query;
+    // verifyfechaProvisionNacional = "0000-00-00 00:00:00";
 
+    // // Comprobamos si la fecha es igual a "0000-00-00 00:00:00"
+    // if (fechaProvisionNacional === "0000-00-00 00:00:00") {
+    //   fechaProvisionNacional = null; // Asignamos NULL si es igual
+    // }
     // Construir el objeto de datos
     const insertData = {
       Matricula: matricula,
@@ -590,7 +776,7 @@ class ColegiadoModel {
       DireccionOficina: direccionOficina,
       Correo: correo,
       LugarNacimiento: lugarNacimiento,
-      FechaNacimiento: fechaNacimiento,
+      FechaNacimiento: fechaNacimiento ? fechaNacimiento : null,
       NumeroCI: numeroCI,
       NumeroRuc: numeroRuc,
       EstadoCivil: estadoCivil,
@@ -598,7 +784,9 @@ class ColegiadoModel {
       FechaTesis: fechaTesis,
       UniversidadLicenciatura: universidadLicenciatura,
       FechaLicenciatura: fechaLicenciatura,
-      FechaProvisionNacional: fechaProvisionNacional,
+      FechaProvisionNacional: fechaProvisionNacional
+        ? fechaProvisionNacional
+        : null,
       EntidadProvisionNacional: entidadProvisionNacional,
       CargosAdministracionPublica: cargosAdministracionPublica,
       CargosEmpresaPrivada: cargosEmpresaPrivada,
@@ -624,7 +812,7 @@ class ColegiadoModel {
       Licenciatura: licenciatura,
       FormaDePago: formaDePago,
       BoletaDepositoNumero: boletaDepositoNumero,
-      MontoDeposito: montoDeposito,
+      MontoDeposito: montoDeposito ? montoDeposito : 0.00,
       FormularioDeAdmision: formularioAdmision,
       FotocopiaTituloProfesional: fotocopiaTituloProfesional,
       CertificadoNacimientoOriginal: certificadoNacimientoOriginal,
@@ -698,4 +886,5 @@ function DeleteArchivo(archivo) {
     }
   });
 }
+
 module.exports = ColegiadoModel;

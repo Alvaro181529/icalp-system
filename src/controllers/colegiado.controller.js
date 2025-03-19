@@ -11,6 +11,11 @@ class ColegiadoController {
     if (!user) return res.redirect("/");
     res.render("colegiados/colegiados", { title: "Colegiados", user });
   };
+  getColegiadosPorFecha (req, res) {
+    const { user } = req.session;
+    if (!user) return res.redirect("/");
+    res.render("colegiados/colegiadoFecha", { title: "Colegiados por Fecha", user });
+  };
 
   getColegiadosAlDia (req, res) {
     const { user } = req.session;
@@ -71,6 +76,26 @@ class ColegiadoController {
 
   async getCollegiates (req, res) {
     const result = await colegiado.getUsers(req.query);
+    const { user } = req.session;
+    if (!user) return res.redirect("/");
+    try {
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener los usuarios", error });
+    }
+  };
+  async getCollegiatesDate (req, res) {
+    const result = await colegiado.ObtenerColegiadosPorFecha(req.query);
+    const { user } = req.session;
+    if (!user) return res.redirect("/");
+    try {
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener los usuarios", error });
+    }
+  };
+  async getCollegiatesAdmin (req, res) {
+    const result = await colegiado.getUsersAdmin(req.query);
     const { user } = req.session;
     if (!user) return res.redirect("/");
     try {

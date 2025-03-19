@@ -11,10 +11,12 @@ router.get("/colegiados", checkRole(["Administrador", "Cobrador","Colegiados"]),
 router.get("/colegiado/dia", checkRole(["Administrador", "Cobrador"]), colegiado.getColegiadosAlDia);
 router.get("/colegiado/gestion", checkRole(["Administrador","Cobrador"]), colegiado.getColegiadosGestion);
 router.get("/colegiado/provicion", checkRole(["Administrador","Cobrador"]), colegiado.getColegiadosProvicion);
+router.get("/colegiado/fecha", checkRole(["Administrador","Cobrador","Colegiados"]), colegiado.getColegiadosPorFecha);
 router.get("/colegiado/:id", checkRole(["Administrador", "Cobrador","Colegiados"]), colegiado.getColegiado);
 
 // Rutas para la API de colegiado
-router.get("/collegiate", checkRole(["Administrador", "Cobrador","Colegiados"]), colegiado.getCollegiates);
+router.get("/collegiate", checkRole(["Administrador", "Cobrador","Colegiados"]), colegiado.getCollegiatesAdmin);
+router.get("/collegiate/date", checkRole(["Administrador", "Cobrador","Colegiados"]), colegiado.getCollegiatesDate);
 router.get("/collegiate/:id/pdf", checkRole(["Administrador", "Cobrador"]), colegiado.getCollegiatesPdf);
 router.get("/collegiate/day", checkRole(["Administrador", "Cobrador"]), colegiado.getCollegiateByDay);
 router.get("/collegiate/years", checkRole(["Administrador","Cobrador"]), colegiado.getCollegiateByYears);

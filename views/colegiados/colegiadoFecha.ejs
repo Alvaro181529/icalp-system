@@ -1,0 +1,249 @@
+<%- include('../partials/header', {title, user}) %>
+    <div class="px-8">
+        <div class="w-full">
+            <div class="flex flex-col lg:flex-row justify-between items-start gap-6 py-8">
+                <!-- Formulario de búsqueda por fechas -->
+                <form id="form-search-date" method="get" class="w-full lg:w-auto">
+                    <div class="flex flex-col sm:flex-row items-end gap-4">
+                        <div class="w-full">
+                            <label for="search-date-inicio" class="block text-sm font-medium text-gray-700 mb-1">
+                                Fecha de inicio
+                            </label>
+                            <input id="search-date-inicio" type="date" name="inicio"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        </div>
+                        <div class="w-full">
+                            <label for="search-date-fin" class="block text-sm font-medium text-gray-700 mb-1">
+                                Fecha de fin
+                            </label>
+                            <input id="search-date-fin" type="date" name="fin"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        </div>
+                        <button id="search-button" type="submit"
+                            class="w-full px-6 py-2 bg-blue-900 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                            Buscar
+                        </button>
+                    </div>
+                </form>
+                <form id="form-cobrador" method="get" class=" flex w-full max-w-md">
+                    <div class="w-full max-w-md">
+                        <label for="cobradores" class="block text-sm font-medium text-gray-700 mb-1">
+                            Cantidad de colegiados a mostrar
+                        </label>
+                        <select name="cobradores" id="cobradores"
+                            class="flex-grow w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
+                            <option value="10">10</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                            <option value="100000">Todo</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div>
+            <h1 class="py-2 text-gray-500 font-bold"> Total colegiados:
+                <span class="py-2 text-gray-500 font-semibold" id="TotalMonto"></span>
+            </h1>
+        </div>
+        <div class="overflow-x-auto shadow-md sm:rounded-lg">
+            <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
+                <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
+                    <tr>
+                        <th class="px-4 py-3">Fecha Matriculacion al colegio</th>
+                        <th class="px-4 py-3">Matricula</th>
+                        <th class="px-4 py-3">Carnet</th>
+                        <th class="px-4 py-3">Nombre</th>
+                        <th class="px-4 py-3">Correo</th>
+                        <th class="px-4 py-3">Telefono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se llenarán las filas con los resultados -->
+                </tbody>
+            </table>
+        </div>
+        <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+            <div>
+                <span class="text-sm text-gray-700">
+                    Mostrando
+                    <span id="start-item" class="font-semibold text-gray-900">
+                        <span id="current-page">Página 1</span> de
+                    </span>
+                    <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"> </span>
+
+                </span>
+            </div>
+            <div class="inline-flex mt-2 xs:mt-0">
+                <button id="prev-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800  rounded-s hover:bg-blue-900  disabled:opacity-50 disabled:cursor-not-allowed">
+                    Anterior
+                </button>
+                <button id="next-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed   disabled:opacity-50 disabled:cursor-not-allowed">
+                    Siguiente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script defer>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const prevPageButton = $("#prev-page");
+            const nextPageButton = $("#next-page");
+            const currentPageSpan = $("#current-page");
+            const itemPage = $("#item-page");
+            const resultTableBody = $("#result-table tbody");
+            const searchForm = $('#form-search');
+            const searchInicio = $('#search-date-inicio');
+            const searchFin = $('#search-date-fin');
+            const formDate = $('#form-search-date')
+
+            let cobrador
+            let page = 1;
+            let size = '';
+            let dateInicio
+            let dateFin
+            let searchValue = "";
+
+            const fetchCobradores = async () => {
+                try {
+                    const result = await fetch('/users/cobrador');
+                    const res = await result.json();
+
+
+                    const cobradoresSelect = $('#cobradores');
+
+
+                } catch (error) {
+                    console.error("Error al obtener los cobradores:", error);
+                }
+            };
+
+
+            fetchCobradores();
+
+
+
+            const updateTable = (data, totalPages, totalMonto) => {
+                console.log(data);
+                resultTableBody.innerHTML = "";
+                console.log(totalMonto);
+                $('#TotalMonto').textContent = totalMonto
+                if (data.length > 0) {
+                    data.forEach((item) => {
+                        const row = document.createElement("tr");
+                        const fecha = new Date(item.FechaMatriculacionAlColegio);
+                        const fechaFormateada = fecha.toLocaleDateString("es-ES", {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        const horaFormateada = fecha.toLocaleTimeString("es-ES", {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true
+                        });
+
+                        row.innerHTML = `
+          <td class="px-6 py-3 text-wrap" ><p>
+            ${fechaFormateada || "No disponible"}</p> <p>${horaFormateada || ""}
+            </p></td>
+          <td class="px-6 py-3 text-wrap" >${item.Matricula.toString().padStart(5, "0") || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.NumeroCI || "No disponible"}</td>
+          <td class="px-6 py-3 text-wrap" >${item.Nombres || "No disponible"} ${item.Paterno || ""} ${item.Materno || ""}</td>
+          <td class="px-6 py-3 text-wrap" >${item.Correo || 'No disponible'}</td>
+          <td class="px-6 py-3 text-wrap" >${item.TelefonoDomicilio || 'No disponible'} ${item.TelefonoOficina || ''}</td>
+        `;
+                        resultTableBody.appendChild(row);
+                    });
+                } else {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `<td class="px-6 py-3 text-wrap" colspan="9">No se encontraron resultados</td>`;
+                    resultTableBody.appendChild(row);
+                }
+
+
+                prevPageButton.disabled = page === 1;
+                nextPageButton.disabled = page === totalPages;
+                currentPageSpan.textContent = `Página ${page}`;
+                itemPage.textContent = totalPages;
+            };
+
+
+            const fetchAndUpdateTable = async () => {
+                const url = `/collegiate/date?&page=${page}&fechaInicio=${dateInicio || ""}&fechaFin=${dateFin || ""}&size=${size}`;
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error("Error en la solicitud");
+                    }
+
+                    const data = await response.json();
+                    if (Array.isArray(data.users)) {
+                        console.log(data);
+                        totalPages = data.totalPages;
+                        totalMonto = data.total;
+                        updateTable(data.users, totalPages, totalMonto);
+                    } else {
+                        console.error("La estructura de la respuesta no es válida");
+                    }
+                } catch (error) {
+                    console.error("Error al realizar la solicitud:", error);
+                }
+            };
+
+
+            fetchAndUpdateTable();
+
+            $('#form-cobrador').addEventListener("submit", function (event) {
+                event.preventDefault();
+                cobrador = $('#cobradores').value;
+                page = 1;
+                fetchAndUpdateTable();
+            });
+
+            formDate.addEventListener("submit", function (event) {
+                event.preventDefault();
+                dateFin = searchFin.value.trim() || "";
+                dateInicio = searchInicio.value.trim() || "";
+                page = 1;
+                fetchAndUpdateTable();
+            });
+
+
+            $('#cobradores').addEventListener("change", function () {
+                size = $('#cobradores').value;
+                dateFin = searchFin.value.trim() || "";
+                dateInicio = searchInicio.value.trim() || "";
+                page;
+                fetchAndUpdateTable();
+            });
+            prevPageButton.addEventListener("click", function () {
+                if (page > 1) {
+                    cobrador = $('#cobradores').value;
+                    dateFin = searchFin.value.trim() || "";
+                    dateInicio = searchInicio.value.trim() || "";
+                    page--;
+                    fetchAndUpdateTable();
+                }
+            });
+
+
+            nextPageButton.addEventListener("click", function () {
+                if (page < totalPages) {
+                    cobrador = $('#cobradores').value;
+                    dateFin = searchFin.value.trim() || "";
+                    dateInicio = searchInicio.value.trim() || "";
+                    page++;
+                    fetchAndUpdateTable();
+                }
+            });
+        });
+    </script>
+
+
+    <%- include('../partials/footer',{user}) %>

@@ -25,10 +25,10 @@ class HomeController {
       res.render("index", { title: "ICALP", user, result });
     });
   };
-
+ 
  async search (req, res) {
     try {
-      const result = await colegiado.getUsers(req.query);
+      const result = await colegiado.getUsersAdmin(req.query);
       res.json({ result });
     } catch (error) {
       res.status(500).json({ message: "Error al obtener los usuarios", error });
