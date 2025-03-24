@@ -535,7 +535,7 @@ class ColegiadoModel {
       Nombres: nombres ? nombres : null,
       Paterno: paterno ? paterno : null,
       Materno: materno ? materno : null,
-      TelefonoOficina: telefonoOficina ? TelefonoOficina : null,
+      TelefonoOficina: telefonoOficina ? telefonoOficina : null,
       DireccionOficina: direccionOficina ? direccionOficina : null,
       Correo: correo ? correo : null,
       LugarNacimiento: lugarNacimiento ? lugarNacimiento : null,
