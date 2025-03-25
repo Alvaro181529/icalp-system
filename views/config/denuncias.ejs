@@ -1,16 +1,28 @@
 <%- include('../partials/header', {title, user}) %>
 
     <div class="px-8 py-2">
-
+        <div class="flex items-center w-full py-2 ">
+            <form id="search-denuncia" method="get" class="w-full flex items-center">
+                <input id="search" type="text" name="search" placeholder="Buscar por Codigo"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <button id="search-button" type="submit"
+                    class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Buscar
+                </button>
+            </form>
+        </div>
         <div class="overflow-x-auto shadow-md sm:rounded-lg">
             <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600 ">
                 <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
                     <tr>
+                        <th class="px-6 py-3">#</th>
                         <th class="px-6 py-3">Nombres</th>
-                        <th class="px-6 py-3">Apellidos</th>
                         <th class="px-6 py-3">Correo</th>
                         <th class="px-6 py-3">Celular</th>
                         <th class="px-6 py-3">Descripcion</th>
+                        <th class="px-6 py-3">Estado</th>
+                        <th class="px-6 py-3">Fecha</th>
+                        <th class="px-6 py-3">N° caso</th>
                         <th class="px-6 py-3">Documento</th>
                     </tr>
                 </thead>
@@ -46,7 +58,7 @@
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
 
-
+            let search = ""
             const resultTableBody = $("#result-table tbody");
             const prevPageButton = $("#prev-page");
             const nextPageButton = $("#next-page");
@@ -78,12 +90,15 @@
                             hour12: true
                         });
                         row.innerHTML = `
-                        <td class="px-6 py-3">${item.nombres}</td>
-                        <td class="px-6 py-3">${item.apellidos}</td>
+                        <td class="px-6 py-3">${item.id.toString().padStart(5, '0')}</td>
+                        <td class="px-6 py-3">${item.nombres} ${item.apellidos}</td>
                         <td class="px-6 py-3">${item.correo}</td>
                         <td class="px-6 py-3">${item.celular}</td>
                         <td class="px-6 py-3">${item.descripcion}</td>
-                        <td class="px-6 py-3">${item.documento ? `<a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" target="_blank" href='/uploads/denuncias/${item.documento}'>${item.documento}</a>`:'Sin documento'}</td>
+                        <td class="px-6 py-3">${item.estado ? item.estado : '<button class="post-guardado bg-red-700 text-white p-3 rounded">Pendiente</button>'}</td>
+                        <td class="px-6 py-3">${fechaFormateada} ${horaFormateada} </td>
+                        <td class="px-6 py-3">${item.numeroCaso ? item.numeroCaso : 'No asignado'}</td>
+                        <td class="px-6 py-3">${item.documento ? `<a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" target="_blank" href='/uploads/denuncias/${item.documento}'>${item.documento}</a>` : 'Sin documento'}</td>
                     `;
                         resultTableBody.appendChild(row);
                     });
@@ -99,10 +114,15 @@
                 itemPage.textContent = totalPages;
 
             };
-
+            $('#search-denuncia').addEventListener("submit", function (e) {
+                e.preventDefault();
+                search = $('#search').value.trim();
+                page = 1;
+                fetchAndUpdateTable();
+            });
             // Función para realizar la búsqueda y actualizar la tabla
             const fetchAndUpdateTable = async () => {
-                const url = `/denuncia?page=${page}&size=10`;
+                const url = `/denuncia?query=${search}&page=${page}&size=10`;
 
                 try {
                     const response = await fetch(url);

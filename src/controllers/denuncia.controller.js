@@ -12,8 +12,8 @@ class DenunciaController {
     res.render("auth/login", { title: "Login", user });
   }
   async getDenuncia(req, res) {
-    const { page, size } = req.query;
-    const result = await denuncia.getDenuncia(page, size);
+    const { page, size, query } = req.query;
+    const result = await denuncia.getDenuncia(page, size, query);
     res.json(result);
   }
   async postDenuncia(req, res) {

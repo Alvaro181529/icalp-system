@@ -1,52 +1,67 @@
 const pool = require("../../config/db.connect.js");
 class DenunciaModel {
-    async getDenuncia(page = 1, size = 10) {
-        const offset = (page - 1) * parseInt(size); // Asegúrate de que el offset sea un número
-        try {
-          const query = `
-            SELECT * FROM denuncias ORDER BY Fecha DESC
-            LIMIT ? OFFSET ?;
-          `;
-          const values = [parseInt(size), offset]; // Asegúrate de que size y offset sean números
+  async getDenuncia(page = 1, size = 10, search = "" ) {
+    const offset = (page - 1) * parseInt(size);
+    try {
+      let query = `
+      SELECT * FROM denuncias 
+      WHERE 1=1
+      `;
       
-          const totalQuery = `
-            SELECT COUNT(*) AS Total
-            FROM denuncias 
-          `;
-      
-          try {
-            const [result, totalResult] = await Promise.all([
-              pool.query(query, values),
-              pool.query(totalQuery),
-            ]);
-      
-            const totalHistorial = totalResult[0].Total;
-            const totalPages = Math.ceil(totalHistorial / size);
-      
-            return {
-              data: result,
-              total: totalHistorial,
-              totalPages: totalPages,
-            };
-          } catch (error) {
-            console.error("Error en la consulta de la denuncia:", error);
-            throw error;
-          }
-        } catch (error) {
-          console.error("Error en la consulta:", error);
-        }
+      // Si se pasa un 'search', se agrega un filtro para el ID
+      if (search) {
+        query += ` AND id = ?`;
       }
-      
+
+      query += ` ORDER BY Fecha DESC LIMIT ? OFFSET ?;`;
+
+      // Los valores que se pasarán para la consulta
+      const values = search
+        ? [search, parseInt(size), offset]
+        : [parseInt(size), offset];
+
+      const totalQuery = `
+            SELECT COUNT(*) AS Total
+            FROM denuncias
+            WHERE 1=1
+        `;
+
+      // Si se pasa un 'search', también lo aplicamos a la consulta de conteo total
+      const totalValues = search ? [search] : [];
+
+      try {
+        const [result, totalResult] = await Promise.all([
+          pool.query(query, values),
+          pool.query(totalQuery, totalValues),
+        ]);
+
+        const totalHistorial = totalResult[0].Total;
+        const totalPages = Math.ceil(totalHistorial / size);
+
+        return {
+          data: result,
+          total: totalHistorial,
+          totalPages: totalPages,
+        };
+      } catch (error) {
+        console.error("Error en la consulta de la denuncia:", error);
+        throw error;
+      }
+    } catch (error) {
+      console.error("Error en la consulta:", error);
+    }
+  }
 
   async postDenuncia(body, file) {
     const { nombres, apellidos, correo, celular, descripcion } = body;
     const query = await pool.query(
       `
-        INSERT INTO denuncias ( nombres, apellidos, correo, celular,descripcion,documento) VALUES (?, ?, ?, ?,?, ?);
+        INSERT INTO denuncias ( nombres, apellidos, correo, celular,descripcion,documento, estado) VALUES (?, ?, ?, ?,?, ?,?);
         `,
-      [nombres, apellidos, correo, celular, descripcion, file]
+      [nombres, apellidos, correo, celular, descripcion, file, null]
     );
-    return query;
+    console.log(query.insertId);
+    return query.insertId;
   }
 }
 module.exports = DenunciaModel;

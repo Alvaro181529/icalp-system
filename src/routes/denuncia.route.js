@@ -9,5 +9,6 @@ const denuncia = new DenunciaController();
 router.get('/denuncias', checkRole(["Administrador"]),denuncia.getDenunciaPage);
 router.get('/denuncia', checkRole(["Administrador"]),denuncia.getDenuncia);
 router.post('/denuncia',  upload.single('file'),denuncia.postDenuncia);
+router.get('/denuncia-open', denuncia.getDenuncia);
 
 module.exports = router;
