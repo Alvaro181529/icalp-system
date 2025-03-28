@@ -1,13 +1,13 @@
 const pool = require("../../config/db.connect.js");
 class DenunciaModel {
-  async getDenuncia(page = 1, size = 10, search = "" ) {
+  async getDenuncia(page = 1, size = 10, search = "") {
     const offset = (page - 1) * parseInt(size);
     try {
       let query = `
       SELECT * FROM denuncias 
       WHERE 1=1
       `;
-      
+
       // Si se pasa un 'search', se agrega un filtro para el ID
       if (search) {
         query += ` AND id = ?`;
@@ -62,6 +62,21 @@ class DenunciaModel {
     );
     console.log(query.insertId);
     return query.insertId;
+  }
+  async patchDenuncia(body, id) {
+    const { estado, nCaso } = body;
+    console.log(body);
+    const query = await pool.query(
+      `
+       UPDATE denuncias
+      SET
+        numeroCaso = COALESCE(?, numeroCaso),
+        estado = COALESCE(?, estado)
+      WHERE id = ?;
+        `,
+      [nCaso, estado, id]
+    );
+    return "actualizado";
   }
 }
 module.exports = DenunciaModel;

@@ -47,7 +47,7 @@
           <div class="space-y-2">
 
             <% if (user && user.roles.includes('Administrador')
-              ||user.roles.includes('Cobrador')||user.roles.includes('Colegiados')|| user.roles.includes('Gerencia')) {
+              ||user.roles.includes('Cobrador')||user.roles.includes('Colegiados')|| user.roles.includes('Gerencia') || user.roles.includes('Tribunal')) {
               %>
               <!-- Colegiados Section -->
               <details class="group">
@@ -59,7 +59,8 @@
                 <ul class="pl-8 mt-2 space-y-1">
                   <li><a href="/colegiados" class="block px-4 py-2 hover:bg-blue-950 rounded">Listado de Colegiados</a>
                   </li>
-                  <li><a href="/colegiado/fecha" class="block px-4 py-2 hover:bg-blue-950 rounded">Listado de Colegiados por fecha</a>
+                  <li><a href="/colegiado/fecha" class="block px-4 py-2 hover:bg-blue-950 rounded">Listado de Colegiados
+                      por fecha</a>
                   </li>
                   <li><a href="/colegiado/dia" class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados al día</a>
                   </li>
@@ -158,20 +159,6 @@
                               <!-- <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li> -->
                             </ul>
                           </details>
-                          <details class="group">
-                            <summary
-                              class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
-                              <i class="fa-solid fa-circle-exclamation mr-2"></i>
-                              <span>Denuncias</span>
-                              <i
-                                class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
-                            </summary>
-                            <ul class="pl-8 mt-2 space-y-1">
-                              <li><a href="/denuncias" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de
-                                  denuncias</a>
-                              </li>
-                            </ul>
-                          </details>
                           <!-- Configuración Section -->
                           <details class="group">
                             <summary
@@ -188,19 +175,37 @@
                               <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Usuarios
                                   Cobradores</a>
                               </li>
-                              <li><a href="/historial" class="block px-4 py-2 hover:bg-blue-950 rounded">Historial de
+                              <li><a href="/historial" class="block px-4 py-2 hover:bg-blue-950 rounded">Historial
+                                  de
                                   Cambios</a>
                               </li>
                             </ul>
                           </details>
                           <%}%>
 
-                            <button type="button" id="cerrar"
-                              class="text-white bg-transparent text-gray-200  rounded hover:bg-blue-950  px-4 py-2 text-center">
-                              <i class="fa fa-sign-out mr-1"></i>
-                              <span>Cerrar sesión
-                              </span>
-                            </button>
+                            <% if (user && user.roles.includes('Administrador') || user.roles.includes('Tribunal')) { %>
+                              <details class="group">
+                                <summary
+                                  class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                                  <i class="fa-solid fa-circle-exclamation mr-2"></i>
+                                  <span>Denuncias</span>
+                                  <i
+                                    class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                                </summary>
+                                <ul class="pl-8 mt-2 space-y-1">
+                                  <li><a href="/denuncias" class="block px-4 py-2 hover:bg-blue-950 rounded">Reporte de
+                                      denuncias</a>
+                                  </li>
+                                </ul>
+                              </details>
+                              <%}%>
+
+                                <button type="button" id="cerrar"
+                                  class="text-white bg-transparent text-gray-200  rounded hover:bg-blue-950  px-4 py-2 text-center">
+                                  <i class="fa fa-sign-out mr-1"></i>
+                                  <span>Cerrar sesión
+                                  </span>
+                                </button>
           </div>
         </nav>
       </aside>
@@ -212,7 +217,7 @@
               <div class="<%= user ? ' max-md:ml-2 ml-12' : '' %>">
                 <section class="grid">
                   <a href="mailto:presidencia@icalp.org.bo"
-                  class="text-sm text-gray-300 hover:underline ">presidencia@icalp.org.bo</a>
+                    class="text-sm text-gray-300 hover:underline ">presidencia@icalp.org.bo</a>
                   <a href="tel:+59122407713" class="text-sm text-gray-300 hover:underline">(591) - 22407713</a>
                 </section>
               </div>
