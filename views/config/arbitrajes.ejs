@@ -2,7 +2,7 @@
 
     <div class="px-8 py-2">
         <div class="flex items-center w-full py-2 ">
-            <form id="search-denuncia" method="get" class="w-full flex items-center">
+            <form id="search-arbitraje" method="get" class="w-full flex items-center">
                 <input id="search" type="text" name="search" placeholder="Buscar por Codigo"
                     class="w-full px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 <button id="search-button" type="submit"
@@ -24,6 +24,12 @@
                         <th class="px-6 py-3">Fecha</th>
                         <th class="px-6 py-3">N° caso</th>
                         <th class="px-6 py-3">Documento</th>
+                        <th class="px-6 py-3">
+                            <button id="create-arbitraje"
+                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                Crear arbitraje
+                            </button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,46 +61,39 @@
             </div>
         </div>
     </div>
-    <dialog id="denunciaDialog"
+    <dialog id="arbitrajeDialog"
         class="p-8 max-w-4xl w-full max-h-screen mx-auto bg-white rounded-lg shadow-lg overflow-y-auto">
-        <form id="update-denuncias">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- N° Caso -->
-                <div class="mb-4">
+        <form id="update-arbitrajes">
+            <div class="row">
+                <div class="col-6">
                     <label class="block text-sm font-medium text-gray-700 mb-1" for="nCaso">N° Caso:</label>
                     <input
                         class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         type="number" id="nCaso" name="nCaso">
                 </div>
-
-                <!-- Estado -->
-                <div class="mb-4">
+                <div class="mb-4 col-6">
                     <label class="block text-sm font-medium text-gray-700 mb-1" for="estado">Estado:</label>
-                    <select
+                    <Select
                         class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        id="estado" name="estado">
-                        <option value="" selected>Pendiente</option>
+                        type="text" id="estado" name="estado">
                         <option value="Revisado">Revisado</option>
-                    </select>
-                </div>
-
-                <!-- N° de Sala -->
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1" for="sala">N° de Sala:</label>
-                    <select
-                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        id="sala" name="sala">
-                        <option value="Sin Asignacion" selected>Sin Asignación</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                    </select>
+                        <option value="" selected>Pendiente</option>
+                    </Select>
                 </div>
             </div>
-
+            <div class="mb-4 col-12">
+                <label class="block text-sm font-medium text-gray-700 mb-1" for="estado">N° de sala:</label>
+                <Select
+                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="estado" name="estado">
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3" selected>3</option>
+                    <option value="4" selected>4</option>
+                </Select>
+            </div>
             <div class="flex justify-between space-x-4">
-                <button type="button" id="close-dialog-denuncia"
+                <button type="button" id="close-dialog-arbitraje"
                     class="w-1/2 py-2 bg-red-500 text-white rounded-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-red-500">
                     Cerrar
                 </button>
@@ -105,19 +104,113 @@
             </div>
         </form>
     </dialog>
+    <dialog id="dialog-create-post"
+        class="p-8 max-w-4xl w-full max-h-screen mx-auto bg-white rounded-lg shadow-lg overflow-y-auto">
+        <form class="space-y-4" id="form-arbitraje-post">
+            <!-- Form Fields -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block mb-2">Nombres <span class="text-red-500">*</span></label>
+                    <input type="text" required name="nombres"
+                        class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block mb-2">Apellidos <span class="text-red-500">*</span></label>
+                    <input type="text" required name="apellidos"
+                        class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div>
+                <label class="block mb-2">Correo <span class="text-red-500">*</span></label>
+                <input type="email" required name="correo"
+                    class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <input type="text" name="arbitraje" value="arbitraje" hidden>
+
+            <div>
+                <label class="block mb-2">Numero de telefono <span class="text-red-500">*</span></label>
+                <div class="flex gap-2 max-sm:flex-col">
+                    <select
+                        class="px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>Bolivia</option>
+                    </select>
+                    <div class="flex w-full gap-2">
+                        <input type="text" value="+591" readonly
+                            class="w-20 px-3 py-2 bg-gray-100 rounded border border-gray-300">
+                        <input type="tel" required name="celular" maxlength="8"
+                            class="w-full sm:flex-1 px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+                <textarea placeholder="Descripción de la denuncia..." rows="4" name="descripcion"
+                    class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex flex-wrap gap-4">
+                <label for="file"
+                    class="px-6 py-3  bg-gray-600 text-white rounded-lg cursor-pointer hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out">
+                    Subir archivo PDF
+                </label>
+                <input type="file" id="file" accept=".pdf" class="hidden">
+
+                <button type="submit" id="send-denuncia"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hov er:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Enviar
+                    denuncia</button>
+            </div>
+        </form>
+
+    </dialog>
     <script defer>
+        $('#form-arbitraje-post')?.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            console.log("este es la subida de arbitraje");
+            // Crear un objeto FormData para enviar el formulario con el archivo
+            const formData = new FormData($('#form-arbitraje-post'));
+
+            // Obtener el archivo del input
+            const fileInput = $('#file');
+            const file = fileInput.files[0];
+
+            if (file) {
+                formData.append('file', file);
+            }
+            try {
+                const response = await fetch('/arbitraje', {
+                    method: 'POST',
+                    body: formData, // Enviar los datos como FormData
+                });
+
+                const responseData = await response.json();
+                if (response.ok) {
+                    alert('Se envió la denuncia.');
+                    window.location.reload();
+                }
+            } catch (error) {
+                alert('No se envió la denuncia. Error en la conexión');
+            }
+        });
+
+
         document.addEventListener("DOMContentLoaded", function () {
 
             let search = ""
-            const dialog = $("#denunciaDialog");
+            const dialog = $("#arbitrajeDialog");
             const resultTableBody = $("#result-table tbody");
             const prevPageButton = $("#prev-page");
             const nextPageButton = $("#next-page");
             const currentPageSpan = $("#current-page");
             const itemPage = $("#item-page");
 
-            $('#close-dialog-denuncia').addEventListener('click', function () {
+            $('#close-dialog-arbitraje').addEventListener('click', function () {
                 dialog.close();
+            });
+            $('#create-arbitraje').addEventListener('click', function () {
+                $('#dialog-create-post').showModal();
             });
             let page = 1; let totalPages;
             const updateTable = (data, totalPages) => {
@@ -147,7 +240,7 @@
                         <td class="px-6 py-3">${item.estado ? item.estado : `<button class="actualizar-button bg-red-700 text-white p-3 rounded" data-caso="${item.numeroCaso ? item.numeroCaso : 'No asignado'}" data-estado="${item.estado}" data-id="${item.id}">Pendiente</button>`}</td>
                         <td class="px-6 py-3">${fechaFormateada} ${horaFormateada} </td>
                         <td class="px-6 py-3">${item.numeroCaso ? item.numeroCaso : 'No asignado'}</td>
-                        <td class="px-6 py-3">${item.documento ? `<a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" target="_blank" href='/uploads/denuncias/${item.documento}'>${item.documento}</a>` : 'Sin documento'}</td>
+                        <td class="px-6 py-3">${item.documento ? `<a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" target="_blank" href='/uploads/arbitrajes/${item.documento}'>${item.documento}</a>` : 'Sin documento'}</td>
                     `;
                         resultTableBody.appendChild(row);
                     });
@@ -164,7 +257,7 @@
             };
             resultTableBody.addEventListener('click', async (e) => {
                 const button = e.target;
-                const dialog = $("#denunciaDialog");
+                const dialog = $("#arbitrajeDialog");
                 const id = button.getAttribute('data-id');
                 const caso = button.getAttribute('data-caso');
                 const estado = button.getAttribute('data-estado');
@@ -173,7 +266,7 @@
                 }
             });
             handleUpdate = async (caso, estadoC, id) => {
-                const form = $("#update-denuncias");
+                const form = $("#update-arbitrajes");
                 const nCaso = $("#nCaso");
                 const estado = $("#estado");
 
@@ -191,7 +284,7 @@
                         data[key] = value;
                     });
 
-                    const url = `/denuncias/${id}`;
+                    const url = `/arbitrajes/${id}`;
                     const response = await fetch(url, {
                         method: 'PATCH',
                         headers: {
@@ -202,6 +295,7 @@
 
                     if (response.ok) {
                         dialog.close();
+                        window.location.reload();
                         console.log('Actualización exitosa');
                     } else {
                         console.error('Error al actualizar');
@@ -210,14 +304,14 @@
 
             };
 
-            $('#search-denuncia').addEventListener("submit", function (e) {
+            $('#search-arbitraje').addEventListener("submit", function (e) {
                 e.preventDefault();
                 search = $('#search').value.trim();
                 page = 1;
                 fetchAndUpdateTable();
             });
             const fetchAndUpdateTable = async () => {
-                const url = `/denuncia?query=${search}&page=${page}&size=10`;
+                const url = `/arbitraje?query=${search}&page=${page}&size=10`;
 
                 try {
                     const response = await fetch(url);

@@ -1,8 +1,102 @@
 <%- include('partials/header', {title, user}) %>
 
-  <!-- Carousel Section -->
-  <div id="default-carousel" class="relative w-full  max-2xl:px-16 z-10 max-sm:px-0" data-carousel="slide">
-    <!-- Carousel Wrapper -->
+  <body class="bg-gradient-to-r from-blue-600 to-blue-900">
+
+    <!-- Hero Section -->
+    <section class="flex items-center justify-center h-screen text-center text-white">
+      <div class="p-8 md:p-16 max-w-2xl mx-auto">
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">Bienvenido al Ilustre Colegio de abogados
+        </h1>
+        <p class="text-lg md:text-xl mb-6"> Convencidos del poder del derecho y la justicia, trabajamos incansablemente
+          para formar abogados íntegros e
+          innovadores, comprometidos con ser agentes de cambio y transformar positivamente la sociedad.</p>
+        <a href="#comenzar"
+          class="bg-white text-blue-600 font-semibold py-3 px-6 rounded-full hover:bg-gray-100 transition duration-300">Comienza
+          ahora</a>
+      </div>
+    </section>
+    <section class="mx-auto px-4 py-8 bg-white uppercase">
+      <h1 class="text-center text-2xl font-bold mb-6">Buscador Colegiados</h1>
+      <form id="search-form-header" action="" class="flex max-sm:flex-col gap-y-4">
+        <input id="searchMat"
+          class="py-3 px-4 w-full md:rounded-l-lg bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+          type="search" placeholder="Matrícula, Especialidades" name="">
+        <input id="searchCol"
+          class="py-3 px-4 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+          type="search" placeholder="Nombres (opcional)" name="">
+        <input id="searchPaterno"
+          class="py-3 px-4 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+          type="search" placeholder="Apellido paterno (opcional)" name="">
+        <input id="searchMaterno"
+          class="py-3 px-4 w-full bg-gray-50 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
+          type="search" placeholder="Apellido materno (opcional)" name="">
+        <button id="search-button" type="submit"
+          class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Buscar
+        </button>
+      </form>
+    </section>
+    <!-- Features Section -->
+    <section class="py-16 bg-white" id="comenzar">
+      <div class="max-w-7xl mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-8 text-gray-800">Características Destacadas</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div class="feature-card">
+            <div class="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-6">
+              <i class="fas fa-bolt text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-4">QUIERO COLEGIARME</h3>
+            <p class="text-gray-700">Para colegiarse debe ir a <a href="/view/Documentos/Nuevos Colegiados"
+                class="text-blue-700 hover:text-blue-500"> APLICAR AHORA </a> </p>
+          </div>
+          <div class="feature-card">
+            <div class="w-20 h-20 bg-purple-600 text-white rounded-full flex items-center justify-center mx-auto mb-6">
+              <i class="fas fa-cogs text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-4">¿CUANDO SALDRAN NUEVOS DIPLOMADOS?</h3>
+            <p class="text-gray-700">Ajusta cada detalle para que se exactamente a tus necesidades y preferencias.</p>
+          </div>
+          <div class="feature-card">
+            <div class="w-20 h-20 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-6">
+              <i class="fas fa-lock text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold mb-4">¿CUANDO INICIAN LOS DIPLOMADOS?</h3>
+            <p class="text-gray-700">Tu información está protegida con la más alta seguridad en todo momento.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <hr>
+
+    <!-- Call to Action Section -->
+    <section id="cta" class="bg-gradient-to-r from-blue-600 to-blue-900 py-16 text-center text-white">
+      <div class="max-w-3xl mx-auto px-6">
+        <h2 class="text-3xl md:text-5xl font-semibold mb-4">¿Estás listo para comenzar?</h2>
+        <p class="text-xl mb-8">No esperes más para experimentar lo mejor. ¡Únete ahora y lleva tu experiencia al
+          siguiente nivel!</p>
+        <a href="#formulario"
+          class="bg-white text-blue-600 font-semibold py-3 px-6 rounded-full hover:bg-gray-100 transition duration-300">Comienza
+          Ahora</a>
+      </div>
+    </section>
+    <div class="mx-auto px-4 py-8 uppercase bg-white">
+      <h1 class="text-center text-2xl font-bold mb-6">Buscador de Denuncias</h1>
+      <form id="search-denuncia" class="w-full flex items-center justify-center gap-4">
+        <input id="search" type="text" name="search" placeholder="Buscar por Código"
+          class="w-full md:w-2/3 px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button id="search-button-denuncia" type="submit"
+          class="px-8 py-2 bg-blue-900 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Buscar
+        </button>
+      </form>
+    </div>
+    <!-- Footer Section -->
+    <!-- <footer class="bg-gray-800 text-white py-8 text-center">
+      <p class="text-lg">&copy; 2025 Tu Empresa. Todos los derechos reservados.</p>
+  </footer> -->
+
+  </body>
+  <!-- <div id="default-carousel" class="relative w-full  max-2xl:px-16 z-10 max-sm:px-0" data-carousel="slide">
     <div class="relative h-[80vh] max-sm:h-64 overflow-hidden">
       <% if (result && result.length> 0) { %>
         <% result.forEach(function(file, index) { %>
@@ -51,7 +145,6 @@
 
   </div>
 
-  <!-- Header Section with Buttons -->
   <header class="bg-[#2C3E8C] text-white py-6 text-center ">
     <div class="container mx-auto px-8 py-8 flex flex-col md:flex-row justify-between items-center gap-16">
       <div class="text-center">
@@ -77,7 +170,6 @@
     </div>
   </header>
 
-  <!-- Section Search -->
   <section class="container mx-auto px-4 py-8 uppercase">
     <h1 class="text-center text-2xl font-bold mb-6">
       Buscador colegiados
@@ -103,7 +195,6 @@
   </section>
 
 
-  <!-- Welcome Section -->
   <section class="container mx-auto px-4 py-12">
     <h1 class="text-center text-3xl font-bold mb-6">
       BIENVENIDO AL <span class="text-red-600">ICALP</span>
@@ -114,7 +205,6 @@
     </p>
   </section>
 
-  <!-- Features Section -->
   <section class="container mx-auto px-8 py-8">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div
@@ -165,7 +255,6 @@
     </div>
   </section>
 
-  <!-- Blog Section -->
   <div class="bg-[#2C3E8C] p-8 hidden">
     <div class="container mx-auto px-8 py-8">
       <div class="flex justify-between items-center mb-8 max-sm:flex-col">
@@ -178,9 +267,7 @@
         </div>
       </div>
 
-      <!-- Blog Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <!-- Blog Card Template (can be repeated) -->
         <div class="bg-white rounded-lg overflow-hidden shadow-lg">
           <div class="relative">
             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-CsKIFBudJPfKY1LNvPdCF6NfhWBJXK.png"
@@ -200,11 +287,10 @@
           </div>
         </div>
 
-        <!-- Repeat the Blog Cards as needed -->
       </div>
     </div>
-  </div>
-  <div class="container mx-auto px-4 py-8 uppercase">
+  </div> -->
+  <!-- <div class="container mx-auto px-4 py-8 uppercase">
     <h1 class="text-center text-2xl font-bold mb-6">
       Buscador de denuncias
     </h1>
@@ -216,63 +302,58 @@
         Buscar
       </button>
     </form>
-  </div>
-  <!-- Denuncia Section -->
+  </div> -->
   <div class="bg-black overflow-hidden mx-auto">
     <div class="container mx-auto px-8 py-8">
-      <h1 class="text-white text-4xl font-bold">DENUNCIAS</h1>
+      <h1 class="text-white text-4xl font-bold mb-8">DENUNCIAS</h1>
       <div class="flex flex-col md:flex-row">
-        <!-- Image Section -->
         <div class="md:w-1/3">
-          <img src="/public/img/justice-and-law.jpg" alt="Martillo de juez" class="w-full h-full object-cover">
+          <img src="/public/img/justice-and-law.jpg" alt="Martillo de juez"
+            class="w-full h-full object-cover rounded-lg">
         </div>
 
-        <!-- Form Section -->
-        <div class="md:w-2/3 p-6">
+        <div class="md:w-2/3 p-6 bg-white rounded-lg shadow-lg">
           <form class="space-y-4" id="form-denuncia">
-            <!-- Form Fields -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-white mb-2">Nombres <span class="text-red-500">*</span></label>
+                <label class="block text-gray-700 mb-2">Nombres <span class="text-red-500">*</span></label>
                 <input type="text" required name="nombres"
-                  class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  class="w-full px-3 py-2 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
               <div>
-                <label class="block text-white mb-2">Apellidos <span class="text-red-500">*</span></label>
+                <label class="block text-gray-700 mb-2">Apellidos <span class="text-red-500">*</span></label>
                 <input type="text" required name="apellidos"
-                  class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  class="w-full px-3 py-2 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
               </div>
             </div>
 
             <div>
-              <label class="block text-white mb-2">Correo <span class="text-red-500">*</span></label>
+              <label class="block text-gray-700 mb-2">Correo <span class="text-red-500">*</span></label>
               <input type="email" required name="correo"
-                class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full px-3 py-2 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
             <div>
-              <label class="block text-white mb-2">Numero de telefono <span class="text-red-500">*</span></label>
+              <label class="block text-gray-700 mb-2">Número de teléfono <span class="text-red-500">*</span></label>
               <div class="flex gap-2 max-sm:flex-col">
                 <select
-                  class="px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  class="px-3 py-2 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                   <option>Bolivia</option>
                 </select>
                 <div class="flex w-full gap-2">
                   <input type="text" value="+591" readonly
                     class="w-20 px-3 py-2 bg-gray-100 rounded border border-gray-300">
                   <input type="tel" required name="celular" maxlength="8"
-                    class="w-full sm:flex-1 px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="w-full sm:flex-1 px-3 py-2 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
               </div>
             </div>
 
-            <!-- Description -->
             <div>
               <textarea placeholder="Descripción de la denuncia..." rows="4" name="descripcion"
-                class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                class="w-full px-3 py-2 bg-gray-100 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             </div>
 
-            <!-- Buttons -->
             <div class="flex flex-wrap gap-4">
               <label for="file"
                 class="px-6 py-3 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out">
@@ -282,18 +363,19 @@
 
               <button type="submit" id="send-denuncia"
                 class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Enviar
-                denuncia</button>
+                Denuncia</button>
             </div>
           </form>
-
         </div>
       </div>
     </div>
   </div>
+
+
+
   <dialog id="dialog-search"
     class="px-6 py-4 max-w-8xl w-full max-h-[80vh] rounded-xl bg-white shadow-lg border border-gray-300">
     <div class="flex flex-col">
-      <!-- Encabezado dentro del dialog sin la clase 'fixed' -->
       <div class="flex justify-between w-full mb-4">
         <h3 class="text-2xl font-semibold text-gray-700">Resultados de Búsqueda</h3>
         <button id="cerrar-dialog" class="text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -303,7 +385,6 @@
       </div>
       <ul id="result-list"
         class="grid  items-center justify-center md:grid-cols-2 xl:grid-cols-3 overflow-auto max-h-[60vh] space-y-2 gap-1">
-        <!-- Los resultados se insertarán aquí dinámicamente -->
       </ul>
     </div>
   </dialog>
@@ -469,7 +550,7 @@
 
       <div class="p-4 space-y-3 bg-gray-50">
         <div class="text-sm font-semibold text-gray-700 mb-2">
-          MAS INFORMACIÓN 
+          MAS INFORMACIÓN
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div class="text-gray-600 text-sm">DIRECCION:</div>
@@ -484,7 +565,7 @@
       <div class="p-4 flex flex-col justify-center items-center">
         <span
           class='bg-green-100 text-green-800 px-4 py-2 rounded-xl'
-              
+
         >
           ${colegiado.Estado}
         </span>

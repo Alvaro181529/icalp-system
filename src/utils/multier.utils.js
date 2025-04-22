@@ -35,9 +35,11 @@ const storage = multer.diskStorage({
       documentTypes.test(file.mimetype)
     ) {
       // Si es un documento, lo guardamos en la carpeta "documentos"
-      if(req.body.correo){
+      if (req.body.arbitraje) {
+        cb(null, path.join(__dirname, "../uploads/arbitraje"));
+      } else if (req.body.correo) {
         cb(null, path.join(__dirname, "../uploads/denuncias"));
-      }else {
+      } else {
         cb(null, path.join(__dirname, "../uploads/documentos"));
       }
     } else {
@@ -53,7 +55,7 @@ const storage = multer.diskStorage({
     if (req.body.foto) {
       cb(
         null,
-        'Foto' +
+        "Foto" +
           "-" +
           req.body.Matricula.toString().padStart(5, "0") +
           path.extname(file.originalname)
@@ -61,7 +63,7 @@ const storage = multer.diskStorage({
     } else if (req.body.firma) {
       cb(
         null,
-        'Firma' +
+        "Firma" +
           "-" +
           req.body.Matricula.toString().padStart(5, "0") +
           path.extname(file.originalname)

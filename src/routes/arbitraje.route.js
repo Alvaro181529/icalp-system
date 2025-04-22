@@ -1,27 +1,27 @@
 const express = require("express");
-const { DenunciaController } = require("../controllers/denuncia.controller.js");
+const { ArbitrajeController } = require("../controllers/arbitraje.controller.js");
 const { checkRole } = require("../utils/checkRoles.utils.js");
 const { upload } = require("../utils/multier.utils.js");
 
 const router = express.Router();
-const denuncia = new DenunciaController();
+const arbitraje = new ArbitrajeController();
 
 router.get(
-  "/denuncias",
+  "/arbitrajes",
   checkRole(["Administrador", "Tribunal"]),
-  denuncia.getDenunciaPage
+  arbitraje.getArbitrajePage
 );
 router.patch(
-  "/denuncias/:id",
+  "/arbitrajes/:id",
   checkRole(["Administrador", "Tribunal"]),
-  denuncia.patchDenuncia
+  arbitraje.patchArbitraje
 );
 router.get(
-  "/denuncia",
+  "/arbitraje",
   checkRole(["Administrador", "Tribunal"]),
-  denuncia.getDenuncia
+  arbitraje.getArbitraje
 );
-router.post("/denuncia", upload.single("file"), denuncia.postDenuncia);
-router.get("/denuncia-open", denuncia.getDenuncia);
+router.post("/arbitraje", upload.single("file"), arbitraje.postArbitraje);
+router.get("/arbitraje-open", arbitraje.getArbitraje);
 
 module.exports = router;
