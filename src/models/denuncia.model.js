@@ -64,17 +64,18 @@ class DenunciaModel {
     return query.insertId;
   }
   async patchDenuncia(body, id) {
-    const { estado, nCaso } = body;
+    const { estado, nCaso, nSala } = body;
     console.log(body);
     const query = await pool.query(
       `
        UPDATE denuncias
       SET
         numeroCaso = COALESCE(?, numeroCaso),
-        estado = COALESCE(?, estado)
+        estado = COALESCE(?, estado),
+        numeroSala = COALESCE(?, numeroSala)
       WHERE id = ?;
         `,
-      [nCaso, estado, id]
+      [nCaso, estado, nSala, id]
     );
     return "actualizado";
   }
