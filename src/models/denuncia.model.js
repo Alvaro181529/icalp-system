@@ -71,7 +71,7 @@ class DenunciaModel {
        UPDATE denuncias
       SET
         numeroCaso = COALESCE(?, numeroCaso),
-        estado = COALESCE(?, estado),
+        estado = COALESCE(?, estado), 
         numeroSala = COALESCE(?, numeroSala)
       WHERE id = ?;
         `,

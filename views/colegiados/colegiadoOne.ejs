@@ -26,8 +26,12 @@
               <%}%>
                 <% if (user && user.roles.includes('Administrador') || user.roles.includes('Tribunal') ){ %>
                   <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2"
-                    id="upload-expediente">Subir expediente</button>
-                  <%}%>
+                    id="upload-expediente"><%=result.Expediente?'Actualizar expediente': 'Subir Expediente'%></button>
+                  <% if(result.Expediente ){%>
+                    <a class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2"
+                      href="/uploads/expedientes/<%= result.Expediente %>" target="_blank">Expediente</a>
+                    <%}%>
+                      <%}%>
         </div>
 
       </div>
@@ -1205,19 +1209,19 @@
             </dialog>
             <dialog id="file-upload-dialog-expediente" class="bg-gray-800 bg-opacity-50 items-center justify-center">
               <div class="bg-white rounded-lg p-6 w-full sm:w-96">
-                <form enctype="multipart/form-data" id="upload-form-firma">
-                  <input type="hidden" name="firma" value="true">
+                <form enctype="multipart/form-data" id="upload-form-firma" method="post"
+                  action="/collegiate/expediente">
                   <input type="hidden" name="ColegiadoId" value="<%=result.ColegiadoId %>">
+                  <input type="hidden" name="Expediente" value="<%= result.Expediente ? 'true' : 'false' %>">
                   <input type="hidden" name="Matricula" value="<%=result.Matricula %>">
                   <input type="hidden" name="Archivo" value="<%=result.Firma %>">
-
                   <h2 class="text-xl font-semibold text-center mb-4">Subir Expediente</h2>
 
                   <div class="mb-4">
                     <label for="file" class="block text-lg font-medium objecttext-gray-700">Selecciona un
                       archivo</label>
                     <input type="file" name="file" id="fileFirma" required
-                      class="mt-2 p-2 border border-gray-300 rounded-md w-full" accept="image/*">
+                      class="mt-2 p-2 border border-gray-300 rounded-md w-full" accept=".pdf">
                   </div>
 
                   <div class="flex justify-between space-x-4">

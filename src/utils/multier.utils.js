@@ -39,6 +39,8 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname, "../uploads/arbitraje"));
       } else if (req.body.correo) {
         cb(null, path.join(__dirname, "../uploads/denuncias"));
+      } else if (req.body.Expediente) {
+        cb(null, path.join(__dirname, "../uploads/expedientes"));
       } else {
         cb(null, path.join(__dirname, "../uploads/documentos"));
       }
@@ -64,6 +66,14 @@ const storage = multer.diskStorage({
       cb(
         null,
         "Firma" +
+          "-" +
+          req.body.Matricula.toString().padStart(5, "0") +
+          path.extname(file.originalname)
+      );
+    } else if (req.body.Expediente) {
+      cb(
+        null,
+        "Expediente" +
           "-" +
           req.body.Matricula.toString().padStart(5, "0") +
           path.extname(file.originalname)
