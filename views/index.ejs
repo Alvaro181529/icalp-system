@@ -359,7 +359,7 @@
                 class="px-6 py-3 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out">
                 Subir archivo PDF
               </label>
-              <input type="file" id="file" accept=".pdf" class="hidden">
+              <input type="file" id="file" accept=".pdf" class="hidden" required title="Subir documento de respaldo para su valoración">
 
               <button type="submit" id="send-denuncia"
                 class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Enviar
@@ -400,6 +400,7 @@
       </div>
       <h1>N° de Tiket: <span id="number-tiquet"></span></h1>
       <h5 id="contenido-tiquet"></h5>
+      <h5><span id="resultado-tiquet"></span></h1>
       <button id="imprimir-tiquet" class="bg-blue-800 rounded p-4 mt-3 text-white">Imprimir Tiquet</button>
     </div>
   </dialog>
@@ -432,6 +433,7 @@
           $('#tiquet-dialog').showModal()
           $('#number-tiquet').textContent = data.data[0].id.toString().padStart(5, '0');
           $('#contenido-tiquet').textContent = data.data[0].estado ? data.data[0].estado : 'Denuncia Pendiente';
+          $('#resultado-tiquet').textContent = data.data[0].estado ? 'Favor pasar a tribunal de honor en Calle YANACOCHA Nº 630 Piso 3' : '';
         })
         .catch((error) => {
           console.error("Error en la búsqueda:", error);

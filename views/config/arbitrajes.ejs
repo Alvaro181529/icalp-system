@@ -16,13 +16,12 @@
                 <thead class="text-xs text-gray-200 uppercase bg-blue-950 ">
                     <tr>
                         <th class="px-6 py-3">#</th>
-                        <th class="px-6 py-3">Nombres</th>
-                        <th class="px-6 py-3">Correo</th>
-                        <th class="px-6 py-3">Celular</th>
+                        <th class="px-6 py-3">Conciliador</th>
+                        <th class="px-6 py-3">Arbitros</th>
+                        <th class="px-6 py-3">N° de Sala</th>
                         <th class="px-6 py-3">Descripcion</th>
                         <th class="px-6 py-3">Estado</th>
                         <th class="px-6 py-3">Fecha</th>
-                        <th class="px-6 py-3">N° caso</th>
                         <th class="px-6 py-3">Documento</th>
                         <th class="px-6 py-3">
                             <button id="create-arbitraje"
@@ -66,9 +65,9 @@
         <form id="update-arbitrajes">
             <div class="row">
                 <div class="col-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-1" for="nCaso">N° Caso:</label>
+                    <label class="block hidden text-sm font-medium text-gray-700 mb-1" for="nCaso">N° Caso:</label>
                     <input
-                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="mt-1 p-2 w-full hidden border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         type="number" id="nCaso" name="nCaso">
                 </div>
                 <div class="mb-4 col-6">
@@ -81,15 +80,15 @@
                     </Select>
                 </div>
             </div>
-            <div class="mb-4 col-12">
-                <label class="block text-sm font-medium text-gray-700 mb-1" for="estado">N° de sala:</label>
+            <div class="hidden mb-4 col-12">
+                <label class="block text-sm font-medium text-gray-700 mb-1 hidden" for="estado">N° de sala:</label>
                 <Select
-                    class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="text" id="estado" name="estado">
-                    <option value="1">1</option>
-                    <option value="2" selected>2</option>
-                    <option value="3" selected>3</option>
-                    <option value="4" selected>4</option>
+                    class="mt-1 hidden p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    type="text" id="nCaso" name="nCaso">
+                    <option value="1" selected>1</option>
+                    <option value="2" >2</option>
+                    <option value="3" >3</option>
+                    <option value="4" >4</option>
                 </Select>
             </div>
             <div class="flex justify-between space-x-4">
@@ -110,35 +109,53 @@
             <!-- Form Fields -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block mb-2">Nombres <span class="text-red-500">*</span></label>
-                    <input type="text" required name="nombres"
-                        class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label class="block mb-2">Conciliadores <span class="text-red-500">*</span></label>
+                    <select name="nombres"
+                        class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        id="nombres">
+                        <option value="S/N">S/N</option>
+                        <option value="FRANCISCA MARVILA CUPANA HUANACU">FRANCISCA MARVILA CUPANA HUANACU</option>
+                        <option value="VIVIANA GONZALES BELTRAN">VIVIANA GONZALES BELTRAN</option>
+                        <option value="VICTOR HUGO MONTES RODRIGUEZ">VICTOR HUGO MONTES RODRIGUEZ</option>
+                        <option value="VIVIANA BLANCO RIOS">VIVIANA BLANCO RIOS</option>
+                        <option value="BRITTA MIREYA LOAYZA FERNANDEZ">BRITTA MIREYA LOAYZA FERNANDEZ</option>
+                        <option value="JANNETH VIVIANA DEL CASTILLO CALDERON ">JANNETH VIVIANA DEL CASTILLO CALDERON </option>
+                        <option value="PAOLA JACQUELINE AJNOTA MAMANI">PAOLA JACQUELINE AJNOTA MAMANI</option>
+                        <option value="MARCELA SILVIA SALINAS ELIAS">MARCELA SILVIA SALINAS ELIAS</option>
+                    </select>
                 </div>
                 <div>
-                    <label class="block mb-2">Apellidos <span class="text-red-500">*</span></label>
-                    <input type="text" required name="apellidos"
-                        class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label class="block mb-2">Arbitros <span class="text-red-500">*</span></label>
+                    <select name="apellidos"
+                        class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        id="apellidos">
+                        <option value="S/N">S/N</option>
+                        <option value="JOSE LUIS TUFIÑO ZUBIETA">JOSE LUIS TUFIÑO ZUBIETA</option>
+                        <option value="LILIAN CATHERYN MORALES MOLLERICONA">LILIAN CATHERYN MORALES MOLLERICONA</option>
+                        <option value="SERGIO ADOLFO ROCHA MENDEZ">SERGIO ADOLFO ROCHA MENDEZ</option>
+                        <option value="CHRISTIAN FABIAN DAZA CAINZO">CHRISTIAN FABIAN DAZA CAINZO</option>
+                    </select>
                 </div>
             </div>
 
             <div>
-                <label class="block mb-2">Correo <span class="text-red-500">*</span></label>
-                <input type="email" required name="correo"
-                    class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label class="block mb-2 hidden">Correo <span class="text-red-500 ">*</span></label>
+                <input type="email" name="correo"
+                    class="w-full px-3 py-2 bg-white rounded border border-gray-300 hidden focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <input type="text" name="arbitraje" value="arbitraje" hidden>
 
             <div>
-                <label class="block mb-2">Numero de telefono <span class="text-red-500">*</span></label>
+                <label class="block mb-2">Numero de sala <span class="text-red-500">*</span></label>
                 <div class="flex gap-2 max-sm:flex-col">
-                    <select
+                    <!-- <select
                         class="px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option>Bolivia</option>
-                    </select>
+                    </select> -->
                     <div class="flex w-full gap-2">
                         <input type="text" value="+591" readonly
-                            class="w-20 px-3 py-2 bg-gray-100 rounded border border-gray-300">
-                        <input type="tel" required name="celular" maxlength="8"
+                            class="w-20 px-3 py-2 bg-gray-100 hidden rounded border border-gray-300">
+                        <input type="number " required name="celular"  maxlength="8"
                             class="w-full sm:flex-1 px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
@@ -146,7 +163,7 @@
 
             <!-- Description -->
             <div>
-                <textarea placeholder="Descripción de la denuncia..." rows="4" name="descripcion"
+                <textarea placeholder="Descripción...." rows="4" name="descripcion"
                     class="w-full px-3 py-2 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
             </div>
 
@@ -156,7 +173,7 @@
                     class="px-6 py-3  bg-gray-600 text-white rounded-lg cursor-pointer hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out">
                     Subir archivo PDF
                 </label>
-                <input type="file" id="file" accept=".pdf" class="hidden">
+                <input type="file" id="file" accept=".pdf" class="hidden" required>
 
                 <button type="submit" id="send-denuncia"
                     class="px-4 py-2 bg-blue-500 text-white rounded hov er:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">Guardar</button>
@@ -232,13 +249,12 @@
                         });
                         row.innerHTML = `
                         <td class="px-6 py-3">${item.id.toString().padStart(5, '0')}</td>
-                        <td class="px-6 py-3">${item.nombres} ${item.apellidos}</td>
-                        <td class="px-6 py-3">${item.correo}</td>
+                        <td class="px-6 py-3">${item.nombres} </td>
+                        <td class="px-6 py-3">${item.apellidos}</td>
                         <td class="px-6 py-3">${item.celular}</td>
                         <td class="px-6 py-3">${item.descripcion}</td>
                         <td class="px-6 py-3">${item.estado ? item.estado : `<button class="actualizar-button bg-red-700 text-white p-3 rounded" data-caso="${item.numeroCaso ? item.numeroCaso : 'No asignado'}" data-estado="${item.estado}" data-id="${item.id}">Pendiente</button>`}</td>
                         <td class="px-6 py-3">${fechaFormateada} ${horaFormateada} </td>
-                        <td class="px-6 py-3">${item.numeroCaso ? item.numeroCaso : 'No asignado'}</td>
                         <td class="px-6 py-3">${item.documento ? `<a class="font-medium text-blue-600 dark:text-blue-500 hover:underline text-center" target="_blank" href='/uploads/arbitrajes/${item.documento}'>${item.documento}</a>` : 'Sin documento'}</td>
                     `;
                         resultTableBody.appendChild(row);
