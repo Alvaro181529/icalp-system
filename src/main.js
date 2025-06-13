@@ -17,6 +17,7 @@ const historialRouter = require("./routes/historial.route.js");
 const notaRouter = require("./routes/nota.route.js");
 const denunciaRouter = require("./routes/denuncia.route.js");
 const arbitrajeRouter = require("./routes/arbitraje.route.js");
+const chatbotRouter = require("./routes/chatbot.route.js");
 
 const app = express();
 
@@ -57,6 +58,7 @@ app.use(historialRouter);
 app.use(notaRouter);
 app.use(denunciaRouter);
 app.use(arbitrajeRouter);
+app.use(chatbotRouter);
 
 // statics
 app.use("/public", express.static(path.join(__dirname, "public")));

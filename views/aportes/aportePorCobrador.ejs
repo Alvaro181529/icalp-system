@@ -159,7 +159,6 @@
      
       const updateTable = (data, totalPages, totalMonto) => {
         resultTableBody.innerHTML = "";
-        console.log(totalMonto);
         $('#TotalMonto').textContent = totalMonto
         if (data.length > 0) {
           data.forEach((item) => {
@@ -221,7 +220,6 @@
 
           const data = await response.json();
           if (Array.isArray(data.users)) {
-            console.log(data);
             totalPages = data.pages;
             totalMonto = data.totalMonto;
             updateTable(data.users, totalPages, totalMonto);
@@ -240,7 +238,6 @@
       searchForm.addEventListener("submit", function (event) {
         event.preventDefault();
         cobrador = $('#cobradores').value;
-        console.log(cobrador);
         searchValue = searchInput.value.trim();
         page = 1;
         fetchAndUpdateTable();

@@ -429,7 +429,6 @@
           return response.json();
         })
         .then((data) => {
-          console.log(data.data[0]);
           $('#tiquet-dialog').showModal()
           $('#number-tiquet').textContent = data.data[0].id.toString().padStart(5, '0');
           $('#contenido-tiquet').textContent = data.data[0].estado ? data.data[0].estado : 'Denuncia Pendiente';
@@ -456,7 +455,6 @@
       if (file) {
         formData.append('file', file);
       }
-      console.log(formData);
       try {
         const response = await fetch('/denuncia', {
           method: 'POST',
@@ -484,7 +482,6 @@
       const searchValueP = searchPaterno.value.trim();
       let searchValue = searchCol.value.trim();
 
-      console.log(searchValueMat);
 
       if (searchValueMat && searchValue) {
         searchMat.value = '';
@@ -566,8 +563,7 @@
 
       <div class="p-4 flex flex-col justify-center items-center">
         <span
-          class='bg-green-100 text-green-800 px-4 py-2 rounded-xl'
-
+          class=' ${colegiado.Estado === 'Suspendido' || colegiado.Estado === "Inactivo"?'bg-red-200 text-red-800 ':'bg-green-100 text-green-800 '} px-4 py-2 rounded-xl'
         >
           ${colegiado.Estado}
         </span>
@@ -610,4 +606,5 @@
     })
 
   </script>
+  <%- include('../component/chat'); %>
   <%- include('partials/footer'); %>

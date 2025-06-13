@@ -99,7 +99,9 @@
             const searchForm = $('#form-search');
             const searchInicio = $('#search-date-inicio');
             const searchFin = $('#search-date-fin');
-            const formDate = $('#form-search-date')
+            const formDate = $('#form-search-date');
+            const inicioInput = $('#search-date-inicio');
+            const finInput = $('#search-date-fin');
 
             let cobrador
             let page = 1;
@@ -128,9 +130,8 @@
 
 
             const updateTable = (data, totalPages, totalMonto) => {
-                console.log(data);
                 resultTableBody.innerHTML = "";
-                console.log(totalMonto);
+
                 $('#TotalMonto').textContent = totalMonto
                 if (data.length > 0) {
                     data.forEach((item) => {
@@ -184,7 +185,6 @@
 
                     const data = await response.json();
                     if (Array.isArray(data.users)) {
-                        console.log(data);
                         totalPages = data.totalPages;
                         totalMonto = data.total;
                         updateTable(data.users, totalPages, totalMonto);
@@ -240,6 +240,19 @@
                     dateInicio = searchInicio.value.trim() || "";
                     page++;
                     fetchAndUpdateTable();
+                }
+            });
+            inicioInput.addEventListener('change', () => {
+                if (inicioInput.value && finInput.value && new Date(inicioInput.value) > new Date(finInput.value)) {
+                    alert('La fecha de inicio no puede ser mayor que la fecha final.');
+                    finInput.value = inicioInput.value;
+                }
+            });
+
+            finInput.addEventListener('change', () => {
+                if (finInput.value && inicioInput.value && new Date(inicioInput.value) > new Date(finInput.value)) {
+                    alert('La fecha de fin no puede ser menor que la fecha inicial.');
+                    inicioInput.value =finInput.value 
                 }
             });
         });

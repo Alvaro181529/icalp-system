@@ -80,7 +80,6 @@ class UsersModel {
   };
   async patchUsers (body, userId) {
     const { user, email, password, confirmedPassword } = body;
-    console.log(body);
 
     // Validación de los datos de entrada
     const validationError = validate(email, password, confirmedPassword, user);

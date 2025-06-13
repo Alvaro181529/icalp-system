@@ -1,0 +1,179 @@
+<style>
+    /* Estilos para la ventana de chat */
+    #messages {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        /* Asegura que el formulario ocupe todo el ancho disponible */
+    }
+
+    #chatbot {
+        position: fixed;
+        bottom: 20px;
+        right: 100px;
+        width: 300px;
+        height: 400px;
+        background-color: #fff;
+        border-radius: 10px;
+        border: #000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        display: none;
+        /* Inicialmente oculto */
+        flex-direction: column;
+        padding: 10px;
+        z-index: 1000;
+    }
+
+    /* Estilos para el círculo */
+    #chatbot-btn {
+        position: fixed;
+        bottom: 80px;
+        right: 15px;
+        width: 60px;
+        height: 60px;
+        background-color: #003067;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1001;
+    }
+
+    /* Estilo del icono dentro del círculo */
+    #chatbot-btn i {
+        color: white;
+        font-size: 30px;
+    }
+
+    /* Estilos para el área del chat */
+    #chat-area {
+        flex-grow: 1;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+
+    /* Estilos para la entrada de texto */
+    #chat-input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    /* Estilos para el botón de enviar */
+    #send-btn {
+        background-color: #003067;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+
+    #send-btn:hover {
+        background-color: #114683;
+    }
+</style>
+
+<div id="chatbot-btn" data-aos="zoom-out" data-aos-delay="300">
+    <i>💬</i>
+</div>
+
+<div id="chatbot">
+    <div id="chat-area">
+    </div>
+    <form id="messages">
+        <textarea type="text" id="chat-input" placeholder="Escribe un mensaje..." name="message"></textarea>
+        <button id="send-btn" type="submit">Enviar</button>
+    </form>
+</div>
+
+<script>
+    const chatbot = $('#chatbot');
+    const messages = $('#messages');
+    const chatbotBtn = $('#chatbot-btn');
+    const sendBtn = $('#send-btn');
+    const chatArea = $('#chat-area');
+    const chatInput = $('#chat-input');
+
+    // Al hacer clic en el botón del chatbot, mostrar u ocultar el área de chat
+    chatbotBtn.addEventListener('click', () => {
+        if (chatbot.style.display === 'none' || chatbot.style.display === '') {
+            chatbot.style.display = 'flex';
+        } else {
+            chatbot.style.display = 'none';
+        }
+    });
+
+    // Evento de envío del mensaje
+    messages.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userMessage = chatInput.value.trim();
+
+        // Verificar que el mensaje no esté vacío
+        if (userMessage) {
+            // Crear el mensaje del usuario y agregarlo al área de chat
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.textContent = `Tú: ${userMessage}`;
+            chatArea.appendChild(userMessageDiv);
+
+            // Limpiar el campo de entrada
+            chatInput.value = '';
+
+            // Crear un mensaje de "Cargando..." mientras esperamos la respuesta
+            const loadingMessageDiv = document.createElement('div');
+            loadingMessageDiv.textContent = "ICA: Cargando...";
+            chatArea.appendChild(loadingMessageDiv);
+
+            try {
+                // Realizar la solicitud POST a la API del backend
+                const response = await fetch('/chatbot', {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        message: userMessage
+                    }),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                });
+
+                // Verificar si la respuesta es exitosa (código 2xx)
+                if (!response.ok) {
+                    throw new Error('Error al obtener respuesta del chatbot');
+                }
+
+                // Obtener la respuesta en formato JSON
+                const data = await response.json();
+
+                // Eliminar el mensaje de "Cargando..." y mostrar la respuesta
+                setTimeout(() => {
+                    loadingMessageDiv.remove(); // Eliminar "Cargando..."
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.textContent = `Cenfi: ${data.message}`;
+                    chatArea.appendChild(botMessageDiv);
+
+                    // Hacer que el área de chat se desplace hacia abajo
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                }, 1000);
+
+            } catch (error) {
+                console.error('Error:', error);
+
+                // Eliminar el mensaje de "Cargando..." y mostrar un mensaje de error amigable
+                setTimeout(() => {
+                    loadingMessageDiv.remove(); // Eliminar "Cargando..."
+                    const errorMessageDiv = document.createElement('div');
+                    errorMessageDiv.textContent = `Cenfi: Hubo un error al procesar tu mensaje. Intenta de nuevo más tarde.`;
+                    chatArea.appendChild(errorMessageDiv);
+
+                    // Hacer que el área de chat se desplace hacia abajo
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                }, 1000);
+            }
+        }
+    });
+</script>

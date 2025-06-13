@@ -102,7 +102,6 @@
       // Actualiza la tabla con los datos
       const updateTable = (data, totalPages, totalMonto) => {
         resultTableBody.innerHTML = ""; // Limpiar tabla antes de llenarla
-        console.log(totalMonto);
         $('#TotalMonto').textContent = totalMonto
         if (data.length > 0) {
           data.forEach((item) => {
@@ -164,7 +163,6 @@
 
           const data = await response.json();
           if (Array.isArray(data.users)) {
-            console.log(data);
             totalPages = data.pages; // Actualizar el total de páginas
             totalMonto = data.totalMonto; // Actualizar el total de páginas
             updateTable(data.users, totalPages, totalMonto);

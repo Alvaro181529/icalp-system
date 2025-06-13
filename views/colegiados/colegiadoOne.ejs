@@ -25,8 +25,9 @@
               <button hidden id="openDialogButton"></button>
               <%}%>
                 <% if (user && user.roles.includes('Administrador') || user.roles.includes('Tribunal') ){ %>
-                  <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2"
-                    id="upload-expediente"><%=result.Expediente?'Actualizar expediente': 'Subir Expediente'%></button>
+                  <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2" id="upload-expediente">
+                    <%=result.Expediente?'Actualizar expediente': 'Subir Expediente' %>
+                  </button>
                   <% if(result.Expediente ){%>
                     <a class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2"
                       href="/uploads/expedientes/<%= result.Expediente %>" target="_blank">Expediente</a>
@@ -326,121 +327,132 @@
               <%= result.Situacion || "No registrado" %>
             </p>
           </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Observacion</p>
-            <p>
-              <%= result.Observacion || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Zona</p>
-            <p>
-              <%= result.ZonaId || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Nacionalidad</p>
-            <p>
-              <%= result.Nacionalidad || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Grado academico</p>
-            <p>
-              <%= result.GradoAcademico || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Licenciatura</p>
-            <p>
-              <%= result.Licenciatura || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">ZonaTrabajoId</p>
-            <p>
-              <%= result.ZonaTrabajoId || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Forma de pago</p>
-            <p>
-              <%= result.FormaDePago || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Numero de boleta de deposito</p>
-            <p>
-              <%= result.BoletaDepositoNumero || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Monto deposito</p>
-            <p>
-              <%= result.MontoDeposito || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Formulario de admisión</p>
-            <p>
-              <%= result.FormularioDeAdmision || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Fotocopia titulo profecional</p>
-            <p>
-              <%= result.FotocopiaTituloProfesional || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Certificado de nacimiento original</p>
-            <p>
-              <%= result.CertificadoNacimientoOriginal || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Fotocopia C.I.</p>
-            <p>
-              <%= result.FotocopiaCI || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Curriculum vitae</p>
-            <p>
-              <%= result.CurriculumVitae || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Usuario quien registro</p>
-            <p>
-              <%= result.UsuarioRegistro || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Fecha registro (mm/dd/aaaa)</p>
-            <p>
-              <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Usuario modificación</p>
-            <p>
-              <%= result.UsuarioModificacion || "No registrado" %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Fecha modificación (mm/dd/aaaa)</p>
-            <p>
-              <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No registrado"
-                %>
-            </p>
-          </div>
-          <div class="mb-4">
-            <p class="text-gray-300">Estado</p>
-            <p>
-              <%= result.Estado %>
-            </p>
-          </div>
+          <% function esFechaValida(fechaStr) { const fechaRegex=/^\d{4}-\d{2}-\d{2}$/; if (!fechaRegex.test(fechaStr))
+            return false; const fecha=new Date(fechaStr); return fecha instanceof Date && !isNaN(fecha); } const
+            obs=result.Observacion; %>
+
+            <div class="mb-4 <%=esFechaValida(obs)?'text-red-500 font-bold':'text-gray-300 '%>">
+              <p >Observación</p>
+              <p>
+                <% if (!obs) { %>
+                  No registrado
+                  <% } else if (esFechaValida(obs)) { %>
+                    El usuario estará inactivo hasta <%= obs %>
+                      <% } else { %>
+                        <%= obs %>
+                          <% } %>
+              </p>
+            </div>
+
+            <div class="mb-4">
+              <p class="text-gray-300">Zona</p>
+              <p>
+                <%= result.ZonaId || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Nacionalidad</p>
+              <p>
+                <%= result.Nacionalidad || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Grado academico</p>
+              <p>
+                <%= result.GradoAcademico || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Licenciatura</p>
+              <p>
+                <%= result.Licenciatura || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">ZonaTrabajoId</p>
+              <p>
+                <%= result.ZonaTrabajoId || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Forma de pago</p>
+              <p>
+                <%= result.FormaDePago || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Numero de boleta de deposito</p>
+              <p>
+                <%= result.BoletaDepositoNumero || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Monto deposito</p>
+              <p>
+                <%= result.MontoDeposito || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Formulario de admisión</p>
+              <p>
+                <%= result.FormularioDeAdmision || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Fotocopia titulo profecional</p>
+              <p>
+                <%= result.FotocopiaTituloProfesional || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Certificado de nacimiento original</p>
+              <p>
+                <%= result.CertificadoNacimientoOriginal || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Fotocopia C.I.</p>
+              <p>
+                <%= result.FotocopiaCI || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Curriculum vitae</p>
+              <p>
+                <%= result.CurriculumVitae || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Usuario quien registro</p>
+              <p>
+                <%= result.UsuarioRegistro || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Fecha registro (mm/dd/aaaa)</p>
+              <p>
+                <%= result.FechaRegistro ? new Date(result.FechaRegistro).toLocaleDateString() : "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Usuario modificación</p>
+              <p>
+                <%= result.UsuarioModificacion || "No registrado" %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Fecha modificación (mm/dd/aaaa)</p>
+              <p>
+                <%= result.FechaModificacion ? new Date(result.FechaModificacion).toLocaleDateString() : "No registrado"
+                  %>
+              </p>
+            </div>
+            <div class="mb-4">
+              <p class="text-gray-300">Estado</p>
+              <p>
+                <%= result.Estado %>
+              </p>
+            </div>
         </div>
       </div>
       <!-- <table>
@@ -1215,6 +1227,7 @@
                   <input type="hidden" name="Expediente" value="<%= result.Expediente ? 'true' : 'false' %>">
                   <input type="hidden" name="Matricula" value="<%=result.Matricula %>">
                   <input type="hidden" name="Archivo" value="<%=result.Firma %>">
+                  <input type="text" hidden name="Estado" value="Suspendido">
                   <h2 class="text-xl font-semibold text-center mb-4">Subir Expediente</h2>
 
                   <div class="mb-4">
@@ -1222,6 +1235,8 @@
                       archivo</label>
                     <input type="file" name="file" id="fileFirma" required
                       class="mt-2 p-2 border border-gray-300 rounded-md w-full" accept=".pdf">
+                    <label for="file" class="block text-lg font-medium objecttext-gray-700">Tiempo de suspencion</label>
+                    <input type="date" name="Fecha" class="mt-2 p-2 border border-gray-300 rounded-md w-full">
                   </div>
 
                   <div class="flex justify-between space-x-4">

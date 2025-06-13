@@ -110,7 +110,9 @@ class ColegiadoController {
   async getCollegiatesExpediente(req, res) {
     const filename = req.file.filename;
     const id = req.body.ColegiadoId;
-    const patch = await colegiado.patchUsersExpediente(id, filename);
+    const Estado = req.body.Estado;
+    const Observacion = req.body.Fecha;
+    const patch = await colegiado.patchUsersExpediente(id, filename, Estado, Observacion);
     if (patch) {
       return res.redirect("/colegiado/" + req.body.ColegiadoId);
     }

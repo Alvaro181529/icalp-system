@@ -471,17 +471,21 @@ class ColegiadoModel {
     }
   }
 
-  async patchUsersExpediente(id, filename) {
+  async patchUsersExpediente(id, filename, Estado, Fecha) {
     try {
       const result = await pool.query(
         `
         UPDATE colegiados SET
         Expediente =?,
+        Estado = ?,
+        Observacion=?,
         FechaModificacion = NOW()
         WHERE ColegiadoId = ?
         `,
         [
           filename,
+          Estado,
+          Fecha,
           id, // Usar Matricula como identificador
         ]
       );

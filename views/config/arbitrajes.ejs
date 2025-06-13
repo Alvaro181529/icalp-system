@@ -184,7 +184,6 @@
     <script defer>
         $('#form-arbitraje-post')?.addEventListener("submit", async (e) => {
             e.preventDefault();
-            console.log("este es la subida de arbitraje");
             // Crear un objeto FormData para enviar el formulario con el archivo
             const formData = new FormData($('#form-arbitraje-post'));
 
@@ -311,7 +310,6 @@
                     if (response.ok) {
                         dialog.close();
                         window.location.reload();
-                        console.log('Actualización exitosa');
                     } else {
                         console.error('Error al actualizar');
                     }
