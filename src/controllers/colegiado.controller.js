@@ -125,6 +125,23 @@ class ColegiadoController {
     //   res.status(500).json({ message: "Error al obtener los usuarios", error });
     // }
   }
+  async getCollegiatesExpedienteActivate(req, res) {
+    const id = req.body.ColegiadoId;
+    const Estado = req.body.Estado;
+    const Observacion = req.body.Fecha;
+    const patch = await colegiado.patchUsersExpedienteActivate(id, Estado, Observacion);
+    if (patch) {
+      return res.redirect("/colegiado/" + req.body.ColegiadoId);
+    }
+    // const result = await colegiado.getUsersAdmin(req.query);
+    // const { user } = req.session;
+    // if (!user) return res.redirect("/");
+    // try {
+    //   res.json(result);
+    // } catch (error) {
+    //   res.status(500).json({ message: "Error al obtener los usuarios", error });
+    // }
+  }
 
   async getCollegiateByDay(req, res) {
     const result = await colegiado.getUsersByDay(req.query);

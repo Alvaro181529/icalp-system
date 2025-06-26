@@ -17,6 +17,7 @@ router.get("/colegiado/:id", checkRole(["Administrador", "Cobrador","Colegiados"
 // Rutas para la API de colegiado
 router.get("/collegiate", checkRole(["Administrador", "Cobrador","Colegiados","Tribunal"]), colegiado.getCollegiatesAdmin);
 router.post("/collegiate/expediente", checkRole(["Administrador", "Cobrador","Colegiados","Tribunal"]), upload.single('file'), colegiado.getCollegiatesExpediente);
+router.post("/collegiate/expediente/activate", checkRole(["Administrador", "Cobrador","Colegiados","Tribunal"]), colegiado.getCollegiatesExpedienteActivate);
 router.get("/collegiate/date", checkRole(["Administrador", "Cobrador","Colegiados","Tribunal"]), colegiado.getCollegiatesDate);
 router.get("/collegiate/:id/pdf", checkRole(["Administrador", "Cobrador","Tribunal"]), colegiado.getCollegiatesPdf);
 router.get("/collegiate/day", checkRole(["Administrador", "Cobrador","Tribunal"]), colegiado.getCollegiateByDay);

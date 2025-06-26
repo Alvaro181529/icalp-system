@@ -359,7 +359,8 @@
                 class="px-6 py-3 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out">
                 Subir archivo PDF
               </label>
-              <input type="file" id="file" accept=".pdf" class="hidden" required title="Subir documento de respaldo para su valoración">
+              <input type="file" id="file" accept=".pdf" class="hidden" required
+                title="Subir documento de respaldo para su valoración">
 
               <button type="submit" id="send-denuncia"
                 class="px-4 py-2 bg-white text-black rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">Enviar
@@ -389,21 +390,103 @@
     </div>
   </dialog>
 
-  <dialog id="tiquet-dialog" class="p-4 rounded">
-    <div class="flex flex-col m-4">
+  <div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <dialog id="tiquet-dialog" class="w-full max-w-md bg-white rounded-lg shadow-2xl border-0 p-0 open:flex">
+      <div class="flex flex-col w-full">
+        <div class="flex justify-between items-start p-6 pb-4">
+          <div class="flex-1 justify-between items-start">
+            <h3 class="text-2xl font-semibold text-gray-700">ILUSTRE COLEGIO DE ABOGADOS LA PAZ</h3>
+          </div>
+          <button id="cerrar-dialog-tiquet"
+            class="text-gray-400 hover:text-gray-600 transition-colors duration-200 p-1 rounded-full hover:bg-gray-100"
+            aria-label="Cerrar resultados de búsqueda">
+            <i class="fa-solid fa-xmark fa-2x"></i>
+          </button>
+        </div>
+        <div class="px-6">
+          <hr class="border-t-2 border-slate-200" />
+        </div>
+        <div class="p-6">
+          <div class="text-center mb-6">
+            <h1 class="uppercase font-bold text-slate-800 text-xl mb-2">Ticket de Denuncia</h1>
+            <div class="w-16 h-1 bg-blue-600 mx-auto rounded"></div>
+          </div>
+          <div class="space-y-4">
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
+              <h2 class="font-bold text-slate-800 text-lg">
+                N° de Ticket:
+                <span id="number-tiquet" class="text-blue-600">
+                  00003
+                </span>
+              </h2>
+            </div>
+
+            <div class="grid gap-3">
+              <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                <span class="font-medium text-gray-600">Fecha de Registro:</span>
+                <span id="number-date" class="text-gray-800 font-medium"></span>
+              </div>
+
+              <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                <span class="font-medium text-gray-600">Área:</span>
+                <span class="text-gray-800 font-medium text-right">Unidad de Denuncia y Seguimiento</span>
+              </div>
+
+              <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                <span class="font-medium text-gray-600">Estado:</span>
+                <span id="contenido-tiquet" class="font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full text-sm">
+                  Enviado
+                </span>
+              </div>
+            </div>
+
+
+            <div class="bg-gray-50 p-4 rounded-lg mt-4">
+              <p id="resultado-tiquet" class="text-gray-700 text-sm leading-relaxed">
+                Gracias por su denuncia. Nuestro equipo la revisará y se comunicará con usted en caso de requerir
+                mayor información.
+              </p>
+            </div>
+
+
+            <button id="imprimir-tiquet"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 mt-6 shadow-md hover:shadow-lg">
+              <i class="fa-solid fa-print"></i> 
+              Imprimir Tiquet
+            </button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+  </div>
+
+  <!-- <dialog id="tiquet-dialog" style="width: 25%;" class="rounded">
+    <div class="flex flex-col">
       <div class="flex justify-between w-full mb-4">
-        <h3 class="text-2xl font-semibold text-gray-700 mr-4">Resultados</h3>
+        <div>
+          <div>Tiquet</div>
+          <h3 class="text-2xl font-semibold text-gray-700 mr-4">Resultados</h3>
+        </div>
         <button id="cerrar-dialog-tiquet" class="text-gray-500 hover:text-gray-700 focus:outline-none"
           aria-label="Cerrar resultados de búsqueda">
           <i class="fa-solid fa-xmark fa-2x"></i>
         </button>
       </div>
-      <h1>N° de Tiket: <span id="number-tiquet"></span></h1>
-      <h5 id="contenido-tiquet"></h5>
-      <h5><span id="resultado-tiquet"></span></h1>
-      <button id="imprimir-tiquet" class="bg-blue-800 rounded p-4 mt-3 text-white">Imprimir Tiquet</button>
+      <hr class="border-t-2 border-slate-700" />
+
+      <div>
+        <div class="p-4">
+          <h1 class="uppercase font-bold text-slate-800 text-2xl text-center mx-auto">ticket de denuncia</h1>
+          <h2 class="uppercase font-bold text-slate-800 text-xl text-center mx-auto">N° de Ticket: <span id="number-tiquet"></span></h2>
+          <h2>Fecha de Registro: <span id="number-date"></span></h2>
+          <h2>Area: Unidad de Denuncia y Deguimiento</h2>
+          <h5>Estado: <span class="font-bold" id="contenido-tiquet"></span> </h5>
+          <h5><span id="resultado-tiquet"></span></h1>
+            <button id="imprimir-tiquet" class="bg-blue-800 rounded p-4 mt-3 text-white">Imprimir Tiquet</button>
+          </div>
+      </div>
     </div>
-  </dialog>
+  </dialog> -->
 
   <script defer>
 
@@ -429,8 +512,11 @@
           return response.json();
         })
         .then((data) => {
+          const fechaOriginal = data.data[0].Fecha;
+          const fechaFormateada = fechaOriginal ? fechaOriginal.split('T')[0] : 'Sin fecha';
           $('#tiquet-dialog').showModal()
           $('#number-tiquet').textContent = data.data[0].id.toString().padStart(5, '0');
+          $('#number-date').textContent = fechaFormateada;
           $('#contenido-tiquet').textContent = data.data[0].estado ? data.data[0].estado : 'Denuncia Pendiente';
           $('#resultado-tiquet').textContent = data.data[0].estado ? 'Favor pasar a tribunal de honor en Calle YANACOCHA Nº 630 Piso 3' : '';
         })
@@ -563,7 +649,7 @@
 
       <div class="p-4 flex flex-col justify-center items-center">
         <span
-          class=' ${colegiado.Estado === 'Suspendido' || colegiado.Estado === "Inactivo"?'bg-red-200 text-red-800 ':'bg-green-100 text-green-800 '} px-4 py-2 rounded-xl'
+          class=' ${colegiado.Estado === 'Suspendido' || colegiado.Estado === "Inactivo" ? 'bg-red-200 text-red-800 ' : 'bg-green-100 text-green-800 '} px-4 py-2 rounded-xl'
         >
           ${colegiado.Estado}
         </span>
@@ -590,21 +676,70 @@
     })
 
 
-    $('#imprimir-tiquet').addEventListener('click', function imprimirPagina() {
-      var contenido = $('#tiquet-dialog').innerHTML;
-      var ventanaImpresion = window.open('', '', 'width=800,height=600');
+    // $('#imprimir-tiquet').addEventListener('click', function imprimirPagina() {
+    //   var contenido = $('#tiquet-dialog').innerHTML;
+    //   var ventanaImpresion = window.open('', '', 'width=800,height=600');
 
-      // Escribimos la estructura inicial del documento
-      ventanaImpresion.document.open();
-      ventanaImpresion.document.write('<html><head><title>Impresión</title></head><body>');
+    //   // Escribimos la estructura inicial del documento
+    //   ventanaImpresion.document.open();
+    //   ventanaImpresion.document.write('<html><head><title>Impresión</title></head><body>');
 
-      // Ahora insertamos el contenido del div
-      ventanaImpresion.document.body.innerHTML = contenido;
+    //   // Ahora insertamos el contenido del div
+    //   ventanaImpresion.document.body.innerHTML = contenido;
 
-      ventanaImpresion.document.close();
+    //   ventanaImpresion.document.close();
+    //   ventanaImpresion.print();
+    // })
+
+    
+  document.getElementById("imprimir-tiquet").addEventListener("click", () => {
+    const contenido = $('#tiquet-dialog').innerHTML;
+    const ventanaImpresion = window.open('', '', 'width=800,height=600');
+
+    const estilos = `
+      <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+      <style>
+      body {
+  background-color: white !important;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+        @media print {
+          #imprimir-tiquet {
+            display: none !important;
+          }
+            #cerrar-dialog-tiquet {
+            display: none !important;
+          }
+        }
+      </style>
+    `;
+
+    ventanaImpresion.document.open();
+    ventanaImpresion.document.write(`
+      <html>
+        <head>
+          <title>Impresión</title>
+          ${estilos}
+        </head>
+        <body>
+          <div class="min-h-screen flex items-center justify-center p-4">
+            ${contenido}
+          </div>
+        </body>
+      </html>
+    `);
+    ventanaImpresion.document.close();
+
+    // Esperar a que cargue todo para imprimir (importante)
+    ventanaImpresion.onload = () => {
       ventanaImpresion.print();
-    })
-
+      ventanaImpresion.onafterprint = () => {
+        ventanaImpresion.close();
+      };
+    };
+  });
   </script>
   <%- include('../component/chat'); %>
-  <%- include('partials/footer'); %>
+    <%- include('partials/footer'); %>

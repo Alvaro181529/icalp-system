@@ -495,6 +495,28 @@ class ColegiadoModel {
       throw error;
     }
   }
+  async patchUsersExpedienteActivate(id, Estado, Fecha) {
+    try {
+      const result = await pool.query(
+        `
+        UPDATE colegiados SET
+        Estado = ?,
+        Observacion=?,
+        FechaModificacion = NOW()
+        WHERE ColegiadoId = ?
+        `,
+        [
+          Estado,
+          Fecha,
+          id, // Usar Matricula como identificador
+        ]
+      );
+      return result;
+    } catch (error) {
+      console.error("Error al actualizar:", error);
+      throw error;
+    }
+  }
   async updateUser(id, query, user) {
     const {
       fechaMatriculacionAlColegio,
