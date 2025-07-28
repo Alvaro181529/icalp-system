@@ -16,6 +16,7 @@ const talonarioRouter = require("./routes/talonario.route.js");
 const historialRouter = require("./routes/historial.route.js");
 const notaRouter = require("./routes/nota.route.js");
 const denunciaRouter = require("./routes/denuncia.route.js");
+const documentosRouter = require("./routes/documentos.route.js");
 const arbitrajeRouter = require("./routes/arbitraje.route.js");
 const chatbotRouter = require("./routes/chatbot.route.js");
 
@@ -58,6 +59,7 @@ app.use(historialRouter);
 app.use(notaRouter);
 app.use(denunciaRouter);
 app.use(arbitrajeRouter);
+app.use(documentosRouter);
 app.use(chatbotRouter);
 
 // statics

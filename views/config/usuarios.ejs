@@ -8,7 +8,24 @@
                     <input id="user" type="text"
                         class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         name="username" required />
-
+                    <label for="nombre" class="block text-sm font-medium text-gray-700 mb-1">Nombre
+                        Completo:</label>
+                    <input id="nombre" type="text"
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="nombreCompleto" required />
+                    <label for="carnet" class="block text-sm font-medium text-gray-700 mb-1">Carnet:</label>
+                    <input id="carnet" type="text"
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="Carnet" required />
+                    <label for="fecha" class="block text-sm font-medium text-gray-700 mb-1">Fecha de
+                        Nacimiento:</label>
+                    <input id="fecha" type="date"
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="fechaNacimiento" required />
+                    <label for="direccion" class="block text-sm font-medium text-gray-700 mb-1">Direccón:</label>
+                    <input id="direccion" type="text"
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="Direccion" required />
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email:</label>
                     <input id="email" type="email"
                         class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -42,6 +59,24 @@
                     <input id="user-update" type="text"
                         class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         name="username" required />
+                    <label for="nombre-update" class="block text-sm font-medium text-gray-700 mb-1">Nombre
+                        Completo:</label>
+                    <input id="nombre-update" type="text"
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="nombreCompleto" required />
+                    <label for="carnet-update" class="block text-sm font-medium text-gray-700 mb-1">Carnet:</label>
+                    <input id="carnet-update" type="text"
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="Carnet" required />
+                    <label for="fecha-update" class="block text-sm font-medium text-gray-700 mb-1">Fecha de
+                        Nacimiento:</label>
+                    <input id="fecha-update" type="date"
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="fechaNacimiento" required />
+                    <label for="direccion-update" class="block text-sm font-medium text-gray-700 mb-1">Direccón:</label>
+                    <input id="direccion-update" type="text"
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="Direccion" required />
 
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email:</label>
                     <input id="email-update" type="email"
@@ -86,6 +121,10 @@
                     <tr>
                         <th class="px-4 py-3">Correo</th>
                         <th class="px-4 py-3">Usuario</th>
+                        <th class="px-4 py-3">Nombre Completo</th>
+                        <th class="px-4 py-3">Carnet</th>
+                        <th class="px-4 py-3">Direccion</th>
+                        <th class="px-4 py-3">Fecha de Nacimiento</th>
                         <th class="px-4 py-3">¿Está bloqueado?</th>
                         <th class="px-4 py-3">Roles</th>
                         <th class="px-4 py-3 flex justify-center items-center">
@@ -143,10 +182,15 @@
                 resultTableBody.innerHTML = ""; // Limpiar tabla
                 if (users.length > 0) {
                     users.forEach((item) => {
+                        console.log(item);
                         const row = document.createElement("tr");
                         row.innerHTML = `
                         <td  class="px-6 py-2">${item.Email}</td>
                         <td  class="px-6 py-2">${item.User}</td>
+                        <td  class="px-6 py-2">${item.NombreCompleto || 'Sin Nombre'}</td>
+                        <td  class="px-6 py-2">${item.Carnet || 'Sin carnet'}</td>
+                        <td  class="px-6 py-2">${new Date(item.fechaNacimiento).toISOString().split('T')[0]}</td>
+                        <td  class="px-6 py-2">${item.Direccion || 'Sin direccion'}</td>
                         <td  class="px-6 py-2">${item.IsLockedOut === 1 ?
                                 `<button class="${activarButton.slice(1)}" data-id="${item.UserId}">Activar</button>`
                                 : 'Activado'}</td>
@@ -253,6 +297,10 @@
                 e.preventDefault();
                 const userData = {
                     user: $("#user").value,
+                    NombreCompleto: $("#nombre").value,
+                    Carnet: $("#carnet").value,
+                    fechaNacimiento: $("#fecha").value,
+                    Direccion: $("#direccion").value,
                     email: $("#email").value,
                     password: $("#password").value,
                     confirmedPassword: $("#confirm-password").value,
@@ -333,12 +381,20 @@
                 $('#dialog-update').showModal()
                 // Llenamos el formulario con los datos del usuario a actualizar.
                 const userRow = button.closest('tr');
-                const userName = userRow.querySelector('td:nth-child(2)').textContent;
                 const userEmail = userRow.querySelector('td:nth-child(1)').textContent;
+                const userName = userRow.querySelector('td:nth-child(2)').textContent;
+                const userNombreCompleto = userRow.querySelector('td:nth-child(3)').textContent;
+                const userCarnet = userRow.querySelector('td:nth-child(4)').textContent;
+                const userFecha = userRow.querySelector('td:nth-child(5)').textContent;
+                const userDireccion = userRow.querySelector('td:nth-child(6)').textContent;
 
                 // Llenamos el formulario con los valores actuales del usuario
-                $("#user-update").value = userName;
                 $("#email-update").value = userEmail;
+                $("#user-update").value = userName;
+                $("#nombre-update").value = userNombreCompleto;
+                $("#carnet-update").value = userCarnet;
+                $("#fecha-update").value = userFecha;
+                $("#direccion-update").value = userDireccion;
 
                 // Mostrar el diálogo de actualización
                 $('#dialog-update').showModal();
@@ -350,6 +406,10 @@
                     // Obtenemos los valores del formulario
                     const userData = {
                         user: $("#user-update").value,
+                        NombreCompleto: $("#nombre-update").value,
+                        Carnet: $("#carnet-update").value,
+                        fechaNacimiento: $("#fecha-update").value,
+                        Direccion: $("#direccion-update").value,
                         email: $("#email-update").value,
                         password: $("#password-update").value,
                         confirmedPassword: $("#confirm-password-update").value,

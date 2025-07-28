@@ -64,7 +64,9 @@ const jwt = require("jsonwebtoken");  // Cambiar import a require
   };
 
   async signUp (body){
-    const { user, email, password, confirmedPassword } = body;
+    const { user, email, password, confirmedPassword, NombreCompleto,Carnet,fechaNacimiento,Direccion } = body;
+console.log(body);
+   
     const validationError = validate(email, password, confirmedPassword, user);
     if (validationError) {
       return validationError; // Return error from validation
@@ -87,8 +89,8 @@ const jwt = require("jsonwebtoken");  // Cambiar import a require
         .slice(0, 19)
         .replace("T", " ");
       const createQuery = `
-                INSERT INTO aspnetusers (UserId, PasswordHash, PasswordSalt, Email, LoweredEmail, IsApproved, IsLockedOut, CreateDate, User)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO aspnetusers (UserId, PasswordHash, PasswordSalt, Email, LoweredEmail, IsApproved, IsLockedOut, CreateDate, User, NombreCompleto,Carnet,fechaNacimiento,Direccion)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)
             `;
       const userId = crypto.randomBytes(16).toString('hex');
       const salt = bcrypt.genSaltSync(saltRounds);
@@ -103,6 +105,7 @@ const jwt = require("jsonwebtoken");  // Cambiar import a require
         0,
         createDate,
         user,
+        NombreCompleto,Carnet,fechaNacimiento,Direccion
       ]);
 
       return { message: "Usuario registrado exitosamente.", correo: email };

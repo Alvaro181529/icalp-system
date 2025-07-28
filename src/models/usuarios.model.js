@@ -6,7 +6,7 @@ class UsersModel {
     const limit = parseInt(size);
     const offset = (page - 1) * size;
     let baseQuery = `
-          SELECT u.UserId, u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles
+          SELECT u.UserId,u.NombreCompleto,u.Carnet,u.fechaNacimiento,u.Direccion, u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles
           FROM aspnetusers u
           LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId
           LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId
@@ -56,7 +56,7 @@ class UsersModel {
   };
   async getUserCobradores (query)  {
     const result = pool.query(
-      `SELECT u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles FROM aspnetusers u LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId WHERE r.RoleId = '4FE4C8D0-AA50-49D9-A75C-9D731711B9F4' GROUP BY u.Email, u.User, u.IsApproved`
+      `SELECT u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles FROM aspnetusers u LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId WHERE r.RoleId = 'c1103424-be2e-11ef-828b-f80dacf23b8a' GROUP BY u.Email, u.User, u.IsApproved`
     );
     return result;
   };
@@ -79,8 +79,7 @@ class UsersModel {
     return { result, message: "Roles actualizados" };
   };
   async patchUsers (body, userId) {
-    const { user, email, password, confirmedPassword } = body;
-
+    const { user, email, password, confirmedPassword,NombreCompleto,Carnet,fechaNacimiento,Direccion } = body;
     // Validación de los datos de entrada
     const validationError = validate(email, password, confirmedPassword, user);
     if (validationError) {
@@ -115,7 +114,11 @@ class UsersModel {
           LoweredEmail = ?, 
           PasswordHash = ?, 
           PasswordSalt = ?, 
-          CreateDate = ?
+          CreateDate = ?,
+          NombreCompleto = ?,
+          Carnet = ?,
+          fechaNacimiento = ?,
+          Direccion = ?
         WHERE UserId = ?
       `;
 
@@ -129,6 +132,10 @@ class UsersModel {
           null,   // No actualizamos la sal
           updateDate,
           userId,
+          NombreCompleto,
+          Carnet,
+          fechaNacimiento,
+          Direccion
         ]);
       } else {
         // Si se proporciona una nueva contraseña, la actualizamos junto con la sal

@@ -7,51 +7,105 @@ const multer = require("multer");
 
 // Configuración de Multer para la carga de imágenes y archivos
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Determinamos el destino de los archivos basado en su tipo
-    const imageTypes = /jpeg|jpg|png|gif/; // Tipos permitidos para imágenes
-    const documentTypes = /pdf|docx|txt/; // Tipos permitidos para documentos
+  // destination: function (req, file, cb) {
+  //   // Determinamos el destino de los archivos basado en su tipo
+  //   let uploadPath;
+  //   const imageTypes = /jpeg|jpg|png|gif/; // Tipos permitidos para imágenes
+  //   const documentTypes = /pdf|docx|txt/; // Tipos permitidos para documentos
 
-    // Si es una imagen
+  //   // Si es una imagen
+  //   if (
+  //     imageTypes.test(path.extname(file.originalname).toLowerCase()) &&
+  //     imageTypes.test(file.mimetype)
+  //   ) {
+  //     // Verificamos si tiene la propiedad `slide` en el cuerpo de la solicitud
+  //     if (req.body.slide) {
+  //       // Si tiene la propiedad `slide`, lo guardamos en la carpeta "slides"
+  //       cb(null, path.join(__dirname, "../uploads/slides"));
+  //     } else if (req.body.blog) {
+  //       // Si tiene la propiedad `blog`, lo guardamos en la carpeta "blog"
+  //       cb(null, path.join(__dirname, "../uploads/blog"));
+  //     } else {
+  //       // Si no tiene la propiedad `slide`, lo guardamos en la carpeta "imagenes"
+  //       cb(null, path.join(__dirname, "../uploads/imagenes"));
+  //     }
+  //   }
+  //   // Si es un documento
+  //   else if (
+  //     documentTypes.test(path.extname(file.originalname).toLowerCase()) &&
+  //     documentTypes.test(file.mimetype)
+  //   ) {
+  //     // Si es un documento, lo guardamos en la carpeta "documentos"
+  //     if (req.body.arbitraje) {
+  //       cb(null, path.join(__dirname, "../uploads/arbitraje"));
+  //     } else if (req.body.correo) {
+  //       cb(null, path.join(__dirname, "../uploads/denuncias"));
+  //     } else if (req.body.Expediente) {
+  //       cb(null, path.join(__dirname, "../uploads/expedientes"));
+  //     } else {
+  //       cb(null, path.join(__dirname, "../uploads/documentos"));
+  //     }
+  //   } else {
+  //     // Si no es un archivo válido, mostramos un error
+  //     return cb(
+  //       new Error(
+  //         "Solo se permiten imágenes (JPEG, PNG, GIF) o documentos (PDF, DOCX, TXT)"
+  //       )
+  //     );
+  //   }
+  //   if (!fs.existsSync(uploadPath)) {
+  //     fs.mkdirSync(uploadPath, { recursive: true }); // Crea la carpeta y las necesarias en la ruta
+  //   }
+  
+  // },
+  
+  destination: function (req, file, cb) {
+    const imageTypes = /jpeg|jpg|png|gif/;
+    const documentTypes = /pdf|docx|txt/;
+  
+    let uploadPath;
+  
+    // Archivos de imagen
     if (
       imageTypes.test(path.extname(file.originalname).toLowerCase()) &&
       imageTypes.test(file.mimetype)
     ) {
-      // Verificamos si tiene la propiedad `slide` en el cuerpo de la solicitud
       if (req.body.slide) {
-        // Si tiene la propiedad `slide`, lo guardamos en la carpeta "slides"
-        cb(null, path.join(__dirname, "../uploads/slides"));
+        uploadPath = path.join(__dirname, "../uploads/slides");
       } else if (req.body.blog) {
-        // Si tiene la propiedad `blog`, lo guardamos en la carpeta "blog"
-        cb(null, path.join(__dirname, "../uploads/blog"));
+        uploadPath = path.join(__dirname, "../uploads/blog");
       } else {
-        // Si no tiene la propiedad `slide`, lo guardamos en la carpeta "imagenes"
-        cb(null, path.join(__dirname, "../uploads/imagenes"));
+        uploadPath = path.join(__dirname, "../uploads/imagenes");
       }
     }
-    // Si es un documento
+    // Archivos de documento
     else if (
       documentTypes.test(path.extname(file.originalname).toLowerCase()) &&
       documentTypes.test(file.mimetype)
     ) {
-      // Si es un documento, lo guardamos en la carpeta "documentos"
       if (req.body.arbitraje) {
-        cb(null, path.join(__dirname, "../uploads/arbitraje"));
+        uploadPath = path.join(__dirname, "../uploads/arbitraje");
       } else if (req.body.correo) {
-        cb(null, path.join(__dirname, "../uploads/denuncias"));
+        uploadPath = path.join(__dirname, "../uploads/denuncias");
       } else if (req.body.Expediente) {
-        cb(null, path.join(__dirname, "../uploads/expedientes"));
+        uploadPath = path.join(__dirname, "../uploads/expedientes");
       } else {
-        cb(null, path.join(__dirname, "../uploads/documentos"));
+        uploadPath = path.join(__dirname, "../uploads/documentos");
       }
     } else {
-      // Si no es un archivo válido, mostramos un error
       return cb(
         new Error(
           "Solo se permiten imágenes (JPEG, PNG, GIF) o documentos (PDF, DOCX, TXT)"
         )
       );
     }
+  
+    // Crear carpeta si no existe
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true }); // Crea la carpeta y las necesarias en la ruta
+    }
+  
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
     if (req.body.foto) {
