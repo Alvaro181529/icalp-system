@@ -214,7 +214,7 @@
                     if (response.ok) {
                         dialog.close();
                         alert(await response.json());
-                        location.reload()
+                        window.location.reload();
                     } else {
                         console.error('Error al actualizar');
                     }
