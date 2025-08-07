@@ -34,7 +34,6 @@ class AporteController {
 
   async getContributionPorCobrador(req, res) {
     const { cobrador } = req.query;
-    console.log(cobrador);
     try {
       const result = await aporte.getAporte(req.query, cobrador || "");
       const resultadoTransformado = Array.isArray(result.users)

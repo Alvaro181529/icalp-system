@@ -17,16 +17,13 @@ class DenunciaController {
     res.json(result);
   }
   async postDenuncia(req, res) {
-    console.log(req.body);
     const result = await denuncia.postDenuncia(req.body, req.file.filename);
     res.json(result);
   }
   async patchDenuncia(req, res) {
     const { id } = req.params;
-    console.log(req.body);
     const result = await denuncia.patchDenuncia(req.body, id);
     res.json(result);
   }
 }
-
-module.exports = { DenunciaController }; // Exportación usando module.exports
+module.exports = { DenunciaController };

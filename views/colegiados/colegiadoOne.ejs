@@ -25,8 +25,8 @@
               <button hidden id="openDialogButton"></button>
               <%}%>
                 <% if (user && user.roles.includes('Administrador') || user.roles.includes('Tribunal') ){ %>
-                  <button class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2" id="upload-expediente">
-                    <%=result.Expediente?'Actualizar expediente': 'Subir Expediente' %>
+                  <button class="bg-yellow-500 py-2 px-6 rounded hover:bg-yellow-700 focus:ring-2" id="upload-expediente">
+                    Penalizar al colegiado
                   </button>
                   <% if(result.Expediente ){%>
                     <a class="bg-blue-600 py-2 px-6 rounded hover:bg-blue-500 focus:ring-2"
@@ -1207,7 +1207,7 @@
                     </button>
                   </form>
                 </div>
-                <form enctype="multipart/form-data" id="upload-form-firma" method="post"
+                <form enctype="multipart/form-data" method="post"
                   action="/collegiate/expediente">
                   <input type="hidden" name="ColegiadoId" value="<%=result.ColegiadoId %>">
                   <input type="hidden" name="Expediente" value="<%= result.Expediente ? 'true' : 'false' %>">
@@ -1223,7 +1223,11 @@
                     <label for="file" class="block text-lg font-medium objecttext-gray-700">Tiempo de suspencion</label>
                     <input type="date" name="Fecha" class="mt-2 p-2 border border-gray-300 rounded-md w-full">
                   </div>
-
+                  <div class="mb-4">
+                    <label for="expedienteObservacion" class="block text-lg font-medium objecttext-gray-700">Observacion</label>
+                  <textarea  class="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" name="expedienteObservacion" id="expedienteObservacion">
+                  </textarea>
+                  </div>
                   <div class="flex justify-between space-x-4">
                     <button type="submit"
                       class="w-1/2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -1259,9 +1263,19 @@
                        class="flex items-center justify-center bg-purple-600 py-3 px-6 rounded hover:bg-purple-500 focus:ring-2 focus:outline-none transition-all duration-200">
                       
                       Certificado de nacimiento                    </a>
+                    <a href="/uploads/personales/file-nacimiento-<%= result.ColegiadoId %>.pdf" target="_blank"
+                       class="flex items-center justify-center bg-purple-600 py-3 px-6 rounded hover:bg-purple-500 focus:ring-2 focus:outline-none transition-all duration-200">
+                      
+                      Kardex
+                                        </a>
                   </div>
                   <button id="mostar-actualizaciones" class="text-blue-600 mb-2 text-lg hover:text-blue-300 transition duration-300 underline">actualizar</button>
                   <div id="subida-documentos-extras" class="hidden">
+                    <div class="mb-4">
+                      <label for="file" class="block text-lg font-medium objecttext-gray-700">Kardex</label>
+                      <input type="file" name="file-kardex" id="file-kardex" required
+                        class="mt-2 p-2 border border-gray-300 rounded-md w-full" accept="application/pdf">
+                    </div>
                   <div class="mb-4">
                     <label for="file" class="block text-lg font-medium objecttext-gray-700">Carnet</label>
                     <input type="file" name="file-carnet" id="file-carnet" required

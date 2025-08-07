@@ -29,7 +29,8 @@ router.post(
   upload.fields([
     { name: 'file-carnet', maxCount: 1 },
     { name: 'file-curriculum', maxCount: 1 },
-    { name: 'file-nacimiento', maxCount: 1 }
+    { name: 'file-nacimiento', maxCount: 1 },
+    { name: 'file-kardex', maxCount: 1 }
   ]),
   (req, res) => documento.subirDocumentos(req, res)
 );
@@ -39,7 +40,8 @@ router.patch(
     upload.fields([
       { name: 'file-carnet', maxCount: 1 },
       { name: 'file-curriculum', maxCount: 1 },
-      { name: 'file-firma', maxCount: 1 }
+      { name: 'file-firma', maxCount: 1 },
+      { name: 'file-kardex', maxCount: 1 }
     ]),
     (req, res) => documento.actualizarDocumentos(req, res)
   );

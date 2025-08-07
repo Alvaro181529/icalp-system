@@ -22,7 +22,6 @@ class ArbitrajeController {
   }
   async patchArbitraje(req, res) {
     const { id } = req.params;
-    console.log(req.body);
     const result = await arbitraje.patchArbitraje(req.body, id);
     res.json(result);
   }

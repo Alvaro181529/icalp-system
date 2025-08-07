@@ -41,7 +41,6 @@ class UsersController {
 
   async deleteUser (req, res)  {
     const { id } = req.params;
-    console.log(id);
   };
 
   async removeUser (req, res) {

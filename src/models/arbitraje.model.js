@@ -60,12 +60,10 @@ class ArbitrajeModel {
         `,
       [nombres, apellidos, correo, celular, descripcion, file, null]
     );
-    console.log(query.insertId);
     return query.insertId;
   }
   async patchArbitraje(body, id) {
     const { estado, nCaso } = body;
-    console.log(body);
     const query = await pool.query(
       `
        UPDATE arbitrajes

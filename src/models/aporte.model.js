@@ -101,8 +101,6 @@ ORDER BY
     return result;
   }
   async getAporte(query, usuario) {
-    console.log("usuario");
-    console.log(usuario);
     // Desestructuramos y procesamos los valores de query
     const {
       search,

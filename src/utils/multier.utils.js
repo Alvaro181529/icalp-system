@@ -2,7 +2,7 @@
 const path = require("path");
 const { fileURLToPath } = require("url");
 const multer = require("multer");
-
+const fs = require("fs");
 // Cambiar la forma de obtener __filename y __dirname
 
 // Configuración de Multer para la carga de imágenes y archivos
