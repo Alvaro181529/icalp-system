@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - Nosotros</title>
+    <link rel="stylesheet" href="/public/resources/css/nosotros.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+   <%- include('../partials/header', {title, user}) %>
+    <div class="container">
+        <div class="banner">
+            <div class="banner-content">
+                <h1>ACERCA DE NOSOTROS</h1>
+            </div>
+        </div>
+
+    <section id="home" class="section">
+        <div class="coverflow-wrapper">
+            <div class="info">
+                <h2 id="current-title">Bienvenido al Ilustre Colegio de Abogados de La Paz</h2>
+                <p id="current-description">ICALP</p>
+            </div>
+
+            <div class="coverflow-container" tabindex="0">
+                <div class="coverflow" id="coverflow">
+                    <div class="coverflow-item" data-index="0">
+                        <div class="cover image-loading">
+                            <img src="/public/resources/recursos/nosotros/5.png" alt="Colegio" loading="lazy">
+                        </div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="1">
+                        <div class="cover image-loading">
+                            <img src="/public/resources/recursos/icalp/seminarios.jpeg" alt="Eventos" loading="lazy">
+                        </div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="2">
+                        <div class="cover image-loading">
+                            <img src="/public/resources/recursos/card3.jpg" alt="" loading="lazy">
+                        </div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="3">
+                        <div class="cover image-loading">
+                            <img src="/public/resources/recursos/director/convenio.jpg" alt="" loading="lazy">
+                        </div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="4">
+                        <div class="cover image-loading">
+                            <img src="/public/resources/recursos/director/1.png" alt="" loading="lazy">
+                        </div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="5">
+                        <div class="cover image-loading">
+                            <img src="/public/resources/recursos/icalp/1.jpeg" alt="" loading="lazy">
+                        </div>
+                        <div class="reflection"></div>
+                    </div>
+                    <div class="coverflow-item" data-index="6">
+                        <div class="cover image-loading">
+                            <img src="/public/resources/recursos/icalp/3.jpeg" alt="" loading="lazy">
+                        </div>
+                        <div class="reflection"></div>
+                    </div>
+                </div>
+
+                <button class="nav-button prev" onclick="navigate(-1)">‹</button>
+                <button class="nav-button next" onclick="navigate(1)">›</button>
+
+                <div class="dots-container" id="dots"></div>
+                
+                <!-- Play/Pause Button -->
+                <button class="play-pause-button" id="playPauseBtn" onclick="toggleAutoplay()">
+                    <span class="play-icon">▶</span>
+                    <span class="pause-icon" style="display: none;">❚❚</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+        <div class="content-section">
+            <!-- Sección de Introducción -->
+            <div class="intro-section">
+               
+
+                <div class="intro-textin">
+                     <p>El <strong>ICALP</strong> es una institución con visión al futuro, comprometida con transformar la práctica jurídica en Bolivia. En nuestra comunidad profesional compartimos una misma misión: aprender, gestionar experiencias y desarrollarnos en un entorno fundamentado en los valores de la pasión, la integridad, la innovación, el trabajo en equipo y la ética profesional.</p>
+                </div>
+            </div>
+            
+            <!-- Sección de Valores -->
+            <div class="values-section">
+                <h2>Nuestros Pilares Fundamentales</h2>
+                <div class="values-grid">
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-heart"></i></div>
+                        <h3>Pasión</h3>
+                        <p>Compromiso apasionado con la excelencia en el ejercicio del derecho.</p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Integridad</h3>
+                        <p>Actuamos con honestidad y coherencia en todas nuestras acciones.</p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-lightbulb"></i></div>
+                        <h3>Innovación</h3>
+                        <p>Buscamos constantemente nuevas formas de mejorar la práctica jurídica.</p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-users"></i></div>
+                        <h3>Trabajo en equipo</h3>
+                        <p>Fomentamos la colaboración entre nuestros colegiados.</p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon"><i class="fas fa-balance-scale"></i></div>
+                        <h3>Ética profesional</h3>
+                        <p>Base fundamental de todas nuestras acciones y decisiones.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección de Alcance Internacional -->
+            <div class="international-section">
+                <div class="international-image">
+                    <img src="/public/resources/recursos/icalp/2.jpeg" alt="Alianzas internacionales">
+                </div>
+                <div class="international-text">
+                    <h2>Alcance Internacional</h2>
+                    <p>El ICALP es una institución con alcance internacional, con un enfoque transformador centrado en la formación continua, que dota a los profesionales del derecho de las herramientas necesarias para su desarrollo personal y para que adquieran las competencias del siglo XXI.</p>
+                    <p>Somos reconocidos como el primer colegio de abogados boliviano en promover la internacionalización. Cientos de colegiados participan en la movilidad profesional gracias a nuestras alianzas con instituciones jurídicas y académicas de prestigio a nivel mundial.</p>
+                </div>
+            </div>
+            
+      
+            
+            <!-- Sección de Misión y Visión -->
+            <div class="mission-vision-section">
+                <div class="mission-section">
+                    <div class="mission-icon"><i class="fas fa-bullseye"></i></div>
+                    <h2>Misión</h2>
+                    <p>Consolidar un Colegio de Abogados innovador y transformador, comprometido con el desarrollo profesional de sus miembros, atrayendo y promoviendo talento jurídico de alto nivel. Fomentamos un ambiente de colaboración que impulse el libre intercambio de ideas, la innovación, la investigación y el liderazgo, formando profesionales competitivos con valores éticos, morales y responsabilidad social.</p>
+                </div>
+                
+                <div class="vision-section">
+                    <div class="vision-icon"><i class="fas fa-eye"></i></div>
+                    <h2>Visión</h2>
+                    <p>Ser un referente de excelencia en el ejercicio de la abogacía, con reconocimiento nacional e internacional, promoviendo el desarrollo jurídico, académico y tecnológico, e influyendo activamente en la justicia y el bienestar de la sociedad.</p>
+                </div>
+            </div>
+            
+           
+        </div>
+        
+
+         <!-- Sección de Inspiración -->
+            <div class="inspiration-section" align="center">
+                <h2>Nuestra Inspiración</h2>
+                <blockquote>
+                    "Nos inspira el compromiso, la energía y la sed de aprendizaje de nuestros colegas abogados, a quienes nos debemos y por quienes hemos llegado hasta aquí."
+                    <div class="signature">
+                        <div class="signature-text">Ilustre Colegio de Abogados de La Paz</div>
+                    </div>
+                </blockquote>
+            </div>
+
+      <%- include('../partials/footer'); %>
+    </div>
+    <script src="/public/resources/js/nosotros.js"></script>
+
+   
+
+</body>
+</html>

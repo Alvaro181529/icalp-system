@@ -1,0 +1,762 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+             background-image: url('../recursos/patron.png');
+        }
+
+        .container {
+         width: 100%;
+            margin: 0 auto;
+           
+        }
+
+        /* Banner Section */
+        .banner {
+            background-image: url('../recursos/POLITICAS-DE-PRIVACIDAD.jpg');
+            background-size: cover;
+            background-position: center;    
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content:right;
+        }
+        .banner::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.4); 
+            z-index: 1;
+        }
+        .banner h1 {
+            position: relative;
+            color: white;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-right: 50px;
+          
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-family: oswald, sans-serif;
+            padding-top: 150px;
+            z-index: 2 ;
+        }
+    .banner h1::before {
+    content: '';
+    position: absolute;
+    width: 5px;
+    background: #f1c40f;
+    top: 150px;      
+    bottom: 0;
+    left: -20px;     
+    z-index: 2;     
+    height: 30%;   
+}
+.banner h1 {
+    
+    opacity: 0;
+    transform: translateX(100px); 
+    animation: entradaDerecha 1s ease-out forwards;
+}
+
+@keyframes entradaDerecha {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+   /* Banner Sectio0n FIN */ 
+
+
+
+
+       .header {
+            padding: 15px 60px;
+          
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            gap: 6px;
+            flex-direction: column;
+             background-color: rgba(0, 0, 0, 0.885);
+
+        }
+            .datos1{
+        
+            justify-content: left;
+        }
+        
+        .header .date {
+            font-size: 0.95em;
+            opacity: 0.8;
+            margin-top: 5px;
+            position: relative;
+            z-index: 1;
+            color: #f8f9fa;
+        }
+/* Contenido principal */
+.contenido-privacidad {
+    padding: 40px 250px;
+    background-color: transparent; /* Sin fondo opaco */
+    border-top: 3px solid #f1c40f;
+}
+
+.contenido-privacidad section {
+    margin-bottom: 40px;
+    padding: 0; /* Quitamos relleno interior */
+    background: none; /* Sin fondo */
+    border: none; /* Sin bordes */
+    border-radius: 0; /* Sin esquinas redondeadas */
+    box-shadow: none; /* Sin sombra */
+}
+
+.contenido-privacidad h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    position: relative;
+}
+
+.contenido-privacidad h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: #f1c40f;
+    margin-top: 5px;
+}
+
+.contenido-privacidad p {
+    margin-bottom: 15px;
+    font-size: 1.05em;
+    line-height: 1.7;
+    text-align: justify;
+}
+
+/* Listas personalizadas */
+.contenido-privacidad ul {
+    list-style: none;
+    padding-left: 20px;
+}
+
+.contenido-privacidad ul li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 12px;
+    font-size: 1.05em;
+}
+
+.contenido-privacidad ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: #f1c40f;
+    border-radius: 50%;
+}
+
+/* Enlaces */
+.contenido-privacidad a {
+    color: #f1c40f;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contenido-privacidad a:hover {
+    text-decoration: underline;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+     /* Banner responsive */
+    .banner {
+        height: 250px;
+        justify-content: right;
+        
+    }
+    
+    .banner::before {
+        height: 250px;
+    }
+    
+    .banner h1 {
+        font-size: 2em;
+        margin-right: 0;
+        text-align: center;
+        padding: 10px 20px;
+        padding-top: 120px;
+    }
+    
+    .banner h1::before {
+        top: 120px;
+        left: -15px;
+        width: 4px;
+    }
+    
+    /* Header responsive */
+    .header {
+        padding: 15px 30px;
+    }
+    
+    .tituloo h1 {
+        font-size: 2em;
+    }
+    
+    .header .subtitle {
+        font-size: 1.1em;
+        text-align: center;
+    }
+    
+    
+
+}
+
+/* Móviles (480px y menos) */
+@media (max-width: 480px) {
+    /* Banner móvil */
+    .banner {
+        height: 200px;
+    }
+    
+    .banner::before {
+        height: 200px;
+    }
+    
+    .banner h1 {
+        font-size: 1.6em;
+        padding: 10px 15px;
+        padding-top: 100px;
+    }
+    
+    .banner h1::before {
+        top: 100px;
+        left: -10px;
+        width: 3px;
+    }
+    
+    /* Header móvil */
+    .header {
+        padding: 15px 20px;
+    }
+    
+    .tituloo h1 {
+        font-size: 1.8em;
+    }
+    
+    .header .subtitle {
+        font-size: 1em;
+    }
+    
+    
+   
+   
+    /* Date section móvil */
+    .header .date {
+        font-size: 0.85em;
+        text-align: center;
+    }
+ 
+}
+/* Móviles muy pequeños (360px y menos) */
+@media (max-width: 360px) {
+    .banner h1 {
+        font-size: 1.4em;
+        padding: 8px 12px;
+        padding-top: 90px;
+    }
+    
+    .banner h1::before {
+        top: 90px;
+    }
+    
+    .tituloo h1 {
+        font-size: 1.6em;
+    }
+   
+    
+    /* Date section muy pequeño */
+    .header .date {
+        font-size: 0.8em;
+        padding: 0 5px;
+    }
+   
+}
+
+/* ===========================================
+   RESPONSIVE CSS - POLÍTICA DE PRIVACIDAD
+   =========================================== */
+
+/* Tablets grandes y pantallas medianas (hasta 1200px) */
+@media (max-width: 1200px) {
+    .contenido-privacidad {
+        padding: 40px 150px;
+    }
+    
+    .header {
+        padding: 15px 50px;
+    }
+}
+
+/* Tablets medianas (hasta 1024px) */
+@media (max-width: 1024px) {
+    .contenido-privacidad {
+        padding: 35px 100px;
+    }
+    
+    .header {
+        padding: 15px 40px;
+    }
+    
+    .banner h1 {
+        font-size: 2.3em;
+        margin-right: 40px;
+    }
+    
+    .contenido-privacidad h2 {
+        font-size: 1.7em;
+    }
+    
+    .contenido-privacidad p {
+        font-size: 1.02em;
+    }
+}
+
+/* Tablets (hasta 992px) */
+@media (max-width: 992px) {
+    .contenido-privacidad {
+        padding: 30px 80px;
+    }
+    
+    .header {
+        padding: 15px 40px;
+    }
+    
+    .banner h1 {
+        font-size: 2.1em;
+        margin-right: 30px;
+    }
+    
+    .contenido-privacidad h2 {
+        font-size: 1.6em;
+    }
+    
+    .contenido-privacidad p {
+        font-size: 1em;
+        line-height: 1.6;
+    }
+    
+    .contenido-privacidad ul li {
+        font-size: 1em;
+    }
+}
+
+/* Tablets pequeñas (hasta 768px) */
+@media (max-width: 768px) {
+    .contenido-privacidad {
+        padding: 25px 50px;
+    }
+    
+    .header {
+        padding: 15px 30px;
+    }
+    
+    .banner {
+        height: 250px;
+        justify-content: center;
+    }
+    
+    .banner::before {
+        height: 250px;
+    }
+    
+    .banner h1 {
+        font-size: 1.9em;
+        margin-right: 0;
+        text-align: center;
+        padding: 10px 20px;
+        padding-top: 120px;
+    }
+    
+    .banner h1::before {
+        top: 120px;
+        left: -15px;
+        width: 4px;
+        height: 25%;
+    }
+    
+    .contenido-privacidad section {
+        margin-bottom: 35px;
+    }
+    
+    .contenido-privacidad h2 {
+        font-size: 1.5em;
+        margin-bottom: 12px;
+    }
+    
+    .contenido-privacidad h2::after {
+        width: 40px;
+        height: 2px;
+    }
+    
+    .contenido-privacidad p {
+        font-size: 0.98em;
+        margin-bottom: 12px;
+        text-align: left;
+    }
+    
+    .contenido-privacidad ul li {
+        font-size: 0.98em;
+        margin-bottom: 10px;
+        padding-left: 25px;
+    }
+    
+    .contenido-privacidad ul li::before {
+        width: 8px;
+        height: 8px;
+        top: 8px;
+    }
+    
+    .header .date {
+        font-size: 0.9em;
+        text-align: center;
+    }
+}
+
+/* Móviles grandes (hasta 576px) */
+@media (max-width: 576px) {
+    .contenido-privacidad {
+        padding: 20px 30px;
+    }
+    
+    .header {
+        padding: 12px 25px;
+    }
+    
+    .banner {
+        height: 220px;
+    }
+    
+    .banner::before {
+        height: 220px;
+    }
+    
+    .banner h1 {
+        font-size: 1.7em;
+        padding: 8px 15px;
+        padding-top: 110px;
+    }
+    
+    .banner h1::before {
+        top: 110px;
+        left: -12px;
+        width: 3px;
+    }
+    
+    .contenido-privacidad section {
+        margin-bottom: 30px;
+    }
+    
+    .contenido-privacidad h2 {
+        font-size: 1.4em;
+        margin-bottom: 10px;
+    }
+    
+    .contenido-privacidad h2::after {
+        width: 35px;
+    }
+    
+    .contenido-privacidad p {
+        font-size: 0.95em;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+    
+    .contenido-privacidad ul {
+        padding-left: 15px;
+    }
+    
+    .contenido-privacidad ul li {
+        font-size: 0.95em;
+        margin-bottom: 8px;
+        padding-left: 20px;
+    }
+    
+    .contenido-privacidad ul li::before {
+        width: 7px;
+        height: 7px;
+        top: 7px;
+    }
+    
+    .header .date {
+        font-size: 0.85em;
+    }
+}
+
+/* Móviles (hasta 480px) */
+@media (max-width: 480px) {
+    .contenido-privacidad {
+        padding: 18px 25px;
+    }
+    
+    .header {
+        padding: 12px 20px;
+    }
+    
+    .banner {
+        height: 200px;
+    }
+    
+    .banner::before {
+        height: 200px;
+    }
+    
+    .banner h1 {
+        font-size: 1.5em;
+        padding: 8px 12px;
+        padding-top: 100px;
+    }
+    
+    .banner h1::before {
+        top: 100px;
+        left: -10px;
+        width: 3px;
+    }
+    
+    .contenido-privacidad section {
+        margin-bottom: 25px;
+    }
+    
+    .contenido-privacidad h2 {
+        font-size: 1.3em;
+        margin-bottom: 8px;
+    }
+    
+    .contenido-privacidad h2::after {
+        width: 30px;
+        height: 2px;
+    }
+    
+    .contenido-privacidad p {
+        font-size: 0.92em;
+        margin-bottom: 8px;
+        line-height: 1.4;
+    }
+    
+    .contenido-privacidad ul li {
+        font-size: 0.92em;
+        margin-bottom: 6px;
+        padding-left: 18px;
+    }
+    
+    .contenido-privacidad ul li::before {
+        width: 6px;
+        height: 6px;
+        top: 6px;
+    }
+    
+    .header .date {
+        font-size: 0.8em;
+        text-align: center;
+    }
+}
+
+/* Móviles pequeños (hasta 400px) */
+@media (max-width: 400px) {
+    .contenido-privacidad {
+        padding: 15px 20px;
+    }
+    
+    .header {
+        padding: 10px 15px;
+    }
+    
+    .banner {
+        height: 180px;
+    }
+    
+    .banner::before {
+        height: 180px;
+    }
+    
+    .banner h1 {
+        font-size: 1.3em;
+        padding: 6px 10px;
+        padding-top: 90px;
+    }
+    
+    .banner h1::before {
+        top: 90px;
+        left: -8px;
+        width: 2px;
+    }
+    
+    .contenido-privacidad section {
+        margin-bottom: 20px;
+    }
+    
+    .contenido-privacidad h2 {
+        font-size: 1.2em;
+        margin-bottom: 6px;
+    }
+    
+    .contenido-privacidad h2::after {
+        width: 25px;
+        height: 2px;
+    }
+    
+    .contenido-privacidad p {
+        font-size: 0.9em;
+        margin-bottom: 6px;
+    }
+    
+    .contenido-privacidad ul li {
+        font-size: 0.9em;
+        margin-bottom: 5px;
+        padding-left: 15px;
+    }
+    
+    .contenido-privacidad ul li::before {
+        width: 5px;
+        height: 5px;
+        top: 5px;
+    }
+    
+    .header .date {
+        font-size: 0.75em;
+        padding: 0 5px;
+    }
+}
+
+/* Móviles muy pequeños (hasta 360px) */
+@media (max-width: 360px) {
+    .contenido-privacidad {
+        padding: 12px 15px;
+    }
+    
+    .header {
+        padding: 8px 12px;
+    }
+    
+    .banner {
+        height: 160px;
+    }
+    
+    .banner::before {
+        height: 160px;
+    }
+    
+    .banner h1 {
+        font-size: 1.1em;
+        padding: 5px 8px;
+        padding-top: 80px;
+    }
+    
+    .banner h1::before {
+        top: 80px;
+        left: -6px;
+        width: 2px;
+    }
+    
+    .contenido-privacidad section {
+        margin-bottom: 18px;
+    }
+    
+    .contenido-privacidad h2 {
+        font-size: 1.1em;
+        margin-bottom: 5px;
+    }
+    
+    .contenido-privacidad h2::after {
+        width: 20px;
+        height: 1px;
+    }
+    
+    .contenido-privacidad p {
+        font-size: 0.85em;
+        margin-bottom: 5px;
+    }
+    
+    .contenido-privacidad ul li {
+        font-size: 0.85em;
+        margin-bottom: 4px;
+        padding-left: 12px;
+    }
+    
+    .contenido-privacidad ul li::before {
+        width: 4px;
+        height: 4px;
+        top: 4px;
+    }
+    
+    .header .date {
+        font-size: 0.7em;
+        word-wrap: break-word;
+    }
+}
+
+/* Ajustes para orientación landscape en móviles */
+@media (max-height: 500px) and (orientation: landscape) {
+    .banner {
+        height: 120px;
+    }
+    
+    .banner::before {
+        height: 120px;
+    }
+    
+    .banner h1 {
+        font-size: 1.2em;
+        padding-top: 50px;
+    }
+    
+    .banner h1::before {
+        top: 50px;
+    }
+    
+    .contenido-privacidad {
+        padding: 15px 30px;
+    }
+}
+
+/* Pantallas muy anchas */
+@media (min-width: 1600px) {
+    .contenido-privacidad {
+        padding: 50px 400px;
+    }
+    
+    .header {
+        padding: 20px 100px;
+    }
+    
+    .contenido-privacidad h2 {
+        font-size: 2em;
+    }
+    
+    .contenido-privacidad p {
+        font-size: 1.1em;
+    }
+    
+    .contenido-privacidad ul li {
+        font-size: 1.1em;
+    }
+}

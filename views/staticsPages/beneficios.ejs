@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - Beneficios Colegiados</title>
+    <link rel="stylesheet" href="/public/resources/css/beneficios.css">
+    <script src="/public/resources/js/beneficios.js"></script>
+</head>
+<body>
+    <%- include('../partials/header', {title, user}) %>
+     <div class="container">
+       <div class="banner">
+            
+            <h1>BENEFICIOS DE COLEGIADOS</h1>
+        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
+      
+        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN-->  
+           <header class="header">
+            <div class="datos1">
+                 <div class="date">
+                    <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+
+                </div>
+            </div>
+           
+        </header>
+
+        <main class="beneficios-container">
+    <section class="intro-beneficios">
+        <p class="intro-text">¡Ser parte del ICALP es mucho más que colegiarse, es pertenecer a una comunidad que impulsa tu crecimiento!</p>
+    </section>
+    
+    <section class="beneficios-grid">
+        <!-- Beneficio 1 -->
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="beneficio-content">
+                <h3>Acceso Prioritario a Diplomados y Talleres</h3>
+                <p>Mantente siempre actualizado con nuestros programas de formación continua, diseñados para potenciar tu carrera.</p>
+            </div>
+        </div>
+        
+        <!-- Beneficio 2 -->
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <i class="fas fa-door-open"></i>
+            </div>
+            <div class="beneficio-content">
+                <h3>Uso Exclusivo del Salón Libertad</h3>
+                <p>Celebra eventos, reuniones o actividades profesionales en nuestro elegante y moderno salón.</p>
+            </div>
+        </div>
+        
+        <!-- Beneficio 3 -->
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <i class="fas fa-balance-scale"></i>
+            </div>
+            <div class="beneficio-content">
+                <h3>Asesoría Legal y Profesional</h3>
+                <p>Recibe orientación en tu desarrollo profesional y apoyo en asuntos legales clave.</p>
+            </div>
+        </div>
+        
+        <!-- Beneficio 4 -->
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <div class="beneficio-content">
+                <h3>Participación en Convenios y Redes Profesionales</h3>
+                <p>Accede a convenios con instituciones nacionales e internacionales para ampliar tu red de contactos y generar nuevas oportunidades.</p>
+            </div>
+        </div>
+        
+        <!-- Beneficio 5 -->
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="beneficio-content">
+                <h3>Correo Corporativo Personalizado</h3>
+                <p>Comunicación oficial con identidad profesional. Mantente informado sobre todas las actividades, eventos y convocatorias del ICALP.</p>
+            </div>
+        </div>
+        
+        <!-- Beneficio 6 -->
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <i class="fas fa-percentage"></i>
+            </div>
+            <div class="beneficio-content">
+                <h3>Promociones y Becas Especiales</h3>
+                <p>Disfruta de descuentos y becas para diplomados, seminarios y otros eventos académicos.</p>
+            </div>
+        </div>
+        
+        <!-- Beneficio 7 -->
+        <div class="beneficio-card">
+            <div class="beneficio-icon">
+                <i class="fas fa-glass-cheers"></i>
+            </div>
+            <div class="beneficio-content">
+                <h3>Eventos Sociales y Culturales</h3>
+                <p>Participa en nuestras actividades para fortalecer lazos con la comunidad jurídica y disfrutar momentos de confraternización.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta-section">
+        <h2>¿Listo para disfrutar de estos beneficios?</h2>
+        <button class="cta-button" onclick="window.location.href='../vistas/requisitosdeadmi.php'">¡Quiero Colegiarme!</button>
+    </section>
+</main>
+       
+
+           <%- include('../partials/footer'); %>
+
+    
+</body>
+</html>

@@ -1,0 +1,395 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+             background-image: url('../recursos/patron.png');
+        }
+
+        .container {
+         width: 100%;
+            margin: 0 auto;
+           
+        }
+
+        /* Banner Section */
+        .banner {
+            background-image: url('../recursos/pexels-august-de-richelieu-4427430.jpg');
+            background-size: cover;
+            background-position: center;    
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content:right;
+        }
+        .banner::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.4); 
+            z-index: 1;
+        }
+        .banner h1 {
+            position: relative;
+            color: white;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-right: 50px;
+          
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-family: oswald, sans-serif;
+            padding-top: 150px;
+            z-index: 2 ;
+        }
+    .banner h1::before {
+    content: '';
+    position: absolute;
+    width: 5px;
+    background: #f1c40f;
+    top: 150px;      
+    bottom: 0;
+    left: -20px;     
+    z-index: 2;     
+    height: 30%;   
+}
+.banner h1 {
+    
+    opacity: 0;
+    transform: translateX(100px); 
+    animation: entradaDerecha 1s ease-out forwards;
+}
+
+@keyframes entradaDerecha {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+   /* Banner Sectio0n FIN */ 
+
+
+
+   /* Responsive */
+@media (max-width: 768px) {
+     /* Banner responsive */
+    .banner {
+        height: 250px;
+        justify-content: right;
+        
+    }
+    
+    .banner::before {
+        height: 250px;
+    }
+    
+    .banner h1 {
+        font-size: 2em;
+        margin-right: 0;
+        text-align: center;
+        padding: 10px 20px;
+        padding-top: 120px;
+    }
+    
+    .banner h1::before {
+        top: 120px;
+        left: -15px;
+        width: 4px;
+    }
+    
+    /* Header responsive */
+    .header {
+        padding: 15px 30px;
+    }
+    
+    .tituloo h1 {
+        font-size: 2em;
+    }
+    
+    .header .subtitle {
+        font-size: 1.1em;
+        text-align: center;
+    }
+    
+    /*MAIN */
+    /* Main content colegiarte */
+    .colegiarte-content {
+        padding: 20px 30px;
+    }
+    
+    /* Intro section */
+    .intro-section {
+        padding: 20px 15px;
+        margin-bottom: 30px;
+    }
+    
+    .intro-text {
+        font-size: 1.1em;
+        line-height: 1.6;
+    }
+    
+    /* Benefits section */
+    .benefits-section {
+        gap: 20px;
+        padding: 0 15px;
+    }
+    
+    .benefit-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 15px;
+        gap: 15px;
+    }
+    
+    .benefit-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3em;
+        margin: 0 auto;
+    }
+    
+    .benefit-content h3 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+    
+    .benefit-content p {
+        font-size: 1em;
+        line-height: 1.5;
+    }
+    
+    /* Conclusion section */
+    .conclusion-section {
+        padding: 30px 20px;
+        text-align: center;
+    }
+    
+    .conclusion-text {
+        font-size: 1.1em;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+    
+    .cta-button {
+        font-size: 1em;
+        padding: 12px 25px;
+        width: auto;
+        max-width: 300px;
+    }
+  .benefit-content h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+}
+
+/* Móviles (480px y menos) */
+@media (max-width: 480px) {
+    /* Banner móvil */
+    .banner {
+        height: 200px;
+    }
+    
+    .banner::before {
+        height: 200px;
+    }
+    
+    .banner h1 {
+        font-size: 1.6em;
+        padding: 10px 15px;
+        padding-top: 100px;
+    }
+    
+    .banner h1::before {
+        top: 100px;
+        left: -10px;
+        width: 3px;
+    }
+    
+    /* Header móvil */
+    .header {
+        padding: 15px 20px;
+    }
+    
+    .tituloo h1 {
+        font-size: 1.8em;
+    }
+    
+    .header .subtitle {
+        font-size: 1em;
+    }
+     /* Main content colegiarte móvil */
+    .colegiarte-content {
+        padding: 15px 20px;
+    }
+    
+    /* Intro section móvil */
+    .intro-section {
+        padding: 15px 10px;
+        margin-bottom: 25px;
+    }
+    
+    .intro-text {
+        font-size: 1em;
+        line-height: 1.5;
+    }
+    
+    /* Benefits section móvil */
+    .benefits-section {
+        gap: 15px;
+        padding: 0 10px;
+    }
+    
+    .benefit-card {
+        padding: 15px 12px;
+        gap: 12px;
+        border-radius: 8px;
+    }
+    
+    .benefit-number {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2em;
+    }
+    
+    .benefit-content h3 {
+        font-size: 1.1em;
+        margin-bottom: 8px;
+    }
+    
+    .benefit-content p {
+        font-size: 0.95em;
+        line-height: 1.4;
+    }
+    
+    /* Conclusion section móvil */
+    .conclusion-section {
+        padding: 25px 15px;
+    }
+    
+    .conclusion-text {
+        font-size: 1em;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+    
+    .cta-button {
+        font-size: 0.95em;
+        padding: 10px 20px;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    /* Date section móvil */
+    .header .date {
+        font-size: 0.85em;
+        text-align: center;
+    }
+     .benefit-content h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+/* Móviles muy pequeños (360px y menos) */
+@media (max-width: 360px) {
+    .banner h1 {
+        font-size: 1.4em;
+        padding: 8px 12px;
+        padding-top: 90px;
+    }
+    
+    .banner h1::before {
+        top: 90px;
+    }
+    
+    .tituloo h1 {
+        font-size: 1.6em;
+    }
+     /* Main content muy pequeño */
+    .colegiarte-content {
+        padding: 12px 15px;
+    }
+    
+    /* Intro section muy pequeño */
+    .intro-section {
+        padding: 12px 8px;
+        margin-bottom: 20px;
+    }
+    
+    .intro-text {
+        font-size: 0.95em;
+        line-height: 1.4;
+    }
+    
+    /* Benefits section muy pequeño */
+    .benefits-section {
+        gap: 12px;
+        padding: 0 8px;
+    }
+    
+    .benefit-card {
+        padding: 12px 10px;
+        gap: 10px;
+    }
+    
+    .benefit-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1em;
+    }
+    
+    .benefit-content h3 {
+        font-size: 1em;
+        margin-bottom: 6px;
+    }
+    
+    .benefit-content p {
+        font-size: 0.9em;
+        line-height: 1.3;
+    }
+    
+    /* Conclusion section muy pequeño */
+    .conclusion-section {
+        padding: 20px 12px;
+    }
+    
+    .conclusion-text {
+        font-size: 0.95em;
+        margin-bottom: 18px;
+        line-height: 1.4;
+    }
+    
+    .cta-button {
+        font-size: 0.9em;
+        padding: 9px 18px;
+        width: 100%;
+        max-width: 260px;
+    }
+    
+    /* Date section muy pequeño */
+    .header .date {
+        font-size: 0.8em;
+        padding: 0 5px;
+    }
+    .benefit-content h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+

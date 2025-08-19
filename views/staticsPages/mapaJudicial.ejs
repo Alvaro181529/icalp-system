@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - Mapa Judicial</title>
+    <link rel="stylesheet" href="/public/resources/css/mapa.css">
+    <script src="/public/resources/js/mapa.js"></script>
+</head>
+<body>
+    <%- include('../partials/header', {title, user}) %>
+     <div class="container">
+       <div class="banner">
+            
+            <h1>MAPA JUDICIAL</h1>
+        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
+      
+        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN-->
+
+        <header class="header">
+            <div class="datos1">
+                 <div class="date">
+                    <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+
+                </div>
+            </div>
+           
+        </header>
+         <main class="mapa-judicial-container">
+    <section class="intro-mapa">
+        <h1>Mapa Judicial de La Paz</h1>
+        <p class="descripcion-mapa">Una guía completa para facilitar tu acceso a las principales instituciones judiciales de La Paz. Encuentra la ubicación y contacto de juzgados, tribunales y entidades relacionadas con la administración de justicia.</p>
+
+    </section>
+
+    <section class="instituciones-section">
+        <h2 class="section-title">Principales Instituciones</h2>
+        
+        <div class="instituciones-grid">
+            <!-- Institución 1 -->
+            <div class="institucion-card">
+                <div class="institucion-header">
+                    <i class="fas fa-gavel"></i>
+                    <h3>Tribunal Departamental de Justicia de La Paz</h3>
+                </div>
+                <div class="institucion-info">
+                    <p><i class="fas fa-map-marker-alt"></i> <strong>Dirección:</strong> Calle Bolívar, esquina Indaburo</p>
+                    <p><i class="fas fa-clock"></i> <strong>Horario de Atención:</strong> 08:30 - 16:30</p>
+                    <button class="ver-mapa-btn" data-location="Tribunal Departamental de Justicia de La Paz, Calle Bolívar esquina Indaburo, La Paz">
+                        <i class="fas fa-map-marked-alt"></i> Ver en Mapa
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Institución 2 -->
+            <div class="institucion-card">
+                <div class="institucion-header">
+                    <i class="fas fa-balance-scale"></i>
+                    <h3>Fiscalía Departamental de La Paz</h3>
+                </div>
+                <div class="institucion-info">
+                    <p><i class="fas fa-map-marker-alt"></i> <strong>Dirección:</strong> Av. 16 de Julio (El Prado)</p>
+                    <p><i class="fas fa-clock"></i> <strong>Horario de Atención:</strong> 08:30 - 18:00</p>
+                    <button class="ver-mapa-btn" data-location="Fiscalía Departamental de La Paz, Avenida 16 de Julio, La Paz">
+                        <i class="fas fa-map-marked-alt"></i> Ver en Mapa
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Institución 3 -->
+            <div class="institucion-card">
+                <div class="institucion-header">
+                    <i class="fas fa-landmark"></i>
+                    <h3>Juzgados de Familia, Penal, Civil y Laboral</h3>
+                </div>
+                <div class="institucion-info">
+                    <p><i class="fas fa-map-marker-alt"></i> <strong>Dirección:</strong> Complejo Judicial de la zona San Pedro</p>
+                    <button class="ver-mapa-btn" data-location="Complejo Judicial, Zona San Pedro, La Paz">
+                        <i class="fas fa-map-marked-alt"></i> Ver en Mapa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--
+    <section class="accesos-rapidos">
+        <h2 class="section-title">Accesos Rápidos</h2>
+        <div class="accesos-grid">
+            <a href="#" class="acceso-card">
+                <i class="fas fa-list-ol"></i>
+                <p>Listado de juzgados por especialidad</p>
+            </a>
+            
+            <a href="#" class="acceso-card">
+                <i class="fas fa-business-time"></i>
+                <p>Horarios de atención y trámites principales</p>
+            </a>
+            
+            <a href="#" class="acceso-card">
+                <i class="fas fa-map"></i>
+                <p>Mapa interactivo para ubicar las instituciones</p>
+            </a>
+        </div>
+        
+        <div class="mapa-completo-btn">
+            <a href="#" class="cta-button">
+                <i class="fas fa-book"></i> Consultar el Mapa Judicial Completo
+            </a>
+        </div>
+    </section>
+    -->
+
+    <!-- Modal para el mapa -->
+    <div class="mapa-modal" id="mapaModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-title"></h3>
+            <div class="map-container" id="map"></div>
+            <div class="modal-info" id="modal-info"></div>
+        </div>
+    </div>
+</main>  
+       
+
+           <%- include('../partials/footer'); %>
+
+    
+</body>
+</html>

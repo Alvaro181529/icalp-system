@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - Seminarios</title>
+    <link rel="stylesheet" href="/public/resources/css/seminarios.css">
+    <script src="/public/resources/js/seminarios.js"></script>
+</head>
+<body>
+    <%- include('../partials/header', {title, user}) %>
+     <div class="container">
+       <div class="banner">
+            
+            <h1>SEMINARIOS</h1>
+        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
+      
+        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN-->  
+           <header class="header">
+            <div class="datos1">
+                 <div class="date">
+                    <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+
+                </div>
+            </div>
+           
+        </header>
+              <!-- Sección de Seminarios -->
+        <section class="seminarios-section">
+         
+            <div class="seminarios-grid">
+                <!-- Card 1 (ejemplo) -->
+                <div class="seminario-card">
+                    <a href="https://wa.me/59176771530?text=Hola!%20Me%20interesa%20el%20seminario%20Nombre%20del%20Seminario%201.%20%C2%BFPodr%C3%ADan%20enviarme%20m%C3%A1s%20informaci%C3%B3n%3F" 
+                    target="_blank" 
+                    class="card-image-link">
+                        <div class="card-image-container">
+                            <img src="/public/resources/recursos/icalp/semiarioejemplo.jpeg" alt="Seminario 1" class="card-image">
+                            <div class="card-overlay">
+                                <div class="overlay-text">
+                                    <strong>Aplicar</strong><br>
+                                    Haz clic en la imagen del curso que te interese y recibirás toda la información directamente a través de WhatsApp.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="card-content">
+                        <h3 class="card-title">Crisis del Tribunal Constitucional</h3>
+                        <p class="card-description">
+                            Breve descripción del seminario que explique de qué trata y qué aprenderán los participantes.
+                        </p>
+                        <div class="card-meta">
+                            <p style="font-weight:700">Fecha de Inicio</p>
+                            <span class="card-duration">16 de enero</span>
+                        </div>
+                        <button class="card-button" onclick="redirectToWhatsApp('Crisis del Tribunal Constitucional')">
+                            Solicitar Información
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card 1 -->
+     
+
+            </div>
+        </section>
+       
+
+           <%- include('../partials/footer'); %>
+
+    
+</body>
+</html>

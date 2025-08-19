@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - Vida Colegiados</title>
+    <link rel="stylesheet" href="/public/resources/css/vida.css">
+    <script src="/public/resources/js/vida.js"></script>
+</head>
+<body>
+    <%- include('../partials/header', {title, user}) %>
+     <div class="container">
+       <div class="banner">
+            
+            <h1>VIDA COMO COLEGIADO</h1>
+        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
+      
+        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN-->  
+              <header class="header">
+            <div class="datos1">
+                 <div class="date">
+                    <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+
+                </div>
+            </div>
+           
+        </header>
+<main class="vida-colegiado">
+    <section class="intro-colegiado">
+        <h2 class="intro-title">¡Formar parte del ICALP es más que una afiliación, es pertenecer a una comunidad profesional en constante crecimiento!</h2>
+       
+        <p class="intro-description">La Vida de Colegiado en el Ilustre Colegio de Abogados de La Paz (ICALP) te brinda acceso a una serie de beneficios exclusivos, actividades, y oportunidades de desarrollo personal y profesional:</p>
+    </section>
+
+    <section class="benefits-section">
+        <h2 class="section-title">Beneficios para nuestros Colegiados</h2>
+        
+        <div class="benefits-grid">
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Capacitación Continua</h3>
+                <p>Participa en diplomados, cursos y talleres especializados para actualizar tus conocimientos y fortalecer tu práctica profesional.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h3>Asesoría Legal y Ética</h3>
+                <p>Recibe orientación jurídica y ética a lo largo de tu carrera profesional.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <h3>Networking Profesional</h3>
+                <p>Conecta con colegas, expertos y líderes del ámbito jurídico a través de eventos, foros y congresos.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h3>Acceso a Instalaciones de Primer Nivel</h3>
+                <p>Aprovecha nuestros espacios, como el Salón Libertad, para eventos, reuniones o actividades académicas.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Biblioteca Especializada</h3>
+                <p>Consulta una amplia colección de textos jurídicos para tu formación continua.</p>
+            </div>
+            
+            <div class="benefit-item">
+                <div class="benefit-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3>Reconocimiento Profesional</h3>
+                <p>Ser parte del ICALP significa pertenecer a una institución con prestigio y trayectoria.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="events-section">
+        <h2 class="section-title">Eventos y Actividades</h2>
+        
+        <div class="events-list">
+            <div class="event-item">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <p>Charlas Magistrales con expertos en Derecho</p>
+            </div>
+            
+            <div class="event-item">
+                <i class="fas fa-users"></i>
+                <p>Congresos y Jornadas Académicas</p>
+            </div>
+            
+            <div class="event-item">
+                <i class="fas fa-glass-cheers"></i>
+                <p>Actividades Sociales y Culturales para fortalecer el vínculo entre colegiados</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="community-section">
+        <h2 class="section-title">Una Comunidad que te Apoya</h2>
+        <div class="community-content">
+            <p>En el ICALP, promovemos el crecimiento profesional y el bienestar integral de nuestros colegiados. Creemos en la importancia del compañerismo, la ética y la formación constante, para afrontar juntos los desafíos del mundo jurídico actual.</p>
+            <button class="cta-button" onclick="window.location.href='../vistas/requisitosdeadmi.php'">¡Quiero ser parte!</button>
+        </div>
+    </section>
+</main>
+       
+
+           <%- include('../partials/footer'); %>
+
+    
+</body>
+</html>

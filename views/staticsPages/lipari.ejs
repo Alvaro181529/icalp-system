@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - Salones</title>
+    <link rel="stylesheet" href="/public/resources/css/lipari.css">
+    <script src="/public/resources/js/lipari.js"></script>
+</head>
+<body>
+    <%- include('../partials/header', {title, user}) %>
+     <div class="container">
+       <div class="banner">
+            
+            <h1>SALONES</h1>
+        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
+      
+        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN-->  
+
+               <main class="establecimientos-container">
+          
+            
+            <div class="establecimientos-grid">
+                <!-- Complejo Lipari -->
+                <article class="establecimiento-card">
+                    <div class="gallery-container">
+                        <div class="main-image">
+                            <img src="/public/resources/recursos/salones/4.png" alt="Complejo Lipari" class="active">
+                        </div>
+                        <div class="thumbnail-container">
+                            <img src="/public/resources/recursos/salones/4.png" alt="Vista frontal Complejo Lipari" class="thumbnail active">
+                            <img src="/public/resources/recursos/salones/3.png" alt="Salón principal Complejo Lipari" class="thumbnail">
+                            <img src="/public/resources/recursos/salones/6.png" alt="Área de recepción Complejo Lipari" class="thumbnail">
+                        </div>
+                    </div>
+                    <div class="establecimiento-info">
+                        <h2>Complejo Lipari</h2>
+                        <div class="establecimiento-desc">
+                            <p>Nuestro complejo principal con capacidad para eventos masivos, equipado con tecnología de última generación.</p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-users"></i> Capacidad: 300 personas</li>
+                                <li><i class="fas fa-wifi"></i> WiFi de alta velocidad</li>
+                                <li><i class="fas fa-projector"></i> Equipo audiovisual completo</li>
+                                <li><i class="fas fa-utensils"></i> Servicio de catering disponible</li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                </article>
+                
+                <!-- Salón de Honor -->
+                <article class="establecimiento-card">
+                    <div class="gallery-container">
+                        <div class="main-image">
+                            <img src="/public/resources/recursos/salones/7.png" alt="Salón de Honor" class="active">
+                        </div>
+                        <div class="thumbnail-container">
+                            <img src="/public/resources/recursos/salones/7.png" alt="Vista general Salón de Honor" class="thumbnail active">
+                            <img src="/public/resources/recursos/salones/8.png" alt="Detalle Salón de Honor" class="thumbnail">
+                            <img src="/public/resources/recursos/salones/9.png" alt="Evento en Salón de Honor" class="thumbnail">
+                        </div>
+                    </div>
+                    <div class="establecimiento-info">
+                        <h2>Salón de Honor</h2>
+                        <div class="establecimiento-desc">
+                            <p>Espacio solemne para ceremonias, conferencias magistrales y eventos protocolares.</p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-users"></i> Capacidad: 150 personas</li>
+                                <li><i class="fas fa-chair"></i> Mobiliario de madera noble</li>
+                                <li><i class="fas fa-portrait"></i> Galería de expresidentes</li>
+                                <li><i class="fas fa-vector-square"></i> Acústica perfecta</li>
+                            </ul>
+                        </div>
+                       
+                    </div>
+                </article>
+                
+                <!-- Salón Libertad -->
+                <article class="establecimiento-card">
+                    <div class="gallery-container">
+                        <div class="main-image">
+                            <img src="/public/resources/recursos/salones/libertad.png" alt="Salón Libertad" class="active">
+                        </div>
+                        <div class="thumbnail-container">
+                            <img src="/public/resources/recursos/salones/libertad.png" alt="Vista general Salón Libertad" class="thumbnail active">
+                            <img src="/public/resources/recursos/establecimientos/libertad2.jpg" alt="Reunión en Salón Libertad" class="thumbnail">
+                            <img src="/public/resources/recursos/establecimientos/libertad3.jpg" alt="Detalle arquitectónico Salón Libertad" class="thumbnail">
+                        </div>
+                    </div>
+                    <div class="establecimiento-info">
+                        <h2>Salón Libertad</h2>
+                        <div class="establecimiento-desc">
+                            <p>Ambiente versátil para reuniones ejecutivas, talleres y eventos sociales.</p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-users"></i> Capacidad: 80 personas</li>
+                                <li><i class="fas fa-chalkboard"></i> Pizarras interactivas</li>
+                                <li><i class="fas fa-couch"></i> Mobiliario modular</li>
+                                <li><i class="fas fa-coffee"></i> Área de coffee break</li>
+                            </ul>
+                        </div>
+                       
+                    </div>
+                </article>
+                
+                <!-- Tribunal de Honor -->
+                <article class="establecimiento-card">
+                    <div class="gallery-container">
+                        <div class="main-image">
+                            <img src="/public/resources/recursos/salones/2.png" alt="Tribunal de Honor" class="active">
+                        </div>
+                        <div class="thumbnail-container">
+                            <img src="/public/resources/recursos/salones/2.png" alt="Vista frontal Tribunal de Honor" class="thumbnail active">
+                            <img src="/public/resources/recursos/salones/1.png" alt="Sesión en Tribunal de Honor" class="thumbnail">
+                            <img src="/public/resources/recursos/establecimientos/tribunal3.jpg" alt="Detalle Tribunal de Honor" class="thumbnail">
+                        </div>
+                    </div>
+                    <div class="establecimiento-info">
+                        <h2>Tribunal de Honor</h2>
+                        <div class="establecimiento-desc">
+                            <p>Sede de los procedimientos disciplinarios y espacio para audiencias solemnes.</p>
+                            <ul class="features-list">
+                                <li><i class="fas fa-users"></i> Capacidad: 50 personas</li>
+                                <li><i class="fas fa-gavel"></i> Diseño protocolario</li>
+                                <li><i class="fas fa-video"></i> Sistema de grabación</li>
+                                <li><i class="fas fa-shield-alt"></i> Área reservada</li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                </article>
+            </div>
+        </main>
+       
+
+           <%- include('../partials/footer'); %>
+
+    
+</body>
+</html>

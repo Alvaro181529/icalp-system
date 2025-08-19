@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - Comite</title>
+    <link rel="stylesheet" href="/public/resources/css/comite.css">
+    <script src="/public/resources/js/comite.js"></script>
+</head>
+<body>
+    <%- include('../partials/header', {title, user}) %>
+     <div class="container">
+       <div class="banner">
+            
+            <h1>COMITE</h1>
+        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
+      
+        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN-->  
+                 <header class="header">
+            <div class="datos1">
+                 <div class="date">
+                    <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+
+                </div>
+            </div>
+           
+        </header>
+         <main class="comite-electoral-container">
+    <section class="intro-comite">
+        <h1>Comité Electoral del Colegio de Abogados de La Paz</h1>
+        <p class="descripcion-comite">El Comité Electoral es el encargado de organizar, supervisar y garantizar la transparencia en los procesos de elección de las autoridades del Ilustre Colegio de Abogados de La Paz. Este organismo actúa de manera imparcial y siguiendo estrictamente el reglamento electoral del Colegio.</p>
+      
+    </section>
+
+    <section class="funciones-section">
+        <h2 class="section-title">Funciones del Comité Electoral</h2>
+        <div class="funciones-grid">
+            <div class="funcion-card">
+                <div class="funcion-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="funcion-content">
+                    <h3>Convocar elecciones</h3>
+                    <p>Convocar a elecciones de acuerdo con el calendario establecido.</p>
+                </div>
+            </div>
+            
+            <div class="funcion-card">
+                <div class="funcion-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="funcion-content">
+                    <h3>Verificar documentación</h3>
+                    <p>Verificar y validar la documentación de los candidatos.</p>
+                </div>
+            </div>
+            
+            <div class="funcion-card">
+                <div class="funcion-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="funcion-content">
+                    <h3>Supervisar votación</h3>
+                    <p>Supervisar la votación y el escrutinio de votos.</p>
+                </div>
+            </div>
+            
+            <div class="funcion-card">
+                <div class="funcion-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="funcion-content">
+                    <h3>Garantizar transparencia</h3>
+                    <p>Garantizar la legalidad y transparencia del proceso electoral.</p>
+                </div>
+            </div>
+            
+            <div class="funcion-card">
+                <div class="funcion-icon">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <div class="funcion-content">
+                    <h3>Resolver impugnaciones</h3>
+                    <p>Resolver impugnaciones y consultas electorales.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="proceso-section">
+        <h2 class="section-title">Proceso Electoral</h2>
+        <p class="proceso-desc">El proceso electoral sigue las siguientes etapas:</p>
+        
+        <div class="etapas-proceso">
+            <div class="etapa-card">
+                <div class="etapa-number">1️⃣</div>
+                <div class="etapa-content">
+                    <h3>Convocatoria Oficial</h3>
+                </div>
+            </div>
+            
+            <div class="etapa-card">
+                <div class="etapa-number">2️⃣</div>
+                <div class="etapa-content">
+                    <h3>Presentación de Candidaturas</h3>
+                </div>
+            </div>
+            
+            <div class="etapa-card">
+                <div class="etapa-number">3️⃣</div>
+                <div class="etapa-content">
+                    <h3>Revisión y Aprobación de Postulaciones</h3>
+                </div>
+            </div>
+            
+            <div class="etapa-card">
+                <div class="etapa-number">4️⃣</div>
+                <div class="etapa-content">
+                    <h3>Campaña Electoral</h3>
+                </div>
+            </div>
+            
+            <div class="etapa-card">
+                <div class="etapa-number">5️⃣</div>
+                <div class="etapa-content">
+                    <h3>Jornada de Elección y Conteo de Votos</h3>
+                </div>
+            </div>
+            
+            <div class="etapa-card">
+                <div class="etapa-number">6️⃣</div>
+                <div class="etapa-content">
+                    <h3>Proclamación de Resultados</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="participacion-section">
+        <div class="participacion-content">
+            <i class="fas fa-users participacion-icon"></i>
+            <div>
+                <h2>Participación y Transparencia</h2>
+                <p>El Comité Electoral invita a todos los colegiados a participar activamente en las elecciones, asegurando que el proceso sea justo y representativo.</p>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+       
+
+           <%- include('../partials/footer'); %>
+
+    
+</body>
+</html>

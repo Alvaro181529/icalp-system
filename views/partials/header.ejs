@@ -5,8 +5,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="/public/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/public/resources/css/utilities/footer.css">
+  <link rel="stylesheet" href="/public/resources/css/landing.css">
+
+  <link rel="stylesheet" href="/public/resources/css/utilities/navbar.css">
+  <script src="/public/resources/js/utilities/navbar.js" defer></script>
   <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" /> -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/public/resources/js/landing.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
   <script defer src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -216,125 +222,162 @@
           </div>
         </nav>
       </aside>
-      <main id="main-page" class="sm:ml-64 w-full overflow-y-auto">
+      <main id="main-page" class="sm:ml-64 w-full overflow-y-auto mt-32">
         <% } %>
-          <nav id="nav1" class="bg-black">
-            <div
-              class=" flex flex-wrap  <%= user ? ' max-sm:ml-8' : '' %>  justify-between items-center mx-auto container mx-auto px-8  p-4 transition-all z-50">
-              <div class="<%= user ? ' max-md:ml-2 ml-12' : '' %>">
-                <section class="grid">
-                  <a href="mailto:presidencia@icalp.org.bo"
-                    class="text-sm text-gray-300 hover:underline ">presidencia@icalp.org.bo</a>
-                  <a href="tel:+59122407713" class="text-sm text-gray-300 hover:underline">(591) - 22407713</a>
-                </section>
-              </div>
-              <section class="flex items-center text-white space-x-6 ">
-                <a href="/inicio" class="hover:text-gray-400">Inicio</a>
-              </section>
-              <% if (user) { %>
-                <section>
-                  <button id="imprimir"
-                    class=" bg-gray-100 py-2 px-4 text-gray-500 rounded-lg hover:bg-gray-500 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-                    <i class="fa-solid fa-print"></i> Imprimir</button>
-                </section>
-                <% }else{%>
-                  <button id="imprimir" hidden></button>
-                  <% }%>
 
-            </div>
-          </nav>
-          <!-- <nav id="nav2"
-            class="bg-blue-950 bg-opacity-50 backdrop-blur-sm  <%= user ? ' sticky top-0' : 'fixed' %> z-50 w-full transition-all">
-            <div class="container mx-auto px-8 px-4 py-3 mx-auto text-white">
-              <div class="flex items-center gap-4">
+          <header class="<%= user ? ' navbarUser' : 'navbar' %>  ">
 
-                <a href="/" flex items-center space-x-3">
-                  <img src="/public/Logo_colegio_de_abogados_Mesa_de_trabajo.png" class="h-8" width="170"
-                    alt="Icalp Logo" />
-                </a>
-                <div class="flex flex-row w-full justify-end gap-2">
-                  <div class="items-center justify-between hidden md:flex md:w-auto ml-auto" id="navbar-sticky">
-                    <ul id="lista" class="flex flex-col md:flex-row font-medium mt-0 space-x-8 text-sm">
-                    </ul>
-                  </div>
-
-                  <% if (user) { %>
-                    <div>
-                      <h2 class="text-white font-bold text-sm">
-                        <%= user.correo %>
-                      </h2>
-                      <p class="text-sm text-wrap">
-                        <%= user.roles %>
-                      </p>
-                    </div>
-                    <% } else { %>
-                      <a href="/login">
-                        <button type="button"
-                          class="text-white bg-transparent border-2 border-white hover:text-black hover:bg-white active:ring active:ring-gray-300 font-medium rounded-3xl text-sm px-4 py-2 text-center">
-                          Iniciar sesión
-                        </button>
-                      </a>
-                      <% } %>
-                        <button data-collapse-toggle="navbar-sticky" type="button"
-                          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                          aria-controls="navbar-sticky" aria-expanded="false">
-                          <span class="sr-only">Open main menu</span>
-                          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 17 14">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M1 1h15M1 7h15M1 13h15" />
-                          </svg>
-                        </button>
-                </div>
-              </div>
-            </div>
-
-          </nav> -->
-          <nav id="nav2"
-            class="bg-blue-950 bg-opacity-50 backdrop-blur-sm <%= user ? 'sticky top-0' : 'md:fixed' %> z-40 w-full transition-all gap-2">
-
-            <div class="container flex flex-wrap items-center justify-between mx-auto p-4">
-              <a href="/" class=" flex items-center space-x-3">
-                <img src="/public/Logo_colegio_de_abogados_Mesa_de_trabajo.png" class="h-8" width="170"
-                  alt="Icalp Logo" />
-              </a>
-              <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                <% if (user) { %>
-                  <div>
-                    <h2 class="text-white font-bold text-sm">
-                      <%= user.correo %>
-                    </h2>
-                    <p class="text-sm text-wrap text-white">
-                      <%= user.roles %>
-                    </p>
-                  </div>
-                  <% } else { %>
-                    <a href="/login">
-                      <button type="button"
-                        class="text-white bg-transparent border-2 border-white hover:text-black hover:bg-white active:ring active:ring-gray-300 font-medium rounded-3xl text-sm px-4 py-2 text-center">
-                        Iniciar sesión
-                      </button>
-                    </a>
-                    <% } %>
-
-                      <button data-collapse-toggle="navbar-sticky" type="button"
-                        class="inline-flex items-center text-white p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                        aria-controls="navbar-sticky" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                          viewBox="0 0 17 14">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 1h15M1 7h15M1 13h15" />
-                        </svg>
-                      </button>
-              </div>
-              <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
-                <ul id="lista" class="flex flex-col md:flex-row font-medium mt-0 space-x-8 text-sm">
-                </ul>
-              </div>
-            </div>
-          </nav>
-
+            <div class="navbar-container">
+               <button class="hamburger-btn">
+                   <i class="fas fa-bars"></i>
+               </button>
+                       
+       
+                 <a href="/inicio" class="izquierda" >
+                       <div class="linea"></div>
+                       <div class="logo-section">
+                           <img <%= user ? ' hidden' : '' %>  id="logo-link" src="/public/resources/recursos/Logo_colegio_de_abogados_Mesa_de_trabajo.png" alt="logo">
+                       </div>
+                   </a>
+                       
+       
+                   <div class="derecha">
+                       <div class="herramientas">
+                           <div class="contacto">
+                                <div class="cel">
+                                   <!---->
+                                 <a href="https://wa.link/kfeinu" class="cel" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                                   <i class="fa-solid fa-phone"></i>
+                                   <span style="margin-left: 6px;">+591 76771530</span>
+                               </a>  
+                                  <!---->
+                                   
+                                </div>
+       
+                               <div class="correo">
+                                   <a href="https://mail.google.com/mail/?view=cm&fs=1&to=presidencia@icalp.org.bo" class="correo-link" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                                       <i class="fa-solid fa-envelope"></i>
+                                       <span style="margin-left: 6px;">presidencia@icalp.org.bo</span>
+                                   </a>
+                                  
+                                </div>
+       
+                           </div>
+                           <% if (user) { %>
+                            <div>
+                              <h2 class="text-white font-bold text-sm">
+                                <%= user.correo %>
+                              </h2>
+                              <p class="text-sm text-wrap text-white">
+                                <%= user.roles %>
+                              </p>
+                            </div>
+                            <% } else { %>
+                              <!-- <a href="/login">
+                                <button type="button"
+                                  class="text-white bg-transparent border-2 border-white hover:text-black hover:bg-white active:ring active:ring-gray-300 font-medium rounded-3xl text-sm px-4 py-2 text-center">
+                                  Iniciar sesión
+                                </button>
+                              </a> -->
+                              <div class="inicio">
+                                <a href="/login">
+                                  <button class="login-btn">Iniciar sesión</button>
+                                </a>
+                           </div>
+                              <% } %>
+                              <% if (user) { %>
+                                <section>
+                                  <button id="imprimir"
+                                    class=" bg-gray-100 py-2 px-4 text-gray-500 rounded-lg hover:bg-gray-500 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                                    <i class="fa-solid fa-print"></i> Imprimir</button>
+                                </section>
+                                <% }else{%>
+                                  <button id="imprimir" hidden></button>
+                                  <% }%>
+                           
+                       </div>
+                       <nav class="nav">
+                           <ul class="nav-menu">
+                               <li class="nav-item">
+                                   <a href="#" class="nav-link">
+                                       ICALP
+                                       <span class="dropdown-arrow">▼</span>
+                                   </a>
+                                   <ul class="submenu">
+                                       <li><a href="/nosotros">Acerca de Nosotros</a></li>
+                                       <li><a href="/presidencia">Presidencia</a></li>
+                                       <li><a href="/privacidad">Politica de Privacidad</a></li>
+                                       <li><a href="/comunicados">Comunicados Institucionales</a></li>
+                                       <li><a href="/preguntas">Preguntas Frecuentes</a></li>
+                                   </ul>
+                               </li>
+                               <li class="nav-item">
+                                   <a href="#" class="nav-link">
+                                       Establecimientos y Servicios
+                                       <span class="dropdown-arrow">▼</span>
+                                   </a>
+                                   <ul class="submenu">
+                                       <li><a href="/lipari">Salones</a></li>
+                                        <li><a href="/conciliacion">Conciliación y Arbitraje</a></li>
+       
+       
+                                   </ul>
+                               </li>
+                               <li class="nav-item">
+                                   <a href="#" class="nav-link">
+                                       Admisiones
+                                       <span class="dropdown-arrow">▼</span>
+                                   </a>
+                                   <ul class="submenu">
+                                        <li><a href="/porquecole">¿Por qué Colegiarte?</a></li>
+                                       <li><a href="/requisitos">Requisitos de Admisión</a></li>
+                                       <li><a href="/vida">Vida como Colegiado</a></li>
+                                        <li><a href="/beneficios">Beneficios para Colegiados</a></li>
+                                        
+                                   </ul>
+                               </li>
+                               <li class="nav-item">
+                                   <a href="#" class="nav-link">
+                                       Postgrado
+                                       <span class="dropdown-arrow">▼</span>
+                                   </a>
+                                   <ul class="submenu">
+                                       <li><a href="/cursos">Cursos</a></li>
+                                       <li><a href="/seminarios">Seminarios</a></li>
+                                       <li><a href="/diplomados">Diplomados</a></li>
+                                       <li><a href="/maestrias">Maestrias</a></li>
+                                   </ul>
+                               </li>
+                               <li class="nav-item">
+                                   <a href="#" class="nav-link">
+                                       Noticias
+                                       <span class="dropdown-arrow">▼</span>
+                                   </a>
+                                   <ul class="submenu">
+                                       <li><a href="/mapajudicial">Mapa Judicial</a></li>
+                                       <li><a href="/comite">Comite Electoral</a></li>
+                                   </ul>
+                               </li>
+                               <li class="nav-item">
+                                   <a href="#" class="nav-link">
+                                       Redes Sociales
+                                       <span class="dropdown-arrow">▼</span>
+                                   </a>
+                                   <ul class="submenu">
+                                       <li><a href="https://www.facebook.com/IcalpOficial">Facebook</a></li>
+                                       <li><a href="https://x.com/ICALPOficial">Twitter</a></li>
+                                       <li><a href="https://www.instagram.com/icalp_oficial">Instagram</a></li>
+                                       <li><a href="https://wa.link/kfeinu">Whatsapp</a></li>
+                                   </ul>
+                               </li>
+                           </ul>
+                       </nav>
+                   </div>
+                   
+                 
+               </div>
+       </header>
+       
           <div id="print-section">
 
             <script defer>
@@ -477,12 +520,14 @@
                 $('#sidebar-nav').classList.remove('block');
                 $('#main-page').classList.remove('sm:ml-64')
                 $('#toggle-sidebar-open').classList.remove('hidden')
+                $('#logo-link').removeAttribute('hidden')
               });
               $('#toggle-sidebar-open').addEventListener('click', () => {
                 $('#sidebar-nav').classList.add('block');
                 $('#sidebar-nav').classList.remove('hidden');
                 $('#main-page').classList.add('sm:ml-64')
                 $('#toggle-sidebar-open').classList.add('hidden')
+                $('#logo-link').setAttribute('hidden','')
               });
 
             </script>

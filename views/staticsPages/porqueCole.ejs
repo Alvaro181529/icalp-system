@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - ¿Por qué colegiarte?</title>
+    <link rel="stylesheet" href="/public/resources/css/colegiarte.css">
+    <script src="/public/resources/js/colegiarte.js"></script>
+</head>
+<body>
+    <%- include('../partials/header', {title, user}) %>
+     <div class="container">
+       <div class="banner">
+            
+            <h1>¿POR QUÉ COLEGIARTE?</h1>
+        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
+      
+        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN-->  
+     <header class="header">
+            <div class="datos1">
+                 <div class="date">
+                    <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+
+                </div>
+            </div>
+           
+        </header>
+
+        <main class="colegiarte-content">
+    <section class="intro-section">
+        <p class="intro-text">Ser parte del Ilustre Colegio de Abogados de La Paz (ICALP) no es solo un paso más en tu carrera, ¡es la clave para potenciar tu futuro profesional!</p>
+    </section>
+    
+    <section class="benefits-section">
+        <div class="benefit-card">
+            <div class="benefit-number">1</div>
+            <div class="benefit-content">
+                <h3>Reconocimiento y Prestigio Profesional</h3>
+                <p>Formar parte del ICALP te brinda respaldo institucional, destacándote como un abogado reconocido en el ámbito jurídico nacional.</p>
+            </div>
+        </div>
+        
+        <div class="benefit-card">
+            <div class="benefit-number">2</div>
+            <div class="benefit-content">
+                <h3>Oportunidades de Formación Continua</h3>
+                <p>Accede a diplomados, talleres y seminarios exclusivos, que te mantendrán a la vanguardia del conocimiento legal y te ayudarán a crecer profesionalmente.</p>
+            </div>
+        </div>
+        
+        <div class="benefit-card">
+            <div class="benefit-number">3</div>
+            <div class="benefit-content">
+                <h3>Ampliación de tu Red de Contactos</h3>
+                <p>Conecta con otros profesionales del derecho, instituciones y empresas a través de nuestras actividades académicas y sociales.</p>
+            </div>
+        </div>
+        
+        <div class="benefit-card">
+            <div class="benefit-number">4</div>
+            <div class="benefit-content">
+                <h3>Acceso a Beneficios y Convenios Especiales</h3>
+                <p>Disfruta de descuentos en servicios legales, acceso a bibliotecas especializadas, el uso del Salón Libertad y otros beneficios exclusivos.</p>
+            </div>
+        </div>
+        
+        <div class="benefit-card">
+            <div class="benefit-number">5</div>
+            <div class="benefit-content">
+                <h3>Fortalecimiento de tu Práctica Jurídica</h3>
+                <p>Recibe asesoría, apoyo y herramientas para desempeñar tu labor con excelencia, asegurando siempre una práctica ética y profesional.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="conclusion-section">
+        <p class="conclusion-text">Colegiarte en el ICALP es formar parte de una comunidad que valora el crecimiento, la innovación y la excelencia en la práctica del derecho. ¡Únete y potencia tu futuro!</p>
+        <button class="cta-button" onclick="window.location.href='../vistas/requisitosdeadmi.php'">¡Quiero Colegiarme!</button>
+    </section>
+</main>
+       
+
+           <%- include('../partials/footer'); %>
+
+    
+</body>
+</html>

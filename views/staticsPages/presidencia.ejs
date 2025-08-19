@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - Presidencia</title>
+    <link rel="stylesheet" href="/public/resources/css/presidencia.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="/public/resources/js/presidencia.js"></script>
+</head>
+<body>
+   <%- include('../partials/header', {title, user}) %>
+    <div class="container">
+        <div class="banner">
+            <div class="banner-content">
+                <h1>PRESIDENCIA</h1>
+              
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <div class="recuadro">
+                            <div class="profile-section">
+                <div class="profile-text">
+                    <h2>Dr. Danny Paucará Márquez</h2>
+                    <p class="intro-text">El Dr. Danny Paucará Márquez es un destacado abogado con una trayectoria impecable en el ámbito jurídico y académico. Su liderazgo y compromiso con el fortalecimiento del ejercicio profesional de la abogacía lo han llevado a encabezar el ICALP en el periodo 2024-2026, promoviendo la modernización y el desarrollo integral de nuestra institución.</p>
+                    
+                    <div class="profile-highlights">
+                        <div class="highlight-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>+15 años de experiencia</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-book"></i>
+                            <span>Especialista en Derecho Civil</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-university"></i>
+                            <span>Docente universitario</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-image">
+                    <img src="/public/resources/recursos/icalp/PRESIDENTE.jpeg" alt="Dr. Danny Paucará Márquez">
+                    <div class="image-caption">Presidente ICALP 2024-2026</div>
+                </div>
+            </div>
+
+            </div>
+
+            
+<div class="gallery-section">
+    <div class="gallery-column">
+        <div class="gallery-item">
+            <img src="/public/resources/recursos/director/1.png" alt="Evento ICALP" onclick="openPopup(this.src)">
+            <div class="gallery-caption">Conferencia Magistral 2024</div>
+        </div>
+        <div class="gallery-item">
+            <img src="/public/resources/recursos/director/3.png" alt="Reunión de trabajo" onclick="openPopup(this.src)">
+            <div class="gallery-caption">Reunión con colegiados</div>
+        </div>
+        <div class="gallery-item">
+            <img src="/public/resources/recursos/director/2.png" alt="Firma de convenio" onclick="openPopup(this.src)">
+            <div class="gallery-caption">Firma de convenio interinstitucional</div>
+        </div>
+    </div>
+
+    <div class="video-column">
+        <iframe src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Fwatch%2F%3Fv%3D645111764688579%26rdid%3DwenUteeedM0gIZya&show_text=false" frameborder="0" allowfullscreen="true"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+    </div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+    <span class="popup-close" onclick="closePopup()">&times;</span>
+    <img id="popup-img" src="" alt="Imagen ampliada">
+</div>
+
+            
+            <div class="vision-section">
+                <div class="vision-content">
+                    <h2>Visión y Compromiso</h2>
+                    <p>Como presidente, su visión está centrada en construir un Colegio moderno, inclusivo y eficiente, que brinde mayores oportunidades a sus miembros, fortalezca la formación continua y defienda los intereses de los abogados paceños.</p>
+                   
+                </div>
+            </div>
+            
+            <div class="action-section">
+                <h2>Líneas de Acción Prioritarias</h2>
+                <div class="action-items">
+                    <div class="action-item">
+                        <div class="action-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                        <h3>Capacitación permanente</h3>
+                        <p>Impulso a la capacitación permanente de los abogados mediante diplomados y talleres especializados.</p>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-icon"><i class="fas fa-laptop-code"></i></div>
+                        <h3>Digitalización de servicios</h3>
+                        <p>Digitalización de servicios para facilitar los trámites y el acceso a información.</p>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-icon"><i class="fas fa-handshake"></i></div>
+                        <h3>Colaboración profesional</h3>
+                        <p>Fomento de la colaboración entre colegiados y la creación de una sólida red profesional.</p>
+                    </div>
+                    <div class="action-item">
+                        <div class="action-icon"><i class="fas fa-gavel"></i></div>
+                        <h3>Defensa profesional</h3>
+                        <p>Defensa de los derechos y garantías del ejercicio profesional.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-section">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="2500">0</div>
+                    <div class="stat-label">Colegiados activos</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="36">0</div>
+                    <div class="stat-label">Eventos anuales</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="15">0</div>
+                    <div class="stat-label">Convenios vigentes</div>
+                </div>
+               
+            </div>
+            
+            <div class="message-section">
+                <h2>Mensaje del Presidente</h2>
+                <blockquote>
+                    "El Ilustre Colegio de Abogados de La Paz no solo es una institución de tradición, sino también un motor de cambio. Nuestro compromiso es ofrecer las herramientas y el respaldo necesario para que cada colegiado pueda ejercer con excelencia y ética profesional. Juntos, trabajaremos por un mejor futuro para la abogacía paceña."
+                    <div class="signature">
+                       
+                        <div class="signature-text">Dr. Danny Paucará Márquez<br>Presidente ICALP</div>
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+        
+      <%- include('../partials/footer'); %>
+    </div>
+    <script>
+        function openPopup(src) {
+    document.getElementById("popup-img").src = src;
+    document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+    document.getElementById("popup").style.display = "none";
+}
+
+        // Animación para los números de estadísticas
+document.addEventListener('DOMContentLoaded', function() {
+    // Animación de contadores
+    const counters = document.querySelectorAll('.stat-number');
+    const speed = 200;
+    
+    function animateCounters() {
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-count');
+            const count = +counter.innerText;
+            const increment = target / speed;
+            
+            if(count < target) {
+                counter.innerText = Math.ceil(count + increment);
+                setTimeout(animateCounters, 1);
+            } else {
+                counter.innerText = target;
+            }
+        });
+    }
+    
+    // Activar animación cuando el elemento es visible
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting) {
+                animateCounters();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {threshold: 0.5});
+    
+    document.querySelector('.stats-section').style.opacity = '0';
+    setTimeout(() => {
+        document.querySelector('.stats-section').style.opacity = '1';
+        observer.observe(document.querySelector('.stats-section'));
+    }, 500);
+    
+    // Efecto hover mejorado para las tarjetas
+    const cards = document.querySelectorAll('.action-item, .stat-item, .gallery-item');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transition = 'all 0.3s ease';
+        });
+    });
+});
+    </script>
+</body>
+</html>

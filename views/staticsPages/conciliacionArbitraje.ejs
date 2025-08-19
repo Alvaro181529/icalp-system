@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICALP - Conciliación y Arbitraje</title>
+    <link rel="stylesheet" href="/public/resources/css/conciliación.css">
+    <script src="/public/resources/js/conciliacion.js"></script>
+</head>
+<body>
+    <%- include('../partials/header', {title, user}) %>
+     <div class="container">
+       <div class="banner">
+            
+            <h1>CONCILIACIÓN Y ARBITRAJE</h1>
+        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
+      
+        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN--> 
+          <header class="header">
+            <div class="datos1">
+                 <div class="date">
+                    <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 12:27:36
+
+                </div>
+            </div>
+           
+        </header> 
+
+        <main class="conciliacion-container">
+    <section class="intro-conciliacion">
+        <h1>Centro de Conciliación y Arbitraje</h1>
+        <p class="intro-text">Nos complace invitarlos al Centro de Conciliación y Arbitraje del Colegio de Abogados de La Paz, donde podrán encontrar una alternativa eficiente y efectiva para resolver conflictos y disputas de manera pacífica.</p>
+       
+    </section>
+
+    <section class="servicios-section">
+        <h2 class="section-title">Nuestros Servicios</h2>
+        <div class="servicios-grid">
+            <div class="servicio-card conciliacion">
+                <div class="servicio-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="servicio-content">
+                    <h3>Conciliación</h3>
+                    <p>Un proceso confidencial y voluntario para resolver conflictos de manera amistosa.</p>
+                </div>
+            </div>
+            
+            <div class="servicio-card arbitraje">
+                <div class="servicio-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <div class="servicio-content">
+                    <h3>Arbitraje</h3>
+                    <p>Un proceso de resolución de conflictos mediante la intervención de un árbitro neutral e imparcial.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="beneficios-section">
+        <h2 class="section-title">Beneficios</h2>
+        <div class="beneficios-list">
+            <div class="beneficio-item">
+                <i class="fas fa-check-circle"></i>
+                <p>Resolver conflictos de manera rápida y eficiente</p>
+            </div>
+            <div class="beneficio-item">
+                <i class="fas fa-check-circle"></i>
+                <p>Reducir costos y tiempo en comparación con los procesos judiciales</p>
+            </div>
+            <div class="beneficio-item">
+                <i class="fas fa-check-circle"></i>
+                <p>Mantener la confidencialidad y privacidad en la resolución de conflictos</p>
+            </div>
+            <div class="beneficio-item">
+                <i class="fas fa-check-circle"></i>
+                <p>Obtener resultados justos y equitativos</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="procedimientos-section">
+        <div class="procedimiento-tabs">
+            <button class="tab-button active" data-tab="conciliacion-tab">Procedimiento de Conciliación</button>
+            <button class="tab-button" data-tab="arbitraje-tab">Procedimiento de Arbitraje</button>
+        </div>
+        
+        <div id="conciliacion-tab" class="tab-content active">
+            <ol class="procedimiento-list">
+                <li>Presentada la solicitud de conciliación, pasará a conocimiento del presidente del Centro de Conciliación, quien en el plazo de dos días aceptará o rechazará la solicitud.</li>
+                <li>Si el demandante omitiera información necesaria, tendrá 5 días hábiles para subsanarla.</li>
+                <li>Se convocará a la otra parte con una carta de invitación a conciliar.</li>
+                <li>Si la invitación es aceptada, se convocará a ambas partes en el plazo de 15 días hábiles a una reunión preparatoria.</li>
+                <li>Cada parte podrá escoger de 1 a 3 conciliadores de la lista aprobada.</li>
+                <li>El conciliador que acepte prestará juramento en un acto sin necesidad de presencia de las partes.</li>
+                <li>Los conciliadores señalarán día y hora para la primera sesión dentro de las 48 horas siguientes.</li>
+                <li>Finalmente, se elaborará un acta de conciliación con efecto vinculante y de obligatoriedad.</li>
+            </ol>
+        </div>
+        
+        <div id="arbitraje-tab" class="tab-content">
+            <ol class="procedimiento-list">
+                <li>La solicitud de arbitraje deberá ser escrita y contener los datos de contacto de las partes, relación de hechos y puntos de controversia.</li>
+                <li>La contestación a la solicitud podrá presentarse en el plazo de 15 días.</li>
+                <li>Ambas partes pueden proponer árbitros de la lista aprobada, quienes tienen 6 días para aceptar o rechazar.</li>
+                <li>El árbitro designado está obligado a informar sobre posibles causas de excusa y recusación.</li>
+                <li>La parte demandada deberá contestar la demanda en el plazo de 30 días.</li>
+                <li>Se realizará una audiencia preliminar con tres días de anticipación.</li>
+                <li>El tribunal arbitral emitirá un laudo arbitral en un plazo de 30 días calendario desde el último actuado procesal.</li>
+                <li>Contra el laudo arbitral solo procede el recurso de nulidad.</li>
+            </ol>
+        </div>
+    </section>
+
+    <section class="exclusiones-section">
+        <h2 class="section-title">Materias Excluidas de Conciliación y Arbitraje</h2>
+        <div class="exclusiones-grid">
+            <div class="exclusion-card">
+                <i class="fas fa-ban"></i>
+                <p>La propiedad de los recursos naturales</p>
+            </div>
+            <div class="exclusion-card">
+                <i class="fas fa-ban"></i>
+                <p>Los tributos y regalías</p>
+            </div>
+            <div class="exclusion-card">
+                <i class="fas fa-ban"></i>
+                <p>El acceso a los servicios públicos</p>
+            </div>
+            <div class="exclusion-card">
+                <i class="fas fa-ban"></i>
+                <p>Las cuestiones sobre el estado civil y la capacidad de las personas</p>
+            </div>
+            <div class="exclusion-card">
+                <i class="fas fa-ban"></i>
+                <p>Las funciones del Estado</p>
+            </div>
+            <div class="exclusion-card">
+                <i class="fas fa-ban"></i>
+                <p>Las controversias en materia laboral y seguridad social</p>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+       
+           
+<section class="contenedor4">
+<div class="mapa">
+    <a href="https://maps.app.goo.gl/8wF9mSPYbmAu8WpH7" target="_blank">
+        <img src="/public/resources/recursos/icalp/UBI.png" alt="Mapa">
+    </a>
+</div>
+
+    
+    <div class="info">
+        <div class="TEXTIN">
+            <div class="wa">
+                <h2>¿DONDE NOS ENCONTRAMOS?</h2>
+       
+         <p>Calle Yanacocha N° 630, mezzanine<br>La Paz - Bolivia</p>
+        <p class="subtitulo">Contáctanos</p>
+        <p class="telefono"> (+591) 2 2406227
+        <p class="subtitulo">Horarios de atención</p>
+        <p class="telefono"> 08:30 - 16:30</p>
+         <p class="subtitulo">Correo Electrónico</p>
+        <p class="telefono">centrodeconciliacion@icalp.org.bo</p>
+
+            </div>
+            
+        </div>
+        
+       
+    </div>
+</section>
+
+           <%- include('../partials/footer'); %>
+
+    
+</body>
+</html>

@@ -1,0 +1,946 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+             background-image: url('../recursos/patron.png');
+        }
+
+        .container {
+         width: 100%;
+            margin: 0 auto;
+           
+        }
+
+        /* Banner Section */
+        .banner {
+            background-image: url('../recursos/icalp/2.2.jpeg');
+            background-size: cover;
+            background-position: center;    
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content:right;
+        }
+        .banner::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            background: rgba(0, 0, 0, 0.489); 
+            z-index: 1;
+        }
+        .banner h1 {
+            position: relative;
+            color: white;
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-right: 50px;
+          
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-family: oswald, sans-serif;
+            padding-top: 150px;
+            z-index: 2 ;
+        }
+    .banner h1::before {
+    content: '';
+    position: absolute;
+    width: 5px;
+    background: #f1c40f;
+    top: 150px;      
+    bottom: 0;
+    left: -20px;     
+    z-index: 2;     
+    height: 30%;   
+}
+.banner h1 {
+    
+    opacity: 0;
+    transform: translateX(100px); 
+    animation: entradaDerecha 1s ease-out forwards;
+}
+
+@keyframes entradaDerecha {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+   /* Banner Sectio0n FIN */ 
+
+
+/* SECCION FOTICOS */
+
+.section {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#home {
+    background: radial-gradient(ellipse at center, #1b1a2e 0%, #0f0f0f 100%);
+}
+
+/* Home Section with Coverflow */
+.coverflow-wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    position: relative;
+}
+
+.coverflow-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.coverflow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin: 0 auto;
+}
+
+.coverflow-item {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    cursor: pointer;
+    user-select: none;
+    will-change: transform, opacity;
+}
+
+.coverflow-item .cover {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    background: #333;
+    transition: box-shadow 0.3s ease;
+}
+
+.coverflow-item .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Reflection */
+.coverflow-item .reflection {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    border-radius: 10px;
+    transform: scaleY(-1);
+    opacity: 0.2;
+    filter: blur(2px);
+    background: linear-gradient(to bottom, 
+        rgba(0, 0, 0, 0) 0%, 
+        rgba(0, 0, 0, 0.8) 50%, 
+        rgba(0, 0, 0, 1) 100%);
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Active item (center) */
+.coverflow-item.active {
+    z-index: 100;
+    transform: translateX(0) translateZ(0) rotateY(0deg) scale(1);
+}
+
+.coverflow-item.active .cover {
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+}
+
+.coverflow-item.active .cover img {
+    transform: scale(1.05);
+}
+
+/* Navigation */
+.nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 200;
+    border: none;
+    outline: none;
+}
+
+.nav-button:hover {
+    background: #f1c40fc5;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.nav-button:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.nav-button.prev {
+    left: 30px;
+}
+
+.nav-button.next {
+    right: 30px;
+}
+
+/* Dots indicator */
+.dots-container {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 200;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.3);
+}
+
+/* Info display */
+.info {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #f1c40f;
+    text-align: center;
+    z-index: 200;
+    width: 90%;
+    max-width: 900px;
+    padding: 0 20px;
+}
+
+.info h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeIn 0.6s forwards;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-family: oswald,sans-serif;
+}
+
+.info p {
+    font-size: 1rem;
+    opacity: 0.7;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+   color: rgb(182, 182, 182);
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Play/Pause Button */
+.play-pause-button {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 200;
+    border: none;
+    outline: none;
+}
+
+.play-pause-button:hover {
+    background: #f1c40fc5;
+    transform: translateX(-50%) scale(1.1);
+}
+
+.play-pause-button:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.play-pause-button .pause-icon {
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .coverflow {
+        height: 300px;
+    }
+    
+    .coverflow-item {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .nav-button {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .nav-button.prev {
+        left: 15px;
+    }
+    
+    .nav-button.next {
+        right: 15px;
+    }
+    
+    .info h2 {
+        font-size: 1.8rem;
+    }
+    
+    .info p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .coverflow {
+        height: 250px;
+    }
+    
+    .coverflow-item {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .info {
+        top: 80px;
+    }
+    
+    .info h2 {
+        font-size: 1.5rem;
+    }
+}
+
+
+/** Sección de Inspiración */
+.inspiration-section{
+          background: linear-gradient(to bottom, #0f0f10, #383333);
+    color: white;
+    padding: 60px 50px;
+    border-radius: 200px 200px 0px 0px;
+ 
+    position: relative;
+    overflow: hidden;
+}
+
+
+.inspiration-section h2 {
+    color: white;
+    text-align: center;
+}
+
+.inspiration-section h2::after {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+blockquote {
+    font-style: italic;
+    font-size: 1.3rem;
+    line-height: 1.8;
+    padding: 30px;
+    margin: 30px 0;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+blockquote::before, blockquote::after {
+    content: '"';
+    font-size: 4rem;
+    color: rgba(241, 196, 15, 0.2);
+    position: absolute;
+}
+
+blockquote::before {
+    top: 0;
+    left: 0;
+}
+
+blockquote::after {
+    bottom: -30px;
+    right: 0;
+}
+
+.signature {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.signature-image {
+    height: 60px;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.signature-text {
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+
+/* Estilos generales */
+.content-section {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Sección de Introducción */
+.intro-section {
+    margin-bottom: 40px;
+}
+
+.intro-textin {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.intro-textin p {
+    font-size: 1.1em;
+    margin: 0;
+}
+
+.intro-textin strong {
+    color: #f1c40f;
+    font-weight: 700;
+}
+
+/* Sección de Valores */
+.values-section {
+    margin: 60px 0;
+}
+
+.values-section h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    font-size: 2em;
+    position: relative;
+}
+
+.values-section h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: #f1c40f;
+    margin: 15px auto;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+}
+
+.value-item {
+    text-align: center;
+    padding: 25px 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.value-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.value-icon {
+    font-size: 2.5em;
+    color: #f1c40f;
+    margin-bottom: 15px;
+}
+
+.value-item h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.value-item p {
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Sección Internacional */
+.international-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+    margin: 60px 0;
+}
+
+.international-image {
+    flex: 1;
+    min-width: 300px;
+}
+
+.international-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.international-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.international-text h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.international-text p {
+    margin-bottom: 15px;
+}
+
+/* Misión y Visión */
+.mission-vision-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin: 60px 0;
+}
+
+.mission-section, .vision-section {
+    flex: 1;
+    min-width: 300px;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.mission-icon, .vision-icon {
+    font-size: 2em;
+    color: #f1c40f;
+    margin-bottom: 15px;
+}
+
+.mission-section h2, .vision-section h2 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .international-section, .mission-vision-section {
+        flex-direction: column;
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+    
+  
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+     /* Banner responsive */
+    .banner {
+        height: 250px;
+        justify-content: center;
+        
+    }
+    
+    .banner::before {
+        height: 250px;
+    }
+    
+    .banner h1 {
+        font-size: 2em;
+        margin-right: 0;
+        text-align: center;
+        padding: 10px 20px;
+        padding-top: 120px;
+    }
+    
+    .banner h1::before {
+        top: 120px;
+        left: -15px;
+        width: 4px;
+    }
+    
+    /* Header responsive */
+    .header {
+        padding: 15px 30px;
+    }
+    
+    .tituloo h1 {
+        font-size: 2em;
+    }
+    
+    .header .subtitle {
+        font-size: 1.1em;
+        text-align: center;
+    }
+    
+    /*MAIN */
+    /* Main content colegiarte */
+    .colegiarte-content {
+        padding: 20px 30px;
+    }
+    
+    /* Intro section */
+    .intro-section {
+        padding: 20px 15px;
+        margin-bottom: 30px;
+    }
+    
+    .intro-text {
+        font-size: 1.1em;
+        line-height: 1.6;
+    }
+    
+    /* Benefits section */
+    .benefits-section {
+        gap: 20px;
+        padding: 0 15px;
+    }
+    
+    .benefit-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 15px;
+        gap: 15px;
+    }
+    
+    .benefit-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3em;
+        margin: 0 auto;
+    }
+    
+    .benefit-content h3 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+    
+    .benefit-content p {
+        font-size: 1em;
+        line-height: 1.5;
+    }
+    
+    /* Conclusion section */
+    .conclusion-section {
+        padding: 30px 20px;
+        text-align: center;
+    }
+    
+    .conclusion-text {
+        font-size: 1.1em;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+    
+    .cta-button {
+        font-size: 1em;
+        padding: 12px 25px;
+        width: auto;
+        max-width: 300px;
+    }
+  .benefit-content h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .inspiration-section{
+        border-radius: 100px 100px 0px 0px;
+    }
+
+}
+
+/* Móviles (480px y menos) */
+@media (max-width: 480px) {
+    /* Banner móvil */
+    .banner {
+        height: 200px;
+    }
+    
+    .banner::before {
+        height: 200px;
+    }
+    
+    .banner h1 {
+        font-size: 1.6em;
+        padding: 10px 15px;
+        padding-top: 100px;
+    }
+    
+    .banner h1::before {
+        top: 100px;
+        left: -10px;
+        width: 3px;
+    }
+    
+    /* Header móvil */
+    .header {
+        padding: 15px 20px;
+    }
+    
+    .tituloo h1 {
+        font-size: 1.8em;
+    }
+    
+    .header .subtitle {
+        font-size: 1em;
+    }
+     /* Main content colegiarte móvil */
+    .colegiarte-content {
+        padding: 15px 20px;
+    }
+    
+    /* Intro section móvil */
+    .intro-section {
+        padding: 15px 10px;
+        margin-bottom: 25px;
+    }
+      .inspiration-section{
+        border-radius: 100px 100px 0px 0px;
+    }
+    
+    .intro-text {
+        font-size: 1em;
+        line-height: 1.5;
+    }
+    
+    /* Benefits section móvil */
+    .benefits-section {
+        gap: 15px;
+        padding: 0 10px;
+    }
+    
+    .benefit-card {
+        padding: 15px 12px;
+        gap: 12px;
+        border-radius: 8px;
+    }
+    
+    .benefit-number {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2em;
+    }
+    
+    .benefit-content h3 {
+        font-size: 1.1em;
+        margin-bottom: 8px;
+    }
+    
+    .benefit-content p {
+        font-size: 0.95em;
+        line-height: 1.4;
+    }
+    
+    /* Conclusion section móvil */
+    .conclusion-section {
+        padding: 25px 15px;
+    }
+    
+    .conclusion-text {
+        font-size: 1em;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+    
+    .cta-button {
+        font-size: 0.95em;
+        padding: 10px 20px;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    /* Date section móvil */
+    .header .date {
+        font-size: 0.85em;
+        text-align: center;
+    }
+     .benefit-content h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+/* Móviles muy pequeños (360px y menos) */
+@media (max-width: 360px) {
+    .banner h1 {
+        font-size: 1.4em;
+        padding: 8px 12px;
+        padding-top: 90px;
+    }
+    
+    .banner h1::before {
+        top: 90px;
+    }
+    
+    .tituloo h1 {
+        font-size: 1.6em;
+    }
+     /* Main content muy pequeño */
+    .colegiarte-content {
+        padding: 12px 15px;
+    }
+    
+    /* Intro section muy pequeño */
+    .intro-section {
+        padding: 12px 8px;
+        margin-bottom: 20px;
+    }
+    
+    .intro-text {
+        font-size: 0.95em;
+        line-height: 1.4;
+    }
+    
+    /* Benefits section muy pequeño */
+    .benefits-section {
+        gap: 12px;
+        padding: 0 8px;
+    }
+    
+    .benefit-card {
+        padding: 12px 10px;
+        gap: 10px;
+    }
+    
+    .benefit-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1em;
+    }
+    
+    .benefit-content h3 {
+        font-size: 1em;
+        margin-bottom: 6px;
+    }
+    
+    .benefit-content p {
+        font-size: 0.9em;
+        line-height: 1.3;
+    }
+    
+    /* Conclusion section muy pequeño */
+    .conclusion-section {
+        padding: 20px 12px;
+    }
+    
+    .conclusion-text {
+        font-size: 0.95em;
+        margin-bottom: 18px;
+        line-height: 1.4;
+    }
+    
+    .cta-button {
+        font-size: 0.9em;
+        padding: 9px 18px;
+        width: 100%;
+        max-width: 260px;
+    }
+    
+    /* Date section muy pequeño */
+    .header .date {
+        font-size: 0.8em;
+        padding: 0 5px;
+    }
+    .benefit-content h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+      .inspiration-section{
+        border-radius: 100px 100px 0px 0px;
+    }
+}
+
