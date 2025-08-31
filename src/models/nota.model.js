@@ -1,6 +1,6 @@
-const pool = require("../../config/db.connect.js"); 
- class NotaModel {
-  async getNota (page = 1, size = 5, id)  {
+const pool = require("../../config/db.connect.js");
+class NotaModel {
+  async getNota(page = 1, size = 100, id) {
     const offset = (page - 1) * size;
 
     const query = `
@@ -31,8 +31,8 @@ const pool = require("../../config/db.connect.js");
       console.error("Error en la consulta de la nota:", error);
       throw error;
     }
-  };
-  async postAgenda (id, user)  {
+  }
+  async postAgenda(id, user) {
     const fecha = new Date();
     const query = await pool.query(
       `
@@ -47,8 +47,9 @@ const pool = require("../../config/db.connect.js");
       ]
     );
     return query;
-  };
-  async postDiplomado (id, user)  {
+  }
+  async postDiplomado(id, user, nota) {
+    if (!nota) nota = "Diplomado";
     const fecha = new Date();
     const query = await pool.query(
       `
@@ -58,11 +59,11 @@ const pool = require("../../config/db.connect.js");
         id,
         fecha,
         user,
-        "Diplomado",
-        `Diplomado gratuito usado en: ${new Date().getFullYear()}`,
+        nota,
+        `${nota} gratuito usado en: ${new Date().getFullYear()}`,
       ]
     );
     return query;
-  };
+  }
 }
-module.exports = NotaModel
+module.exports = NotaModel;

@@ -79,14 +79,13 @@ class DenunciaController {
 
       // Llamada a la IA para validar si el contenido es relevante
       const isDenuncia = await chatbot(text);
-console.log(text);
-console.log(isDenuncia);
+
       if (isDenuncia === 'true') {
         // Guardar la denuncia en la base de datos si el contenido es relevante
         const result = await denuncia.postDenuncia(req.body, req.file.filename);
         res.json(result);
       } else {
-        res.json({ message: "El contenido no parece ser una denuncia" });
+        res.json({ message: isDenuncia });
       }
     } catch (err) {
       console.error("Error al procesar el archivo:", err);
@@ -160,12 +159,15 @@ async function chatbot(userMessage) {
       throw new Error("Mensaje vacío");
     }
 
+    console.log("userMessage:", userMessage);  // Mostrar el mensaje correctamente
+
     const requestBody = {
       contents: [
         {
           parts: [
-            { text: 'De acuerdo con el siguiente mensaje, analiza el contenido y responde si es true o false. Si el contenido muestra indicios o palabras similares de: denuncia, robo o hurto, violencia doméstica, acoso (laboral, escolar o sexual), estafa o fraude, amenazas o coacción, desaparición de personas, delitos sexuales, tráfico o consumo de drogas, delitos informáticos, vandalismo o daños a la propiedad responde con true si hay indicios de alguno de estos temas o si tiene un formato de carta, o false si no los hay.' },
-            { text: userMessage }
+            {
+              text: `De acuerdo con el siguiente mensaje, analiza el contenido si el documento tiene palabras de términos legales, nombres o que mencione un posible delito (agresión física y robo) o algun tipo de delito en su mayoria, etc dame un true, solo usa la palabra true si es correcto y si es no es dime el porque no puede ser considerado un documento valido de manera sencilla: ${userMessage}`,
+            },
           ],
         },
       ],
@@ -183,9 +185,22 @@ async function chatbot(userMessage) {
     }
 
     const data = await response.json();
-    const botMessage = data.candidates[0].content.parts[0].text;
 
-    return botMessage.toLowerCase() === 'true' ? 'true' : 'false';
+    // Validación de la estructura de la respuesta
+    if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+      throw new Error("No se pudo procesar la respuesta correctamente.");
+    }
+
+    const botMessage = data.candidates[0].content.parts[0].text;
+    console.log("Respuesta del bot:", botMessage);  // Para ver lo que respondió Gemini
+
+    // Verificar si la respuesta contiene "true" o "false"
+    if (botMessage.toLowerCase().includes('true')) {
+      return 'true';
+    } else {
+      return botMessage;
+    }
+    
   } catch (error) {
     console.error("Error al interactuar con Gemini:", error);
     throw new Error("Hubo un error al procesar el mensaje.");

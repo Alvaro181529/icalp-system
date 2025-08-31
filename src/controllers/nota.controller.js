@@ -23,6 +23,16 @@ class NotaController {
     const result = await nota.postDiplomado(id, user.correo);
     res.json(result);
   };
+  async postNotas (req, res)  {
+    const { user } = req.session;
+    const { id } = req.params;
+    const { notas } = req.params;
+    console.log(req.params);
+    console.log("Notas");
+    console.log(notas);
+    const result = await nota.postDiplomado(id, user.correo, notas);
+    res.json(result);
+  };
 }
 
 module.exports = { NotaController };  // Exportación usando module.exports
