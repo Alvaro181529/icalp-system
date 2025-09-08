@@ -1,45 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICALP - Cursos</title>
-    <link rel="stylesheet" href="/public/resources/css/cursos.css">
-    <script src="/public/resources/js/seminarios.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICALP - Cursos</title>
+  <link rel="stylesheet" href="/public/resources/css/cursos.css">
+  <script src="/public/resources/js/seminarios.js"></script>
 </head>
+
 <body>
-    <%- include('../partials/header', {title, user}) %>
-     <div class="container">
-       <div class="banner">
-            
-            <h1>CURSOS</h1>
-        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
-      
-        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN-->  
-           <header class="header">
-            <div class="datos1">
-                 <div class="date">
-                    <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+  <%- include('../partials/header', {title, user}) %>
+    <div class="container">
+      <div class="banner">
+        <h1>CURSOS</h1>
+      </div>
 
-                </div>
+      <header class="header">
+        <div class="datos1">
+          <div class="date">
+            <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+          </div>
+        </div>
+      </header>
+
+      <section class="seminarios-section">
+        <div class="px-8 py-2">
+          <div class="seminarios-grid" id="coures">
+          </div>
+
+          <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+            <div>
+              <span class="text-sm text-gray-700">
+                Mostrando
+                <span id="start-item" class="font-semibold text-gray-900">
+                  <span id="current-page">Página 1</span> de
+                </span>
+                <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"></span>
+              </span>
             </div>
-           
-        </header>
-        <section class="seminarios-section">
-            <p class="mensaje-vacio">No hay cursos disponibles</p>
-          </section>
-        <style>
-            .mensaje-vacio {
-              text-align: center;
-              font-size: 1.2rem;
-              color: #666;
-              padding: 20px;
+            <div class="inline-flex mt-2 xs:mt-0">
+              <button id="prev-page"
+                class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 rounded-s hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                Anterior
+              </button>
+              <button id="next-page"
+                class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                Siguiente
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <style>
+        .mensaje-vacio {
+          text-align: center;
+          font-size: 1.2rem;
+          color: #666;
+          padding: 20px;
+        }
+      </style>
+
+      <%- include('../partials/footer'); %>
+
+        <script>
+          const resultTableBody = document.querySelector("#coures");
+          const prevPageButton = document.querySelector("#prev-page");
+          const nextPageButton = document.querySelector("#next-page");
+          const currentPageSpan = document.querySelector("#current-page");
+          const itemPage = document.querySelector("#item-page");
+
+          let page = 1;
+          let totalPages = 1;
+
+          const formatMonth = (dateString) => {
+            const date = new Date(dateString);
+            const options = { month: 'long' };
+            return date.toLocaleDateString('es-ES', options);
+          };
+          const updateTable = (data) => {
+            resultTableBody.innerHTML = "";
+
+            if (data.length > 0) {
+              data.forEach((item) => {
+                const row = document.createElement("div");
+                row.classList.add("seminario-card");
+                row.innerHTML = `
+            <a href="https://wa.me/591${item.numeroComunicarse||'76771530'}?text=Hola!%20Me%20interesa%20el%20${item.tipoCurso}%20${item.titulo}.%20%C2%BFPodr%C3%ADan%20enviarme%20m%C3%A1s%20informaci%C3%B3n%3F"
+                        target="_blank"
+                        class="card-image-link">
+                        <div class="card-image-container">
+                            <img src="/uploads/cursos/${item.imagen}" alt="${item.titulo}" class="card-image">
+                            <div class="card-overlay">
+                                <div class="overlay-text">
+                                    <strong>Aplicar</strong><br>
+                                    Haz clic en la imagen del curso que te interese y recibirás toda la información directamente a través de WhatsApp.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="p-4">
+                    <div class="card-content w-full">
+                        <div class="card-top-content">
+                            <h3 class="card-title">${item.titulo}</h3>
+                            <p class="card-description">
+                               ${item.descripcion.length > 100 ? item.descripcion.substring(0, 100) + '...' : item.descripcion}
+                            </p>
+                            <div class="card-meta w-full">
+                                <p style="font-weight:700">Fecha de Inicio</p>
+                              <span class="card-duration">${formatMonth(item.fechaInicio)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-bottom-content">
+                        <button class="card-button" onclick="redirectToWhatsApp('Ciencias Forenses y Criminología')">
+                            Solicitar Información
+                        </button>
+                    </div>
+                    </div>`;
+                resultTableBody.appendChild(row);
+              });
+            } else {
+              const emptyMessage = document.createElement("div");
+              emptyMessage.classList.add("mensaje-vacio");
+              emptyMessage.innerHTML = "No se encontraron resultados";
+              resultTableBody.appendChild(emptyMessage);
             }
-          </style>
-      
 
-           <%- include('../partials/footer'); %>
+            prevPageButton.disabled = page === 1;
+            nextPageButton.disabled = page === totalPages;
+            currentPageSpan.textContent = `Página ${page}`;
+            itemPage.textContent = totalPages;
+          };
 
-    
+          const fetchAndUpdateTable = async () => {
+            const url = `/courses?page=${page}&type=cursos`;
+            try {
+              const response = await fetch(url);
+              if (!response.ok) {
+                throw new Error("Error en la búsqueda");
+              }
+              const data = await response.json();
+              console.log(data);
+              if (data) {
+                totalPages = data.pages;
+                updateTable(data.data);
+              } else {
+                console.error("La estructura de la respuesta no es válida");
+                alert("Hubo un problema con los resultados. Intenta nuevamente.");
+              }
+            } catch (error) {
+              console.error("Error en la búsqueda:", error);
+              alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+            }
+          };
+
+          const changePage = (increment) => {
+            if (page + increment >= 1 && page + increment <= totalPages) {
+              page += increment;
+              fetchAndUpdateTable();
+            }
+          };
+
+          prevPageButton.addEventListener("click", () => changePage(-1));
+          nextPageButton.addEventListener("click", () => changePage(1));
+
+          fetchAndUpdateTable();
+        </script>
+
 </body>
+
 </html>

@@ -1,0 +1,85 @@
+<%- include('../partials/header', {title, user}) %>
+
+    <div class="px-8 sm:mt-8 mb-4">
+        <!-- Sección de Backups -->
+        <div >
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-800 uppercase">Backups Disponibles</h2>
+                <button
+                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    id="generarBackupId" aria-label="Generar Backup">
+                    Generar Backup
+                </button>
+            </div>
+            <div class="overflow-x-auto shadow-md sm:rounded-lg mt-4">
+                <table id="backup-table" class="w-full text-sm text-left rtl:text-right text-gray-600">
+                    <thead class="text-xs text-gray-200 uppercase bg-green-950">
+                        <tr>
+                            <th class="px-4 py-3 text-left">Nombre del Backup</th>
+                            <th class="px-4 py-3 text-left">Fecha de Creación</th>
+                            <th class="px-4 py-3 text-left">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="backup-table-body">
+                        <!-- Aquí se agregarán las filas de backups dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const backupTableBody = $("#backup-table-body");
+        $('#generarBackupId').addEventListener('click', async () => {
+            const response = await fetch('/generar-backup')
+            const data = await response.json();
+            console.log(data);
+
+            alert(`${data.message}\nArchivo de Backup: ${data.backupFile}`);
+            fetchBackups(); // Recargar la lista de backups
+
+        });
+        // Función para cargar los backups
+        async function fetchBackups() {
+            try {
+                const response = await fetch('/obtener-backup');
+                const data = await response.json();
+                if (data.backups && data.backups.length > 0) {
+                    renderBackups(data.backups);
+                } else {
+                    backupTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="3" class="text-center">No hay backups disponibles.</td>
+                    </tr>
+                `;
+                }
+            } catch (error) {
+                console.error("Error fetching backups:", error);
+            }
+        }
+
+        // Función para renderizar los backups en la tabla
+        function renderBackups(backups) {
+            backupTableBody.innerHTML = "";
+
+            backups.forEach(backup => {
+                const row = document.createElement("tr");
+                row.classList.add("bg-white", "border-b", "hover:bg-gray-50");
+
+                row.innerHTML = `
+                <td class="px-4 py-3 text-left">${backup.name}</td>
+                <td class="px-4 py-3 text-left">${new Date(backup.createdAt).toLocaleString()}</td>
+                <td class="px-4 py-3 text-left">
+                    <a href="/backups/${backup.name}" download="${backup.name}" 
+                        class="text-blue-600 hover:underline">Descargar</a>
+                </td>
+            `;
+                backupTableBody.appendChild(row);
+            });
+        }
+
+        // Llamamos a la función para cargar los backups al cargar la página
+        fetchBackups();
+    </script>
+
+    <%- include('../partials/footer', {user}) %>

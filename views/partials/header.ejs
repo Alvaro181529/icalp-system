@@ -162,6 +162,9 @@
                               <li><a href="/opciones" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de
                                   opciones</a>
                               </li>
+                              <li><a href="/cursos-conf" class="block px-4 py-2 hover:bg-blue-950 rounded">Creacion de
+                                  Cursos</a>
+                              </li>
                               <li><a href="/contenidos" class="block px-4 py-2 hover:bg-blue-950 rounded">Contenidos</a>
                               </li>
                               <!-- <li><a href="/blogs" class="block px-4 py-2 hover:bg-blue-950 rounded">Creación de Blogs</a></li> -->
@@ -182,6 +185,8 @@
                               </li>
                               <li><a href="/cobradores" class="block px-4 py-2 hover:bg-blue-950 rounded">Usuarios
                                   Cobradores</a>
+                              </li>
+                              <li><a href="/backup" class="block px-4 py-2 hover:bg-blue-950 rounded">Backups</a>
                               </li>
                               <li><a href="/historial" class="block px-4 py-2 hover:bg-blue-950 rounded">Historial
                                   de
@@ -266,7 +271,7 @@
                            <% if (user) { %>
                             <div>
                               <h2 class="text-white font-bold text-sm">
-                                <%= user.correo %>
+                                <%= user.name || user.correo %>
                               </h2>
                               <p class="text-sm text-wrap text-white">
                                 <%= user.roles %>

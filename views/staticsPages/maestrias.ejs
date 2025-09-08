@@ -1,188 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICALP - Maestrias</title>
-    <link rel="stylesheet" href="/public/resources/css/maestrias.css">
-   <script src="/public/resources/js/seminarios.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICALP - Cursos</title>
+  <link rel="stylesheet" href="/public/resources/css/cursos.css">
+  <script src="/public/resources/js/seminarios.js"></script>
 </head>
+
 <body>
-    <%- include('../partials/header', {title, user}) %>
-     <div class="container">
-       <div class="banner">
-            
-            <h1>MAESTRIAS</h1>
-        </div>      <!-- Banner PARA TODAS LAS ECCIONES TITULO-->
-      
-        <!-- Banner PARA TODAS LAS ECCIONES TITULO FIN-->  
-           <header class="header">
-            <div class="datos1">
-                 <div class="date">
-                    <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+  <%- include('../partials/header', {title, user}) %>
+    <div class="container">
+      <div class="banner">
+        <h1>CURSOS</h1>
+      </div>
 
-                </div>
+      <header class="header">
+        <div class="datos1">
+          <div class="date">
+            <i class="fas fa-calendar-alt"></i> Publicado el martes, 11 de febrero de 2025 11:43:47
+          </div>
+        </div>
+      </header>
+
+      <section class="seminarios-section">
+        <div class="px-8 py-2">
+          <div class="seminarios-grid" id="coures">
+          </div>
+
+          <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+            <div>
+              <span class="text-sm text-gray-700">
+                Mostrando
+                <span id="start-item" class="font-semibold text-gray-900">
+                  <span id="current-page">Página 1</span> de
+                </span>
+                <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"></span>
+              </span>
             </div>
-           
-        </header>
-        <section class="seminarios-section">
-            <div class="seminarios-grid">
-                <!-- Card 1 -->
-                <div class="seminario-card">
-                    <a href="/public/resources/recursos/25AGOSTO/COMPRES_MAESTRIA-EN-DERECHO-PENAL-Y-DERECHO-PROCESAL-PENAL-CON-CERTIFICACION-INTERMEDIA_compressed.pdf"
-                        target="_blank"
-                        class="card-image-link">
-                        <div class="card-image-container">
-                            <img src="/public/resources/recursos/25AGOSTO/MAESTRIA-DERECHO-PENAL.jpg" alt="Derecho Penal" class="card-image">
-                            <div class="card-overlay">
-                                <div class="overlay-text">
-                                    <strong>MÁS INFORMACIÓN</strong><br>
-                                    Descarga el pdf.
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="p-4">
-                        <div class="card-content">
-                            <div class="card-top-content">
-                                <h3 class="card-title">Derecho Penal y Derecho Procesal Penal</h3>
-                            <p class="card-description">
-                                Aborda el estudio del delito, el criminal y la víctima desde una perspectiva científica y jurídica.
-                            </p>
-                            <div class="card-meta">
-                                <p style="font-weight:700">Fecha de Inicio</p>
-                                <span class="card-duration">Agosto</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-bottom-content">
-                        <button class="card-button" onclick="redirectToWhatsApp('Derecho Penal y Derecho Procesal Penal')">
-                            Solicitar Información
-                        </button>
-                    </div>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="seminario-card">
-                    <a href="/public/resources/recursos/25AGOSTO/COMPRES_MAESTRIA-EN-DERECHO-NOTARIAL-Y-REGISTRAL-CON-CERTIFICACION-INTERMENDIA-V2.pdf"
-                        target="_blank"
-                        class="card-image-link">
-                        <div class="card-image-container">
-                            <img src="/public/resources/recursos/25AGOSTO/MAESTRIA-DERECHO-NOTARIAL Y REGISTRAL.jpg" alt="Notarial Y Registral" class="card-image">
-                            <div class="card-overlay">
-                                <div class="overlay-text">
-                                    <strong>MÁS INFORMACIÓN</strong><br>
-                                    Descarga el pdf.
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="p-4">
-                    <div class="card-content">
-                        <div class="card-top-content">
-                            <h3 class="card-title">Derecho Notarial y Registral</h3>
-                            <p class="card-description">
-                                Estudia la normativa laboral y de seguridad social, enfocándose en la protección de los trabajadores y la resolución de conflictos laborales.
-                            </p>
-                            <div class="card-meta">
-                                <p style="font-weight:700">Fecha de Inicio</p>
-                                <span class="card-duration">Agosto</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-bottom-content">
-                        <button class="card-button" onclick="redirectToWhatsApp('Derecho Notarial y Registral')">
-                            Solicitar Información
-                        </button>
-                    </div>
-                </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="seminario-card">
-                    <a href="/public/resources/recursos/25AGOSTO/COMPRES_MAESTRIA-EN-DERECHO-CONSTITUCIONAL-PROCESAL-CONSTITUCIONAL-CON-CERTIFICACION-INTERMEDIA-V9.pdf"
-                        target="_blank"
-                        class="card-image-link">
-                        <div class="card-image-container">
-                            <img src="/public/resources/recursos/25AGOSTO/MAESTRIA-DERECHO-CONSTITUCIONAL.jpg" alt="DERECHO-CONSTITUCIONAL" class="card-image">
-                            <div class="card-overlay">
-                                <div class="overlay-text">
-                                    <strong>MÁS INFORMACIÓN</strong><br>
-                                    Descarga el pdf.
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="p-4">
-                    <div class="card-content">
-                        <div class="card-top-content">
-                            <h3 class="card-title">Derecho Constitucional y Procesal Constitucional</h3>
-                            <p class="card-description">
-                                Analiza las normas que regulan las relaciones civiles y los procedimientos judiciales para su aplicación.
-                            </p>
-                            <div class="card-meta">
-                                <p style="font-weight:700">Fecha de Inicio</p>
-                                <span class="card-duration">Agosto</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-bottom-content">
-                        <button class="card-button" onclick="redirectToWhatsApp('Derecho Constitucional y Procesal Constitucional')">
-                            Solicitar Información
-                        </button>
-                    </div>
-                    </div>
-                </div>
-
-                <!-- Card 4 (MODIFICADA) -->
-                <div class="seminario-card">
-                    <a href="/public/resources/recursos/25AGOSTO/COMPRES_MAESTRIA-EN-ADMINSITRACION-DE-JUSTICIA-CON-CERTIFICACION-INTERMENDIA_compressed.pdf"
-                        target="_blank"
-                        class="card-image-link">
-                        <div class="card-image-container">
-                            <img src="/public/resources/recursos/25AGOSTO/MAESTRIA-ADMINISTRACION-JUSTICIA.jpg" alt="ADMINISTRACION-JUSTICIA" class="card-image">
-                            <div class="card-overlay">
-                                <div class="overlay-text">
-                                    <strong>MÁS INFORMACIÓN</strong><br>
-                                    Descarga el pdf.
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="p-4">
-                    <div class="card-content">
-                        <div class="card-top-content">
-                            <h3 class="card-title">Administración de Justicia</h3>
-                            <p class="card-description">
-                                Examina las leyes y procesos relacionados con el matrimonio, filiación, patria potestad y tutela.
-                            </p>
-                            <div class="card-meta">
-                                <p style="font-weight:700">Fecha de Inicio</p>
-                                <span class="card-duration">Agosto</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-bottom-content">
-                        <button class="card-button" onclick="redirectToWhatsApp('Administración de Justicia')">
-                            Solicitar Información
-                        </button>
-                    </div>
-                    </div>
-                </div>
+            <div class="inline-flex mt-2 xs:mt-0">
+              <button id="prev-page"
+                class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 rounded-s hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                Anterior
+              </button>
+              <button id="next-page"
+                class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                Siguiente
+              </button>
             </div>
-        </section>
-       
+          </div>
+        </div>
+      </section>
 
-           <%- include('../partials/footer'); %>
+      <style>
+        .mensaje-vacio {
+          text-align: center;
+          font-size: 1.2rem;
+          color: #666;
+          padding: 20px;
+        }
+      </style>
 
-           <style>
-            .mensaje-vacio {
-                text-align: center;
-                font-size: 1.2rem;
-                color: #666;
-                padding: 20px;
+      <%- include('../partials/footer'); %>
+
+        <script>
+          const resultTableBody = document.querySelector("#coures");
+          const prevPageButton = document.querySelector("#prev-page");
+          const nextPageButton = document.querySelector("#next-page");
+          const currentPageSpan = document.querySelector("#current-page");
+          const itemPage = document.querySelector("#item-page");
+
+          let page = 1;
+          let totalPages = 1;
+
+          const formatMonth = (dateString) => {
+            const date = new Date(dateString);
+            const options = { month: 'long' };
+            return date.toLocaleDateString('es-ES', options);
+          };
+          const updateTable = (data) => {
+            resultTableBody.innerHTML = "";
+
+            if (data.length > 0) {
+              data.forEach((item) => {
+                const row = document.createElement("div");
+                row.classList.add("seminario-card");
+                row.innerHTML = `
+            <a href="https://wa.me/591${item.numeroComunicarse||'76771530'}?text=Hola!%20Me%20interesa%20el%20${item.tipoCurso}%20${item.titulo}.%20%C2%BFPodr%C3%ADan%20enviarme%20m%C3%A1s%20informaci%C3%B3n%3F"
+                        target="_blank"
+                        class="card-image-link">
+                        <div class="card-image-container">
+                            <img src="/uploads/cursos/${item.imagen}" alt="${item.titulo}" class="card-image">
+                            <div class="card-overlay">
+                                <div class="overlay-text">
+                                    <strong>Aplicar</strong><br>
+                                    Haz clic en la imagen del curso que te interese y recibirás toda la información directamente a través de WhatsApp.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="p-4">
+                    <div class="card-content w-full">
+                        <div class="card-top-content">
+                            <h3 class="card-title">${item.titulo}</h3>
+                            <p class="card-description">
+                               ${item.descripcion.length > 100 ? item.descripcion.substring(0, 100) + '...' : item.descripcion}
+                            </p>
+                            <div class="card-meta w-full">
+                                <p style="font-weight:700">Fecha de Inicio</p>
+                              <span class="card-duration">${formatMonth(item.fechaInicio)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-bottom-content">
+                        <button class="card-button" onclick="redirectToWhatsApp('Ciencias Forenses y Criminología')">
+                            Solicitar Información
+                        </button>
+                    </div>
+                    </div>`;
+                resultTableBody.appendChild(row);
+              });
+            } else {
+              const emptyMessage = document.createElement("div");
+              emptyMessage.classList.add("mensaje-vacio");
+              emptyMessage.innerHTML = "No se encontraron resultados";
+              resultTableBody.appendChild(emptyMessage);
             }
-        </style>
+
+            prevPageButton.disabled = page === 1;
+            nextPageButton.disabled = page === totalPages;
+            currentPageSpan.textContent = `Página ${page}`;
+            itemPage.textContent = totalPages;
+          };
+
+          const fetchAndUpdateTable = async () => {
+            const url = `/courses?page=${page}&type=maestrias`;
+            try {
+              const response = await fetch(url);
+              if (!response.ok) {
+                throw new Error("Error en la búsqueda");
+              }
+              const data = await response.json();
+              console.log(data);
+              if (data) {
+                totalPages = data.pages;
+                updateTable(data.data);
+              } else {
+                console.error("La estructura de la respuesta no es válida");
+                alert("Hubo un problema con los resultados. Intenta nuevamente.");
+              }
+            } catch (error) {
+              console.error("Error en la búsqueda:", error);
+              alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+            }
+          };
+
+          const changePage = (increment) => {
+            if (page + increment >= 1 && page + increment <= totalPages) {
+              page += increment;
+              fetchAndUpdateTable();
+            }
+          };
+
+          prevPageButton.addEventListener("click", () => changePage(-1));
+          nextPageButton.addEventListener("click", () => changePage(1));
+
+          fetchAndUpdateTable();
+        </script>
+
 </body>
+
 </html>

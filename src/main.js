@@ -19,6 +19,10 @@ const denunciaRouter = require("./routes/denuncia.route.js");
 const documentosRouter = require("./routes/documentos.route.js");
 const arbitrajeRouter = require("./routes/arbitraje.route.js");
 const chatbotRouter = require("./routes/chatbot.route.js");
+const cursosRouter = require("./routes/cursos.route.js");
+const backupRouter = require("./routes/backup.route.js");
+const analiticasRouter = require("./routes/analiticas.route.js");
+const { checkRole } = require("./utils/checkRoles.utils.js");
 
 const app = express();
 
@@ -30,9 +34,9 @@ app.set("view engine", "ejs");
 
 // middleware
 app.use(morgan("dev"));
-app.use(express.json({ limit: '3000mb' }));
+app.use(express.json({ limit: "3000mb" }));
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true, limit: '3000mb' }));
+app.use(express.urlencoded({ extended: true, limit: "3000mb" }));
 // token
 app.use((req, res, next) => {
   const token = req.cookies.access_token;
@@ -61,10 +65,18 @@ app.use(denunciaRouter);
 app.use(arbitrajeRouter);
 app.use(documentosRouter);
 app.use(chatbotRouter);
+app.use(cursosRouter);
+app.use(backupRouter);
+app.use(analiticasRouter);
 
 // statics
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(
+  "/backups",
+  checkRole(["Administrador"]),
+  express.static(path.join(__dirname, "backups"))
+);
 
 // not found Page
 app.use((req, res) => {

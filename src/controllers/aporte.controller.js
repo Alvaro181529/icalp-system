@@ -58,7 +58,7 @@ class AporteController {
   async getContribution(req, res) {
     const { user } = req.session;
     try {
-      const result = await aporte.getAporte(req.query, user.correo);
+      const result = await aporte.getAporte(req.query, user.name || user.correo);
       const resultadoTransformado = Array.isArray(result.users)
         ? result.users.map((item) => transformarJson(item))
         : [transformarJson(result.users)];
@@ -160,13 +160,13 @@ class AporteController {
     const { id } = req.params;
     const { motivo } = req.body;
     const { user } = req.session;
-    const result = await aporte.patchAporteNull(id, user.correo, motivo);
+    const result = await aporte.patchAporteNull(id, user.name || user.correo, motivo);
     res.json(result);
   }
 
   async postContributions(req, res) {
     const { user } = req.session;
-    const result = await aporte.postAporte(req.body, user.correo);
+    const result = await aporte.postAporte(req.body, user.name || user.correo);
     res.json(result);
   }
 

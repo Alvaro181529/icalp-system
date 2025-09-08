@@ -1,0 +1,328 @@
+<%- include('../partials/header', {title, user}) %>
+    <div class="px-8 py-2">
+        <div class="overflow-x-auto shadow-md sm:rounded-lg">
+            <table id="result-table" class="w-full text-sm text-left rtl:text-right text-gray-600">
+                <thead class="text-xs text-gray-200 uppercase bg-blue-950">
+                    <tr>
+                        <th class="px-4 py-3 text-left">Menu</th>
+                        <th class="px-4 py-3 text-left">Titulo</th>
+                        <th class="px-4 py-3 text-left">Subtitulo</th>
+                        <th class="px-4 py-3 text-left">Fecha de la publicacion</th>
+                        <th class="px-4 py-3 text-left">Usuario</th>
+                        <th class="px-4 py-3 text-left">Tipo de Curso</th>
+                        <th class="px-4 py-3 text-left">
+                            <button onclick="addedCourse()"
+                                class="text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center">
+                                <i class="fa-solid fa-square-plus text-2xl"></i>
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div id="pagination" class="flex flex-col items-center justify-between py-4 space-y-4">
+            <div>
+                <span class="text-sm text-gray-700">
+                    Mostrando
+                    <span id="start-item" class="font-semibold text-gray-900">
+                        <span id="current-page">Página 1</span> de
+                    </span>
+                    <span id="item-page" class="font-semibold text-gray-900" aria-live="polite"></span>
+                </span>
+            </div>
+            <div class="inline-flex mt-2 xs:mt-0">
+                <button id="prev-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 rounded-s hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Anterior
+                </button>
+                <button id="next-page"
+                    class="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-blue-800 border-0 border-s border-blue-700 rounded-e hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed">
+                    Siguiente
+                </button>
+            </div>
+        </div>
+    </div>
+    <dialog id="dialog-add-course"
+        class="overflow-y-auto w-full max-w-xl bg-white rounded-lg shadow-2xl border-0 p-6 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 space-y-6 max-h-[90vh]">
+
+        <h2 class="text-xl font-semibold text-gray-800 text-center">Agregar Nuevo Curso</h2>
+
+        <form id="form-course" enctype="multipart/form-data" class="space-y-6">
+            <input type="text" name="cursos" id="cursos" value="true" hidden>
+            <input type="text" name="update" id="update" hidden>
+            <!-- Título del Curso -->
+            <div>
+                <label for="titulo" class="block text-sm font-medium text-gray-700">Título del Curso</label>
+                <input type="text" id="titulo" name="titulo" required
+                    class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Tipo de Curso -->
+            <div class="sm:flex gap-7 w-full mx-auto">
+                <div>
+                    <label for="tipoCurso" class="block text-sm font-medium text-gray-700">Tipo de Curso</label>
+                    <select id="tipoCurso" name="tipoCurso" required
+                        class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="" disabled selected>Seleccionar tipo</option>
+                        <option value="cursos">Cursos</option>
+                        <option value="diplomados">Diplomados</option>
+                        <option value="maestrias">Maestrias</option>
+                        <option value="seminarios">Semiarios</option>
+                    </select>
+                </div>
+                <!-- Fecha de Inicio -->
+                <div>
+                    <label for="fechaInicio" class="block text-sm font-medium text-gray-700">Fecha de Inicio</label>
+                    <input type="date" id="fechaInicio" name="fechaInicio" required
+                        class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Fecha de Fin -->
+                <div>
+                    <label for="fechaFin" class="block text-sm font-medium text-gray-700">Fecha de Fin</label>
+                    <input type="date" id="fechaFin" name="fechaFin" required
+                        class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <!-- Imagen -->
+            <div>
+                <label for="imagen" class="block text-sm font-medium text-gray-700">Imagen del Curso</label>
+                <input type="file" id="file" name="file" accept="image/*"
+                    class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <!-- Descuento -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label for="descuento" class="block text-sm font-medium text-gray-700">Descuento</label>
+                    <input type="number" id="descuento" name="descuento" min="0" max="100" step="1" required
+                        class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div>
+                    <label for="numero" class="block text-sm font-medium text-gray-700">Numero de Whatsapp</label>
+                    <input type="number" id="numeroComunicarse" name="numeroComunicarse" min="0" max="99999999" step="1" required
+                        class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+            </div>
+
+            <!-- Usuario -->
+            <div class="hidden">
+                <label for="usuario" class="block text-sm font-medium text-gray-700">Usuario</label>
+                <input type="text" id="usuario" name="usuario" value="<%-user.name || user.correo%>" required
+                    class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <!-- Descripción del Curso -->
+            <div>
+                <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción del Curso</label>
+                <textarea id="descripcion" name="descripcion" rows="4" required
+                    class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+            </div>
+            <!-- Estado (checkbox) -->
+            <div>
+                <label for="estado" class="inline-flex items-center">
+                    <select type="checkbox" id="estado" name="estado"
+                        class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="1" selected>Activo</option>
+                        <option value="0">Inactivo</option>
+                    </select>
+                </label>
+            </div>
+
+            <!-- Botón de Enviar -->
+            <div class="flex justify-center mt-6">
+                <button id="submit-button-added"
+                    class="px-6 py-3 bg-blue-600 text-white font-medium text-sm rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Crear Curso
+                </button>
+                <button id="submit-button-updated"
+                    class="px-6 py-3 bg-blue-600 text-white font-medium text-sm rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Actualizar Curso
+                </button>
+            </div>
+
+        </form>
+        <form method="dialog" class="absolute top-2 right-2">
+            <button type="submit" onclick="document.querySelector('dialog').close()"
+                class="text-gray-600 hover:text-gray-800 focus:outline-none text-2xl">×</button>
+        </form>
+
+    </dialog>
+    <script defer>
+        const resultTableBody = $("#result-table tbody");
+        const prevPageButton = $("#prev-page");
+        const nextPageButton = $("#next-page");
+        const currentPageSpan = $("#current-page");
+        const itemPage = $("#item-page");
+
+        let page = 1;
+        let totalPages = 1;
+        function addedCourse() {
+            $('#submit-button-added').style.display = 'inline-block';
+            $('#submit-button-updated').style.display = 'none';
+            $('#dialog-add-course').showModal();
+            $('#titulo').value = '';
+            $('#submit-button-added').addEventListener('click', function (e) {
+                e.preventDefault();
+
+                var formData = new FormData($('#form-course'));
+                fetch('/courses', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        fetchAndUpdateTable();
+                        $('#dialog-add-course').close()
+                    })
+                    .catch(error => {
+                        alert("Error al enviar al crear el curso:", error);
+                    });
+            });
+
+        }
+
+        const updateTable = (data) => {
+            resultTableBody.innerHTML = "";
+
+            if (data.length > 0) {
+                data.forEach((item) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+            <td class="px-6 py-3 text-wrap"><p>${item.titulo || "No disponible"}</p></td>
+            <td class="px-6 py-3 text-wrap"><p>${item.descripcion || "No disponible"}</p></td>
+            <td class="px-6 py-3 text-wrap">${item.descuento || "Sin descuento"}</td>
+            <td class="px-6 py-3 text-wrap">${new Date(item.fechaInicio).toLocaleDateString() || "No disponible"}</td>
+            <td class="px-6 py-3 text-wrap">${new Date(item.fechaFin).toLocaleDateString() || "No disponible"}</td>
+            <td class="px-6 py-3 text-wrap">${item.tipoCurso || "No disponible"}</td>
+            <td class="px-6 py-3 text-wrap flex gap-3 justify-between">
+                <button class="text-red-500 hover:underline" onclick="deleteCourse(${item.id})">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+                <button class="text-blue-500 hover:underline" onclick="editCourse(${item.id})">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+            </td>
+        `;
+                    resultTableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement("tr");
+                row.innerHTML = `<td class="px-6 py-3 text-wrap" colspan="7">No se encontraron resultados</td>`;
+                resultTableBody.appendChild(row);
+            }
+
+            prevPageButton.disabled = page === 1;
+            nextPageButton.disabled = page === totalPages;
+            currentPageSpan.textContent = `Página ${page}`;
+            itemPage.textContent = totalPages;
+        };
+        const editCourse = (courseId) => {
+            fetch(`/courses/${courseId}`)
+                .then(response => response.json())
+                .then(course => {
+                    // Llenar el formulario con los datos del curso
+                    $("#titulo").value = course.titulo;
+                    $("#descripcion").value = course.descripcion;
+                    $("#descuento").value = course.descuento;
+                    $("#tipoCurso").value = course.tipoCurso;
+                    $("#fechaInicio").value = course.fechaInicio.split('T')[0]; // formato YYYY-MM-DD
+                    $("#fechaFin").value = course.fechaFin.split('T')[0]; // formato YYYY-MM-DD
+                    $("#usuario").value = course.usuario;
+                    $("#estado").value = course.estado;
+                    $("#update").value = "actualizar";
+                    $('#submit-button-added').style.display = 'none';
+                    $('#submit-button-updated').style.display = 'inline-block';
+                    // Mostrar el modal para editar
+                    $("#dialog-add-course").showModal();
+
+                    // Cambiar el método del formulario a PUT (para editar)
+
+                    $('#submit-button-updated').addEventListener('click', function (e) {
+                        e.preventDefault();
+                        var formData = new FormData($('#form-course'));
+                        fetch(`/courses/${courseId}`, {
+                            method: 'PUT',
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                alert(data.message);
+                                fetchAndUpdateTable();
+                                $("#dialog-add-course").close();
+                            })
+                            .catch(error => {
+                                alert("Error al editar el curso:", error);
+                            });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar el curso:', error);
+                    alert("Hubo un error al cargar los detalles del curso.");
+                });
+        };
+        const deleteCourse = (courseId) => {
+            if (confirm("¿Estás seguro de que deseas eliminar este curso?")) {
+                fetch(`/courses/${courseId}`, {
+                    method: 'DELETE',
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        fetchAndUpdateTable(); // Actualizar la tabla después de eliminar el curso
+                    })
+                    .catch(error => {
+                        console.error('Error al eliminar el curso:', error);
+                        alert("Hubo un error al eliminar el curso.");
+                    });
+            }
+        };
+
+        const fetchAndUpdateTable = async () => {
+            const url = `/courses?page=${page}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error("Error en la búsqueda");
+                }
+
+                const data = await response.json();
+                console.log(data);
+                if (data) {
+                    totalPages = data.pages;
+                    updateTable(data.data);
+                } else {
+                    console.error("La estructura de la respuesta no es válida");
+                    alert("Hubo un problema con los resultados. Intenta nuevamente.");
+                }
+            } catch (error) {
+                console.error("Error en la búsqueda:", error);
+                alert("Hubo un problema al realizar la búsqueda. Intenta nuevamente.");
+            }
+        };
+
+
+        prevPageButton.addEventListener("click", function () {
+            if (page > 1) {
+                page--;
+                fetchAndUpdateTable();
+            }
+        });
+
+        nextPageButton.addEventListener("click", function () {
+            if (page < totalPages) {
+                page++;
+                fetchAndUpdateTable();
+            }
+        });
+
+
+        fetchAndUpdateTable();
+    </script>
+
+    <%- include('../partials/footer') %>

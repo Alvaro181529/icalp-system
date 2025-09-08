@@ -73,13 +73,13 @@ class PagesController {
 
   async contentAdd (req, res) {
     const { user } = req.session;
-    const result = await pages.contentAdd(req.body, user.correo);
+    const result = await pages.contentAdd(req.body, user.name || user.correo);
     res.json(result);
   };
 
   async contentUpdate (req, res) {
     const { user } = req.session;
-    const result = await pages.contentUpdate(req.body, user.correo);
+    const result = await pages.contentUpdate(req.body, user.name || user.correo);
     res.json(result);
   };
 

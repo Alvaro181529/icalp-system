@@ -74,7 +74,7 @@ class ColegiadoController {
   async getCollegiatesPdf(req, res) {
     const { id } = req.params;
     const { user } = req.session;
-    const result = await pdf.generatePdf(id, res, user.correo);
+    const result = await pdf.generatePdf(id, res, user.name || user.correo);
   }
 
   async getCollegiates(req, res) {
@@ -192,14 +192,14 @@ class ColegiadoController {
 
   async postCollegiate(req, res) {
     const { user } = req.session;
-    const result = await colegiado.postUser(req.body, user.correo);
+    const result = await colegiado.postUser(req.body, user.name || user.correo);
     res.json(result);
   }
 
   async patchCollegiate(req, res) {
     const { user } = req.session;
     const { id } = req.params;
-    const result = await colegiado.updateUser(id, req.body, user.correo);
+    const result = await colegiado.updateUser(id, req.body, user.name || user.correo);
     res.json(result);
   }
 
@@ -212,14 +212,14 @@ class ColegiadoController {
       result = await colegiado.updateFoto(
         req.file.filename,
         id,
-        user.correo,
+        user.name || user.correo,
         Archivo
       );
     if (req.body.firma)
       result = await colegiado.updateFirma(
         req.file.filename,
         id,
-        user.correo,
+        user.name || user.correo,
         Archivo
       );
     res.json(result);

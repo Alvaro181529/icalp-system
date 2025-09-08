@@ -44,6 +44,7 @@ const jwt = require("jsonwebtoken");  // Cambiar import a require
       // Si es un login exitoso, generamos el token JWT
       const token = jwt.sign(
         {
+          name: user.User,
           userId: user.UserId,
           correo: user.Email,
           roles: user.Roles ? user.Roles.split(", ") : [], // Los roles estarán en el JWT como una lista

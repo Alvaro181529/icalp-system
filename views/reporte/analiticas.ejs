@@ -1,0 +1,224 @@
+<%- include('../partials/header', {title, user}) %>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div class="px-8 py-2">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6">Gráfico de Datos</h2>
+        <div class="grid grid-cols-2 gap-6">
+            <!-- Gráfico de barras -->
+            <section>
+                <div class="flex">
+                    <h3>Gráfica de pagos por cobrador (Barras)</h3>
+                    <span id="montoTotalBar"></span>
+                </div>
+
+                <select name="anio" id="anio">
+
+                </select>
+                <div class="relative">
+                    <canvas id="myChartBar"></canvas>
+                </div>
+            </section>
+            <!-- Gráfico de pastel -->
+            <section>
+                <div class="flex">
+                    <h3>Gráfica de pagos por cobrador (Pastel)</h3>
+                    <span id="montoTotalPie"></span>
+                </div>
+
+                <select name="anio" id="anio">
+
+                </select>
+                <div class="relative">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        let myChart, myChartBar;
+
+        // Función para obtener datos para el gráfico de barras
+        async function obtenerDatos() {
+            const selectedYear = document.getElementById("anio").value;
+            try {
+                const response = await fetch(`/analiticas-datos?size=100&year=${selectedYear}`);
+                const data = await response.json();
+                document.getElementById("montoTotalPie").textContent = ` - Monto Total: $${data.totalMonto.toLocaleString()}`;
+                return data;
+            } catch (error) {
+                console.error("Error al obtener los datos para el gráfico de pie:", error);
+            }
+        }
+
+        // Función para obtener datos para el gráfico de barras
+        async function obtenerDatosPorMes() {
+            const selectedYear = document.getElementById("anio").value;
+            try {
+                const response = await fetch(`/analiticas-anio-cobrador?year=${selectedYear}`);
+                const data = await response.json();
+
+                // Verifica si la propiedad totalMonto existe
+                if (data && data.totalMonto !== undefined) {
+                    document.getElementById("montoTotalBar").textContent = ` - Monto Total: $${data.totalMonto.toLocaleString()}`;
+                } else {
+                    console.warn("No se encontró 'totalMonto' en la respuesta para el gráfico de barras");
+                }
+
+                return data;
+            } catch (error) {
+                console.error("Error al obtener los datos para el gráfico de barras:", error);
+            }
+        }
+
+
+        // Función para generar colores aleatorios
+        function generarColores(numColores) {
+            const colores = [];
+            for (let i = 0; i < numColores; i++) {
+                colores.push(`hsl(${Math.random() * 360}, 70%, 50%)`);
+            }
+            return colores;
+        }
+
+        // Crear gráfico de barras
+        async function crearGraficaBarra() {
+    const data = await obtenerDatosPorMes();
+    if (!data || !data.result || data.result.length === 0) {
+        console.error("No se encontraron datos para la gráfica de barras.");
+        return;
+    }
+
+    // Crear las etiquetas que incluirán tanto el cobrador como el mes
+    const labels = data.result.map(item => `${item.Cobrador} - ${item.Mes}`);
+
+    // Extraer los montos totales
+    const totalMontos = data.result.map(item => item.Total);
+
+    // Generar colores dinámicamente para cada barra
+    const backgroundColors = generarColores(labels.length);
+    const borderColors = backgroundColors.map(color => color);
+
+    // Crear los datos para el gráfico
+    const chartData = {
+        labels: labels,  // Usar las etiquetas que incluyen el cobrador y el mes
+        datasets: [{
+            label: 'Total por Cobrador y Mes',
+            data: totalMontos,  // Los montos totales
+            backgroundColor: backgroundColors,
+            borderColor: borderColors,
+            borderWidth: 1
+        }]
+    };
+
+    // Configuración del gráfico de barras
+    const config = {
+        type: 'bar',
+        data: chartData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (tooltipItem) {
+                            return tooltipItem.label + ': $' + tooltipItem.raw.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    // Si existe un gráfico previo, destruirlo antes de crear uno nuevo
+    if (myChartBar) {
+        myChartBar.destroy();
+    }
+
+    // Obtener el contexto del canvas y crear el gráfico
+    const ctx = document.getElementById('myChartBar').getContext('2d');
+    myChartBar = new Chart(ctx, config);
+}
+
+        // Crear gráfico de pastel
+        async function crearGrafica() {
+            const data = await obtenerDatos();
+            if (!data || !data.users || data.users.length === 0) {
+                console.error("No se encontraron datos para la gráfica de pie.");
+                return;
+            }
+
+            const labels = data.users.map(user => user.Cobrador);
+            const totalMontos = data.users.map(user => user.TotalMonto);
+
+            const backgroundColors = generarColores(labels.length);
+            const borderColors = backgroundColors.map(color => color);
+
+            const chartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Total por Cobrador',
+                    data: totalMontos,
+                    backgroundColor: backgroundColors,
+                    borderColor: borderColors,
+                    borderWidth: 1
+                }]
+            };
+
+            const config = {
+                type: 'pie',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return tooltipItem.label + ': $' + tooltipItem.raw.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            const ctx = document.getElementById('myChart').getContext('2d');
+            myChart = new Chart(ctx, config);
+        }
+
+        // Función para generar los años en el selector
+        function generarAnios() {
+            const select = document.getElementById("anio");
+            const currentYear = new Date().getFullYear();
+            for (let year = currentYear; year >= 1995; year--) {
+                const option = document.createElement("option");
+                option.value = year;
+                option.textContent = year;
+                select.appendChild(option);
+            }
+        }
+
+        // Función que se ejecuta cuando la página carga
+        window.onload = function () {
+            generarAnios();
+            crearGrafica();  // Crea el gráfico de pastel
+            crearGraficaBarra();  // Crea el gráfico de barras
+        };
+
+        // Cuando cambian los años en el selector
+        document.getElementById("anio").addEventListener("change", function () {
+            crearGrafica();  // Actualiza el gráfico de pastel
+            crearGraficaBarra();  // Actualiza el gráfico de barras
+        });
+    </script>
+
+    <%- include('../partials/footer', {user}) %>

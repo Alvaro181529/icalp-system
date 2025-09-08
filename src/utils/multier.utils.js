@@ -56,15 +56,15 @@ const storage = multer.diskStorage({
   //   if (!fs.existsSync(uploadPath)) {
   //     fs.mkdirSync(uploadPath, { recursive: true }); // Crea la carpeta y las necesarias en la ruta
   //   }
-  
+
   // },
-  
+
   destination: function (req, file, cb) {
     const imageTypes = /jpeg|jpg|png|gif/;
     const documentTypes = /pdf|docx|txt/;
-  
+
     let uploadPath;
-  
+console.log(req.body);
     // Archivos de imagen
     if (
       imageTypes.test(path.extname(file.originalname).toLowerCase()) &&
@@ -74,6 +74,8 @@ const storage = multer.diskStorage({
         uploadPath = path.join(__dirname, "../uploads/slides");
       } else if (req.body.blog) {
         uploadPath = path.join(__dirname, "../uploads/blog");
+      } else if (req.body.cursos) {
+        uploadPath = path.join(__dirname, "../uploads/cursos");
       } else {
         uploadPath = path.join(__dirname, "../uploads/imagenes");
       }
@@ -99,12 +101,12 @@ const storage = multer.diskStorage({
         )
       );
     }
-  
+
     // Crear carpeta si no existe
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true }); // Crea la carpeta y las necesarias en la ruta
     }
-  
+
     cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
@@ -130,6 +132,14 @@ const storage = multer.diskStorage({
         "Expediente" +
           "-" +
           req.body.Matricula.toString().padStart(5, "0") +
+          path.extname(file.originalname)
+      );
+    } else if (req.body.cursos) {
+      cb(
+        null,
+        "Curso" +
+          "-" +
+          req.body.titulo.toString().padStart(5, "0") +
           path.extname(file.originalname)
       );
     } else {

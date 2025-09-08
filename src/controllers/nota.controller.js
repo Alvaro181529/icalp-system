@@ -13,14 +13,14 @@ class NotaController {
   async postAgenda (req, res)  {
     const { user } = req.session;
     const { id } = req.params;
-    const result = await nota.postAgenda(id, user.correo);
+    const result = await nota.postAgenda(id, user.name || user.correo);
     res.json(result);
   };
 
   async postDiplomado (req, res)  {
     const { user } = req.session;
     const { id } = req.params;
-    const result = await nota.postDiplomado(id, user.correo);
+    const result = await nota.postDiplomado(id, user.name || user.correo);
     res.json(result);
   };
   async postNotas (req, res)  {
@@ -30,7 +30,7 @@ class NotaController {
     console.log(req.params);
     console.log("Notas");
     console.log(notas);
-    const result = await nota.postDiplomado(id, user.correo, notas);
+    const result = await nota.postDiplomado(id, user.name || user.correo, notas);
     res.json(result);
   };
 }
