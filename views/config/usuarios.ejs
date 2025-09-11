@@ -1,6 +1,6 @@
 <%- include('../partials/header', {title, user}) %>
     <div class="px-8">
-        <dialog id="dialog" class="bg-gray-800 bg-opacity-50 items-center justify-center">
+        <dialog id="dialog" class="bg-gray-800 bg-opacity-50 items-center justify-center m-auto">
             <div class="bg-white rounded-lg p-6 w-full sm:w-96">
                 <h3 class="text-xl font-semibold text-center mb-4">Agregar nuevo usuario</h3>
                 <form id="form-create" method="dialog">
@@ -51,7 +51,7 @@
                 </form>
             </div>
         </dialog>
-        <dialog id="dialog-update" class="bg-gray-800 bg-opacity-50 items-center justify-center">
+        <dialog id="dialog-update" class="bg-gray-800 bg-opacity-50 m-auto items-center justify-center">
             <div class="bg-white rounded-lg p-6 w-full sm:w-96">
                 <h3 class="text-xl font-semibold text-center mb-4">Actualizar usuario</h3>
                 <form id="form-update-user" method="dialog">
@@ -142,7 +142,7 @@
                 </tbody>
             </table>
         </div>
-        <dialog id="dialog-roles" class="bg-white rounded-lg p-6 w-full sm:w-96">
+        <dialog id="dialog-roles" class="bg-white rounded-lg p-6 w-full m-auto sm:w-96 shadow-lg">
             <h3 class="text-xl font-semibold text-center mb-4">Roles de usuario</h3>
             <form id="form-roles" method="dialog">
                 <div id="roles">

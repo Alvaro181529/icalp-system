@@ -354,51 +354,87 @@ class ColegiadoModel {
   }
 
   async getUsersByYears(query) {
-    const { year, page = 1, size = 10 } = query;
+    const { year, page = 1, size = 10, payed = "", colegiate = "" } = query;
     const limit = parseInt(size);
     const offset = (page - 1) * size;
-
+  
     let baseQuery = `
-      SELECT a.MesInicial, a.MesFinal, a.AnoInicial, a.AnoFinal, c.FechaMatriculacionAlColegio,c.ColegiadoId, c.Matricula, CONCAT(c.Nombres, ' ', c.Paterno, ' ', c.Materno) AS Nombre, c.DireccionOficina, c.Correo, c.FechaNacimiento, c.NumeroCI, c.DireccionDomicilio, c.Observacion, c.CargoActual, c.EspecialidadPrimaria, c.Situacion, c.Celular,c.TelefonoDomicilio,c.TelefonoOficina, c.Nacionalidad FROM colegiados c LEFT JOIN aportes a ON c.ColegiadoId = a.ColegiadoId
-        WHERE 1=1
-      `;
-
+      SELECT 
+        a.MesInicial, a.MesFinal, a.AnoInicial, a.AnoFinal, 
+        c.FechaMatriculacionAlColegio, c.ColegiadoId, c.Matricula, 
+        CONCAT(c.Nombres, ' ', c.Paterno, ' ', c.Materno) AS Nombre, 
+        c.DireccionOficina, c.Correo, c.FechaNacimiento, c.NumeroCI, 
+        c.DireccionDomicilio, c.Observacion, c.CargoActual, c.EspecialidadPrimaria, 
+        c.Situacion, c.Celular, c.TelefonoDomicilio, c.TelefonoOficina, c.Nacionalidad 
+      FROM colegiados c 
+      LEFT JOIN aportes a ON c.ColegiadoId = a.ColegiadoId
+      WHERE 1=1
+    `;
+  
     let queryParams = [];
-
+  
+    // Condición por año de matriculación
     if (year) {
+      baseQuery += ` AND YEAR(c.FechaMatriculacionAlColegio) = ?`;
+      queryParams.push(year);  // No es necesario hacer `${year}`
+    }
+  
+    // Condición por nombre o matrícula
+    if (colegiate) {
       baseQuery += `
-          AND YEAR(c.FechaMatriculacionAlColegio)= ?
-        `;
-      queryParams.push(`${year}`);
-    }
-
-    let countQuery = `
-        SELECT COUNT(*) AS total
-        FROM aportes a
-        INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
-        WHERE 1=1
+        AND (CONCAT(c.Nombres, ' ', c.Paterno, ' ', c.Materno) LIKE ? OR c.Matricula LIKE ?)
       `;
-
-    let countParams = [...queryParams];
-
-    if (year) {
-      countQuery += `
-          AND YEAR(c.FechaMatriculacionAlColegio)= ?
-        `;
-      countParams.push(`${year}`);
+      queryParams.push(`%${colegiate}%`, `%${colegiate}%`);
     }
-
+  
+    // Condición de pago
+    if (payed === "yes") {
+      baseQuery += `
+        AND (a.AnoFinal < YEAR(CURDATE()) OR 
+             (a.AnoFinal = YEAR(CURDATE()) AND a.MesFinal < MONTH(CURDATE())))
+        ORDER BY a.AnoFinal DESC
+      `;
+    }
+  
+    // Consulta para contar el total de resultados (para la paginación)
+    let countQuery = `
+      SELECT COUNT(*) AS total
+      FROM aportes a
+      INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
+      WHERE 1=1
+    `;
+    let countParams = [...queryParams];  // Usamos los mismos parámetros para contar
+  
+    // Agregar las mismas condiciones de filtro a la consulta de conteo
+    if (year) {
+      countQuery += ` AND YEAR(c.FechaMatriculacionAlColegio) = ?`;
+      countParams.push(year);
+    }
+    if (colegiate) {
+      countQuery += `
+        AND (CONCAT(c.Nombres, ' ', c.Paterno, ' ', c.Materno) LIKE ? OR c.Matricula LIKE ?)
+      `;
+      countParams.push(`%${colegiate}%`, `%${colegiate}%`);
+    }
+    if (payed === "yes") {
+      countQuery += `
+        AND (a.AnoFinal < YEAR(CURDATE()) OR 
+             (a.AnoFinal = YEAR(CURDATE()) AND a.MesFinal < MONTH(CURDATE())))
+      `;
+    }
+  
+    // Agregar LIMIT y OFFSET
     baseQuery += ` LIMIT ? OFFSET ?`;
     queryParams.push(limit, offset);
-
+  
     try {
       const [rows, countResult] = await Promise.all([
         pool.query(baseQuery, queryParams),
         pool.query(countQuery, countParams),
       ]);
-
+  
       const total = countResult[0].total;
-
+  
       return {
         users: rows,
         total,
@@ -407,9 +443,10 @@ class ColegiadoModel {
       };
     } catch (error) {
       console.error("Error al obtener los aportes: ", error);
-      throw new Error("Error al obtener los aportes");
+      throw new Error("Error al obtener los aportes: " + error.message);  // Mejor manejo del error
     }
   }
+  
 
   async getUsersByProvicion(query) {
     const { year, page = 1, size = 10 } = query;

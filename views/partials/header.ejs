@@ -55,8 +55,8 @@
           <div class="space-y-2">
 
             <% if (user && user.roles.includes('Administrador')
-              ||user.roles.includes('Cobrador')||user.roles.includes('Colegiados')|| user.roles.includes('Gerencia') || user.roles.includes('Tribunal')) {
-              %>
+              ||user.roles.includes('Cobrador')||user.roles.includes('Colegiados')||user.roles.includes('Postgrado') ||
+              user.roles.includes('Gerencia') || user.roles.includes('Tribunal')) { %>
               <!-- Colegiados Section -->
               <details class="group">
                 <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
@@ -67,11 +67,14 @@
                 <ul class="pl-8 mt-2 space-y-1">
                   <li><a href="/colegiados" class="block px-4 py-2 hover:bg-blue-950 rounded">Listado de Colegiados</a>
                   </li>
-                  <li><a href="/colegiado/fecha" class="block px-4 py-2 hover:bg-blue-950 rounded">Listado de Colegiados
-                      por fecha</a>
-                  </li>
-                  <li><a href="/colegiado/dia" class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados al día</a>
-                  </li>
+                  <%if (!user.roles.includes('Postgrado')){%>
+                    <li><a href="/colegiado/fecha" class="block px-4 py-2 hover:bg-blue-950 rounded">Listado de
+                        Colegiados
+                        por fecha</a>
+                    </li>
+                    <li><a href="/colegiado/dia" class="block px-4 py-2 hover:bg-blue-950 rounded">Colegiados al día</a>
+                    </li>
+                    <%}%>
                 </ul>
               </details>
               <%}%>
@@ -233,156 +236,160 @@
           <header class="<%= user ? ' navbarUser' : 'navbar' %>  ">
 
             <div class="navbar-container">
-               <button class="hamburger-btn">
-                   <i class="fas fa-bars"></i>
-               </button>
-                       
-       
-                 <a href="/inicio" class="izquierda" >
-                       <div class="linea"></div>
-                       <div class="logo-section">
-                           <img <%= user ? ' hidden' : '' %>  id="logo-link" src="/public/resources/recursos/Logo_colegio_de_abogados_Mesa_de_trabajo.png" alt="logo">
-                       </div>
-                   </a>
-                       
-       
-                   <div class="derecha">
-                       <div class="herramientas">
-                           <div class="contacto">
-                                <div class="cel">
-                                   <!---->
-                                 <a href="https://wa.link/kfeinu" class="cel" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-                                   <i class="fa-solid fa-phone"></i>
-                                   <span style="margin-left: 6px;">+591 76771530</span>
-                               </a>  
-                                  <!---->
-                                   
-                                </div>
-       
-                               <div class="correo">
-                                   <a href="https://mail.google.com/mail/?view=cm&fs=1&to=presidencia@icalp.org.bo" class="correo-link" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-                                       <i class="fa-solid fa-envelope"></i>
-                                       <span style="margin-left: 6px;">presidencia@icalp.org.bo</span>
-                                   </a>
-                                  
-                                </div>
-       
-                           </div>
-                           <% if (user) { %>
-                            <div>
-                              <h2 class="text-white font-bold text-sm">
-                                <%= user.name || user.correo %>
-                              </h2>
-                              <p class="text-sm text-wrap text-white">
-                                <%= user.roles %>
-                              </p>
-                            </div>
-                            <% } else { %>
-                              <!-- <a href="/login">
+              <button class="hamburger-btn">
+                <i class="fas fa-bars"></i>
+              </button>
+
+
+              <a href="/inicio" class="izquierda">
+                <div class="linea"></div>
+                <div class="logo-section">
+                  <img <%=user ? ' hidden' : '' %> id="logo-link"
+                  src="/public/resources/recursos/Logo_colegio_de_abogados_Mesa_de_trabajo.png" alt="logo">
+                </div>
+              </a>
+
+
+              <div class="derecha">
+                <div class="herramientas">
+                  <div class="contacto">
+                    <div class="cel">
+                      <!---->
+                      <a href="https://wa.link/kfeinu" class="cel"
+                        style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                        <i class="fa-solid fa-phone"></i>
+                        <span style="margin-left: 6px;">+591 76771530</span>
+                      </a>
+                      <!---->
+
+                    </div>
+
+                    <div class="correo">
+                      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=presidencia@icalp.org.bo"
+                        class="correo-link"
+                        style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span style="margin-left: 6px;">presidencia@icalp.org.bo</span>
+                      </a>
+
+                    </div>
+
+                  </div>
+                  <% if (user) { %>
+                    <div>
+                      <h2 class="text-white font-bold text-sm">
+                        <%= user.name || user.correo %>
+                      </h2>
+                      <p class="text-sm text-wrap text-white">
+                        <%= user.roles %>
+                      </p>
+                    </div>
+                    <% } else { %>
+                      <!-- <a href="/login">
                                 <button type="button"
                                   class="text-white bg-transparent border-2 border-white hover:text-black hover:bg-white active:ring active:ring-gray-300 font-medium rounded-3xl text-sm px-4 py-2 text-center">
                                   Iniciar sesión
                                 </button>
                               </a> -->
-                              <div class="inicio">
-                                <a href="/login">
-                                  <button class="login-btn">Iniciar sesión</button>
-                                </a>
-                           </div>
-                              <% } %>
-                              <% if (user) { %>
-                                <section>
-                                  <button id="imprimir"
-                                    class=" bg-gray-100 py-2 px-4 text-gray-500 rounded-lg hover:bg-gray-500 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
-                                    <i class="fa-solid fa-print"></i> Imprimir</button>
-                                </section>
-                                <% }else{%>
-                                  <button id="imprimir" hidden></button>
-                                  <% }%>
-                           
-                       </div>
-                       <nav class="nav">
-                           <ul class="nav-menu">
-                               <li class="nav-item">
-                                   <a href="#" class="nav-link">
-                                       ICALP
-                                       <span class="dropdown-arrow">▼</span>
-                                   </a>
-                                   <ul class="submenu">
-                                       <li><a href="/nosotros">Acerca de Nosotros</a></li>
-                                       <li><a href="/presidencia">Presidencia</a></li>
-                                       <li><a href="/privacidad">Politica de Privacidad</a></li>
-                                       <li><a href="/comunicados">Comunicados Institucionales</a></li>
-                                       <li><a href="/preguntas">Preguntas Frecuentes</a></li>
-                                   </ul>
-                               </li>
-                               <li class="nav-item">
-                                   <a href="#" class="nav-link">
-                                       Establecimientos y Servicios
-                                       <span class="dropdown-arrow">▼</span>
-                                   </a>
-                                   <ul class="submenu">
-                                       <li><a href="/lipari">Salones</a></li>
-                                        <li><a href="/conciliacion">Conciliación y Arbitraje</a></li>
-       
-       
-                                   </ul>
-                               </li>
-                               <li class="nav-item">
-                                   <a href="#" class="nav-link">
-                                       Admisiones
-                                       <span class="dropdown-arrow">▼</span>
-                                   </a>
-                                   <ul class="submenu">
-                                        <li><a href="/porquecole">¿Por qué Colegiarte?</a></li>
-                                       <li><a href="/requisitos">Requisitos de Admisión</a></li>
-                                       <li><a href="/vida">Vida como Colegiado</a></li>
-                                        <li><a href="/beneficios">Beneficios para Colegiados</a></li>
-                                        
-                                   </ul>
-                               </li>
-                               <li class="nav-item">
-                                   <a href="#" class="nav-link">
-                                       Postgrado
-                                       <span class="dropdown-arrow">▼</span>
-                                   </a>
-                                   <ul class="submenu">
-                                       <li><a href="/cursos">Cursos</a></li>
-                                       <li><a href="/seminarios">Seminarios</a></li>
-                                       <li><a href="/diplomados">Diplomados</a></li>
-                                       <li><a href="/maestrias">Maestrias</a></li>
-                                   </ul>
-                               </li>
-                               <li class="nav-item">
-                                   <a href="#" class="nav-link">
-                                       Noticias
-                                       <span class="dropdown-arrow">▼</span>
-                                   </a>
-                                   <ul class="submenu">
-                                       <li><a href="/mapajudicial">Mapa Judicial</a></li>
-                                       <li><a href="/comite">Comite Electoral</a></li>
-                                   </ul>
-                               </li>
-                               <li class="nav-item">
-                                   <a href="#" class="nav-link">
-                                       Redes Sociales
-                                       <span class="dropdown-arrow">▼</span>
-                                   </a>
-                                   <ul class="submenu">
-                                       <li><a href="https://www.facebook.com/IcalpOficial">Facebook</a></li>
-                                       <li><a href="https://x.com/ICALPOficial">Twitter</a></li>
-                                       <li><a href="https://www.instagram.com/icalp_oficial">Instagram</a></li>
-                                       <li><a href="https://wa.link/kfeinu">Whatsapp</a></li>
-                                   </ul>
-                               </li>
-                           </ul>
-                       </nav>
-                   </div>
-                   
-                 
-               </div>
-       </header>
-       
+                      <div class="inicio">
+                        <a href="/login">
+                          <button class="login-btn">Iniciar sesión</button>
+                        </a>
+                      </div>
+                      <% } %>
+                        <% if (user) { %>
+                          <section>
+                            <button id="imprimir"
+                              class=" bg-gray-100 py-2 px-4 text-gray-500 rounded-lg hover:bg-gray-500 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+                              <i class="fa-solid fa-print"></i> Imprimir</button>
+                          </section>
+                          <% }else{%>
+                            <button id="imprimir" hidden></button>
+                            <% }%>
+
+                </div>
+                <nav class="nav">
+                  <ul class="nav-menu">
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        ICALP
+                        <span class="dropdown-arrow">▼</span>
+                      </a>
+                      <ul class="submenu">
+                        <li><a href="/nosotros">Acerca de Nosotros</a></li>
+                        <li><a href="/presidencia">Presidencia</a></li>
+                        <li><a href="/privacidad">Politica de Privacidad</a></li>
+                        <li><a href="/comunicados">Comunicados Institucionales</a></li>
+                        <li><a href="/preguntas">Preguntas Frecuentes</a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        Establecimientos y Servicios
+                        <span class="dropdown-arrow">▼</span>
+                      </a>
+                      <ul class="submenu">
+                        <li><a href="/lipari">Salones</a></li>
+                        <li><a href="/conciliacion">Conciliación y Arbitraje</a></li>
+
+
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        Admisiones
+                        <span class="dropdown-arrow">▼</span>
+                      </a>
+                      <ul class="submenu">
+                        <li><a href="/porquecole">¿Por qué Colegiarte?</a></li>
+                        <li><a href="/requisitos">Requisitos de Admisión</a></li>
+                        <li><a href="/vida">Vida como Colegiado</a></li>
+                        <li><a href="/beneficios">Beneficios para Colegiados</a></li>
+
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        Postgrado
+                        <span class="dropdown-arrow">▼</span>
+                      </a>
+                      <ul class="submenu">
+                        <li><a href="/cursos">Cursos</a></li>
+                        <li><a href="/seminarios">Seminarios</a></li>
+                        <li><a href="/diplomados">Diplomados</a></li>
+                        <li><a href="/maestrias">Maestrias</a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        Noticias
+                        <span class="dropdown-arrow">▼</span>
+                      </a>
+                      <ul class="submenu">
+                        <li><a href="/mapajudicial">Mapa Judicial</a></li>
+                        <li><a href="/comite">Comite Electoral</a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        Redes Sociales
+                        <span class="dropdown-arrow">▼</span>
+                      </a>
+                      <ul class="submenu">
+                        <li><a href="https://www.facebook.com/IcalpOficial">Facebook</a></li>
+                        <li><a href="https://x.com/ICALPOficial">Twitter</a></li>
+                        <li><a href="https://www.instagram.com/icalp_oficial">Instagram</a></li>
+                        <li><a href="https://wa.link/kfeinu">Whatsapp</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+
+
+            </div>
+          </header>
+
           <div id="print-section">
 
             <script defer>
@@ -532,7 +539,7 @@
                 $('#sidebar-nav').classList.remove('hidden');
                 $('#main-page').classList.add('sm:ml-64')
                 $('#toggle-sidebar-open').classList.add('hidden')
-                $('#logo-link').setAttribute('hidden','')
+                $('#logo-link').setAttribute('hidden', '')
               });
 
             </script>
