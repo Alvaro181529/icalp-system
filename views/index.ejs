@@ -453,6 +453,7 @@
         if (file) {
           formData.append('file', file);
         }
+
         try {
           const response = await fetch('/denuncia', {
             method: 'POST',

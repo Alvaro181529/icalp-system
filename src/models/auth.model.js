@@ -15,7 +15,7 @@ const jwt = require("jsonwebtoken");  // Cambiar import a require
          LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId
          LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId 
          WHERE u.Email = ?
-         GROUP BY u.Email, u.User, u.IsApproved, u.PasswordHash`,
+         GROUP BY u.UserId, u.Email, u.User, u.IsApproved, u.PasswordHash`,
         [email]
       );
 

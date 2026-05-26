@@ -78,6 +78,20 @@
                 </ul>
               </details>
               <%}%>
+                <% if (user && (user.roles.includes('Administrador') || user.roles.includes('Cobrador'))) { %>
+                <!-- Eventos Section -->
+                <details class="group">
+                  <summary class="flex items-center px-4 py-2 text-gray-200 rounded hover:bg-blue-950 cursor-pointer">
+                    <i class="fa-solid fa-calendar-check mr-2"></i>
+                    <span>Eventos</span>
+                    <i class="fas fa-chevron-down ml-auto transform group-open:rotate-180 transition-transform"></i>
+                  </summary>
+                  <ul class="pl-8 mt-2 space-y-1">
+                    <li><a href="/eventos" class="block px-4 py-2 hover:bg-blue-950 rounded">Gestión de Eventos</a></li>
+                  </ul>
+                </details>
+                <%}%>
+
                 <% if (user && user.roles.includes('Administrador') || user.roles.includes('Contador') ||
                   user.roles.includes('Cajero') ||user.roles.includes('Cobrador')|| user.roles.includes('Gerencia')) {
                   %>

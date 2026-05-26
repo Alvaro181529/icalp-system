@@ -33,7 +33,7 @@ class UsersModel {
             `;
     }
     baseQuery += `
-    GROUP BY u.Email, u.User, u.IsApproved
+    GROUP BY u.UserId, u.NombreCompleto, u.Carnet, u.fechaNacimiento, u.Direccion, u.Email, u.User, u.IsApproved
     LIMIT ? OFFSET ?`;
     queryParams.push(limit, offset);
 
@@ -56,7 +56,7 @@ class UsersModel {
   };
   async getUserCobradores (query)  {
     const result = pool.query(
-      `SELECT u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles FROM aspnetusers u LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId WHERE r.RoleId = 'c1103424-be2e-11ef-828b-f80dacf23b8a' GROUP BY u.Email, u.User, u.IsApproved`
+      `SELECT u.UserId, u.Email, u.User, u.IsApproved, GROUP_CONCAT(r.Name SEPARATOR ', ') AS Roles FROM aspnetusers u LEFT JOIN aspnetuserroles ur ON ur.UserId = u.UserId LEFT JOIN aspnetroles r ON r.RoleId = ur.RoleId WHERE r.RoleId = 'c1103424-be2e-11ef-828b-f80dacf23b8a' GROUP BY u.UserId, u.Email, u.User, u.IsApproved`
     );
     return result;
   };

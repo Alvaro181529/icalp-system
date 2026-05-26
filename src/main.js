@@ -22,6 +22,7 @@ const chatbotRouter = require("./routes/chatbot.route.js");
 const cursosRouter = require("./routes/cursos.route.js");
 const backupRouter = require("./routes/backup.route.js");
 const analiticasRouter = require("./routes/analiticas.route.js");
+const eventoRouter = require("./routes/evento.route.js");
 const { checkRole } = require("./utils/checkRoles.utils.js");
 
 const app = express();
@@ -68,6 +69,7 @@ app.use(chatbotRouter);
 app.use(cursosRouter);
 app.use(backupRouter);
 app.use(analiticasRouter);
+app.use(eventoRouter);
 
 // statics
 app.use("/public", express.static(path.join(__dirname, "public")));

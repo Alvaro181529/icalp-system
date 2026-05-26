@@ -1,6 +1,5 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const dotenv = require('dotenv');
-const { promisify } = require('util');
 
 dotenv.config();
 
@@ -10,11 +9,14 @@ const pool = mysql.createPool({
   database: process.env.DATABASE,
   password: process.env.PASSWORD,
   port: process.env.PORT_DB,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
+// Verificar conexión al iniciar
 pool.getConnection((error, connection) => {
   if (error) {
-    // Manejo de errores detallado
     if (error.code === 'PROTOCOL_CONNECTION_LOST') {
       console.error('Conexión cerrada a la base de datos');
     } else if (error.code === 'ER_CON_COUNT_ERROR') {
@@ -24,6 +26,7 @@ pool.getConnection((error, connection) => {
     } else {
       console.error(`Error al conectar con la base de datos: ${error.message}`);
     }
+    return;
   }
 
   if (connection) {
@@ -32,7 +35,16 @@ pool.getConnection((error, connection) => {
   }
 });
 
-// Promisificar la función query
-pool.query = promisify(pool.query);
+// Wrapper de compatibilidad: mysql2 devuelve [rows, fields],
+// pero el código existente espera solo rows (como mysql + promisify).
+const promisePool = pool.promise();
+const compatPool = {
+  query: async (sql, params) => {
+    const [rows] = await promisePool.query(sql, params);
+    return rows;
+  },
+  getConnection: pool.getConnection.bind(pool),
+};
 
-module.exports = pool;
+module.exports = compatPool;
+
