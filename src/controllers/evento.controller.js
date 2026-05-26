@@ -127,13 +127,13 @@ class EventoController {
       worksheet.mergeCells('C2:E2');
       const titleCell = worksheet.getCell('C2');
       titleCell.value = 'REPORTE DE ASISTENCIA';
-      titleCell.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FF1E3A8A' } };
+      titleCell.font = { name: 'Arial', size: 16, bold: true, color: { argb: 'FF000000' } };
       titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
 
       worksheet.mergeCells('C3:E3');
       const subtitleCell = worksheet.getCell('C3');
       subtitleCell.value = 'Colegio de Abogados de La Paz';
-      subtitleCell.font = { name: 'Arial', size: 11, italic: true, color: { argb: 'FF4B5563' } };
+      subtitleCell.font = { name: 'Arial', size: 11, italic: true, color: { argb: 'FF000000' } };
       subtitleCell.alignment = { vertical: 'middle', horizontal: 'center' };
 
       // --- DETALLES DEL EVENTO ---
