@@ -58,7 +58,7 @@ class EventoModel {
     return await pool.query(`
       SELECT a.AsistenciaId, a.FechaIngreso, a.RegistradoPor,
              c.ColegiadoId, c.Matricula, c.Nombres, c.Paterno, c.Materno,
-             c.NumeroCI, c.Estado
+             c.NumeroCI, c.Estado, c.FechaProvisionNacional
       FROM asistencias_eventos a
       INNER JOIN colegiados c ON c.ColegiadoId = a.ColegiadoId
       WHERE a.EventoId = ?

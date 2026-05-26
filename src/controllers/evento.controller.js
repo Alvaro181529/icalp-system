@@ -151,7 +151,7 @@ class EventoController {
 
       // --- TABLA ---
       const startRow = 10;
-      worksheet.getRow(startRow).values = ['N°', 'Matrícula', 'Nombres', 'Paterno', 'Materno', 'CI', 'Fecha Ingreso', 'Registrado Por'];
+      worksheet.getRow(startRow).values = ['N°', 'Matrícula', 'Nombres', 'Paterno', 'Materno', 'CI', 'F. Provisión Nacional', 'Fecha Ingreso', 'Registrado Por'];
       
       // Anchos de columna
       worksheet.columns = [
@@ -161,6 +161,7 @@ class EventoController {
         { key: 'paterno', width: 18 },
         { key: 'materno', width: 18 },
         { key: 'ci', width: 15 },
+        { key: 'fechaProvNal', width: 20 },
         { key: 'fechaIngreso', width: 22 },
         { key: 'registradoPor', width: 25 },
       ];
@@ -192,6 +193,7 @@ class EventoController {
           paterno: a.Paterno,
           materno: a.Materno,
           ci: a.NumeroCI, // <- corregido de a.NumeroCarnet
+          fechaProvNal: a.FechaProvisionNacional ? new Date(a.FechaProvisionNacional).toLocaleDateString() : '-',
           fechaIngreso: a.FechaIngreso ? a.FechaIngreso.toLocaleString() : '',
           registradoPor: a.RegistradoPor
         });
@@ -202,8 +204,8 @@ class EventoController {
             top: { style: 'thin' }, left: { style: 'thin' },
             bottom: { style: 'thin' }, right: { style: 'thin' }
           };
-          if (colNumber === 1 || colNumber === 2 || colNumber === 6) {
-            cell.alignment = { horizontal: 'center' }; // Centrar N°, Matrícula, CI
+          if (colNumber === 1 || colNumber === 2 || colNumber === 6 || colNumber === 7) {
+            cell.alignment = { horizontal: 'center' }; // Centrar N°, Matrícula, CI, Fecha Provisión Nacional
           }
         });
         
@@ -267,10 +269,11 @@ class EventoController {
       // --- TABLA DE ASISTENCIA ---
       const tableTop = doc.y;
       const col1 = 40;   // N°
-      const col2 = 70;   // Matrícula
-      const col3 = 140;  // Nombre Completo
-      const col4 = 370;  // CI
-      const col5 = 450;  // Hora Ingreso
+      const col2 = 65;   // Matrícula
+      const col3 = 120;  // Nombre Completo
+      const col4 = 275;  // CI
+      const col5 = 355;  // F. Prov. Nal.
+      const col6 = 460;  // Hora Ingreso
 
       // Cabecera de la tabla
       doc.rect(40, tableTop, 510, 20).fill('#1E3A8A');
@@ -279,7 +282,8 @@ class EventoController {
       doc.text('Matrícula', col2, tableTop + 5);
       doc.text('Nombre Completo', col3, tableTop + 5);
       doc.text('CI', col4, tableTop + 5);
-      doc.text('Hora Ingreso', col5, tableTop + 5);
+      doc.text('F. Prov. Nal.', col5, tableTop + 5);
+      doc.text('Hora Ingreso', col6, tableTop + 5);
       
       let y = tableTop + 20;
 
@@ -294,7 +298,8 @@ class EventoController {
           doc.text('Matrícula', col2, y + 5);
           doc.text('Nombre Completo', col3, y + 5);
           doc.text('CI', col4, y + 5);
-          doc.text('Hora Ingreso', col5, y + 5);
+          doc.text('F. Prov. Nal.', col5, y + 5);
+          doc.text('Hora Ingreso', col6, y + 5);
           y += 20;
         }
         
@@ -309,10 +314,11 @@ class EventoController {
         
         // Truncar nombre si es muy largo
         const fullName = `${a.Nombres} ${a.Paterno} ${a.Materno || ''}`;
-        doc.text(fullName.length > 40 ? fullName.substring(0, 38) + '...' : fullName, col3, y + 5);
+        doc.text(fullName.length > 30 ? fullName.substring(0, 28) + '...' : fullName, col3, y + 5);
         
         doc.text(a.NumeroCI, col4, y + 5);
-        doc.text(a.FechaIngreso ? a.FechaIngreso.toLocaleTimeString() : '', col5, y + 5);
+        doc.text(a.FechaProvisionNacional ? new Date(a.FechaProvisionNacional).toLocaleDateString() : '-', col5, y + 5);
+        doc.text(a.FechaIngreso ? a.FechaIngreso.toLocaleTimeString() : '', col6, y + 5);
         
         y += 20;
       });
